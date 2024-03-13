@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../../modules/home-manager/hyprland.nix ];
+  imports = [
+    ../../modules/home-manager/hyprland.nix
+    ../../modules/home-manager/neovim.nix
+  ];
 
   config = {
     hyprland.background.enable = true;

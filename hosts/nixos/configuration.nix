@@ -2,13 +2,13 @@
 
 {
   imports = [
+    inputs.home-manager.nixosModules.default
+
     ./hardware-configuration.nix
     ../../modules/home-manager
     ../../modules/nixos
     ../../home/james
   ];
-
-  documentation.nixos.enable = false;
 
   fonts.enable = true;
   gdm.enable = true;
@@ -21,7 +21,7 @@
 
   security.polkit.enable = true;
   programs.hyprland.enable = true;
-
+  services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
   system.monitors = [
@@ -35,12 +35,7 @@
     }
   ];
 
-  services = {
-    openssh.enable = true;
-  };
-
   environment.systemPackages = with pkgs; [
-    neovim
     curl
     git
     comma
