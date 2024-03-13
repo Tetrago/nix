@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./bluetooth.nix
     ./fonts.nix
     ./gdm.nix
     ./gnome.nix
@@ -9,6 +10,7 @@
     ./pipewire.nix
     ./plymouth.nix
     ./secureboot.nix
+    ./system.nix
   ];
 
   config = {

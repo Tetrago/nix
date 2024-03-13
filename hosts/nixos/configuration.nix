@@ -2,11 +2,10 @@
 
 {
   imports = [
-    inputs.home-manager.nixosModules.default
-
     ./hardware-configuration.nix
-    ../../home
+    ../../modules/home-manager
     ../../modules/nixos
+    ../../home/james
   ];
 
   documentation.nixos.enable = false;
@@ -21,15 +20,20 @@
   secureboot.enableTpm2 = true;
 
   security.polkit.enable = true;
-  hardware.bluetooth.enable = true;
   programs.hyprland.enable = true;
 
-  users.users.james = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
+  networking.firewall.allowedTCPPorts = [ 8080 ];
 
-  home-manager.users.james = import ../../home/james;
+  system.monitors = [
+    {
+      name = "Virtual-1";
+      width = 1280;
+      height = 720;
+      refreshRate = 60;
+      x = 0;
+      y = 0;
+    }
+  ];
 
   services = {
     openssh.enable = true;

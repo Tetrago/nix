@@ -1,30 +1,10 @@
-{ pkgs, ... }:
+{ config, lib, system, pkgs, ... }:
 
 let
-  lock = pkgs.writeShellScriptBin "lock" ''
-    ${pkgs.swaylock}/bin/swaylock \
-      --screenshots \
-      --clock \
-      --indicator \
-      --indicator-thickness 4 \
-      --effect-blur 7x5 \
-      --inside-color 4C4F69 \
-      --inside-clear-color 4C4F69 \
-      --inside-caps-lock-color 4C4F69 \
-      --inside-ver-color 4C4F69 \
-      --inside-wrong-color 4C4F69 \
-      --ring-color BCC0CC \
-      --ring-clear-color BCC0CC \
-      --ring-wrong-color BCC0CC \
-      --ring-ver-color BCC0CC \
-      --ring-caps-lock-color BCC0CC \
-      --key-hl-color EFF1F5 \
-      --text-color EFF1F5 \
-      --text-clear-color EFF1F5 \
-      --text-caps-lock-color EFF1F5 \
-      --text-ver-color EFF1F5 \
-      --text-wrong-color EFF1F5
-  '';
+  swayncStyle = builtins.readFile(builtins.fetchurl {
+    url = "https://github.com/catppuccin/swaync/releases/download/v0.1.2.1/latte.css";
+    sha256 = "9050636715700d62a306728b92f94daf21cdab2153d8c6f5391d1029470ead6f";
+  });
 in
 let
   startup = pkgs.writeShellScriptBin "start" ''
@@ -32,21 +12,31 @@ let
     ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch cliphist store &
     ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch cliphist store &
     ${pkgs.udiskie}/bin/udiskie &
-    ${pkgs.swayidle}/bin/swayidle -w lock "${lock}/bin/lock" before-sleep "${lock}/bin/lock" &
     ${pkgs.networkmanagerapplet}/bin/nm-applet &
-    ${pkgs.blueman}/bin/blueman-applet &
+    ${lib.strings.optionalString config.hyprland.bluetooth.enable "${pkgs.blueman}/bin/blueman-applet &"}
     ${pkgs.waybar}/bin/waybar &
+    ${pkgs.hyprpaper}/bin/hyprpaper &
+    ${pkgs.hypridle}/bin/hypridle &
   '';
-  swayncStyle = builtins.readFile(builtins.fetchurl {
-    url = "https://github.com/catppuccin/swaync/releases/download/v0.1.2.1/latte.css";
-    sha256 = "9050636715700d62a306728b92f94daf21cdab2153d8c6f5391d1029470ead6f";
-  });
 in
 {
+  options = {
+    hyprland.bluetooth.enable = lib.mkEnableOption "enable bluetooth widget";
+    hyprland.background.enable = lib.mkEnableOption "enable desktop background";
+    hyprland.background.wallpaper = lib.mkOption {
+      type = lib.types.str;
+      description = "path to wallpaper";
+      example = "~/wallpaper.jpg";
+    };
+  };
+
   config = {
     home.packages = with pkgs; [
       swaynotificationcenter
       hyprpicker
+      hyprpaper
+      hypridle
+      hyprlock
       pcmanfm
       nwg-bar
       cliphist
@@ -57,13 +47,79 @@ in
       brightnessctl
       playerctl
       udiskie
-      swaylock
-      swayidle
       networkmanagerapplet
-      blueman
-    ];
+    ] ++ lib.optionals config.hyprland.bluetooth.enable [ blueman ];
 
     home.file = {
+      ".config/hypr/hyprpaper.conf".text = let path = config.hyprland.background.wallpaper; in ''
+        preload = ${path}
+	wallpaper = ,${path}
+	ipc = off
+	splash = off
+      '';
+      ".config/hypr/hypridle.conf".text = ''
+        general {
+	  lock_cmd = pidof swaylock || ${pkgs.hyprlock}/bin/hyprlock
+	  before_sleep_cmd = loginctl lock-session
+	  after_sleep_cmd = hyprctl dispatch dpms on
+	}
+
+	listener {
+	  timeout = 300
+	  on-timeout = loginctl lock-session
+	}
+
+	listener {
+	  timeout = 380
+	  on-timeout = hyprctl dispatch dpms off
+	  on-resume = hyprctl dispatch dpms on
+	}
+
+	listener {
+	  timeout = 1800
+	  on-timeout = systemctl suspend
+	}
+      '';
+      ".config/hypr/hyprlock.conf".text = ''
+        background = {
+	  monitor =
+	  color = rgba(25, 20, 20, 1.0)
+
+	  blur_passes = 0
+	  blur_size = 7
+	  noise = 0.0117
+	  contrast = 0.8916
+	  brightness = 0.8172
+	  vibrancy = 0.1696
+	  vibrancy_darkness = 0.0
+	}
+
+	input-field {
+	  monitor = 
+	  size = 200, 50
+	  outline_thickness = 3
+	  dots_size = 0.33
+	  dots_spacing = 0.15
+	  dots_center = false
+	  dots_rounding = -1
+	  outer_color = rgb(151515)
+	  inner_color = rgb(200, 200, 200)
+	  font_color = rgb(10, 10, 10)
+	  fade_on_empty = true
+	  fade_timeout = 1000
+	  placeholder_text =
+	  hide_input = false
+	  rounding = -1
+	  check_color = rgb(204, 136, 34)
+	  fail_color = rgb(204, 34, 34)
+	  fail_text =
+	  fail_transition = 300
+
+	  position = 0, -20
+	  halign = center
+	  valign = center
+	}
+      '';
       ".config/swaync/style.css".text = swayncStyle;
       ".config/nwg-bar/bar.json".text = ''
         [
@@ -260,9 +316,15 @@ in
       enable = true;
       settings = {
         exec-once = "${startup}/bin/start";
-        monitor = [
-          "eDP-1,preferred,auto,1.333333"
-        ];
+        monitor = map
+	  (m:
+	    let
+	      resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+	      position = "${toString m.x}x${toString m.y}";
+	    in
+	    "${m.name},${if m.enable then "${resolution},${position},${toString m.dpi}" else "disabled"}"
+	  )
+	  (system.monitors);
         env = [
           "XCURSOR_SIZE,24"
           "XDG_CURRENT_DESKTOP,Hyprland"

@@ -5,6 +5,7 @@
     net.enable = lib.mkEnableOption "enable default networking options";
 
     net.hostname = lib.mkOption {
+      type = lib.types.str;
       description = "hostname";
     };
   };
