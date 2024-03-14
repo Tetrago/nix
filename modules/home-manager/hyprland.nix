@@ -48,6 +48,7 @@ in
       playerctl
       udiskie
       networkmanagerapplet
+      vscode
     ] ++ lib.optionals config.hyprland.bluetooth.enable [ blueman ];
 
     home.file = {
@@ -335,6 +336,7 @@ in
           "_JAVA_AWT_WM_NONREPARENTING,1"
           "GTK_BACKEND,wayland"
           "MOZ_ENABLE_WAYLAND,1"
+	  "NIXOS_OZONE_WL,1"
         ];
 	master = {
 	  new_is_master = "yes";
