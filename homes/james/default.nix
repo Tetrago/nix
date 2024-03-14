@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -7,6 +7,7 @@
 
   users.users.james = {
     isNormalUser = true;
+    shell = pkgs.bashInteractive;
     extraGroups = [ "wheel" ];
   };
 

@@ -336,6 +336,10 @@ in
           "GTK_BACKEND,wayland"
           "MOZ_ENABLE_WAYLAND,1"
         ];
+	master = {
+	  new_is_master = "yes";
+	  mfact = "0.5";
+	};
         input = {
           follow_mouse = "yes";
           touchpad.natural_scroll = "yes";

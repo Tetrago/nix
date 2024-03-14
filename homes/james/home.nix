@@ -17,11 +17,26 @@
       packages = with pkgs; [
         firefox
         neofetch
+	p7zip
+	eza
+	bat
+	ripgrep
+	fd
+	hexyl
+	tre
+	xplr
+	scc
+	ghidra
+	burpsuite
+	openvpn
+	cyberchef
       ];
 
       sessionVariables = {
-        EDITOR = "nvim";
         TERMINAL = "alacritty";
+        EDITOR = "nvim";
+	MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+	MANROFFOPT = "-c";
       };
 
       stateVersion = "23.11";
@@ -123,7 +138,25 @@
 	  };
 	};
       };
-      bash.enable = true;
+      bash = {
+        enable = true;
+	enableCompletion = true;
+	shellAliases = {
+	  ls = "eza";
+	  ll = "eza -lh";
+	  la = "eza -alh";
+	  grep = "grep --color=auto";
+	  ip = "ip -color=auto";
+	  cat = "bat -Pu";
+	  hx = "hexyl";
+	  cp = "cp -i";
+	  mv = "mv -i";
+	  tree = "tre";
+	  nnn = "xplr";
+	  ranger = "xplr";
+	  cloc = "scc";
+	};
+      };
       git = {
         enable = true;
         userName = "James";

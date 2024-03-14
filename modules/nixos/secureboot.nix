@@ -22,7 +22,6 @@
         };
       };
     })
-
     (lib.mkIf config.secureboot.enableTpm2 {
       boot.initrd.systemd = {
         enable = true;

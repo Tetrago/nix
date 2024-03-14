@@ -7,8 +7,10 @@
     ./hardware-configuration.nix
     ../../modules/home-manager
     ../../modules/nixos
-    ../../home/james
+    ../../homes/james
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   fonts.enable = true;
   gdm.enable = true;
@@ -27,8 +29,8 @@
   system.monitors = [
     {
       name = "Virtual-1";
-      width = 1280;
-      height = 720;
+      width = 1920;
+      height = 1080;
       refreshRate = 60;
       x = 0;
       y = 0;
@@ -36,9 +38,11 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    comma
     curl
     git
-    comma
+    neovim
+    unzip
   ];
 
   system.stateVersion = "23.11";
