@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   config = {
@@ -10,6 +10,7 @@
       extraLuaConfig = ''
         vim.wo.relativenumber = true
 
+	vim.opt.termguicolors = true
 	vim.opt.expandtab = true
 	vim.opt.tabstop = 4
 	vim.opt.shiftwidth = 4
@@ -17,9 +18,22 @@
 	vim.g.loaded_ruby_provider = 0
       '';
       plugins = with pkgs.vimPlugins; [
+        {
+	  plugin = base16-nvim;
+	  type = "lua";
+	  config = let c = config.colorScheme.palette; in ''
+	    require('base16-colorscheme').setup({
+	      base00 = '#${c.base00}', base01 = '#${c.base01}', base02 = '#${c.base02}', base03 = '#${c.base03}',
+	      base04 = '#${c.base04}', base05 = '#${c.base05}', base06 = '#${c.base06}', base07 = '#${c.base07}',
+	      base08 = '#${c.base08}', base09 = '#${c.base09}', base0A = '#${c.base0A}', base0B = '#${c.base0B}',
+	      base0C = '#${c.base0C}', base0D = '#${c.base0D}', base0E = '#${c.base0E}', base0F = '#${c.base0F}'
+	    })
+	  '';
+	}
 	{
-	  plugin = nord-nvim;
-	  config = "colorscheme nord";
+	  plugin = nvim-colorizer-lua;
+	  type = "lua";
+	  config = "require(\"colorizer\").setup()";
 	}
         {
 	  plugin = (nvim-treesitter.withPlugins (p: [

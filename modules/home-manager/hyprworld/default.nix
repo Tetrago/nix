@@ -1,12 +1,6 @@
 { config, lib, system, pkgs, ... }:
 
 let
-  swayncStyle = builtins.readFile(builtins.fetchurl {
-    url = "https://github.com/catppuccin/swaync/releases/download/v0.1.2.1/latte.css";
-    sha256 = "9050636715700d62a306728b92f94daf21cdab2153d8c6f5391d1029470ead6f";
-  });
-in
-let
   startup = pkgs.writeShellScriptBin "start" ''
     ${pkgs.swaynotificationcenter}/bin/swaync &
     ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch cliphist store &
@@ -60,7 +54,7 @@ in
       '';
       ".config/hypr/hypridle.conf".text = ''
         general {
-	  lock_cmd = pidof swaylock || ${pkgs.hyprlock}/bin/hyprlock
+	  lock_cmd = pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock
 	  before_sleep_cmd = loginctl lock-session
 	  after_sleep_cmd = hyprctl dispatch dpms on
 	}
@@ -81,7 +75,7 @@ in
 	  on-timeout = systemctl suspend
 	}
       '';
-      ".config/hypr/hyprlock.conf".text = ''
+      ".config/hypr/hyprlock.conf".text = let c = config.colorScheme.palette; in ''
         background = {
 	  monitor =
 	  color = rgba(25, 20, 20, 1.0)
@@ -103,16 +97,16 @@ in
 	  dots_spacing = 0.15
 	  dots_center = false
 	  dots_rounding = -1
-	  outer_color = rgb(151515)
-	  inner_color = rgb(200, 200, 200)
-	  font_color = rgb(10, 10, 10)
+	  outer_color = rgb(${c.base04})
+	  inner_color = rgb(${c.base00})
+	  font_color = rgb(${c.base05})
 	  fade_on_empty = true
 	  fade_timeout = 1000
 	  placeholder_text =
 	  hide_input = false
 	  rounding = -1
-	  check_color = rgb(204, 136, 34)
-	  fail_color = rgb(204, 34, 34)
+	  check_color = rgb(${c.base01})
+	  fail_color = rgb(${c.base08})
 	  fail_text =
 	  fail_transition = 300
 
@@ -121,41 +115,41 @@ in
 	  valign = center
 	}
       '';
-      ".config/swaync/style.css".text = swayncStyle;
+      ".config/swaync/style.css".text = import ./swaync.nix { colors = config.colorScheme.palette; };
       ".config/nwg-bar/bar.json".text = ''
         [
           {
             "label": "Lock",
             "exec": "loginctl lock-session",
-            "icon": "${pkgs.nwg-bar}/share/images/system-lock-screen.svg"
+            "icon": "${pkgs.nwg-bar}/share/nwg-bar/images/system-lock-screen.svg"
           },
           {
             "label": "Logout",
             "exec": "hyprctl dispatch exit",
-            "icon": "${pkgs.nwg-bar}/share/images/system-log-out.svg"
+            "icon": "${pkgs.nwg-bar}/share/nwg-bar/images/system-log-out.svg"
           },
           {
             "label": "Reboot",
             "exec": "systemctl reboot",
-            "icon": "${pkgs.nwg-bar}/share/images/system-reboot.svg"
+            "icon": "${pkgs.nwg-bar}/share/nwg-bar/images/system-reboot.svg"
           },
           {
             "label": "Shutdown",
             "exec": "systemctl -i poweroff",
-            "icon": "${pkgs.nwg-bar}/share/images/system-shutdown.svg"
+            "icon": "${pkgs.nwg-bar}/share/nwg-bar/images/system-shutdown.svg"
           }
         ]
       '';
-      ".config/nwg-bar/style.css".text = ''
-        window { background-color: rgba (0, 0, 0, 1.0); }
+      ".config/nwg-bar/style.css".text = let c = config.colorScheme.palette; in ''
+        window { background-color: #${c.base00}; }
         #outer-box { margin: 0px; }
 
         #inner-box {
-          background-color: rgba (0, 0, 0, 0.85);
+	  background-color: #${c.base00};
           border-radius: 10px;
           border-style: none;
           border-width: 1px;
-          border-color: rgba (156, 142, 122, 0.7);
+	  border-color: #${c.base04};
           padding: 5px;
           margin: 5px;
         }
@@ -169,11 +163,12 @@ in
         button {
           padding-left: 10px;
           padding-right: 10px;
-          maring: 5px;
-        };
+          margin: 5px;
+	  color: #${c.base04};
+        }
 
         button:hover {
-          background-color: rgba (255, 255, 255, 0.1);
+          background-color: #${c.base01};
         }
       '';
     };
@@ -192,24 +187,24 @@ in
           insensitive = true;
           prompt = " Hmm, what do you want to run?";
         };
-        style = ''
+        style = let c = config.colorScheme.palette; in ''
           window {
             margin: 0px;
-            border: 1px solid #88c0d0;
-            background-color: #2e3440;
+            border: 1px solid #${c.base02};
+            background-color: #${c.base00};
           }
 
           #input {
             margin: 5px;
             border: none;
-            color: #d8dee9;
-            background-color: #3b4252;
+            color: #${c.base05};
+            background-color: #${c.base01};
           }
 
           #inner-box, #outer-box {
             margin: 5px;
             border: none;
-            background-color: #2e3440;
+            background-color: #${c.base00};
           }
 
           #scroll {
@@ -220,11 +215,11 @@ in
           #text {
             margin: 5px;
             border: none;
-            color: #d8dee9;
+            color: #${c.base05};
           }
 
           #entry:selected {
-            background-color: #3b4252;
+            background-color: #${c.base01};
           }
         '';
       };
@@ -259,27 +254,31 @@ in
             format-icons = [ " " " " " " " " " " ];
             tooltip-format = "{capacity}%";
           };
-          calendar = {
-            mode = "month";
-            format = {
-              months = "<span color='#6c6f85'><b>{}</b></span>";
-              weekdays = "<span color='#6c6f85'><b>{}</b></span>";
-              days = "<span color='#7c7f93'><b>{}</b></span>";
-              today = "<span color='#4c4f69'><b>{}</b></span>";
+	  clock = {
+	    format = "{:%I:%M}";
+	    tooltip-format = "<tt><small>{calendar}</small></tt>";
+            calendar = {
+              mode = "month";
+              format = {
+                months = "<span color='#6c6f85'><b>{}</b></span>";
+                weekdays = "<span color='#6c6f85'><b>{}</b></span>";
+                days = "<span color='#7c7f93'><b>{}</b></span>";
+                today = "<span color='#4c4f69'><b>{}</b></span>";
+              };
             };
-          };
+	  };
           tray = {
             icon-size = 15;
             spacing = 8;
           };
         };
-        style = ''
-          * { color: #4c4f69; }
+        style = let c = config.colorScheme.palette; in ''
+          * { color: #${c.base05}; }
           window#waybar { background: none; }
-          tooltip { background-color: alpha(#eff1f5, 0.8); }
+          tooltip { background-color: alpha(#${c.base00}, 0.8); }
 
           .modules-left, .modules-center, .modules-right {
-            background-color: alpha(#eff1f5, 0.8);
+            background-color: alpha(#${c.base00}, 0.8);
             padding: 0 10px;
             margin: 5px 5px 0 5px;
             border-radius: 20px;
@@ -288,17 +287,17 @@ in
           #cpu, #memory, #battery, #tray { padding: 0 10px; }
 
           #cpu {
-            background-color: alpha(#04a5e5, 0.1);
+            background-color: alpha(#${c.base0D}, 0.1);
             padding-right: 14px;
           }
 
           #memory {
-            background-color: alpha(#40a02b, 0.1);
+            background-color: alpha(#${c.base0B}, 0.1);
             padding-right: 14px;
           }
 
           #battery {
-            background-color: alpha(#e64553, 0.1);
+            background-color: alpha(#${c.base08}, 0.1);
             padding-right: 10px;
           }
 
@@ -308,7 +307,7 @@ in
             padding: 0 2px 0 0;
           }
 
-          #workspaces button:hover { background-color: #9ca0b0; }
+          #workspaces button:hover { background-color: #${c.base04}; }
         '';
       };
     };

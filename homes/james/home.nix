@@ -1,14 +1,30 @@
-{ config, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
   imports = [
-    ../../modules/home-manager/hyprland.nix
+    inputs.nix-colors.homeManagerModules.default
+
+    ../../modules/home-manager/hyprworld
     ../../modules/home-manager/neovim.nix
   ];
 
   config = {
     hyprland.background.enable = true;
     hyprland.background.wallpaper = "~/.wallpaper.jpg";
+
+    colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-medium;
+
+    gtk = {
+      enable = true;
+      theme = {
+        name = "base16-flat-gruvbox-dark-medium-gtk";
+        package = import ../../pkgs/base16-flat-gtk.nix {
+          theme = "gruvbox-dark-medium";
+	  colors = config.colorScheme.palette;
+	  inherit pkgs;
+        };
+      };
+    };
 
     home = {
       username = "james";
@@ -80,64 +96,37 @@
 	    };
 	  };
 
-	  colors = {
-	    bright = {
-	      black = "#4c566a";
-	      blue = "#81a1c1";
-	      cyan = "#8fbcbb";
-	      green = "#a3be8c";
-	      magenta = "#b48ead";
-	      red = "#bf616a";
-	      white = "#eceff4";
-	      yellow = "#ebcb8b";
+	  colors = let c = config.colorScheme.palette; f = col: "0x${col}"; in {
+	    primary = {
+	      background = f c.base00;
+	      foreground = f c.base05;
 	    };
 
 	    cursor = {
-	      cursor = "#d8dee9";
-	      text = "#2e3440";
-	    };
-
-	    dim = {
-	      black = "#373e4d";
-	      blue = "#68809a";
-	      cyan = "#6d96a5";
-	      green = "#809575";
-	      magenta = "#8c738c";
-	      red = "#94545d";
-	      white = "#aeb3bb";
-	      yellow = "#b29e75";
+	      text = f c.base00;
+	      cursor = f c.base05;
 	    };
 
 	    normal = {
-	      black = "#3b4252";
-	      blue = "#81a1c1";
-	      cyan = "#88c0d0";
-	      green = "#a3be8c";
-	      magenta = "#b48ead";
-	      red = "#bf616a";
-	      white = "#e5e9f0";
-	      yellow = "#ebcb8b";
+	      black = f c.base00;
+	      red = f c.base08;
+	      green = f c.base0B;
+	      yellow = f c.base0A;
+	      blue = f c.base0D;
+	      magenta = f c.base0E;
+	      cyan = f c.base0C;
+	      white = f c.base05;
 	    };
 
-	    primary = {
-	      background = "#2e3440";
-	      dim_foreground = "#a5abb6";
-	      foreground = "#d8dee9";
-	    };
-
-	    search.matches = {
-	      background = "#88c0d0";
-	      foreground = "CellBackground";
-	    };
-
-	    selection = {
-	      background = "#4c566a";
-	      text = "CellForeground";
-	    };
-
-	    vi_mode_cursor = {
-	      cursor = "#d8dee9";
-	      text = "#2e3440";
+	    bright = {
+	      black = f c.base03;
+	      red = f c.base08;
+	      green = f c.base0B;
+	      yellow = f c.base0A;
+	      blue = f c.base0D;
+	      magenta = f c.base0E;
+	      cyan = f c.base0C;
+	      white = f c.base07;
 	    };
 	  };
 	};
