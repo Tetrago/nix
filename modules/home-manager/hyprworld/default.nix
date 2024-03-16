@@ -304,10 +304,9 @@ in
           #workspaces button {
             border: none;
             border-radius: 0;
-            padding: 0 2px 0 0;
+	    background: none;
+	    padding: 0 0.3em 0 0;
           }
-
-          #workspaces button:hover { background-color: #${c.base04}; }
         '';
       };
     };

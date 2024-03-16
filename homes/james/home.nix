@@ -17,34 +17,46 @@
     gtk = {
       enable = true;
       theme = {
-        name = "base16-flat-gruvbox-dark-medium-gtk";
+        name = "base16-flat-${config.colorScheme.slug}-gtk";
         package = import ../../pkgs/base16-flat-gtk.nix {
-          theme = "gruvbox-dark-medium";
+	  theme = config.colorScheme.slug;
 	  colors = config.colorScheme.palette;
 	  inherit pkgs;
-        };
+	};
       };
+      iconTheme = {
+        name = "kora-pgrey";
+	package = pkgs.kora-icon-theme;
+      };
+    };
+
+    qt = {
+      enable = true;
+      platformTheme = "gtk";
     };
 
     home = {
       username = "james";
       homeDirectory = "/home/james";
 
+      pointerCursor = {
+        name = "capitaine-cursors";
+	package = pkgs.capitaine-cursors;
+        gtk.enable = true;
+      };
+
       packages = with pkgs; [
         neofetch
 	p7zip
-	eza
-	bat
-	ripgrep
 	fd
 	hexyl
 	tre
-	xplr
 	scc
 	ghidra
 	burpsuite
 	openvpn
 	cyberchef
+	gtk-engine-murrine
       ];
 
       sessionVariables = {
@@ -58,6 +70,10 @@
     };
 
     programs = {
+      bat.enable = true;
+      eza.enable = true;
+      ripgrep.enable = true;
+      xplr.enable = true;
       alacritty = {
         enable = true;
         settings = {
