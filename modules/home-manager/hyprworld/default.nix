@@ -5,22 +5,21 @@ let
     ${pkgs.swaynotificationcenter}/bin/swaync &
     ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch cliphist store &
     ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch cliphist store &
-    ${pkgs.udiskie}/bin/udiskie &
-    ${pkgs.networkmanagerapplet}/bin/nm-applet &
-    ${lib.strings.optionalString config.hyprland.bluetooth.enable "${pkgs.blueman}/bin/blueman-applet &"}
     ${pkgs.waybar}/bin/waybar &
     ${pkgs.hyprpaper}/bin/hyprpaper &
     ${pkgs.hypridle}/bin/hypridle &
   '';
 in
 {
-  options = {
-    hyprland.bluetooth.enable = lib.mkEnableOption "enable bluetooth widget";
-    hyprland.background.enable = lib.mkEnableOption "enable desktop background";
-    hyprland.background.wallpaper = lib.mkOption {
-      type = lib.types.str;
-      description = "path to wallpaper";
-      example = "~/wallpaper.jpg";
+  options.hyprworld = {
+    bluetooth.enable = lib.mkEnableOption "enable bluetooth widget";
+    background = {
+      enable = lib.mkEnableOption "enable desktop background";
+      wallpaper = lib.mkOption {
+        type = lib.types.str;
+        description = "path to wallpaper";
+        example = "~/wallpaper.jpg";
+      };
     };
   };
 
@@ -39,14 +38,13 @@ in
       slurp
       swappy
       brightnessctl
-      playerctl
-      udiskie
+      #playerctl
       networkmanagerapplet
       vscode
-    ] ++ lib.optionals config.hyprland.bluetooth.enable [ blueman ];
+    ];
 
     home.file = {
-      ".config/hypr/hyprpaper.conf".text = let path = config.hyprland.background.wallpaper; in ''
+      ".config/hypr/hyprpaper.conf".text = let path = config.hyprworld.background.wallpaper; in ''
         preload = ${path}
 	wallpaper = ,${path}
 	ipc = off
@@ -311,6 +309,21 @@ in
       };
     };
 
+    services = {
+      blueman-applet.enable = config.hyprworld.bluetooth.enable;
+      mpd = {
+        enable = true;
+	musicDirectory = "/home/james/Music";
+      };
+      mpdris2 = {
+        enable = true;
+	notifications = true;
+	multimediaKeys = true;
+      };
+      network-manager-applet.enable = true;
+      udiskie.enable = true;
+    };
+
     wayland.windowManager.hyprland = {
       enable = true;
       settings = {
@@ -415,10 +428,10 @@ in
 
           ", XF86MonBrightnessUp, exec, brightnessctl + 5%"
           ", XF86MonBrightnessDown, exec, brightnessctl - 5%"
-          ", XF86AudioPlay, exec, playerctl play-pause"
-          ", XF86AudioStop, exec, playerctl stop"
-          ", XF86AudioPrev, exec, playerctl previous"
-          ", XF86AudioNext, exec, playerctl next"
+          #", XF86AudioPlay, exec, playerctl play-pause"
+          #", XF86AudioStop, exec, playerctl stop"
+          #", XF86AudioPrev, exec, playerctl previous"
+          #", XF86AudioNext, exec, playerctl next"
         ];
         bindm = [
           "$mod, mouse:272, movewindow"

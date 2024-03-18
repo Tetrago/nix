@@ -9,8 +9,10 @@
   ];
 
   config = {
-    hyprland.background.enable = true;
-    hyprland.background.wallpaper = "~/.wallpaper.jpg";
+    hyprworld.background = {
+      enable = true;
+      wallpaper = "~/.wallpaper.jpg";
+    };
 
     colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-medium;
 
@@ -201,6 +203,10 @@
         };
       };
       home-manager.enable = true;
+    };
+
+    services = {
+      easyeffects.enable = true;
     };
   };
 }

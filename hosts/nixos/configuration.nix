@@ -26,6 +26,8 @@
   services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
+  programs.dconf.enable = true;
+
   system.monitors = [
     {
       name = "Virtual-1";
