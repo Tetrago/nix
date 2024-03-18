@@ -36,7 +36,7 @@ in
           example = 0;
         };
 	dpi = mkOption {
-	  type = types.int;
+	  type = types.float;
 	  default = 1;
 	};
       };

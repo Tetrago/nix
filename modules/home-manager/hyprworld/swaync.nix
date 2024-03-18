@@ -1,4 +1,6 @@
-{ colors }: ''
+{ colors }:
+
+''
 * {
   all: unset;
   font-size: 14px;

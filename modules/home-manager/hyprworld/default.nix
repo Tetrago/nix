@@ -321,7 +321,11 @@ in
 	multimediaKeys = true;
       };
       network-manager-applet.enable = true;
-      udiskie.enable = true;
+      udiskie = {
+        enable = true;
+	automount = true;
+	notify = true;
+      };
     };
 
     wayland.windowManager.hyprland = {

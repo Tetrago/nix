@@ -7,6 +7,11 @@
 
   users.users.james = {
     isNormalUser = true;
+    description = "James";
+
+    createHome = true;
+    home = "/home/james";
+
     shell = pkgs.bashInteractive;
     extraGroups = [ "wheel" ];
   };

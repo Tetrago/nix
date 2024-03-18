@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -12,11 +12,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-colors.url = "github:misterio77/nix-colors";
+    nixos-hardware.url = "nixos-hardware";
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
     nixosConfigurations = {
+      lithium = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+	system = "x86_64-linux";
+	modules = [ ./hosts/lithium/configuration.nix ];
+      };
       nixos = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         system = "x86_64-linux";

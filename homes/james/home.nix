@@ -9,12 +9,20 @@
   ];
 
   config = {
-    hyprworld.background = {
-      enable = true;
-      wallpaper = "~/.wallpaper.jpg";
+    hyprworld = {
+      bluetooth.enable = true;
+      background = {
+        enable = true;
+        wallpaper = "~/.wallpaper.jpg";
+      };
     };
 
-    colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-medium;
+    colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; }; in lb.colorSchemeFromPicture {
+      path = ./wallpaper.jpg;
+      variant = "dark";
+    };
+
+    #colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-medium;
 
     gtk = {
       enable = true;
@@ -47,6 +55,8 @@
         gtk.enable = true;
       };
 
+      file.".wallpaper.jpg".source = ./wallpaper.jpg;
+
       packages = with pkgs; [
         neofetch
 	p7zip
@@ -54,7 +64,6 @@
 	hexyl
 	tre
 	scc
-	ghidra
 	burpsuite
 	openvpn
 	cyberchef
@@ -76,6 +85,11 @@
       eza.enable = true;
       ripgrep.enable = true;
       xplr.enable = true;
+      zoxide = {
+        enable = true;
+	enableBashIntegration = true;
+	options = [ "--no-cmd" ];
+      };
       alacritty = {
         enable = true;
         settings = {
