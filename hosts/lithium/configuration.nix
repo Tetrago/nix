@@ -4,7 +4,6 @@
   imports = [
     inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
     inputs.nix-index-database.nixosModules.nix-index
-    inputs.hyprland.nixosModules.default
 
     ./hardware-configuration.nix
     ../../modules/nixos/home-manager.nix

@@ -2,6 +2,10 @@
 
 {
   enable = true;
+  systemd = {
+    enable = true;
+    target = "hyprland-session.target";
+  };
   settings.mainBar = {
     layer = "top";
     modules-left = [ "hyprland/workspaces" ]; 

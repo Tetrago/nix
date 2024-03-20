@@ -16,7 +16,6 @@
     extraGroups = [ "wheel" "docker" "libvirtd" ];
   };
 
-  programs.hyprland.enable = true;
   services.gvfs.enable = true; # Trash
 
   home-manager.users.james = import ./home.nix;

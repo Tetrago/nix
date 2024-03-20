@@ -8,6 +8,8 @@
   config = lib.mkIf config.pipewire.enable {
     hardware.pulseaudio.enable = false;
     security.rtkit.enable = true;
+    sound.enable = false;
+
     services.pipewire = {
       enable = true;
       alsa.enable = true;

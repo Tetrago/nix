@@ -6,7 +6,6 @@ let
     ${pkgs.swaynotificationcenter}/bin/swaync &
     ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch cliphist store &
     ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch cliphist store &
-    ${pkgs.waybar}/bin/waybar &
     ${pkgs.hyprpaper}/bin/hyprpaper &
     ${pkgs.hypridle}/bin/hypridle &
   '';
