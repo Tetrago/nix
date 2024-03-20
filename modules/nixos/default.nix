@@ -6,11 +6,11 @@
     ./fonts.nix
     ./gdm.nix
     ./gnome.nix
+    ./host.nix
     ./net.nix
     ./pipewire.nix
     ./plymouth.nix
     ./secureboot.nix
-    ./system.nix
   ];
 
   config = {

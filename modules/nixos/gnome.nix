@@ -18,7 +18,7 @@
 
     programs.dconf.profiles.user.databases = [{
       settings = with lib.gvariant; {
-	"org/gnome/online-accounts".whitelisted-providers = mkEmptyArray type.string;
+         "org/gnome/online-accounts".whitelisted-providers = mkEmptyArray type.string;
         "org/gnome/shell".enabled-extensions = [ "no-overview@fthx" ];
       };
     }];

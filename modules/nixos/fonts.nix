@@ -10,6 +10,7 @@
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
       fira-code
       fira-code-symbols
+      noto-fonts
     ];
   };
 }

@@ -4,13 +4,13 @@
   imports = [
     inputs.home-manager.nixosModules.default
 
-    ../nixos/system.nix
+    ../nixos/host.nix
   ];
 
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
-      system = config.system;
+      host = config.host;
     };
     useGlobalPkgs = true;
     useUserPackages = true;
