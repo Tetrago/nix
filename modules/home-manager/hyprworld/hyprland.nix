@@ -2,7 +2,6 @@
 
 let
   startup = pkgs.writeShellScriptBin "hyprworldStartScript" ''
-    xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
     ${pkgs.swaynotificationcenter}/bin/swaync &
     ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch cliphist store &
     ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch cliphist store &
@@ -15,7 +14,6 @@ in
   settings = {
     exec-once = "${startup}/bin/hyprworldStartScript";
     env = [
-      "GTK_SCALE,2"
       "XCURSOR_SIZE,24"
       "XDG_CURRENT_DESKTOP,Hyprland"
       "XDG_SESSION_TYPE,wayland"

@@ -104,7 +104,10 @@
     programs = {
       alacritty.enable = true;
       wofi = import ./wofi.nix { colors = config.colorScheme.palette; };
-      waybar = import ./waybar.nix { colors = config.colorScheme.palette; };
+      waybar = import ./waybar.nix {
+        colors = config.colorScheme.palette;
+        inherit pkgs;
+      };
     };
 
     services = {

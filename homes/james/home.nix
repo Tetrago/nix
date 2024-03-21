@@ -20,8 +20,6 @@
       variant = "dark";
     };
 
-    #colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-medium;
-
     gtk = {
       enable = true;
       theme = {
@@ -195,11 +193,6 @@
           nx = "${nx}/bin/nixDevelopExecScript";
         };
       };
-      direnv = {
-        enable = true;
-        enableBashIntegration = true;
-        nix-direnv.enable = true;
-      };
       firefox = let
         userChrome = builtins.readFile(builtins.fetchurl {
           url = "https://raw.githubusercontent.com/crambaud/waterfall/main/userChrome.css";
@@ -251,6 +244,8 @@
           bbenoist.nix
           vscodevim.vim
           mkhl.direnv
+          svelte.svelte-vscode
+          golang.go
         ];
       };
       home-manager.enable = true;

@@ -1,7 +1,8 @@
-{ colors }:
+{ colors, pkgs }:
 
 {
   enable = true;
+  package = pkgs.waybar.override { wireplumberSupport = false; };
   systemd = {
     enable = true;
     target = "hyprland-session.target";
@@ -38,15 +39,15 @@
     clock = {
       format = "{:%I:%M}";
       tooltip-format = "<tt><small>{calendar}</small></tt>";
-            calendar = {
-              mode = "month";
-              format = {
-                months = "<span color='#6c6f85'><b>{}</b></span>";
-                weekdays = "<span color='#6c6f85'><b>{}</b></span>";
-                days = "<span color='#7c7f93'><b>{}</b></span>";
-                today = "<span color='#4c4f69'><b>{}</b></span>";
-              };
-            };
+      calendar = {
+        mode = "month";
+        format = {
+          months = "<span color='#6c6f85'><b>{}</b></span>";
+          weekdays = "<span color='#6c6f85'><b>{}</b></span>";
+          days = "<span color='#7c7f93'><b>{}</b></span>";
+          today = "<span color='#4c4f69'><b>{}</b></span>";
+        };
+      };
     };
     tray = {
       icon-size = 15;

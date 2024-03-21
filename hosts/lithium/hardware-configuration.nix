@@ -21,15 +21,15 @@
 
   boot.initrd.luks.devices."root".device = "/dev/disk/by-uuid/18e9264a-50ad-44b3-ab1c-cb03d6bcb1f8";
 
+  fileSystems."/boot/efi" =
+    { device = "/dev/disk/by-uuid/ACA4-AEFC";
+      fsType = "vfat";
+    };
+
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/910feaf0-4a49-40cc-854e-0bc791016b42";
       fsType = "btrfs";
       options = [ "subvol=@home" ];
-    };
-
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/2EA5-A8E9";
-      fsType = "vfat";
     };
 
   swapDevices =
