@@ -243,7 +243,6 @@
         extensions = with pkgs.vscode-extensions; [
           bbenoist.nix
           vscodevim.vim
-          mkhl.direnv
           svelte.svelte-vscode
           golang.go
         ];
