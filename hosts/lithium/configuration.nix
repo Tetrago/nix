@@ -2,21 +2,19 @@
 
 {
   imports = [
+    inputs.home-manager.nixosModules.default
     inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
     inputs.nix-index-database.nixosModules.nix-index
 
     ./hardware-configuration.nix
     ../../modules/nixos/home-manager.nix
     ../../modules/nixos
-    ../../homes/james
   ];
 
   nix.settings = {
     substituters = [ "https://hyprland.cachix.org" ];
     trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
-
-  nixpkgs.config.allowUnfree = true;
 
   boot.loader.timeout = 0;
   
@@ -46,6 +44,7 @@
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
+    hyprland.enable = true;
     nix-index-database.comma.enable = true;
     steam.enable = true;
     virt-manager.enable = true;
@@ -116,20 +115,28 @@
               width = 2560;
               height = 1440;
               refreshRate = 60;
-              position.x = 1691;
+              position.x = 0;
             }
             {
               name = "DP-7";
               width = 2560;
               height = 1440;
               refreshRate = 60;
-              position.x = 4251;
+              position.x = 2560;
             }
           ];
         }
       ];
     };
   };
+
+  usrs.james = {
+    username = "james";
+    name = "James";
+    groups = [ "wheel" "docker" "libvirtd" ];
+  };
+
+  home-manager.users.james = import ../../homes/james;
 
   environment.systemPackages = with pkgs; [
     curl

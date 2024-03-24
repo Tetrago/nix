@@ -1,7 +1,18 @@
-{ theme, colors, pkgs }:
+{
+  fetchFromGitHub,
+  stdenvNoCC,
+  writeText,
+  colors ? {
+    base00 = "000000";
+    base01 = "000000";
+    base02 = "000000";
+    base03 = "000000";
+    base05 = "000000";
+  }
+}:
 
 let
-  colors2 = pkgs.writeText "colors2" ''
+  colors2 = writeText "colors2" ''
     gtk-color-scheme = "bg_color:#${colors.base00}
     color0:#${colors.base00}
     text_color:#${colors.base05}
@@ -15,7 +26,7 @@ let
     menu_fg_color:#${colors.base05}
     link_color:#${colors.base02}"
   '';
-  colors3 = pkgs.writeText "colors3" ''
+  colors3 = writeText "colors3" ''
     @define-color bg_color #${colors.base00};
     @define-color fg_color #${colors.base05};
     @define-color base_color #${colors.base01};
@@ -27,10 +38,10 @@ let
     @define-color tooltip_fg_color #${colors.base05};
   '';
 in
-pkgs.stdenvNoCC.mkDerivation {
-  name = "base16-flat-${theme}-gtk";
+stdenvNoCC.mkDerivation {
+  name = "base16-flat-gtk";
 
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "jasperro";
     repo = "FlatColor";
     rev = "master";
@@ -43,11 +54,11 @@ pkgs.stdenvNoCC.mkDerivation {
     sed -i '/\/* Default color scheme/,/*\//c@import url ("../colors3");' gtk-3.20/gtk.css
 
     cp ${colors2} colors2
-    cp ${colors3} colors3
+    cp ${colors3} colors3Z
   '';
 
   installPhase = ''
-    mkdir -p $out/share/themes/base16-flat-${theme}-gtk
-    cp -a ./. $out/share/themes/base16-flat-${theme}-gtk/
+    mkdir -p $out/share/themes/base16-flat-gtk
+    cp -a ./. $out/share/themes/base16-flat-gtk/
   '';
 }

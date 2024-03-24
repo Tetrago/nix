@@ -24,16 +24,27 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs: let
+    inherit (self) outputs;
+
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
-    nixosConfigurations = {
-      lithium = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
+    devShells.${system}.cyber = import ./devShells/cyber.nix {
+      pkgs = import nixpkgs {
         inherit system;
-	    modules = [ ./hosts/lithium/configuration.nix ];
+        overlays = [ self.outputs.overlays.default ];
       };
     };
-    devShells.${system}.cyber = import ./devShells/cyber.nix { inherit pkgs; };
+
+    nixosConfigurations = {
+      lithium = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs outputs; };
+        inherit system;
+        modules = [ ./hosts/lithium/configuration.nix ];
+      };
+    };
+
+    overlays = import ./overlays { inherit inputs; };
+    packages.${system} = import ./pkgs { inherit pkgs; };
   };
 }

@@ -44,7 +44,7 @@
     }
 
     #entry:selected {
-      background-color: #${colors.base01};
+      border: 1px solid #${colors.base01};
     }
   '';
 }

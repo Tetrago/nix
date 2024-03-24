@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs }:
 
 pkgs.mkShell {
   name = "cyber";
@@ -17,13 +17,13 @@ pkgs.mkShell {
     exploitdb
     hashcat
     john
-    gdb
-    gef
     file
     binutils
     binwalk
     strace
     ltrace
     radare2
+    openvpn
+    gef
   ];
 }
