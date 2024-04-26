@@ -1,0 +1,95 @@
+.bar {
+    @include border-md;
+    background-color: $bg;
+
+    .battery {
+        @include border-full;
+        padding: 0 0.4em;
+        margin: 0.2em 0;
+        color: darker($bg);
+
+        &.low {
+            background-color: $error;
+        }
+
+        &.medium {
+            background-color: $warning;
+        }
+
+        &.high {
+            background-color: $success;
+        }
+    }
+
+    .date {
+        @include border-full;
+        border: none;
+        background: none;
+        color: $text;
+        margin: 0.2em 0;
+        padding: 0;
+
+        &:hover {
+            background-color: $text;
+            color: $bg;
+        }
+        
+        &.active {
+            background-color: $selected-bg;
+            color: $text;
+        }
+
+        .time {
+            padding: 0 0.8em;
+            background: none;
+        }
+    }
+
+    .tray {
+        @include border-md;
+        border: none;
+        background-color: darker($bg);
+        color: $fg;
+
+        .item {
+            border: none;
+            background: none;
+        }
+    }
+
+    .workspace {
+        @include border-md;
+        border: none;
+        background-color: darker($bg);
+        padding: 0 3pt;
+
+        &.special {
+            border: 1px solid $selected-bg;
+
+            &.active {
+                border-color: $fg;
+            }
+        }
+
+        .indicator {
+            font-size: 0;
+            min-width: 8pt;
+            min-height: 8pt;
+            @include border-full;
+            background-color: transparent;
+            margin: 0 3pt;
+
+            &.occupied {
+                background-color: $selected-bg;
+            }
+
+            &.present {
+                background-color: $bg;
+            }
+
+            &.active {
+                background-color: $fg;
+            }
+        }
+    }
+}

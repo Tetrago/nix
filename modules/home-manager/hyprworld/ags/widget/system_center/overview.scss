@@ -1,0 +1,78 @@
+.system_center {
+    .overview {
+        @include border-md;
+        min-width: 440px;
+        background-color: $bg;
+
+        .clock {
+            background-color: darker($bg);
+            border-radius: $border-md $border-md 0 0;
+            padding-bottom: 1.5em;
+
+            .time {
+                font-size: 10em;
+            }
+
+            .date {
+                font-size: 2em;
+            }
+        }
+
+        .quick_menu {
+            border: none;
+            @include border-full;
+            color: $text;
+            background: darker($bg);
+
+            .button {
+                border: none;
+                @include border-full;
+                background: none;
+                margin: 0;
+                padding: 0.2em 0.3em;
+                font-size: 1.5em;
+
+                &:hover {
+                    background: $text;
+                    color: darker($bg);
+                }
+            }
+        }
+
+        .calendar {
+            all: unset;
+            font-size: 1.1em;
+
+            &:selected {
+                @include border-full;
+                background-color: $text;
+                color: $bg;
+            }
+
+            &.header {
+                @include border-full;
+                border: 1px solid $text;
+                background-color: $bg;
+            }
+
+            &.highlight {
+                color: darker($text);
+            }
+
+            &:indeterminate {
+                color: $insensitive-fg;
+            }
+        }
+
+        .media_container {
+            margin: 0 0.8em 0.8em 0.8em;
+        }
+
+        .zone {
+            @include border-md;
+            margin: 0 0.8em;
+            padding: 0.8em;
+            background-color: lighter($bg);
+        }
+    }
+}

@@ -1,0 +1,34 @@
+box.notifications {
+    border: none;
+    @include border-md;
+    background-color: $bg;
+    padding: 1em;
+
+    .notification {
+        @include notification();
+    }
+
+    .header {
+        margin-bottom: 1em;
+    }
+
+    .clear_button {
+        border: none;
+        @include border-md;
+        background-color: darker($bg);
+        color: $text;
+
+        &:hover {
+            color: darker($bg);
+            background-color: $text;
+        }
+    }
+
+    scrollbar {
+        border: none;
+
+        * {
+            border: none;
+        }
+    }
+}

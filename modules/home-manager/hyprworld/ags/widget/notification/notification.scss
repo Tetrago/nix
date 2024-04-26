@@ -1,0 +1,68 @@
+@mixin notification {
+    background-color: lighter($bg);
+    @include border-md;
+
+    &.critical {
+        box-shadow: inset 0 0 0.5em 0 $error;
+    }
+
+    .close_button {
+        border: none;
+        @include border-full;
+        background: none;
+        color: $text;
+
+        &:hover {
+            background-color: $text;
+            color: lighter($bg);
+        }
+    }
+
+    .content {
+        color: $text;
+
+        .title {
+            font-size: 1.1em;
+        }
+
+        .time {
+            margin: 0.3em;
+        }
+
+        .description {
+            color: $unfocused-text;
+            min-width: 350px;
+            font-size: 0.9em;
+        }
+
+        .icon {
+            @include border-md;
+
+            &.img {
+                margin: 0.6em;
+                border: none;
+            }
+        }
+    }
+
+    .actions {
+        margin-top: 0.6em;
+
+        button {
+            margin: 0.6em;
+            border: none;
+            @include border-md;
+            background: darker($bg);
+            color: $text;
+
+            &:hover {
+                background-color: $text;
+                color: darker($bg);
+            }
+        }
+    }
+}
+
+window.notifications .notification {
+    @include notification();
+}

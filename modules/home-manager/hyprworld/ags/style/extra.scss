@@ -1,0 +1,15 @@
+$border-full: 9999px;
+$border-md: 10px;
+$border-lg: 20px;
+
+@mixin border-full {
+    border-radius: $border-full;
+}
+
+@mixin border-md {
+    border-radius: $border-md;
+}
+
+@mixin border-lg {
+    border-radius: $border-lg;
+}

@@ -1,0 +1,37 @@
+window.alert {
+    border: none;
+    background: none;
+
+    .container {
+        border: none;
+        @include border-lg;
+        background-color: $bg;
+        min-width: 200px;
+        min-height: 200px;
+        padding: 10px;
+    }
+
+    label {
+        font-size: 10em;
+        color: $text;
+    }
+
+    .level {
+        trough {
+            border: none;
+            @include border-full;
+            min-height: 1em;
+            background-color: darker($bg);
+        }
+
+        .filled {
+            border: none;
+            @include border-full;
+            background-color: lighter($bg);
+        }
+
+        .empty {
+            border: none;
+        }
+    }
+}

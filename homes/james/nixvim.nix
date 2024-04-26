@@ -1,0 +1,178 @@
+{ config, inputs, pkgs, ... }:
+
+{
+  imports = [ inputs.nixvim.homeManagerModules.nixvim ];
+
+  home.packages = with pkgs; [
+    xxd
+  ];
+
+  programs.nixvim = {
+    enable = true;
+
+    opts = {
+      number = true;
+      relativenumber = true;
+
+      expandtab = true;
+      tabstop = 4;
+      shiftwidth = 4;
+    };
+
+    colorschemes.onedark.enable = true;
+
+    globals.mapleader = " ";
+
+    keymaps = let
+      mkCommand = key: command: {
+        mode = "n";
+        key = "<Leader>${key}";
+        options.silent = true;
+        action = "<Cmd>${command}<CR>";
+      };
+      mkAction = key: command: {
+        mode = "n";
+        inherit key;
+        options.silent = true;
+        action = "<Cmd>${command}<CR>";
+      };
+    in [
+      (mkCommand "t" "NvimTreeToggle")
+      (mkAction "<F5>" "DapContinue")
+      (mkAction "<F9>" "DapToggleBreakpoint")
+      (mkAction "<F10>" "DapStepOver")
+      (mkAction "<F11>" "DapStepInto")
+      (mkAction "<F12>" "DapStepOut")
+    ];
+
+    plugins = {
+      autoclose.enable = true;
+      barbecue.enable = true;
+      coq-thirdparty.enable = true;
+      direnv.enable = true;
+      fidget.enable = true;
+      fugitive.enable = true;
+      illuminate.enable = true;
+      indent-blankline.enable = true;
+      lspkind.enable = true;
+      lsp-lines.enable = true;
+      lualine.enable = true;
+      nix.enable = true;
+      nvim-colorizer.enable = true;
+      nvim-tree.enable = true;
+      treesitter-context.enable = true;
+
+      coq-nvim = {
+        enable = true;
+        settings.auto_start = true;
+      };
+
+      dap = {
+        enable = true;
+        adapters.executables.c = {
+          command = "gdb";
+          args = [ "-i" "dap" ];
+        };
+        extensions = {
+          dap-ui.enable = true;
+          dap-virtual-text.enable = true;
+        };
+        signs.dapBreakpoint.text = "•";
+        extensionConfigLua = ''
+          local dap, dapui = require("dap"), require("dapui")
+          dap.listeners.before.attach.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.launch.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated.dapui_config = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited.dapui_config = function()
+            dapui.close()
+          end
+        '';
+      };
+
+      lsp = {
+        enable = true;
+        servers = {
+          clangd.enable = true;
+          cmake.enable = true;
+          docker-compose-language-service.enable = true;
+          dockerls.enable = true;
+          gopls.enable = true;
+          html.enable = true;
+          java-language-server.enable = true;
+          jsonls.enable = true;
+          lua-ls.enable = true;
+          nil_ls.enable = true;
+          rust-analyzer.enable = true;
+          taplo.enable = true;
+          vhdl-ls.enable = true;
+        };
+      };
+
+      noice = {
+        enable = true;
+        presets = {
+          bottom_search = true;
+          command_palette = true;
+          long_message_to_split = true;
+        };
+      };
+
+      telescope = {
+        enable = true;
+        keymaps = {
+          "<C-p>".action = "find_files";
+        };
+      };
+
+      toggleterm = {
+        enable = true;
+        settings = {
+          direction = "float";
+          open_mapping = "[[<C-\\>]]";
+        };
+      };
+
+      treesitter = {
+        enable = true;
+        ensureInstalled = [
+          "nix"
+          "bash"
+          "lua"
+          "python"
+          "json"
+          "javascript"
+          "c"
+          "cpp"
+          "cmake"
+          "rust"
+          "java"
+          "make"
+          "markdown"
+          "markdown_inline"
+          "c_sharp"
+          "regex"
+          "toml"
+          "dockerfile"
+          "rust"
+          "typescript"
+        ];
+        indent = true;
+      };
+    };
+    
+    extraPlugins = let
+      lua = src: "lua<<EOF\n${src}\nEOF";
+    in with pkgs.vimPlugins; [
+      {
+        plugin = hex-nvim;
+        config = lua "require('hex').setup()";
+      }
+    ];
+  };
+}
