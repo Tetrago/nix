@@ -11,11 +11,34 @@
       size = 11;
     };
 
+    keybindings = {
+      "ctrl+shift+left" = "neighboring_window left";
+      "ctrl+shift+right" = "neighboring_window right";
+      "ctrl+shift+up" = "neighboring_window up";
+      "ctrl+shift+down" = "neighboring_window down";
+
+      "ctrl+shift+h" = "resize_window narrower";
+      "ctrl+shift+l" = "resize_window wider";
+      "ctrl+shift+k" = "resize_window taller";
+      "ctrl+shift+j" = "resize_window shorter";
+
+      "ctrl+shift+w" = "move_window up";
+      "ctrl+shift+a" = "move_window left";
+      "ctrl+shift+s" = "move_window down";
+      "ctrl+shift+d" = "move_window right";
+
+      "ctrl+shift+5" = "launch --cwd=current --location=vsplit";
+      "ctrl+shift+'" = "launch --cwd=current --location=hsplit";
+
+      "ctrl+shift+n" = "new_os_window_with_cwd";
+    };
+
     settings = let colors = config.colorScheme.palette; in {
       shell = "${pkgs.bashInteractive}/bin/bash -l";
 
       background_opacity = "0.9";
       window_padding_width = "0 2";
+      enabled_layouts = "splits";
 
       background = "#${colors.base00}";
       foreground = "#${colors.base05}";

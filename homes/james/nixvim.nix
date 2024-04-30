@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 {
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
@@ -43,7 +43,16 @@
       (mkAction "<F10>" "DapStepOver")
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
-    ];
+    ] ++ (lib.attrsets.mapAttrsToList (key: value: {
+      mode = [ "n" "x" "o" ];
+      inherit key;
+      options.silent = true;
+      action = value;
+    }) {
+      s = "<Plug>(leap-forward)";
+      S = "<Plug>(leap-backward)";
+      gs = "<Plug>(leap-from-window)";
+    });
 
     plugins = {
       autoclose.enable = true;
@@ -60,6 +69,7 @@
       nix.enable = true;
       nvim-colorizer.enable = true;
       nvim-tree.enable = true;
+      surround.enable = true;
       treesitter-context.enable = true;
 
       coq-nvim = {
@@ -95,6 +105,11 @@
         '';
       };
 
+      leap = {
+        enable = true;
+        addDefaultMappings = false;
+      };
+
       lsp = {
         enable = true;
         servers = {
@@ -104,6 +119,7 @@
           dockerls.enable = true;
           gopls.enable = true;
           html.enable = true;
+          hls.enable = true;
           java-language-server.enable = true;
           jsonls.enable = true;
           lua-ls.enable = true;
@@ -111,6 +127,7 @@
           rust-analyzer.enable = true;
           taplo.enable = true;
           vhdl-ls.enable = true;
+          zls.enable = true;
         };
       };
 
@@ -155,12 +172,14 @@
           "make"
           "markdown"
           "markdown_inline"
+          "haskell"
           "c_sharp"
           "regex"
           "toml"
           "dockerfile"
           "rust"
           "typescript"
+          "zig"
         ];
         indent = true;
       };

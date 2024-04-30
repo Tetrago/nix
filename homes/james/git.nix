@@ -4,7 +4,8 @@ let
   gitignore = pkgs.writeText "gitignore" ''
     /.direnv/
     /.envrc
-    /result/
+    /.vscode/
+    /result
   '';
 in
 {

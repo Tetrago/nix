@@ -46,7 +46,6 @@
       obs-studio
       obsidian
       imhex
-      gnome.gnome-weather
       vlc
       ungoogled-chromium
     ];
