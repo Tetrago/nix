@@ -39,6 +39,7 @@
       eva
       nix-output-monitor
       nvd
+      protonup
 
       discord
       bottles
@@ -48,7 +49,15 @@
       imhex
       vlc
       ungoogled-chromium
+
+      libreoffice-qt
+      hunspell
+      hunspellDicts.en_US
     ];
+
+    sessionVariables = {
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+    };
 
     stateVersion = "23.11";
   };
@@ -71,6 +80,13 @@
     };
 
     home-manager.enable = true;
+  };
+
+  xdg = {
+    mime.enable = true;
+    mimeApps.defaultApplications = {
+      "application/pdf" = "zathura.desktop";
+    };
   };
 
   services = {

@@ -39,6 +39,7 @@
     in [
       (mkCommand "t" "NvimTreeToggle")
       (mkAction "<F5>" "DapContinue")
+      (mkAction "<F6>" "make")
       (mkAction "<F9>" "DapToggleBreakpoint")
       (mkAction "<F10>" "DapStepOver")
       (mkAction "<F11>" "DapStepInto")
@@ -79,9 +80,15 @@
 
       dap = {
         enable = true;
-        adapters.executables.c = {
-          command = "gdb";
-          args = [ "-i" "dap" ];
+        adapters.executables = let
+          gdb = {
+            command = "gdb";
+            args = [ "-i" "dap" ];
+          };
+        in {
+          c = gdb;
+          cpp = gdb;
+          zig = gdb;
         };
         extensions = {
           dap-ui.enable = true;
@@ -124,10 +131,19 @@
           jsonls.enable = true;
           lua-ls.enable = true;
           nil_ls.enable = true;
-          rust-analyzer.enable = true;
           taplo.enable = true;
           vhdl-ls.enable = true;
-          zls.enable = true;
+
+          zls = {
+            enable = true;
+            onAttach.function = "vim.g.zig_fmt_autosave = 0";
+          };
+
+          rust-analyzer = {
+            enable = true;
+            installCargo = false;
+            installRustc = false;
+          };
         };
       };
 

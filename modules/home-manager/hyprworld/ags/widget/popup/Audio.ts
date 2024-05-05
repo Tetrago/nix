@@ -7,7 +7,7 @@ export default () => Widget.Window({
     class_name: "alert",
     visible: false,
     exclusivity: "ignore",
-    layer: "top",
+    layer: "overlay",
     child: Widget.CenterBox({
         class_name: "container",
         vertical: true,

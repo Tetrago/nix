@@ -5,6 +5,7 @@
     ./bluetooth.nix
     ./fonts.nix
     ./host.nix
+    ./hyprland.nix
     ./net.nix
     ./pipewire.nix
     ./plymouth.nix

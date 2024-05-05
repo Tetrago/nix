@@ -6,8 +6,8 @@
     shellIntegration.enableBashIntegration = true;
 
     font = {
-      package = pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; };
-      name = "FiraCode Nerd Font";
+      package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
+      name = "JetBrainsMono Nerd Font";
       size = 11;
     };
 

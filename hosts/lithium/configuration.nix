@@ -3,7 +3,6 @@
 {
   imports = [
     inputs.home-manager.nixosModules.default
-    inputs.hyprland.nixosModules.default
     inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
     inputs.nix-index-database.nixosModules.nix-index
 
@@ -31,13 +30,14 @@
 
   bluetooth.enable = true;
   fonts.enable = true;
+  hyprland.enable = true;
   pipewire.enable = true;
   virt.enable = true;
 
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
-    hyprland.enable = true;
+    gamemode.enable = true;
     nix-index-database.comma.enable = true;
     steam.enable = true;
     virt-manager.enable = true;

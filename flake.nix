@@ -19,7 +19,7 @@
 
     flake-utils.url = "github:numtide/flake-utils";
     nix-colors.url = "github:misterio77/nix-colors";
-    nixos-hardware.url = "nixos-hardware";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     hyprland = {
       url = "github:hyprwm/Hyprland";
