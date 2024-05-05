@@ -10,7 +10,7 @@
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
-      host = config.host;
+      inherit (config) host;
     };
     useGlobalPkgs = true;
     useUserPackages = true;

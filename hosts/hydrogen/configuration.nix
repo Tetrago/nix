@@ -3,7 +3,8 @@
 {
   imports = [
     inputs.home-manager.nixosModules.default
-    inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
+    inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+    inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.nix-index-database.nixosModules.nix-index
 
     ./hardware-configuration.nix
@@ -11,28 +12,26 @@
     ../../modules/nixos
   ];
 
-  boot.loader.timeout = 0;
+  hyprland = {
+    enable = true;
+    enableNvidiaPatches = true;
+  };
 
   net = {
     enable = true;
-    hostname = "lithium";
+    hostname = "hydrogen";
   };
 
-  plymouth = {
+  nvidia = {
     enable = true;
-    scale = 1.3;
-  };
-
-  secureboot = {
-    enable = true;
-    enableTpm2 = true;
+    enableModesetting = true;
   };
 
   bluetooth.enable = true;
   fonts.enable = true;
-  hyprland.enable = true;
   opengl.enable = true;
   pipewire.enable = true;
+  plymouth.enable = true;
   virt.enable = true;
 
   programs = {
@@ -54,16 +53,12 @@
   };
 
   services = {
-    fprintd.enable = true;
-    fwupd.enable = true;
     gvfs.enable = true;
-    hardware.bolt.enable = true;
+    logind.killUserProcesses = true;
     ollama.enable = true;
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
-
-    logind.killUserProcesses = true;
 
     greetd = {
       enable = true;
@@ -77,55 +72,11 @@
     };
   };
 
-  security = {
-    polkit.enable = true;
-
-    pam.services = {
-      hyprlock.fprintAuth = false;
-      su.fprintAuth = false;
-      sudo.fprintAuth = false;
-    };
-  };
-
+  security.polkit.enable = true;
   virtualisation.docker.enable = true;
 
   host = {
     bluetooth = true;
-    configurations = {
-      default = [
-        {
-          name = "eDP-1";
-          width = 2256;
-          height = 1504;
-          scale = 1.3333;
-        }
-      ];
-      others = [
-        {
-          name = "docked";
-          configuration = [
-            {
-              enable = false;
-              name = "eDP-1";
-            }
-            {
-              name = "DP-5";
-              width = 2560;
-              height = 1440;
-              refreshRate = 60;
-              position.x = 0;
-            }
-            {
-              name = "DP-7";
-              width = 2560;
-              height = 1440;
-              refreshRate = 144;
-              position.x = 2560;
-            }
-          ];
-        }
-      ];
-    };
   };
 
   usrs.james = {

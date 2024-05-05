@@ -1,4 +1,4 @@
-{ config, lib, outputs, ... }:
+{ outputs, ... }:
 
 {
   imports = [
@@ -7,6 +7,8 @@
     ./host.nix
     ./hyprland.nix
     ./net.nix
+    ./nvidia.nix
+    ./opengl.nix
     ./pipewire.nix
     ./plymouth.nix
     ./secureboot.nix
