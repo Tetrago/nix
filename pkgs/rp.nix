@@ -8,7 +8,7 @@
 
 stdenv.mkDerivation rec {
   pname = "rp++";
-  version = "v2.1.3";
+  version = "2.1.3";
 
   nativeBuildInputs = [
     cmake
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "0vercl0k";
     repo = "rp";
-    rev = version;
+    rev = "v${version}";
     sha256 = "sha256-f/4NREarLvQ1cH50M7AT5B5xxS3yrYaCM6Sf+oVGUQk=";
   };
 

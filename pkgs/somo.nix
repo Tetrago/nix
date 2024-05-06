@@ -7,7 +7,7 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "somo";
-  version = "v0.2.0";
+  version = "0.2.0";
 
   nativeBuildInputs = [
     pkg-config
@@ -20,7 +20,7 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "theopfr";
     repo = pname;
-    rev = version;
+    rev = "v${version}";
     hash = "sha256-9GwcApq9qLDCv0KA00wcynEfmEsqT20IKVrgS4f+hrE=";
   };
 
