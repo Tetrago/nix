@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -12,27 +12,45 @@
     ../../modules/nixos
   ];
 
-  hyprland = {
-    enable = true;
-    enableNvidiaPatches = true;
-  };
-
   net = {
     enable = true;
     hostname = "hydrogen";
   };
 
-  nvidia = {
-    enable = true;
-    enableModesetting = true;
-  };
-
   bluetooth.enable = true;
   fonts.enable = true;
+  hyprland.enable = true;
+  nvidia.enable = true;
   opengl.enable = true;
   pipewire.enable = true;
   plymouth.enable = true;
   virt.enable = true;
+
+  boot = {
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 15;
+      };
+    };
+    supportedFilesystems = [ "ntfs3" ];
+  };
+
+  networking = {
+    defaultGateway = "192.168.1.1";
+    nameservers = [ "8.8.8.8" ];
+
+    interfaces.enp6s0.ipv4.addresses = [
+      {
+        address = "192.168.1.111";
+        prefixLength = 24;
+      }
+    ];
+  };
 
   programs = {
     command-not-found.enable = false;
@@ -72,11 +90,38 @@
     };
   };
 
+  hardware.xone.enable = true;
   security.polkit.enable = true;
   virtualisation.docker.enable = true;
 
   host = {
     bluetooth = true;
+    configurations.default = [
+      {
+        name = "DP-1";
+        width = 2560;
+        height = 1440;
+        refreshRate = 144;
+        position.x = 1920;
+      }
+      {
+        name = "DP-2";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        position.x = 0;
+      }
+      {
+        name = "HDMI-A-1";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        position = {
+          x = 1920 + 2560;
+          y = 480;
+        };
+      }
+    ];
   };
 
   usrs.james = {
@@ -85,14 +130,22 @@
     groups = [ "wheel" "docker" "libvirtd" ];
   };
 
-  home-manager.users.james = import ../../homes/james;
+  home-manager.users.james = { ... }: {
+    imports = [ ../../homes/james ];
 
-  environment.systemPackages = with pkgs; [
-    curl
-    git
-    neovim
-    unzip
-  ];
+    hyprworld.extraVolumeKeys = true;
+  };
+
+  environment = {
+    sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
+
+    systemPackages = with pkgs; [
+      curl
+      git
+      neovim
+      unzip
+    ];
+  };
 
   system.stateVersion = "23.11";
 }

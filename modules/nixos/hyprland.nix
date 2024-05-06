@@ -5,7 +5,6 @@
 
   options.hyprland = {
     enable = lib.mkEnableOption "enable Hyprland";
-    enableNvidiaPatches = lib.mkEnableOption "enable Nvidia patches for Hyprland";
   };
 
   config = lib.mkIf config.hyprland.enable {
@@ -14,9 +13,6 @@
       trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
 
-    programs.hyprland = {
-      enable = true;
-      inherit (config.hyprland) enableNvidiaPatches;
-    };
+    programs.hyprland.enable = true;
   };
 }

@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 {
   imports = [
@@ -147,10 +147,17 @@
         "$mod, mouse:273, resizewindow"
       ];
 
-      binde = [
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      binde = lib.mkMerge [
+        ([
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ])
+        (lib.mkIf config.hyprworld.extraVolumeKeys [
+          "CTRL, F10, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          "CTRL, F12, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+          "CTRL, F11, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ])
       ];
 
       windowrulev2 = [

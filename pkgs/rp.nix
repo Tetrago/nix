@@ -7,7 +7,7 @@
 
 stdenv.mkDerivation rec {
   pname = "rp++";
-  version = "2.1.3";
+  version = "v2.1.3";
 
   nativeBuildInputs = [
     cmake

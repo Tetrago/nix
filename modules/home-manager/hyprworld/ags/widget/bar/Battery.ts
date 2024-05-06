@@ -18,6 +18,7 @@ const Progress = () => Widget.Box({
 });
 
 export default () => Widget.Revealer({
+    visible: battery.bind("available"),
     revealChild: battery.bind("charged").as(c => !c),
     child: Progress()
 });
