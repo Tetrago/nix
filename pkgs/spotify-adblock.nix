@@ -16,7 +16,7 @@ let
       sha256 = "UzpHAHpQx2MlmBNKm2turjeVmgp5zXKWm3nZbEo0mYE=";
     };
 
-    cargoSha256 = "IuSHOa6loek9w9XGrtwdyMcE2N85/A5T6DNoTmRBuYc=";
+    cargoSha256 = "wPV+ZY34OMbBrjmhvwjljbwmcUiPdWNHFU3ac7aVbIQ=";
 
     patchPhase = ''
       substituteInPlace src/lib.rs \

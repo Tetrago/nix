@@ -6,19 +6,7 @@
         @include border-full;
         padding: 0 0.4em;
         margin: 0.2em 0;
-        color: darker($bg);
-
-        &.low {
-            background-color: adjust-color($highlight, $alpha: 0);
-        }
-
-        &.medium {
-            background-color: adjust-color($highlight, $alpha: -0.33);
-        }
-
-        &.high {
-            background-color: adjust-color($highlight, $alpha: -0.66);
-        }
+        color: $dark-bg;
     }
 
     .date {
@@ -35,7 +23,7 @@
         }
         
         &.active {
-            background-color: $selected-bg;
+            background-color: $light-bg;
             color: $fg;
         }
 
@@ -48,7 +36,7 @@
     .tray {
         @include border-md;
         border: none;
-        background-color: darker($bg);
+        background-color: $dark-bg;
         color: $fg;
 
         .item {
@@ -60,11 +48,11 @@
     .workspace {
         @include border-md;
         border: none;
-        background-color: darker($bg);
+        background-color: $dark-bg;
         padding: 0 3pt;
 
         &.special {
-            border: 1px solid $selected-bg;
+            border: 1px solid $light-bg;
 
             &.active {
                 border-color: $fg;
@@ -80,7 +68,7 @@
             margin: 0 3pt;
 
             &.occupied {
-                background-color: $selected-bg;
+                background-color: $light-bg;
             }
 
             &.present {

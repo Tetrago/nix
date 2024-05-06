@@ -21,13 +21,13 @@ window.alert {
             border: none;
             @include border-full;
             min-height: 1em;
-            background-color: darker($bg);
+            background-color: $dark-bg;
         }
 
         .filled {
             border: none;
             @include border-full;
-            background-color: $alt-bg;
+            background-color: $light-bg;
         }
 
         .empty {

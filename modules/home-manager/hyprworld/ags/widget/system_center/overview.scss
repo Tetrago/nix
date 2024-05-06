@@ -5,7 +5,7 @@
         background-color: $bg;
 
         .clock {
-            background-color: darker($bg);
+            background-color: $dark-bg;
             border-radius: $border-md $border-md 0 0;
             padding-bottom: 1.5em;
 
@@ -22,7 +22,7 @@
             border: none;
             @include border-full;
             color: $fg;
-            background: darker($bg);
+            background: $dark-bg;
 
             .button {
                 border: none;
@@ -34,7 +34,7 @@
 
                 &:hover {
                     background: $fg;
-                    color: darker($bg);
+                    color: $dark-bg;
                 }
             }
         }
@@ -56,7 +56,7 @@
             }
 
             &.highlight {
-                color: darker($fg);
+                color: $alt-fg;
             }
 
             &:indeterminate {
@@ -72,7 +72,7 @@
             @include border-md;
             margin: 0 0.8em;
             padding: 0.8em;
-            background-color: $alt-bg;
+            background-color: $light-bg;
         }
     }
 }

@@ -1,9 +1,9 @@
 @mixin notification {
-    background-color: $alt-bg;
+    background-color: $light-bg;
     @include border-md;
 
     &.critical {
-        box-shadow: inset 0 0 0.5em 0 $highlight;
+        box-shadow: inset 0 0 0.5em 0 $fg;
     }
 
     .close_button {
@@ -14,7 +14,7 @@
 
         &:hover {
             background-color: $fg;
-            color: $alt-bg;
+            color: $light-bg;
         }
     }
 
@@ -52,12 +52,12 @@
             margin: 0.6em;
             border: none;
             @include border-md;
-            background: darker($bg);
+            background: $dark-bg;
             color: $fg;
 
             &:hover {
                 background-color: $fg;
-                color: darker($bg);
+                color: $dark-bg;
             }
         }
     }

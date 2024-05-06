@@ -1,6 +1,6 @@
 .player {
     @include border-md;
-    background-color: $alt-bg;
+    background-color: $light-bg;
     padding: 0.8em;
     min-width: 350px;
 
@@ -11,7 +11,7 @@
         background-position: center;
         @include border-md;
         margin-right: 1em;
-        box-shadow: 2pt 2pt 1pt darker($bg);
+        box-shadow: 2pt 2pt 1pt $dark-bg;
     }
 
     .title {
@@ -52,7 +52,7 @@
 
         &:hover {
             background: $fg;
-            color: darker($bg);
+            color: $dark-bg;
         }
     }
 }

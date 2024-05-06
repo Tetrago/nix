@@ -15,11 +15,11 @@ box.notifications {
     .clear_button {
         border: none;
         @include border-md;
-        background-color: darker($bg);
+        background-color: $dark-bg;
         color: $fg;
 
         &:hover {
-            color: darker($bg);
+            color: $dark-bg;
             background-color: $fg;
         }
     }

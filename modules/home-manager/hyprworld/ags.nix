@@ -1,15 +1,32 @@
 { config, inputs, lib, pkgs, ... }:
 
 let
-  stylesheet = lib.strings.concatLines (lib.attrsets.mapAttrsToList (key: value: "\$${key}: #${config.colorScheme.palette.${value}};") {
-    bg = "base00";
-    alt-bg = "base01";
-    selected-bg = "base02";
+  palette = import (pkgs.stdenvNoCC.mkDerivation {
+    name = "hyprworld_stylesheet";
 
-    fg = "base05";
-    alt-fg = "base04";
+    dontUnpack = true;
 
-    highlight = "base0D";
+    nativeBuildInputs = with pkgs; [
+      okolors
+    ];
+
+    buildPhase = ''
+      (echo [; okolors ${config.hyprworld.wallpaper} -w 0 -k 1 -l 10,20,30,50,70 | tail -n +2 | sed -e 's/\(.*\)/"\1"/'; echo ]) > ./default.nix
+    '';
+
+    installPhase = ''
+      mkdir -p $out
+      cp ./default.nix $out/
+    '';
+  });
+
+  stylesheet = lib.strings.concatLines (lib.attrsets.mapAttrsToList (key: value: "\$${key}: #${builtins.elemAt palette value};") {
+    dark-bg = 0;
+    bg = 1;
+    light-bg = 2;
+
+    fg = 4;
+    alt-fg = 3;
   });
 
   ags = pkgs.stdenv.mkDerivation {
