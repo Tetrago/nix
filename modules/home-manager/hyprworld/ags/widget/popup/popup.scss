@@ -13,7 +13,7 @@ window.alert {
 
     label {
         font-size: 10em;
-        color: $text;
+        color: $fg;
     }
 
     .level {
@@ -27,7 +27,7 @@ window.alert {
         .filled {
             border: none;
             @include border-full;
-            background-color: lighter($bg);
+            background-color: $alt-bg;
         }
 
         .empty {

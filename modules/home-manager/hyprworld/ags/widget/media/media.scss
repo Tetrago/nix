@@ -1,6 +1,6 @@
 .player {
     @include border-md;
-    background-color: lighter($bg);
+    background-color: $alt-bg;
     padding: 0.8em;
     min-width: 350px;
 
@@ -20,7 +20,7 @@
 
     .artist {
         font-size: 1.1em;
-        color: $unfocused-text;
+        color: $alt-fg;
     }
 
     scale.position {

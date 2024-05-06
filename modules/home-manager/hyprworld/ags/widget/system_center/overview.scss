@@ -21,7 +21,7 @@
         .quick_menu {
             border: none;
             @include border-full;
-            color: $text;
+            color: $fg;
             background: darker($bg);
 
             .button {
@@ -33,7 +33,7 @@
                 font-size: 1.5em;
 
                 &:hover {
-                    background: $text;
+                    background: $fg;
                     color: darker($bg);
                 }
             }
@@ -45,22 +45,22 @@
 
             &:selected {
                 @include border-full;
-                background-color: $text;
+                background-color: $fg;
                 color: $bg;
             }
 
             &.header {
                 @include border-full;
-                border: 1px solid $text;
+                border: 1px solid $fg;
                 background-color: $bg;
             }
 
             &.highlight {
-                color: darker($text);
+                color: darker($fg);
             }
 
             &:indeterminate {
-                color: $insensitive-fg;
+                color: $alt-fg;
             }
         }
 
@@ -72,7 +72,7 @@
             @include border-md;
             margin: 0 0.8em;
             padding: 0.8em;
-            background-color: lighter($bg);
+            background-color: $alt-bg;
         }
     }
 }

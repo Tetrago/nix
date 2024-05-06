@@ -9,15 +9,15 @@
         color: darker($bg);
 
         &.low {
-            background-color: $error;
+            background-color: adjust-color($highlight, $alpha: 0);
         }
 
         &.medium {
-            background-color: $warning;
+            background-color: adjust-color($highlight, $alpha: -0.33);
         }
 
         &.high {
-            background-color: $success;
+            background-color: adjust-color($highlight, $alpha: -0.66);
         }
     }
 
@@ -25,18 +25,18 @@
         @include border-full;
         border: none;
         background: none;
-        color: $text;
+        color: $fg;
         margin: 0.2em 0;
         padding: 0;
 
         &:hover {
-            background-color: $text;
+            background-color: $fg;
             color: $bg;
         }
         
         &.active {
             background-color: $selected-bg;
-            color: $text;
+            color: $fg;
         }
 
         .time {

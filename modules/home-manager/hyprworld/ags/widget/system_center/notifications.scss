@@ -16,11 +16,11 @@ box.notifications {
         border: none;
         @include border-md;
         background-color: darker($bg);
-        color: $text;
+        color: $fg;
 
         &:hover {
             color: darker($bg);
-            background-color: $text;
+            background-color: $fg;
         }
     }
 
