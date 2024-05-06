@@ -44,6 +44,7 @@
       (mkAction "<F10>" "DapStepOver")
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
+      (mkAction "-" "Oil")
     ] ++ (lib.attrsets.mapAttrsToList (key: value: {
       mode = [ "n" "x" "o" ];
       inherit key;
@@ -70,6 +71,7 @@
       nix.enable = true;
       nvim-colorizer.enable = true;
       nvim-tree.enable = true;
+      oil.enable = true;
       surround.enable = true;
       treesitter-context.enable = true;
 

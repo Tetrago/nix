@@ -22,25 +22,37 @@
     enableModesetting = true;
   };
 
+  plymouth = {
+    enable = true;
+    theme = "red_loader";
+  };
+
   bluetooth.enable = true;
   fonts.enable = true;
   hyprland.enable = true;
   opengl.enable = true;
   pipewire.enable = true;
-  plymouth.enable = true;
   virt.enable = true;
 
   boot = {
+    kernelParams = [
+      "video=HDMI-A-1:d"
+      "video=DP-2:d"
+      "video=DP-1:2560x1440@144"
+    ];
+
     loader = {
       efi = {
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot/efi";
       };
+
       systemd-boot = {
         enable = true;
-        configurationLimit = 15;
+        configurationLimit = 5;
       };
     };
+
     supportedFilesystems = [ "ntfs3" ];
   };
 

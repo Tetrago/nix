@@ -19,16 +19,16 @@
 
       kernelParams = [
         "quiet"
-	"udev.log_level=3"
-	"fbcon=nodefer"
-	"vt.global_cursor_default=0"
+        "udev.log_level=3"
+        "fbcon=nodefer"
+        "vt.global_cursor_default=0"
       ];
 
       plymouth = {
         enable = true;
         themePackages = [ pkgs.adi1090x-plymouth-themes ];
         theme = "${config.plymouth.theme}";
-	extraConfig = "DeviceScale=${toString config.plymouth.scale}";
+        extraConfig = "DeviceScale=${toString config.plymouth.scale}";
       };
     };
   };
