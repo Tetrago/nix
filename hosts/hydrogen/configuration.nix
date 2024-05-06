@@ -17,10 +17,14 @@
     hostname = "hydrogen";
   };
 
+  nvidia = {
+    enable = true;
+    enableModesetting = true;
+  };
+
   bluetooth.enable = true;
   fonts.enable = true;
   hyprland.enable = true;
-  nvidia.enable = true;
   opengl.enable = true;
   pipewire.enable = true;
   plymouth.enable = true;
@@ -133,7 +137,14 @@
   home-manager.users.james = { ... }: {
     imports = [ ../../homes/james ];
 
-    hyprworld.extraVolumeKeys = true;
+    hyprworld = {
+      extraVolumeKeys = true;
+
+      time = {
+        screen = 0;
+        sleep = 0;
+      };
+    };
   };
 
   environment = {

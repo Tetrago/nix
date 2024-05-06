@@ -2,7 +2,8 @@
   cmake,
   fetchFromGitHub,
   ninja,
-  stdenv
+  stdenv,
+  makeWrapper
 }:
 
 stdenv.mkDerivation rec {
@@ -12,6 +13,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     cmake
     ninja
+    makeWrapper
   ];
 
   src = fetchFromGitHub {
@@ -32,5 +34,8 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     cp ./rp-lin $out/bin/rp++
+
+    wrapProgram $out/bin/rp++ \
+      --add-flags "--colors"
   '';
 }

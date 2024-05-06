@@ -15,15 +15,15 @@ let
         example = "DP-1";
       };
       width = mkOption {
-        type = with types; nullOr int;
+        type = with types; nullOr ints.positive;
         example = 1920;
       };
       height = mkOption {
-        type = with types; nullOr int;
+        type = with types; nullOr ints.positive;
         example = 1080;
       };
       refreshRate = mkOption {
-        type = with types; nullOr int;
+        type = with types; nullOr ints.positive;
         example = 60;
         default = null;
       };
@@ -43,7 +43,7 @@ let
         default = null;
       };
       scale = mkOption {
-        type = with types; nullOr float;
+        type = with types; nullOr numbers.positive;
         default = null;
       };
     };

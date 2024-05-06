@@ -61,8 +61,16 @@
 
     overlays = import ./overlays { inherit inputs; };
 
-    packages = flake-utils.lib.eachDefaultSystem (system: import ./pkgs {
-      pkgs = nixpkgs.legacyPackages.${system};
-    });
+    devShells."x86_64-linux" = import ./devShells {
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [ outputs.overlays.default ];
+        config.allowUnfree = true;
+      };
+    };
+
+    packages."x86_64-linux" = import ./pkgs {
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+    };
   };
 }

@@ -8,7 +8,6 @@
     ../../modules/home-manager/theme
 
     ./bash.nix
-    ./cyber.nix
     ./firefox.nix
     ./git.nix
     ./kitty.nix
