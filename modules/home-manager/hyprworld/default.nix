@@ -16,11 +16,6 @@
       gnome.file-roller
       xwaylandvideobridge
       networkmanagerapplet
-
-      # Remove when possible (ags)
-      esbuild
-      sass
-      fd
     ];
   };
 
