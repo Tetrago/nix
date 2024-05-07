@@ -35,12 +35,6 @@
   virt.enable = true;
 
   boot = {
-    kernelParams = [
-      "video=HDMI-A-1:d"
-      "video=DP-2:d"
-      "video=DP-1:2560x1440@144"
-    ];
-
     loader = {
       efi = {
         canTouchEfiVariables = true;
@@ -72,9 +66,14 @@
     command-not-found.enable = false;
     dconf.enable = true;
     gamemode.enable = true;
+    gamescope.enable = true;
     nix-index-database.comma.enable = true;
-    steam.enable = true;
     virt-manager.enable = true;
+
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
 
     nh = {
       enable = true;
@@ -143,7 +142,7 @@
   usrs.james = {
     username = "james";
     name = "James";
-    groups = [ "wheel" "docker" "libvirtd" ];
+    groups = [ "wheel" "docker" "libvirtd" "gamemode" ];
   };
 
   home-manager.users.james = { ... }: {
@@ -167,6 +166,7 @@
       git
       neovim
       unzip
+      mangohud
     ];
   };
 

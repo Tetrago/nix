@@ -14,7 +14,6 @@
   home = {
     packages = with pkgs; [
       gnome.file-roller
-      xwaylandvideobridge
       networkmanagerapplet
     ];
   };

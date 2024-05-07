@@ -22,7 +22,7 @@ in
       "workbench.startupEditor" = "none";
       "editor.minimap.enabled" = false;
       "editor.fontLigatures" = true;
-      "editor.fontFamily" = "'FiraCode Nerd Font', 'Droid Sans Mono', 'monospace', monospace";
+      "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Droid Sans Mono', 'monospace', monospace";
       "workbench.layoutControl.enabled" = false;
       "terminal.integrated.profiles.linux"."bash" = {
         path = "${pkgs.bashInteractive}/bin/bash";

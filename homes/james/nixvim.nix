@@ -19,8 +19,7 @@
       shiftwidth = 4;
     };
 
-    colorschemes.onedark.enable = true;
-
+    colorschemes.vscode.enable = true;
     globals.mapleader = " ";
 
     keymaps = let

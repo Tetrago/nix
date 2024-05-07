@@ -10,6 +10,7 @@
       corefonts
       noto-fonts
       vistafonts
+      (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
   };
 }
