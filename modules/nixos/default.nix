@@ -12,6 +12,7 @@
     ./pipewire.nix
     ./plymouth.nix
     ./secureboot.nix
+    ./steam.nix
     ./usrs.nix
     ./virt.nix
   ];

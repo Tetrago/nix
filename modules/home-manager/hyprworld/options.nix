@@ -10,6 +10,12 @@ in
       description = "path to wallpaper";
     };
 
+    lockscreen = mkOption {
+      type = with types; nullOr str;
+      description = "path to lockscreen background or null for screenshot";
+      default = null;
+    };
+
     extraVolumeKeys = mkOption {
       type = types.bool;
       description = "binds F10, F11, and F12 to mute, increase volume, and decrease volume respectively";

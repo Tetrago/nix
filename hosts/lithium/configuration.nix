@@ -28,6 +28,11 @@
     enableTpm2 = true;
   };
 
+  steam = {
+    enable = true;
+    users = [ "james" ];
+  };
+
   bluetooth.enable = true;
   fonts.enable = true;
   hyprland.enable = true;
@@ -40,7 +45,6 @@
     dconf.enable = true;
     gamemode.enable = true;
     nix-index-database.comma.enable = true;
-    steam.enable = true;
     virt-manager.enable = true;
 
     nh = {
@@ -145,4 +149,3 @@
 
   system.stateVersion = "23.11";
 }
-

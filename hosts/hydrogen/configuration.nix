@@ -6,6 +6,7 @@
     inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.nix-index-database.nixosModules.nix-index
+    inputs.grub2-themes.nixosModules.default
 
     ./hardware-configuration.nix
     ../../modules/nixos/home-manager
@@ -27,6 +28,11 @@
     theme = "red_loader";
   };
 
+  steam = {
+    enable = true;
+    users = [ "james" ];
+  };
+
   bluetooth.enable = true;
   fonts.enable = true;
   hyprland.enable = true;
@@ -35,19 +41,34 @@
   virt.enable = true;
 
   boot = {
+    initrd.systemd.enable = true;
+
     loader = {
       efi = {
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot/efi";
       };
 
-      systemd-boot = {
+      grub = {
         enable = true;
         configurationLimit = 5;
+        device = "nodev";
+        efiSupport = true;
+        useOSProber = true;
+      };
+
+      grub2-theme = {
+        enable = true;
+        screen = "2k";
       };
     };
 
     supportedFilesystems = [ "ntfs3" ];
+  };
+
+  hardware = {
+    steam-hardware.enable = true;
+    xone.enable = true;
   };
 
   networking = {
@@ -65,15 +86,8 @@
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
-    gamemode.enable = true;
-    gamescope.enable = true;
     nix-index-database.comma.enable = true;
     virt-manager.enable = true;
-
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-    };
 
     nh = {
       enable = true;
@@ -105,8 +119,9 @@
     };
   };
 
-  hardware.xone.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 80 ];
   security.polkit.enable = true;
+  time.hardwareClockInLocalTime = true;
   virtualisation.docker.enable = true;
 
   host = {
@@ -142,7 +157,7 @@
   usrs.james = {
     username = "james";
     name = "James";
-    groups = [ "wheel" "docker" "libvirtd" "gamemode" ];
+    groups = [ "wheel" "docker" "libvirtd" ];
   };
 
   home-manager.users.james = { ... }: {
@@ -150,26 +165,27 @@
 
     hyprworld = {
       extraVolumeKeys = true;
+      lockscreen = "${../../homes/james/wallpaper.png}";
 
       time = {
-        screen = 0;
+        screen = 15;
         sleep = 0;
       };
     };
   };
 
   environment = {
-    sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
+    sessionVariables = {
+      WLR_NO_HARDWARE_CURSORS = "1";
+    };
 
     systemPackages = with pkgs; [
       curl
       git
       neovim
       unzip
-      mangohud
     ];
   };
 
   system.stateVersion = "23.11";
 }
-

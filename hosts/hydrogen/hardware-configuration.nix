@@ -25,17 +25,13 @@
     };
 
   fileSystems."/games" =
-    { device = "/dev/disk/by-uuid/047A1674690894FA";
-      fsType = "ntfs3";
+    { device = "/dev/disk/by-uuid/1ade7172-33f4-4135-9143-672edb8e3c3b";
+      fsType = "btrfs";
+      options = [ "subvol=@" "compress=zstd" ];
     };
 
   fileSystems."/data" =
-    { device = "/dev/disk/by-uuid/2BF185900BF4A6AF";
-      fsType = "ntfs3";
-    };
-
-  fileSystems."/reserve" =
-    { device = "/dev/disk/by-uuid/0B4D710D1CBBEAF1";
+    { device = "/dev/disk/by-uuid/59DAE68A196A939B";
       fsType = "ntfs3";
     };
 

@@ -1,13 +1,15 @@
 { config, pkgs, ... }:
 
 let
+  inherit (config.hyprworld) lockscreen;
+
   palette = import ./palette.nix { inherit config pkgs; };
 in
 {
   home.file.".config/hypr/hyprlock.conf".text = ''
     background {
       monitor =
-      path = screenshot
+      path = ${if lockscreen != null then lockscreen else "screenshot"}
       blur_passes = 3
       contrast = 0.8916
       brightness = 0.6172

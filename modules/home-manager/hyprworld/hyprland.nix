@@ -97,6 +97,7 @@
         "$mod, L, exec, loginctl lock-session"
         "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | wofi --dmenu | ${cliphist} decode | wl-copy"
         "$mod, F, togglefloating"
+        "$mod SHIFT, F, fullscreen"
         "$mod, Space, exec, pidof wofi || wofi --show drun"
         "$mod, Tab, hyprexpo:expo, toggle"
         ", Print, exec, pidof ${slurp} || ${grim} -g \"$(${slurp} -o -r)\" - | ${swappy} -f -"
@@ -162,11 +163,9 @@
 
       windowrulev2 = [
         "float,class:(feh)"
-        "size 0 0,class:(ghidra-Ghidra),title:(Ghidra)"
-        "center,class:(ghidra-Ghidra),title:(Ghidra)"
-        "tile,class:(ghidra-Ghidra),title:^(Ghidra: )"
-        "tile,class:(ghidra-Ghidra),title:(CodeBrowser)"
-        "tile,title:^(Burp Suite Community Edition)"
+        "rounding 0,class:^(steam_app_\\d+)$"
+        "noshadow,class:^(steam_app_\\d+)$"
+        "noborder,class:^(steam_app_\\d+)$"
       ];
 
       plugin = {

@@ -10,7 +10,8 @@
     hardware.nvidia = {
       modesetting.enable = config.nvidia.enableModesetting;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
 
     services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];

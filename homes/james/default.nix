@@ -29,7 +29,6 @@
     homeDirectory = "/home/james";
 
     packages = with pkgs; [
-      powertop
       nurl
       p7zip
       fzf

@@ -1,11 +1,13 @@
 { lib, config, ... }:
 
+let
+  inherit (lib) mkEnableOption mkOption types;
+in
 {
-  options = {
-    net.enable = lib.mkEnableOption "enable default networking options";
-
-    net.hostname = lib.mkOption {
-      type = lib.types.str;
+  options.net = {
+    enable = mkEnableOption "enable default networking options";
+    hostname = mkOption {
+      type = types.str;
       description = "hostname";
     };
   };
