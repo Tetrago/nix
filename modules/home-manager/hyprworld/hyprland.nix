@@ -1,5 +1,19 @@
 { config, inputs, lib, pkgs, ... }:
 
+let
+  inherit (lib.strings) optionalString;
+
+  monitorToString = m: let
+    refreshRate = optionalString (m.resolution != null && m.resolution.refreshRate != null) "@${toString m.resolution.refreshRate}";
+    resolution = if m.resolution == null then "preferred" else "${toString m.resolution.width}x${toString m.resolution.height}${refreshRate}";
+    position = if m.position == null then "auto" else "${toString m.position.x}x${toString m.position.y}";
+    scale = if m.scale == null then "auto" else "${toString m.scale}";
+  in "${m.name},${resolution},${position},${scale}";
+
+  monitors = if config.hyprworld.monitors == null || config.hyprworld.additionalMonitors != null
+    then []
+    else map monitorToString config.hyprworld.monitors;
+in
 {
   imports = [
     inputs.hyprland.homeManagerModules.default
@@ -32,49 +46,50 @@
       ];
 
       master = {
-        new_is_master = "yes";
-        mfact = "0.5";
+        new_is_master = true;
+        mfact = 0.5;
       };
 
       input = {
-        follow_mouse = "yes";
-        touchpad.natural_scroll = "yes";
-        numlock_by_default = "yes";
+        follow_mouse = true;
+        touchpad.natural_scroll = true;
+        numlock_by_default = true;
         kb_options = "ctrl:nocaps";
       };
 
       general = {
-        gaps_in = "5";
-        gaps_out = "5";
-        border_size = "1";
+        gaps_in = 5;
+        gaps_out = 5;
+        border_size = 1;
         "col.active_border" = "rgba(eff1f5ee) rgba(bbbfcbee) 45deg";
         "col.inactive_border" = "rgba(4b4e69aa)";
         layout = "master";
       };
       
       gestures = {
-        "workspace_swipe" = "yes";
-        "workspace_swipe_create_new" = "no";
+        "workspace_swipe" = true;
+        "workspace_swipe_create_new" = false;
       };
 
       decoration = {
-        rounding = "5";
-        blur.enabled = "yes";
-        blur.size = "3";
-        blur.passes = "1";
-        drop_shadow = "yes";
-        shadow_range = "4";
-        shadow_render_power = "3";
+        rounding = 5;
+        blur.enabled = true;
+        blur.size = 3;
+        blur.passes = 1;
+        drop_shadow = true;
+        shadow_range = 4;
+        shadow_render_power = 3;
         "col.shadow" = "rgba(1a1a1aee)";
       };
 
       misc = {
         new_window_takes_over_fullscreen = 2;
-        disable_hyprland_logo = "yes";
-        disable_splash_rendering = "yes";
-        vfr = "yes";
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        vfr = true;
       };
 
+      monitor = monitors ++ [ ",preferred,auto,1" ];
       "$mod" = "SUPER";
 
       bind = let 

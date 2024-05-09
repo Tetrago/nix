@@ -93,52 +93,53 @@
 
   virtualisation.docker.enable = true;
 
-  host = {
-    bluetooth = true;
-    configurations = {
-      default = [
-        {
-          name = "eDP-1";
-          width = 2256;
-          height = 1504;
-          scale = 1.3333;
-        }
-      ];
-      others = [
-        {
-          name = "docked";
-          configuration = [
-            {
-              enable = false;
-              name = "eDP-1";
-            }
-            {
-              name = "DP-5";
-              width = 2560;
-              height = 1440;
-              refreshRate = 60;
-              position.x = 0;
-            }
-            {
-              name = "DP-7";
-              width = 2560;
-              height = 1440;
-              refreshRate = 144;
-              position.x = 2560;
-            }
-          ];
-        }
-      ];
-    };
-  };
-
   usrs.james = {
     username = "james";
     name = "James";
     groups = [ "wheel" "docker" "libvirtd" ];
   };
 
-  home-manager.users.james = import ../../homes/james;
+  home-manager.users.james = { ... }: {
+    imports = [ ../../homes/james ];
+
+    hyprworld = {
+      bluetooth = true;
+
+      monitors = [
+        {
+          name = "eDP-1";
+          resolution = {
+            width = 2256;
+            height = 1504;
+          };
+          scale = 1.3333;
+        }
+      ];
+
+      additionalMonitors.docked = [
+        {
+          enable = false;
+          name = "eDP-1";
+        }
+        {
+          name = "DP-5";
+          resolution = {
+            width = 2560;
+            height = 1440;
+          };
+          position.x = 0;
+        }
+        {
+          name = "DP-7";
+          resolution = {
+            width = 2560;
+            height = 1440;
+          };
+          position.x = 2560;
+        }
+      ];
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     curl

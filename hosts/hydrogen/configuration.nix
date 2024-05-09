@@ -124,36 +124,6 @@
   time.hardwareClockInLocalTime = true;
   virtualisation.docker.enable = true;
 
-  host = {
-    bluetooth = true;
-    configurations.default = [
-      {
-        name = "DP-1";
-        width = 2560;
-        height = 1440;
-        refreshRate = 144;
-        position.x = 1920;
-      }
-      {
-        name = "DP-2";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        position.x = 0;
-      }
-      {
-        name = "HDMI-A-1";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        position = {
-          x = 1920 + 2560;
-          y = 480;
-        };
-      }
-    ];
-  };
-
   usrs.james = {
     username = "james";
     name = "James";
@@ -164,6 +134,7 @@
     imports = [ ../../homes/james ];
 
     hyprworld = {
+      bluetooth = true;
       extraVolumeKeys = true;
       lockscreen = "${../../homes/james/wallpaper.png}";
 
@@ -171,6 +142,39 @@
         screen = 15;
         sleep = 0;
       };
+
+      monitors = [
+        {
+          name = "DP-1";
+          resolution = {
+            width = 2560;
+            height = 1440;
+            refreshRate = 144;
+          };
+          position.x = 1920;
+        }
+        {
+          name = "DP-2";
+          resolution = {
+            width = 1920;
+            height = 1080;
+            refreshRate = 60;
+          };
+          position.x = 0;
+        }
+        {
+          name = "HDMI-A-1";
+          resolution = {
+            width = 1920;
+            height = 1080;
+            refreshRate = 60;
+          };
+          position = {
+            x = 1920 + 2560;
+            y = 480;
+          };
+        }
+      ];
     };
   };
 

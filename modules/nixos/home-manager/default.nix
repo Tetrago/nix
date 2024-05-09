@@ -1,17 +1,10 @@
-{ config, inputs, ... }:
+{ inputs, ... }:
 
 {
-  imports = [
-    inputs.home-manager.nixosModules.default
-
-    ../host.nix
-  ];
+  imports = [ inputs.home-manager.nixosModules.default ];
 
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-      inherit (config) host;
-    };
+    extraSpecialArgs = { inherit inputs; };
     useGlobalPkgs = true;
     useUserPackages = true;
   };

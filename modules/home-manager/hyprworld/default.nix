@@ -1,4 +1,4 @@
-{ config, inputs, lib, host, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 {
   imports = [
@@ -33,8 +33,8 @@
   };
 
   services = {
-    blueman-applet.enable = host.bluetooth;
-    mpris-proxy.enable = host.bluetooth;
+    blueman-applet.enable = config.hyprworld.bluetooth;
+    mpris-proxy.enable = true;
     network-manager-applet.enable = true;
 
     udiskie = {

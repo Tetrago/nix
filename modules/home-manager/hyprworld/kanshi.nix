@@ -1,37 +1,38 @@
-{ host, lib, ... }:
+{ config, lib, ... }:
 
 let
-  mapOutputs = let inherit (lib) mkIf optional; in configuration: map (m:
+  inherit (lib) mkIf;
+  inherit (lib.attrsets) mapAttrs mergeAttrsList optionalAttrs;
+  inherit (lib.lists) optional;
+  inherit (lib.strings) optionalString;
+
+  monitors = mergeAttrsList [
+    { default = config.hyprworld.monitors; }
+    config.hyprworld.additionalMonitors
+  ];
+
+  mapMonitorToOutput = m: mergeAttrsList [
     {
       criteria = m.name;
-      status = if m.enable then "enable" else "disable";
-      mode = if m.enable && !(isNull m.width) && !(isNull m.height) then "${toString m.width}x${toString m.height}${lib.strings.optionalString (!(isNull m.refreshRate)) "@${toString m.refreshRate}"}" else null;
-      position = if m.enable && !(isNull m.position) then "${toString m.position.x},${toString m.position.y}" else null;
-      scale = m.scale;
+      status = m.enable;
     }
-  ) configuration;
+  ] ++ optional m.enable [
+    (optionalAttrs m.resoltion != null (with m.resoltion; {
+      mode = "${width}x${height}${optionalString refreshRate != null "@${refreshRate}"}";
+    }))
+    (optionalAttrs m.posiition != null (with m.position; { position = "${x},${y}"; }))
+    (optionalAttrs m.scale != null { inherit (m) scale; })
+  ];
 
-  mapProfiles = configurations: builtins.listToAttrs (map (c:
-    {
-      name = c.name;
-      value = {
-        exec = "systemctl --user restart ags.service hyprpaper.service";
-        outputs = mapOutputs c.configuration;
-      };
-    }
-  ) configurations);
+  mapMonitorsToProfile = list: {
+    exec = "systemctl --user restart ags.service hyprpaper.service";
+    outputs = map mapMonitorToOutput list;
+  };
 in
 {
-  services.kanshi = {
+  services.kanshi = mkIf (config.hyprworld.additionalMonitors != null) {
     enable = true;
     systemdTarget = "hyprland-session.target";
-    profiles = mapProfiles (
-      [
-        {
-          name = "default";
-          configuration = host.configurations.default;
-        }
-      ] ++ host.configurations.others
-    );
+    profiles = mapAttrs (_: value: mapMonitorsToProfile value) monitors;
   };
 }

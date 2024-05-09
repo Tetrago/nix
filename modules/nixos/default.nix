@@ -4,7 +4,6 @@
   imports = [
     ./bluetooth.nix
     ./fonts.nix
-    ./host.nix
     ./hyprland.nix
     ./net.nix
     ./nvidia.nix
