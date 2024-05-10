@@ -47,6 +47,7 @@
       imhex
       vlc
       ungoogled-chromium
+      gnome.file-roller
 
       libreoffice-qt
       hunspell
@@ -72,12 +73,23 @@
       nix-direnv.enable = true;
     };
 
+    feh = {
+      enable = true;
+      buttons = {
+        prev_img = "";
+        next_img = "";
+        zoom_in = 4;
+        zoom_out = 5;
+      };
+    };
+
     ssh = {
       enable = true;
       matchBlocks."*".setEnv.TERM = "xterm-256color";
     };
 
     home-manager.enable = true;
+    zathura.enable = true;
   };
 
   xdg = {

@@ -13,23 +13,8 @@
 
   home = {
     packages = with pkgs; [
-      gnome.file-roller
-      networkmanagerapplet
+      networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
     ];
-  };
-
-  programs = {
-    feh = {
-      enable = true;
-      buttons = {
-        prev_img = "";
-        next_img = "";
-        zoom_in = 4;
-        zoom_out = 5;
-      };
-    };
-
-    zathura.enable = true;
   };
 
   services = {

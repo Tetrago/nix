@@ -152,6 +152,7 @@
             refreshRate = 144;
           };
           position.x = 1920;
+          workspace = 1;
         }
         {
           name = "DP-2";
@@ -161,6 +162,7 @@
             refreshRate = 60;
           };
           position.x = 0;
+          workspace = 2;
         }
         {
           name = "HDMI-A-1";
@@ -173,6 +175,7 @@
             x = 1920 + 2560;
             y = 480;
           };
+          workspace = 3;
         }
       ];
     };

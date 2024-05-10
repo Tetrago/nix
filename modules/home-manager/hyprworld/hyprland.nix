@@ -2,17 +2,19 @@
 
 let
   inherit (lib.strings) optionalString;
+  inherit (lib.lists) flatten optional optionals;
 
-  monitorToString = m: let
+  monitorToString = m: if !m.enable then "${m.name},disable" else let
     refreshRate = optionalString (m.resolution != null && m.resolution.refreshRate != null) "@${toString m.resolution.refreshRate}";
     resolution = if m.resolution == null then "preferred" else "${toString m.resolution.width}x${toString m.resolution.height}${refreshRate}";
     position = if m.position == null then "auto" else "${toString m.position.x}x${toString m.position.y}";
     scale = if m.scale == null then "auto" else "${toString m.scale}";
   in "${m.name},${resolution},${position},${scale}";
 
-  monitors = if config.hyprworld.monitors == null || config.hyprworld.additionalMonitors != null
-    then []
-    else map monitorToString config.hyprworld.monitors;
+  monitorToWorkspace = m: optional (m.workspace != null) "${toString m.workspace},monitor:${m.name},default:true";
+
+  monitors = optionals (config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null) (map monitorToString config.hyprworld.monitors);
+  workspaces = optionals (config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null) (flatten (map monitorToWorkspace config.hyprworld.monitors));
 in
 {
   imports = [
@@ -77,7 +79,7 @@ in
         blur.size = 3;
         blur.passes = 1;
         drop_shadow = true;
-        shadow_range = 4;
+        shadow_range = 4; 
         shadow_render_power = 3;
         "col.shadow" = "rgba(1a1a1aee)";
       };
@@ -90,6 +92,8 @@ in
       };
 
       monitor = monitors ++ [ ",preferred,auto,1" ];
+      workspace = workspaces;
+
       "$mod" = "SUPER";
 
       bind = let 
@@ -112,7 +116,7 @@ in
         "$mod, L, exec, loginctl lock-session"
         "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | wofi --dmenu | ${cliphist} decode | wl-copy"
         "$mod, F, togglefloating"
-        "$mod SHIFT, F, fullscreen"
+        "CTRL, Home, fullscreen"
         "$mod, Space, exec, pidof wofi || wofi --show drun"
         "$mod, Tab, hyprexpo:expo, toggle"
         ", Print, exec, pidof ${slurp} || ${grim} -g \"$(${slurp} -o -r)\" - | ${swappy} -f -"

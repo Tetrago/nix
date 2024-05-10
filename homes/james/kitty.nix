@@ -12,15 +12,15 @@
     };
 
     keybindings = {
-      "ctrl+shift+left" = "neighboring_window left";
-      "ctrl+shift+right" = "neighboring_window right";
-      "ctrl+shift+up" = "neighboring_window up";
-      "ctrl+shift+down" = "neighboring_window down";
+      "ctrl+shift+h" = "neighboring_window left";
+      "ctrl+shift+l" = "neighboring_window right";
+      "ctrl+shift+k" = "neighboring_window up";
+      "ctrl+shift+j" = "neighboring_window down";
 
-      "ctrl+shift+h" = "resize_window narrower";
-      "ctrl+shift+l" = "resize_window wider";
-      "ctrl+shift+k" = "resize_window taller";
-      "ctrl+shift+j" = "resize_window shorter";
+      "ctrl+shift+left" = "resize_window narrower";
+      "ctrl+shift+right" = "resize_window wider";
+      "ctrl+shift+up" = "resize_window taller";
+      "ctrl+shift+down" = "resize_window shorter";
 
       "ctrl+shift+w" = "move_window up";
       "ctrl+shift+a" = "move_window left";

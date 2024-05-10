@@ -3,7 +3,7 @@
 let
   inherit (lib) mkIf;
   inherit (lib.attrsets) mapAttrs mergeAttrsList optionalAttrs;
-  inherit (lib.lists) optional;
+  inherit (lib.lists) optionals;
   inherit (lib.strings) optionalString;
 
   monitors = mergeAttrsList [
@@ -16,16 +16,18 @@ let
       criteria = m.name;
       status = m.enable;
     }
-  ] ++ optional m.enable [
-    (optionalAttrs m.resoltion != null (with m.resoltion; {
+  ] ++ optionals m.enable [
+    (optionalAttrs m.resolution != null (with m.resolution; {
       mode = "${width}x${height}${optionalString refreshRate != null "@${refreshRate}"}";
     }))
-    (optionalAttrs m.posiition != null (with m.position; { position = "${x},${y}"; }))
+    (optionalAttrs m.position != null (with m.position; { position = "${x},${y}"; }))
     (optionalAttrs m.scale != null { inherit (m) scale; })
   ];
 
+  mapMonitorsToExec = list: map (m: optionalString m.workspace != null "hyprctl dispatch moveworkspacetomonitor ${toString m.workspace} ${m.name}") list;
+
   mapMonitorsToProfile = list: {
-    exec = "systemctl --user restart ags.service hyprpaper.service";
+    exec = [ "systemctl --user restart ags.service hyprpaper.service" ] ++ mapMonitorsToExec list;
     outputs = map mapMonitorToOutput list;
   };
 in

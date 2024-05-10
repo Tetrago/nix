@@ -60,6 +60,12 @@ let
         type = with types; nullOr numbers.positive;
         default = null;
       };
+
+      workspace = mkOption {
+        type = with types; nullOr ints.unsigned;
+        description = "default workspace to assign";
+        default = null;
+      };
     };
   };
 in
