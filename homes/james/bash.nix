@@ -22,11 +22,13 @@
     bash = {
       enable = true;
       enableCompletion = true;
+
       sessionVariables = {
         EDITOR = "nvim";
         MANPAGER = "sh -c 'col -bx | ${pkgs.bat} -l man -p'";
         MANROFFOPT = "-c";
       };
+
       shellAliases = with pkgs; {
         ls = "eza";
         ll = "eza -lh";

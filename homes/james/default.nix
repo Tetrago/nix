@@ -48,6 +48,7 @@
       vlc
       ungoogled-chromium
       gnome.file-roller
+      remmina
 
       libreoffice-qt
       hunspell
