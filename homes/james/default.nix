@@ -12,7 +12,6 @@
     ./git.nix
     ./kitty.nix
     ./nixvim.nix
-    ./vscode.nix
   ];
 
   hyprworld = {

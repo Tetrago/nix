@@ -115,29 +115,6 @@
           scale = 1.3333;
         }
       ];
-
-      additionalMonitors.docked = [
-        {
-          enable = false;
-          name = "eDP-1";
-        }
-        {
-          name = "DP-5";
-          resolution = {
-            width = 2560;
-            height = 1440;
-          };
-          position.x = 0;
-        }
-        {
-          name = "DP-7";
-          resolution = {
-            width = 2560;
-            height = 1440;
-          };
-          position.x = 2560;
-        }
-      ];
     };
   };
 

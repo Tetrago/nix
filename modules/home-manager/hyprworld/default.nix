@@ -7,6 +7,7 @@
     ./hyprland.nix
     ./hyprlock.nix
     ./hyprpaper.nix
+    ./services.nix
     ./kanshi.nix
     ./wofi.nix
   ];

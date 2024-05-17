@@ -37,5 +37,5 @@ in
     ''}
   '';
 
-  systemd.user.services.hypridle = import ./service.nix pkgs "${pkgs.hypridle}/bin/hypridle";
+  hyprworld.services.hypridle = pkgs.hypridle;
 }

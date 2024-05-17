@@ -10,5 +10,5 @@
     splash = off
   '';
 
-  systemd.user.services.hyprpaper = import ./service.nix pkgs "${pkgs.hyprpaper}/bin/hyprpaper";
+  hyprworld.services.hyprpaper = pkgs.hyprpaper;
 }
