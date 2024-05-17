@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -35,6 +35,7 @@
 
   bluetooth.enable = true;
   fonts.enable = true;
+  greetd.enable = true;
   hyprland.enable = true;
   opengl.enable = true;
   pipewire.enable = true;
@@ -68,17 +69,6 @@
     upower.enable = true;
 
     logind.killUserProcesses = true;
-
-    greetd = {
-      enable = true;
-      restart = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/Hyprland";
-          user = "greeter";
-        };
-      };
-    };
   };
 
   security = {

@@ -35,6 +35,7 @@
 
   bluetooth.enable = true;
   fonts.enable = true;
+  greetd.enable = true;
   hyprland.enable = true;
   opengl.enable = true;
   pipewire.enable = true;
@@ -106,17 +107,6 @@
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
-
-    greetd = {
-      enable = true;
-      restart = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/Hyprland";
-          user = "greeter";
-        };
-      };
-    };
   };
 
   networking.firewall.allowedTCPPorts = [ 22 80 ];
