@@ -18,7 +18,7 @@ in
           sessionsList = map (session: "${session}/share/xsessions") config.services.displayManager.sessionPackages;
           sessions = concatStringsSep ":" sessionsList;
         in {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --sessions ${sessions}";
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --sessions ${sessions}";
           user = "greeter";
         };
       };

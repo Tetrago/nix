@@ -1,12 +1,11 @@
-{ inputs, pkgs, ... }:
+{ inputs, lib, pkgs, ... }:
 
 {
   imports = [
     inputs.home-manager.nixosModules.default
-    inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.nix-index-database.nixosModules.nix-index
-    inputs.grub2-themes.nixosModules.default
 
     ./hardware-configuration.nix
     ../../modules/nixos/home-manager
@@ -15,22 +14,13 @@
 
   net = {
     enable = true;
+    enableNftables = false;
     hostname = "hydrogen";
-  };
-
-  nvidia = {
-    enable = true;
-    enableModesetting = true;
   };
 
   plymouth = {
     enable = true;
     theme = "red_loader";
-  };
-
-  steam = {
-    enable = true;
-    users = [ "james" ];
   };
 
   bluetooth.enable = true;
@@ -42,7 +32,27 @@
   virt.enable = true;
 
   boot = {
-    initrd.systemd.enable = true;
+    extraModulePackages = with pkgs.linuxPackages; [
+      kvmfr
+    ];
+
+    kernelModules = [
+      "kvmfr"
+    ];
+
+    blacklistedKernelModules = [
+      "nvidia"
+    ];
+
+    initrd = {
+      kernelModules = [
+        "vfio"
+        "vfio_pci"
+        "vfio_iommu_type1"
+      ];
+
+      systemd.enable = true;
+    };
 
     loader = {
       efi = {
@@ -50,33 +60,29 @@
         efiSysMountPoint = "/boot/efi";
       };
 
-      grub = {
+      systemd-boot = {
         enable = true;
-        configurationLimit = 5;
-        device = "nodev";
-        efiSupport = true;
-        useOSProber = true;
+        configurationLimit = 15;
       };
 
-      grub2-theme = {
-        enable = true;
-        screen = "2k";
-      };
+      timeout = 0;
     };
 
-    supportedFilesystems = [ "ntfs3" ];
-  };
-
-  hardware = {
-    steam-hardware.enable = true;
-    xone.enable = true;
+    kernelParams = [
+      "kvmfr.static_size_mb=32"
+      "intel_iommu=on"
+      "iommu=pt"
+      "vfio-pci.ids=10de:1e87,10de:10f8,10de:1ad8,10de:1ad9,144d:a80c"
+    ];
   };
 
   networking = {
     defaultGateway = "192.168.1.1";
     nameservers = [ "8.8.8.8" ];
 
-    interfaces.enp6s0.ipv4.addresses = [
+    bridges.br0.interfaces = [ "enp5s0" ];
+
+    interfaces.br0.ipv4.addresses = [
       {
         address = "192.168.1.111";
         prefixLength = 24;
@@ -102,11 +108,14 @@
 
   services = {
     gvfs.enable = true;
-    logind.killUserProcesses = true;
     ollama.enable = true;
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
+
+    udev.extraRules = ''
+      SUBSYSTEM=="kvmfr", OWNER="james", GROUP="kvm", MODE="0660"
+    '';
   };
 
   networking.firewall.allowedTCPPorts = [ 22 80 ];
@@ -135,17 +144,17 @@
 
       monitors = [
         {
-          name = "DP-1";
+          name = "DP-3";
           resolution = {
             width = 2560;
             height = 1440;
-            refreshRate = 144;
+            refreshRate = 60;
           };
           position.x = 1920;
           workspace = 1;
         }
         {
-          name = "DP-2";
+          name = "HDMI-A-1";
           resolution = {
             width = 1920;
             height = 1080;
@@ -155,7 +164,7 @@
           workspace = 2;
         }
         {
-          name = "HDMI-A-1";
+          name = "DP-4";
           resolution = {
             width = 1920;
             height = 1080;
@@ -169,13 +178,20 @@
         }
       ];
     };
+
+    programs = {
+      looking-glass-client = {
+        enable = true;
+        settings = {
+          app = {
+            shmFile = "/dev/kvmfr0";
+          };
+        };
+      };
+    };
   };
 
   environment = {
-    sessionVariables = {
-      WLR_NO_HARDWARE_CURSORS = "1";
-    };
-
     systemPackages = with pkgs; [
       curl
       git
@@ -183,6 +199,27 @@
       unzip
     ];
   };
+
+  virtualisation.libvirtd.qemuVerbatimConfig = let
+    inherit (lib.strings) concatStringsSep;
+
+    devices = [
+      "null"
+      "full"
+      "zero"
+      "random"
+      "urandom"
+      "ptmx"
+      "kvm"
+      "kqemu"
+      "rtc"
+      "hpet"
+      "vfio"
+      "kvmfr0"
+    ];
+  in ''
+    cgroup_device_acl = [${concatStringsSep "," (map (v: "\"/dev/${v}\"") devices)}]
+  '';
 
   system.stateVersion = "23.11";
 }
