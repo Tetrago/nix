@@ -45,7 +45,6 @@
       obsidian
       imhex
       vlc
-      ungoogled-chromium
       gnome.file-roller
       remmina
 
