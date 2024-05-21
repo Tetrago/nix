@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -6,6 +6,7 @@
 
     ../../modules/home-manager/hyprworld
     ../../modules/home-manager/theme
+    ../../modules/home-manager
 
     ./bash.nix
     ./firefox.nix
@@ -17,6 +18,8 @@
   hyprworld = {
     wallpaper = "${./wallpaper.png}";
   };
+
+  steam.enable = true;
 
   colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; }; in lb.colorSchemeFromPicture {
     path = ./wallpaper.png;
@@ -36,7 +39,6 @@
       eva
       nix-output-monitor
       nvd
-      protonup
 
       discord
       bottles
@@ -52,10 +54,6 @@
       hunspell
       hunspellDicts.en_US
     ];
-
-    sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
-    };
 
     stateVersion = "23.11";
   };
