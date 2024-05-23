@@ -1,17 +1,22 @@
 { config, lib, pkgs, ... }:
 
+let
+  inherit (lib) mkEnableOption mkIf;
+in
 {
-  options.virt = {
-    enable = lib.mkEnableOption "enable libvirt";
+  options.tetrago.virtualization = {
+    enable = mkEnableOption "enable libvirt";
   };
 
-  config = lib.mkIf config.virt.enable {
+  config = mkIf config.tetrago.virtualization.enable {
     virtualisation.libvirtd = {
       enable = true;
+
       qemu = {
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
+
         ovmf = {
           enable = true;
           packages = [(pkgs.OVMF.override {

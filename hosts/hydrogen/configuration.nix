@@ -12,25 +12,6 @@
     ../../modules/nixos
   ];
 
-  net = {
-    enable = true;
-    enableNftables = false;
-    hostname = "hydrogen";
-  };
-
-  plymouth = {
-    enable = true;
-    theme = "red_loader";
-  };
-
-  bluetooth.enable = true;
-  fonts.enable = true;
-  greetd.enable = true;
-  hyprland.enable = true;
-  opengl.enable = true;
-  pipewire.enable = true;
-  virt.enable = true;
-
   boot = {
     extraModulePackages = with pkgs.linuxPackages; [
       kvmfr
@@ -50,22 +31,6 @@
         "vfio_pci"
         "vfio_iommu_type1"
       ];
-
-      systemd.enable = true;
-    };
-
-    loader = {
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
-      };
-
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 15;
-      };
-
-      timeout = 0;
     };
 
     kernelParams = [
@@ -120,13 +85,34 @@
 
   networking.firewall.allowedTCPPorts = [ 22 80 ];
   security.polkit.enable = true;
-  time.hardwareClockInLocalTime = true;
   virtualisation.docker.enable = true;
 
-  usrs.james = {
-    username = "james";
-    name = "James";
-    groups = [ "wheel" "docker" "libvirtd" ];
+  tetrago = {
+    audio.enable = true;
+    boot.enable = true;
+    bluetooth.enable = true;
+    fonts.enable = true;
+    graphics.opengl.enable = true;
+    greetd.enable = true;
+    hyprland.enable = true;
+    virtualization.enable = true;
+
+    networking = {
+      enable = true;
+      nftables = false;
+      hostname = "hydrogen";
+    };
+
+    plymouth = {
+      enable = true;
+      theme = "red_loader";
+    };
+
+    users.james = {
+      username = "james";
+      name = "James";
+      groups = [ "wheel" "docker" "libvirtd" ];
+    };
   };
 
   home-manager.users.james = { ... }: {

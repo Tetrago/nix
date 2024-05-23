@@ -1,19 +1,25 @@
 { config, lib, pkgs, ... }:
 
+let
+  inherit (lib) mkEnableOption mkOption types mkIf;
+in
 {
-  options.plymouth = {
-    enable = lib.mkEnableOption "enable plymouth";
-    theme = lib.mkOption {
+  options.tetrago.plymouth = {
+    enable = mkEnableOption "enable plymouth";
+
+    theme = mkOption {
+      type = types.str;
       default = "spinner_alt";
       description = "theme";
     };
-    scale = lib.mkOption {
-      type = lib.types.float;
+
+    scale = mkOption {
+      type = types.float;
       default = 1.0;
     };
   };
 
-  config = lib.mkIf config.plymouth.enable {
+  config = with config.tetrago.plymouth; mkIf enable {
     boot = {
       consoleLogLevel = 0;
 
@@ -27,8 +33,8 @@
       plymouth = {
         enable = true;
         themePackages = [ pkgs.adi1090x-plymouth-themes ];
-        theme = "${config.plymouth.theme}";
-        extraConfig = "DeviceScale=${toString config.plymouth.scale}";
+        inherit theme;
+        extraConfig = "DeviceScale=${toString scale}";
       };
     };
   };

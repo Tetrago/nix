@@ -1,27 +1,29 @@
 { lib, config, ... }:
 
 let
-  inherit (lib) mkEnableOption mkOption types;
+  inherit (lib) mkEnableOption mkOption types mkIf;
 in
 {
-  options.net = {
+  options.tetrago.networking = {
     enable = mkEnableOption "enable default networking options";
-    enableNftables = mkOption {
+
+    nftables = mkOption {
       type = types.bool;
       default = true;
     };
+
     hostname = mkOption {
       type = types.str;
       description = "hostname";
     };
   };
   
-  config = lib.mkIf config.net.enable {
+  config = with config.tetrago.networking; mkIf enable {
     networking = {
-      hostName = "${config.net.hostname}";
+      hostName = "${hostname}";
       networkmanager.enable = true;
       firewall.enable = true;
-      nftables.enable = config.net.enableNftables;
+      nftables.enable = nftables;
     };
 
     services.automatic-timezoned.enable = true;

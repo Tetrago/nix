@@ -11,35 +11,45 @@
     ../../modules/nixos
   ];
 
-  boot.loader.timeout = 0;
+  tetrago = {
+    audio.enable = true;
+    bluetooth.enable = true;
+    fonts.enable = true;
+    graphics.opengl.enable = true;
+    greetd.enable = true;
+    hyprland.enable = true;
+    virtualization.enable = true;
 
-  net = {
-    enable = true;
-    hostname = "lithium";
+    boot = {
+      enable = true;
+
+      secureboot = {
+        enable = true;
+        enableTpm2 = true;
+      };
+    };
+
+    networking = {
+      enable = true;
+      hostname = "lithium";
+    };
+
+    plymouth = {
+      enable = true;
+      scale = 1.3;
+    };
+
+    steam = {
+      enable = true;
+      users = [ "james" ];
+    };
+
+    users.james = {
+      username = "james";
+      name = "James";
+      groups = [ "wheel" "docker" "libvirtd" ];
+    };
   };
-
-  plymouth = {
-    enable = true;
-    scale = 1.3;
-  };
-
-  secureboot = {
-    enable = true;
-    enableTpm2 = true;
-  };
-
-  steam = {
-    enable = true;
-    users = [ "james" ];
-  };
-
-  bluetooth.enable = true;
-  fonts.enable = true;
-  greetd.enable = true;
-  hyprland.enable = true;
-  opengl.enable = true;
-  pipewire.enable = true;
-  virt.enable = true;
 
   programs = {
     command-not-found.enable = false;
@@ -80,12 +90,6 @@
   };
 
   virtualisation.docker.enable = true;
-
-  usrs.james = {
-    username = "james";
-    name = "James";
-    groups = [ "wheel" "docker" "libvirtd" ];
-  };
 
   home-manager.users.james = { ... }: {
     imports = [ ../../homes/james ];

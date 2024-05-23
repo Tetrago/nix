@@ -1,11 +1,14 @@
 { config, lib, ... }:
 
+let
+  inherit (lib) mkEnableOption mkIf;
+in
 {
-  options = {
-    pipewire.enable = lib.mkEnableOption "enable pipewire";
+  options.tetrago.audio = {
+    enable = mkEnableOption "enable audio configuration";
   };
 
-  config = lib.mkIf config.pipewire.enable {
+  config = mkIf config.tetrago.audio.enable {
     hardware.pulseaudio.enable = false;
     security.rtkit.enable = true;
     sound.enable = false;

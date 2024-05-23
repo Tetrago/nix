@@ -1,11 +1,14 @@
 { config, lib, pkgs, ... }:
 
+let
+  inherit (lib) mkEnableOption mkIf;
+in
 {
-  options = {
-    fonts.enable = lib.mkEnableOption "enable standard fonts";
+  options.tetrago.fonts = {
+    enable = mkEnableOption "enable standard fonts";
   };
 
-  config = lib.mkIf config.fonts.enable {
+  config = mkIf config.tetrago.fonts.enable {
     fonts.packages = with pkgs; [
       corefonts
       noto-fonts

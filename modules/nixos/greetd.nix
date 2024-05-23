@@ -5,11 +5,11 @@ let
   inherit (lib.strings) concatStringsSep;
 in
 {
-  options.greetd = {
+  options.tetrago.greetd = {
     enable = mkEnableOption "enable greetd";
   };
 
-  config = mkIf config.greetd.enable {
+  config = mkIf config.tetrago.greetd.enable {
     services.greetd = {
       enable = true;
       restart = true;

@@ -2,19 +2,18 @@
 
 {
   imports = [
+    ./audio.nix
     ./bluetooth.nix
+    ./boot.nix
     ./fonts.nix
+    ./graphics.nix
     ./greetd.nix
     ./hyprland.nix
-    ./net.nix
-    ./nvidia.nix
-    ./opengl.nix
-    ./pipewire.nix
+    ./networking.nix
     ./plymouth.nix
-    ./secureboot.nix
     ./steam.nix
-    ./usrs.nix
-    ./virt.nix
+    ./users.nix
+    ./virtualization.nix
   ];
 
   config = {

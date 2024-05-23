@@ -1,9 +1,14 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
+let
+  inherit (lib) mkEnableOption mkIf;
+in
 {
-  options.bluetooth.enable = lib.mkEnableOption "enable bluetooth";
+  options.tetrago.bluetooth = {
+    enable = mkEnableOption "enable bluetooth";
+  };
 
-  config = lib.mkIf config.bluetooth.enable {
+  config = mkIf config.tetrago.bluetooth.enable {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
