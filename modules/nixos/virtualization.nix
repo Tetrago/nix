@@ -60,7 +60,7 @@ in
     ];
 
     boot = mkIf (passthrough != null) {
-      extraModulePackages = mkIf kvmfr.enable (with pkgs.linuxPackages; [
+      extraModulePackages = mkIf kvmfr.enable (with config.boot.kernelPackages; [
         kvmfr
       ]);
 

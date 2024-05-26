@@ -12,7 +12,10 @@
     ../../modules/nixos
   ];
 
-  boot.blacklistedKernelModules = [ "nvidia" ];
+  boot = {
+    kernelPackages = pkgs.linuxPackages_6_9;
+    blacklistedKernelModules = [ "nvidia" ];
+  };
 
   networking = {
     defaultGateway = "192.168.1.1";

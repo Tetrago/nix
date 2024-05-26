@@ -6,7 +6,7 @@ in
 {
   options.tetrago.graphics = {
     nvidia = {
-      enable = mkEnableOption "enable Nvidia support";
+      enable = mkEnableOption "enable NVIDIA support";
 
       modesetting = mkOption {
         type = types.bool;
