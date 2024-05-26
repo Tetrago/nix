@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -12,34 +12,7 @@
     ../../modules/nixos
   ];
 
-  boot = {
-    extraModulePackages = with pkgs.linuxPackages; [
-      kvmfr
-    ];
-
-    kernelModules = [
-      "kvmfr"
-    ];
-
-    blacklistedKernelModules = [
-      "nvidia"
-    ];
-
-    initrd = {
-      kernelModules = [
-        "vfio"
-        "vfio_pci"
-        "vfio_iommu_type1"
-      ];
-    };
-
-    kernelParams = [
-      "kvmfr.static_size_mb=32"
-      "intel_iommu=on"
-      "iommu=pt"
-      "vfio-pci.ids=10de:1e87,10de:10f8,10de:1ad8,10de:1ad9,144d:a80c"
-    ];
-  };
+  boot.blacklistedKernelModules = [ "nvidia" ];
 
   networking = {
     defaultGateway = "192.168.1.1";
@@ -65,11 +38,13 @@
       enable = true;
       clean = {
         enable = true;
-        extraArgs = "--keep-since 4d --keep 3";
+        extraArgs = "--keep-since 4d";
       };
       flake = "/etc/nixos";
     };
   };
+
+  security.polkit.enable = true;
 
   services = {
     gvfs.enable = true;
@@ -77,14 +52,8 @@
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
-
-    udev.extraRules = ''
-      SUBSYSTEM=="kvmfr", OWNER="james", GROUP="kvm", MODE="0660"
-    '';
   };
 
-  networking.firewall.allowedTCPPorts = [ 22 80 ];
-  security.polkit.enable = true;
   virtualisation.docker.enable = true;
 
   tetrago = {
@@ -95,7 +64,6 @@
     graphics.opengl.enable = true;
     greetd.enable = true;
     hyprland.enable = true;
-    virtualization.enable = true;
 
     networking = {
       enable = true;
@@ -112,6 +80,24 @@
       username = "james";
       name = "James";
       groups = [ "wheel" "docker" "libvirtd" ];
+    };
+
+    virtualization = {
+      enable = true;
+      cpu = "intel";
+      devices.enable = true;
+
+      passthrough = [
+        "10de:2705"
+        "10de:22bb"
+        "144d:a80c"
+      ];
+
+      kvmfr = {
+        enable = true;
+        sizes = [ 32 ];
+        users = [ "james" ];
+      };
     };
   };
 
@@ -165,8 +151,6 @@
       ];
     };
 
-    steam.enable = lib.mkForce false;
-
     programs = {
       looking-glass-client = {
         enable = true;
@@ -179,35 +163,12 @@
     };
   };
 
-  environment = {
-    systemPackages = with pkgs; [
-      curl
-      git
-      neovim
-      unzip
-    ];
-  };
-
-  virtualisation.libvirtd.qemuVerbatimConfig = let
-    inherit (lib.strings) concatStringsSep;
-
-    devices = [
-      "null"
-      "full"
-      "zero"
-      "random"
-      "urandom"
-      "ptmx"
-      "kvm"
-      "kqemu"
-      "rtc"
-      "hpet"
-      "vfio"
-      "kvmfr0"
-    ];
-  in ''
-    cgroup_device_acl = [${concatStringsSep "," (map (v: "\"/dev/${v}\"") devices)}]
-  '';
+  environment.systemPackages = with pkgs; [
+    curl
+    git
+    neovim
+    unzip
+  ];
 
   system.stateVersion = "23.11";
 }

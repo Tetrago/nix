@@ -62,7 +62,7 @@
       enable = true;
       clean = {
         enable = true;
-        extraArgs = "--keep-since 4d --keep 3";
+        extraArgs = "--keep-since 4d";
       };
       flake = "/etc/nixos";
     };
@@ -93,6 +93,8 @@
 
   home-manager.users.james = { ... }: {
     imports = [ ../../homes/james ];
+
+    steam.enable = true;
 
     hyprworld = {
       bluetooth = true;

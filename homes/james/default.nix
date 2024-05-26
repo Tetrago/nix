@@ -19,8 +19,6 @@
     wallpaper = "${./wallpaper.png}";
   };
 
-  steam.enable = true;
-
   colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; }; in lb.colorSchemeFromPicture {
     path = ./wallpaper.png;
     variant = "dark";
@@ -31,7 +29,6 @@
     homeDirectory = "/home/james";
 
     packages = with pkgs; [
-      nurl
       p7zip
       fzf
       fd
@@ -46,9 +43,7 @@
       obs-studio
       obsidian
       imhex
-      vlc
       gnome.file-roller
-      remmina
 
       libreoffice-qt
       hunspell
@@ -67,17 +62,34 @@
     direnv = {
       enable = true;
       enableBashIntegration = true;
+      config.global.warn_timeout = "0";
       nix-direnv.enable = true;
     };
 
     feh = {
       enable = true;
+
       buttons = {
         prev_img = "";
         next_img = "";
         zoom_in = 4;
         zoom_out = 5;
       };
+    };
+
+    mpv = {
+      enable = true;
+
+      config = {
+        osd-bar = "no";
+        border = "no";
+      };
+
+      scripts  = with pkgs.mpvScripts; [
+        mpris
+        uosc
+        thumbfast
+      ];
     };
 
     ssh = {

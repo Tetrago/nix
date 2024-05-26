@@ -15,8 +15,7 @@ in
       restart = true;
       settings = {
         default_session = let
-          sessionsList = map (session: "${session}/share/xsessions") config.services.displayManager.sessionPackages;
-          sessions = concatStringsSep ":" sessionsList;
+          sessions = concatStringsSep ":" (map (session: "${session}/share/xsessions") config.services.displayManager.sessionPackages);
         in {
           command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --sessions ${sessions}";
           user = "greeter";
