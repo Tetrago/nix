@@ -86,7 +86,7 @@
     users.james = {
       username = "james";
       name = "James";
-      groups = [ "wheel" "docker" "libvirtd" ];
+      groups = [ "wheel" "docker" "libvirtd" "kvm" ];
     };
 
     virtualization = {
@@ -104,7 +104,6 @@
       kvmfr = {
         enable = true;
         sizes = [ 32 ];
-        users = [ "james" ];
       };
     };
   };

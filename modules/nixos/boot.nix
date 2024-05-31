@@ -43,13 +43,13 @@ in
           efiSysMountPoint = "/boot/efi";
         };
 
-        systemd-boot = mkIf (loader == "systemd") {
-          enable = mkForce (!secureboot.enable);
+        systemd-boot = {
+          enable = mkForce (if loader == "systemd" then !secureboot.enable else false);
           configurationLimit = 15;
         };
 
-        grub = mkIf (loader == "grub") {
-          enable = true;
+        grub = {
+          enable = mkForce (loader == "grub");
           configurationLimit = 15;
           efiSupport = true;
           device = "nodev";

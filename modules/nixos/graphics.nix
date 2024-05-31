@@ -55,11 +55,19 @@ in
     })
 
     (mkIf intel.enable {
-      hardware.opengl.extraPackages = with pkgs; [
-        intel-media-driver
-        intel-vaapi-driver
-        libvdpau-va-gl
-      ];
+      hardware.opengl = {
+        extraPackages = with pkgs; [
+          intel-media-driver
+          intel-vaapi-driver
+          libvdpau-va-gl
+        ];
+
+        extraPackages32 = with pkgs.driversi686Linux; [
+          intel-media-driver
+          intel-vaapi-driver
+          libvdpau-va-gl
+        ];
+      };
     })
 
     (mkIf (intel.enable || nvidia.enable) {

@@ -28,12 +28,6 @@ in
         default = [];
         example = [ 32 ];
       };
-
-      users = mkOption {
-        type = with types; listOf str;
-        default = [];
-        example = [ "james" ];
-      };
     };
 
     devices = {
@@ -81,9 +75,7 @@ in
       ] ++ optional kvmfr.enable "kvmfr.static_size_mb=${concatStringsSep "," (map toString kvmfr.sizes)}";
     };
 
-    services.udev.extraRules = mkIf kvmfr.enable (concatLines (map (name: ''
-      SUBSYSTEM=="kvmfr", OWNER="${name}", GROUP="kvm", MODE="0660"
-    '') kvmfr.users));
+    services.udev.extraRules = mkIf kvmfr.enable ''SUBSYSTEM=="kvmfr", GROUP="kvm", MODE="0660"'';
 
     virtualisation.libvirtd = {
       enable = true;
