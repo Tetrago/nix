@@ -15,7 +15,7 @@
     audio.enable = true;
     bluetooth.enable = true;
     fonts.enable = true;
-    graphics.opengl.enable = true;
+    graphics.intel.enable = true;
     greetd.enable = true;
     hyprland.enable = true;
     virtualization.enable = true;

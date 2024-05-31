@@ -3,7 +3,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.default
-    inputs.nixos-hardware.nixosModules.common-cpu-intel
+    inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.nix-index-database.nixosModules.nix-index
 
@@ -11,11 +11,6 @@
     ../../modules/nixos/home-manager
     ../../modules/nixos
   ];
-
-  boot = {
-    kernelPackages = pkgs.linuxPackages_6_9;
-    blacklistedKernelModules = [ "nvidia" ];
-  };
 
   networking = {
     defaultGateway = "192.168.1.1";
@@ -61,12 +56,21 @@
 
   tetrago = {
     audio.enable = true;
-    boot.enable = true;
     bluetooth.enable = true;
     fonts.enable = true;
-    graphics.opengl.enable = true;
     greetd.enable = true;
     hyprland.enable = true;
+
+    boot = {
+      enable = true;
+      loader = "grub";
+      skipBootMenu = false;
+    };
+
+    graphics = {
+      intel.enable = true;
+      nvidia.blacklist = true;
+    };
 
     networking = {
       enable = true;
@@ -94,6 +98,7 @@
         "10de:2705"
         "10de:22bb"
         "144d:a80c"
+        "1b21:2142"
       ];
 
       kvmfr = {
@@ -107,10 +112,13 @@
   home-manager.users.james = { ... }: {
     imports = [ ../../homes/james ];
 
+    wayland.windowManager.hyprland.settings.windowrulev2 = [
+      "idleinhibit fullscreen,class:^(looking-glass-client)$"
+    ];
+
     hyprworld = {
       bluetooth = true;
       extraVolumeKeys = true;
-      lockscreen = "${../../homes/james/wallpaper.png}";
 
       time = {
         screen = 15;

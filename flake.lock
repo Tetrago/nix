@@ -292,6 +292,26 @@
         "type": "github"
       }
     },
+    "grub2-themes": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1715837353,
+        "narHash": "sha256-UWm9hWXnr/P99e5LWbpnL99Qav3c1MNTiFcD7d/oU1I=",
+        "owner": "vinceliuice",
+        "repo": "grub2-themes",
+        "rev": "ce56cfb5c6b0650830e6f7732187673add7c9e96",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vinceliuice",
+        "repo": "grub2-themes",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -731,6 +751,7 @@
       "inputs": {
         "ags": "ags",
         "flake-utils": "flake-utils",
+        "grub2-themes": "grub2-themes",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",

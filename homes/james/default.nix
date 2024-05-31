@@ -44,6 +44,7 @@
       obsidian
       imhex
       gnome.file-roller
+      aseprite
 
       libreoffice-qt
       hunspell

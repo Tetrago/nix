@@ -40,6 +40,11 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    grub2-themes = {
+      url = "github:vinceliuice/grub2-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { flake-utils, nixpkgs, self, ... }@inputs: let

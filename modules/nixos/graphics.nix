@@ -12,14 +12,33 @@ in
         type = types.bool;
         default = true;
       };
+
+      blacklist = mkOption {
+        type = types.bool;
+        default = false;
+        description = "blacklist NVIDIA drivers";
+      };
     };
 
-    opengl = {
-      enable = mkEnableOption "enable OpenGL";
+    intel = {
+      enable = mkEnableOption "enable Intel support";
     };
   };
 
   config = with config.tetrago.graphics; mkMerge [
+    ({
+      assertions = [
+        {
+          assertion = nvidia.enable != intel.enable;
+          message = "cannot enable multiple drivers";
+        }
+        {
+          assertion = !(nvidia.enable && nvidia.blacklist);
+          message = "cannot both enable and blacklist NVIDA drivers";
+        }
+      ];
+    })
+
     (mkIf nvidia.enable {
       hardware.nvidia = {
         nvidiaSettings = true;
@@ -31,7 +50,19 @@ in
       services.xserver.videoDrivers = mkForce [ "nvidia" ];
     })
 
-    (mkIf opengl.enable {
+    (mkIf nvidia.blacklist {
+      boot.blacklistedKernelModules = [ "nouveau" "nvidia" ];
+    })
+
+    (mkIf intel.enable {
+      hardware.opengl.extraPackages = with pkgs; [
+        intel-media-driver
+        intel-vaapi-driver
+        libvdpau-va-gl
+      ];
+    })
+
+    (mkIf (intel.enable || nvidia.enable) {
       hardware.opengl = {
         enable = true;
         driSupport = true;
