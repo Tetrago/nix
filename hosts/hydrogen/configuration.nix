@@ -11,6 +11,8 @@
     ../../modules/nixos/home-manager
     ../../modules/nixos
   ];
+  
+  boot.blacklistedKernelModules = [ "mt76x2u" ];
 
   networking = {
     defaultGateway = "192.168.1.1";

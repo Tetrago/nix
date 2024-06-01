@@ -1,5 +1,6 @@
 {
   fetchFromGitHub,
+  gnome-themes-extra,
   gtk-engine-murrine,
   inkscape,
   optipng,
@@ -22,6 +23,7 @@ stdenv.mkDerivation rec {
 
   propagatedUserEnvPkgs = [
     gtk-engine-murrine
+    gnome-themes-extra
   ];
 
   nativeBuildInputs = [

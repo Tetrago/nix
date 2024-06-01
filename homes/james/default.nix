@@ -27,6 +27,10 @@
   home = {
     username = "james";
     homeDirectory = "/home/james";
+    
+    file = {
+      ".sdks/jdk".source = pkgs.jdk;
+    };
 
     packages = with pkgs; [
       p7zip
@@ -40,11 +44,11 @@
       discord
       bottles
       spotify-adblock
-      obs-studio
       obsidian
       imhex
       gnome.file-roller
       aseprite
+      jetbrains.idea-community
 
       libreoffice-qt
       hunspell
@@ -91,6 +95,11 @@
         uosc
         thumbfast
       ];
+    };
+
+    obs-studio = {
+      enable = true;
+      plugins = [ pkgs.obs-studio-plugins.looking-glass-obs ];
     };
 
     ssh = {
