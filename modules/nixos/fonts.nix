@@ -10,7 +10,6 @@ in
 
   config = mkIf config.tetrago.fonts.enable {
     fonts.packages = with pkgs; [
-      corefonts
       noto-fonts
       vistafonts
       (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })

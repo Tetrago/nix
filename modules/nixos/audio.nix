@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkForce;
 in
 {
   options.tetrago.audio = {
@@ -9,9 +9,8 @@ in
   };
 
   config = mkIf config.tetrago.audio.enable {
-    hardware.pulseaudio.enable = false;
     security.rtkit.enable = true;
-    sound.enable = false;
+    sound.enable = mkForce false;
 
     services.pipewire = {
       enable = true;

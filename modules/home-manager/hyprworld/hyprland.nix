@@ -47,6 +47,10 @@ in
         "NIXOS_OZONE_WL,1"
       ];
 
+      debug = {
+        disable_logs = false;
+      };
+
       master = {
         new_is_master = true;
         mfact = 0.5;
@@ -107,13 +111,14 @@ in
         grim = "${pkgs.grim}/bin/grim";
         swappy = "${pkgs.swappy}/bin/swappy";
         find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
-      in with pkgs; [
+      in [
         "$mod, Return, exec, kitty"
         "$mod, C, exec, ${inputs.ags.packages.${pkgs.system}.ags}/bin/ags -b hypr -t system_center"
         "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
         "$mod, W, killactive"
         "$mod, E, exec, ${thunar}"
         "$mod, L, exec, loginctl lock-session"
+        "$mod SHIFT, V, exec, ${cliphist} wipe"
         "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | wofi --dmenu | ${cliphist} decode | wl-copy"
         "$mod, F, togglefloating"
         "CTRL, Home, fullscreen"

@@ -23,6 +23,7 @@ pkgs.mkShell {
   packages = with pkgs; [
     pciutils
     usbutils
+    util-linux
     hwloc
     amdgpu_top
     intel-gpu-tools

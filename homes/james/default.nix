@@ -29,7 +29,7 @@
     homeDirectory = "/home/james";
     
     file = {
-      ".sdks/jdk".source = pkgs.jdk;
+      ".jdk".source = "${pkgs.jdk}/lib/openjdk";
     };
 
     packages = with pkgs; [

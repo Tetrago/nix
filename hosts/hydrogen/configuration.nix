@@ -12,7 +12,10 @@
     ../../modules/nixos
   ];
   
-  boot.blacklistedKernelModules = [ "mt76x2u" ];
+  boot = {
+    blacklistedKernelModules = [ "mt76x2u" ];
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_9;
+  };
 
   networking = {
     defaultGateway = "192.168.1.1";
@@ -48,8 +51,8 @@
 
   services = {
     gvfs.enable = true;
+    hardware.openrgb.enable = true;
     ollama.enable = true;
-    thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
   };
@@ -115,6 +118,10 @@
 
     wayland.windowManager.hyprland.settings.windowrulev2 = [
       "idleinhibit fullscreen,class:^(looking-glass-client)$"
+    ];
+
+    home.packages = with pkgs; [
+      blender
     ];
 
     hyprworld = {
