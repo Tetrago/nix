@@ -129,7 +129,7 @@
       extraVolumeKeys = true;
 
       time = {
-        screen = 15;
+        screen = 0;
         sleep = 0;
       };
 

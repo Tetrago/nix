@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ inputs, lib, pkgs, ... }:
 
 {
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
@@ -17,6 +17,8 @@
       expandtab = true;
       tabstop = 4;
       shiftwidth = 4;
+
+      mousemodel = "extend";
     };
 
     colorschemes.vscode.enable = true;
@@ -44,6 +46,7 @@
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
       (mkAction "-" "Oil")
+      (mkAction "=" "ClangdSwitchSourceHeader")
     ] ++ (lib.attrsets.mapAttrsToList (key: value: {
       mode = [ "n" "x" "o" ];
       inherit key;
@@ -57,7 +60,9 @@
 
     plugins = {
       autoclose.enable = true;
+      auto-session.enable = true;
       barbecue.enable = true;
+      clangd-extensions.enable = true;
       coq-thirdparty.enable = true;
       direnv.enable = true;
       fidget.enable = true;
@@ -65,7 +70,7 @@
       illuminate.enable = true;
       indent-blankline.enable = true;
       lspkind.enable = true;
-      lsp-lines.enable = true;
+      lsp-format.enable = true;
       lualine.enable = true;
       nix.enable = true;
       nvim-colorizer.enable = true;
@@ -132,6 +137,7 @@
           jsonls.enable = true;
           lua-ls.enable = true;
           nil_ls.enable = true;
+          ocamllsp.enable = true;
           taplo.enable = true;
           vhdl-ls.enable = true;
 
@@ -198,7 +204,6 @@
           "typescript"
           "zig"
         ];
-        indent = true;
       };
     };
     

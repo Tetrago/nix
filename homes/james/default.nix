@@ -40,15 +40,20 @@
       eva
       nix-output-monitor
       nvd
+      ctop
+      below
 
       discord
       bottles
       spotify-adblock
       obsidian
       imhex
-      gnome.file-roller
       aseprite
       jetbrains.idea-community
+      godot_4
+      gnome.file-roller
+      gnome.gnome-calendar
+      gnome.gnome-clocks
 
       libreoffice-qt
       hunspell
