@@ -60,7 +60,6 @@
 
     plugins = {
       autoclose.enable = true;
-      auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
       coq-thirdparty.enable = true;
@@ -73,6 +72,7 @@
       lsp-format.enable = true;
       lualine.enable = true;
       nix.enable = true;
+      notify.enable = true;
       nvim-colorizer.enable = true;
       nvim-tree.enable = true;
       oil.enable = true;
@@ -161,20 +161,16 @@
           command_palette = true;
           long_message_to_split = true;
         };
+        lsp.override = {
+          "vim.lsp.util.convert_input_to_markdown_lines" = true;
+          "vim.lsp.util.stylize_markdown" = true;
+        };
       };
 
       telescope = {
         enable = true;
         keymaps = {
           "<C-p>".action = "find_files";
-        };
-      };
-
-      toggleterm = {
-        enable = true;
-        settings = {
-          direction = "float";
-          open_mapping = "[[<C-\\>]]";
         };
       };
 

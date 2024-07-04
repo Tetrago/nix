@@ -29,6 +29,10 @@
 
       "ctrl+shift+5" = "launch --cwd=current --location=vsplit";
       "ctrl+shift+'" = "launch --cwd=current --location=hsplit";
+      "ctrl+shift+enter" = "launch --cwd=current --type=tab";
+
+      "ctrl+\\" = "next_tab";
+      "ctrl+shift+\\" = "previous_tab";
 
       "ctrl+shift+n" = "new_os_window_with_cwd";
     };
