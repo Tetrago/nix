@@ -3,7 +3,7 @@
 let
   inherit (lib) mkEnableOption mkIf mkOption types;
   inherit (lib.lists) allUnique optional optionals;
-  inherit (lib.strings) concatStringsSep concatLines;
+  inherit (lib.strings) concatStringsSep;
 in
 {
   options.tetrago.virtualization = {
@@ -27,6 +27,7 @@ in
         type = with types; listOf ints.positive;
         default = [];
         example = [ 32 ];
+        description = "next power of 2 from (width * height * depth * 2 / 1024 / 1024 + 10) where depth is 4 for sdr and 8 for hdr";
       };
     };
 

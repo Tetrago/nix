@@ -43,7 +43,6 @@
       ctop
       below
 
-      discord
       bottles
       spotify-adblock
       obsidian
