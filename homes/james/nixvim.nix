@@ -41,6 +41,7 @@
       (mkCommand "t" "NvimTreeToggle")
       (mkCommand "g" "Neogit")
       (mkCommand "d" "lua require('dapui').toggle()")
+      (mkCommand "f" "Telescope live_grep")
       (mkAction "<F5>" "DapContinue")
       (mkAction "<F6>" "make")
       (mkAction "<F9>" "DapToggleBreakpoint")
@@ -75,6 +76,7 @@
       lsp-status.enable = true;
       lualine.enable = true;
       neogit.enable = true;
+      neoscroll.enable = true;
       nix.enable = true;
       notify.enable = true;
       nvim-colorizer.enable = true;

@@ -16,11 +16,11 @@
   ];
 
   hyprworld = {
-    wallpaper = "${./wallpaper.png}";
+    wallpaper = "${./files/wallpaper.png}";
   };
 
   colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; }; in lb.colorSchemeFromPicture {
-    path = ./wallpaper.png;
+    path = ./files/wallpaper.png;
     variant = "dark";
   };
 
@@ -30,6 +30,8 @@
     
     file = {
       ".jdk".source = "${pkgs.jdk}/lib/openjdk";
+      ".clang-format".source = ./files/clang-format;
+      ".cmake-format".source = ./files/cmake-format;
     };
 
     packages = with pkgs; [
@@ -48,6 +50,7 @@
       obsidian
       imhex
       aseprite
+      inkscape
       jetbrains.idea-community
       godot_4
       gnome.file-roller
