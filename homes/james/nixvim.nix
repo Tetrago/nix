@@ -21,7 +21,18 @@
       mousemodel = "extend";
     };
 
-    colorschemes.vscode.enable = true;
+    colorschemes.nightfox = {
+      enable = true;
+      flavor = "carbonfox";
+      settings.options = {
+        styles = {
+          comments = "italic";
+          keyword = "bold";
+          types = "italic,bold";
+        };
+      };
+    };
+
     globals.mapleader = " ";
 
     keymaps = let
@@ -41,13 +52,15 @@
       (mkCommand "t" "NvimTreeToggle")
       (mkCommand "g" "Neogit")
       (mkCommand "d" "lua require('dapui').toggle()")
-      (mkCommand "f" "Telescope live_grep")
+      (mkCommand "l" "colorscheme carbonfox")
+      (mkCommand "L" "colorscheme dayfox")
       (mkAction "<F5>" "DapContinue")
       (mkAction "<F6>" "make")
       (mkAction "<F9>" "DapToggleBreakpoint")
       (mkAction "<F10>" "DapStepOver")
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
+      (mkAction "<C-f>" "Telescope live_grep")
       (mkAction "-" "Oil")
       (mkAction "=" "ClangdSwitchSourceHeader")
     ] ++ (lib.attrsets.mapAttrsToList (key: value: {
@@ -68,7 +81,7 @@
       clangd-extensions.enable = true;
       coq-thirdparty.enable = true;
       fidget.enable = true;
-      fugitive.enable = true;
+      gitsigns.enable = true;
       illuminate.enable = true;
       indent-blankline.enable = true;
       lspkind.enable = true;
