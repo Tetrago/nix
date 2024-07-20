@@ -22,7 +22,7 @@
     };
 
     extraConfigLua = ''
-      vim.opt.sessionoptions = "buffers,curdir"
+      vim.opt.sessionoptions = "buffers,curdir,terminal"
     '';
 
     colorschemes.nightfox = {
