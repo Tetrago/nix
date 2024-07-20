@@ -21,6 +21,10 @@
       mousemodel = "extend";
     };
 
+    extraConfigLua = ''
+      vim.opt.sessionoptions = "buffers,curdir"
+    '';
+
     colorschemes.nightfox = {
       enable = true;
       flavor = "carbonfox";
@@ -49,8 +53,6 @@
         action = "<Cmd>${command}<CR>";
       };
     in [
-      (mkCommand "t" "NvimTreeToggle")
-      (mkCommand "g" "Neogit")
       (mkCommand "d" "lua require('dapui').toggle()")
       (mkCommand "l" "colorscheme carbonfox")
       (mkCommand "L" "colorscheme dayfox")
@@ -61,13 +63,15 @@
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
       (mkAction "<C-f>" "Telescope live_grep")
+      (mkAction "<C-m>" "NoNeckPain")
+      (mkAction "<C-t>" "NvimTreeToggle")
+      (mkAction "<C-g>" "Neogit")
       (mkAction "-" "Oil")
       (mkAction "=" "ClangdSwitchSourceHeader")
-    ] ++ (lib.attrsets.mapAttrsToList (key: value: {
+    ] ++ (lib.attrsets.mapAttrsToList (key: action: {
       mode = [ "n" "x" "o" ];
-      inherit key;
       options.silent = true;
-      action = value;
+      inherit action key;
     }) {
       s = "<Plug>(leap-forward)";
       S = "<Plug>(leap-backward)";
@@ -76,7 +80,6 @@
 
     plugins = {
       autoclose.enable = true;
-      auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
       coq-thirdparty.enable = true;
@@ -97,6 +100,20 @@
       oil.enable = true;
       surround.enable = true;
       treesitter-context.enable = true;
+
+      auto-session = {
+        enable = true;
+
+        bypassSessionSaveFileTypes = [
+          ""
+          "no-neck-pain"
+          "neo-tree"
+          "NvimTree"
+          "noice"
+          "notify"
+          "NeogitStatus"
+        ];
+      };
 
       coq-nvim = {
         enable = true;
@@ -221,6 +238,10 @@
       {
         plugin = hex-nvim;
         config = lua "require('hex').setup()";
+      }
+      {
+        plugin = no-neck-pain-nvim;
+        config = lua "require('no-neck-pain').setup({ width = 120 })";
       }
     ];
   };
