@@ -198,6 +198,7 @@
 
       telescope = {
         enable = true;
+        extensions.fzf-native.enable = true;
         keymaps = {
           "<C-p>".action = "find_files";
         };
