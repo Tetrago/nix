@@ -23,6 +23,15 @@
 
     extraConfigLua = ''
       vim.opt.sessionoptions = "buffers,curdir,terminal"
+
+      vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
+        pattern = "*",
+        callback = function()
+          if vim.api.nvim_buf_get_option(0, "buftype") == "nofile" then
+            vim.cmd("wincmd w")
+          end
+        end
+      })
     '';
 
     colorschemes.nightfox = {
