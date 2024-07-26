@@ -27,7 +27,7 @@
       vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
         pattern = "*",
         callback = function()
-          if vim.api.nvim_buf_get_option(0, "buftype") == "nofile" then
+          if vim.api.nvim_buf_get_option(0, "filetype") == "notify" then
             vim.cmd("wincmd w")
           end
         end
@@ -72,7 +72,6 @@
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
       (mkAction "<C-f>" "Telescope live_grep")
-      (mkAction "<C-m>" "NoNeckPain")
       (mkAction "<C-t>" "NvimTreeToggle")
       (mkAction "<C-g>" "Neogit")
       (mkAction "-" "Oil")
@@ -89,6 +88,7 @@
 
     plugins = {
       autoclose.enable = true;
+      auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
       coq-thirdparty.enable = true;
@@ -109,20 +109,6 @@
       oil.enable = true;
       surround.enable = true;
       treesitter-context.enable = true;
-
-      auto-session = {
-        enable = true;
-
-        bypassSessionSaveFileTypes = [
-          ""
-          "no-neck-pain"
-          "neo-tree"
-          "NvimTree"
-          "noice"
-          "notify"
-          "NeogitStatus"
-        ];
-      };
 
       coq-nvim = {
         enable = true;
@@ -248,10 +234,6 @@
       {
         plugin = hex-nvim;
         config = lua "require('hex').setup()";
-      }
-      {
-        plugin = no-neck-pain-nvim;
-        config = lua "require('no-neck-pain').setup({ width = 120 })";
       }
     ];
   };
