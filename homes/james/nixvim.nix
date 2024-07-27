@@ -99,7 +99,6 @@
       auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
-      coq-thirdparty.enable = true;
       fidget.enable = true;
       gitsigns.enable = true;
       illuminate.enable = true;
@@ -117,9 +116,32 @@
       surround.enable = true;
       treesitter-context.enable = true;
 
-      coq-nvim = {
+      cmp = {
         enable = true;
-        settings.auto_start = true;
+        settings = {
+          mapping = {
+            "<C-space>" = "cmp.mapping.complete()";
+            "<C-e>" = "cmp.mapping.close()";
+            "<C-a>" = "cmp.mapping.abort()";
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
+            "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+            "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+          };
+
+          sources = [
+            { name = "path"; }
+            { name = "buffer"; }
+            { name = "dap"; }
+            { name = "nvim_lsp"; }
+            { name = "nvim_lsp_signature_help"; }
+            { name = "treesitter"; }
+          ];
+
+          window = {
+            completion.border = "rounded";
+            documentation.border = "rounded";
+          };
+        };
       };
 
       dap = {
@@ -193,6 +215,7 @@
           long_message_to_split = true;
         };
         lsp.override = {
+          "cmp.entry.get_documentation" = true;
           "vim.lsp.util.convert_input_to_markdown_lines" = true;
           "vim.lsp.util.stylize_markdown" = true;
         };
