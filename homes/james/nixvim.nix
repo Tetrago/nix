@@ -123,18 +123,18 @@
             "<C-space>" = "cmp.mapping.complete()";
             "<C-e>" = "cmp.mapping.close()";
             "<C-a>" = "cmp.mapping.abort()";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
+            "<CR>" = "cmp.mapping.confirm({ select = false })";
             "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
             "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           };
 
           sources = [
-            { name = "path"; }
+            { name = "nvim_lsp_signature_help"; }
+            { name = "nvim_lsp"; }
+            { name = "treesitter"; }
             { name = "buffer"; }
             { name = "dap"; }
-            { name = "nvim_lsp"; }
-            { name = "nvim_lsp_signature_help"; }
-            { name = "treesitter"; }
+            { name = "path"; }
           ];
 
           window = {

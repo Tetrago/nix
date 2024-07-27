@@ -122,6 +122,7 @@
 
     home.packages = with pkgs; [
       blender
+      renderdoc-x11
     ];
 
     hyprworld = {

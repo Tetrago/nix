@@ -9,4 +9,5 @@ in
   spotify-adblock = callPackage ./spotify-adblock.nix {};
   somo = callPackage ./somo.nix {};
   rp = callPackage ./rp.nix {};
+  renderdoc-x11 = callPackage ./renderdoc-x11.nix {};
 }
