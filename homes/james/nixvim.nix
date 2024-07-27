@@ -22,7 +22,7 @@
     };
 
     extraConfigLua = ''
-      vim.opt.sessionoptions = "buffers,curdir,terminal"
+      vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
       vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
         pattern = "*",
@@ -32,6 +32,17 @@
           end
         end
       })
+
+      local darkMode = true
+      vim.keymap.set("n", "<C-g>", function()
+        if darkMode then
+          vim.cmd("colorscheme dayfox")
+        else
+          vim.cmd("colorscheme carbonfox")
+        end
+
+        darkMode = not darkMode
+      end, { silent = true, noremap = true })
     '';
 
     colorschemes.nightfox = {
@@ -63,8 +74,6 @@
       };
     in [
       (mkCommand "d" "lua require('dapui').toggle()")
-      (mkCommand "l" "colorscheme carbonfox")
-      (mkCommand "L" "colorscheme dayfox")
       (mkAction "<F5>" "DapContinue")
       (mkAction "<F6>" "make")
       (mkAction "<F9>" "DapToggleBreakpoint")
@@ -73,7 +82,6 @@
       (mkAction "<F12>" "DapStepOut")
       (mkAction "<C-f>" "Telescope live_grep")
       (mkAction "<C-t>" "NvimTreeToggle")
-      (mkAction "<C-g>" "Neogit")
       (mkAction "-" "Oil")
       (mkAction "=" "ClangdSwitchSourceHeader")
     ] ++ (lib.attrsets.mapAttrsToList (key: action: {
@@ -100,7 +108,6 @@
       lsp-format.enable = true;
       lsp-status.enable = true;
       lualine.enable = true;
-      neogit.enable = true;
       neoscroll.enable = true;
       nix.enable = true;
       notify.enable = true;
