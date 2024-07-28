@@ -106,7 +106,6 @@
       auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
-      fidget.enable = true;
       fugitive.enable = true;
       gitsigns.enable = true;
       illuminate.enable = true;
@@ -116,7 +115,6 @@
       lsp-status.enable = true;
       neoscroll.enable = true;
       nix.enable = true;
-      notify.enable = true;
       nvim-colorizer.enable = true;
       nvim-tree.enable = true;
       oil.enable = true;
@@ -302,12 +300,28 @@
         };
       };
 
+      notify = {
+        enable = true;
+        stages = "static";
+      };
+
       telescope = {
         enable = true;
         extensions.fzf-native.enable = true;
         keymaps = {
           "<C-p>".action = "find_files";
         };
+      };
+
+      transparent = {
+        enable = true;
+        settings.groups = [
+          "StatusLine"
+          "StatusLineNC"
+          "Pmenu"
+          "Float"
+          "NormalFloat"
+        ];
       };
 
       treesitter = {
