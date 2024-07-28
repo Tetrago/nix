@@ -18,6 +18,7 @@
       tabstop = 4;
       shiftwidth = 4;
 
+      fillchars.eob = " ";
       mousemodel = "extend";
     };
 
@@ -74,14 +75,20 @@
       };
     in [
       (mkCommand "d" "lua require('dapui').toggle()")
-      (mkAction "<F5>" "DapContinue")
+
       (mkAction "<F6>" "make")
+
+      (mkAction "<F5>" "DapContinue")
       (mkAction "<F9>" "DapToggleBreakpoint")
       (mkAction "<F10>" "DapStepOver")
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
+
       (mkAction "<C-f>" "Telescope live_grep")
+      (mkAction "<C-i>" "Telescope lsp_references")
+
       (mkAction "<C-t>" "NvimTreeToggle")
+
       (mkAction "-" "Oil")
       (mkAction "=" "ClangdSwitchSourceHeader")
     ] ++ (lib.attrsets.mapAttrsToList (key: action: {
@@ -100,13 +107,13 @@
       barbecue.enable = true;
       clangd-extensions.enable = true;
       fidget.enable = true;
+      fugitive.enable = true;
       gitsigns.enable = true;
       illuminate.enable = true;
       indent-blankline.enable = true;
       lspkind.enable = true;
       lsp-format.enable = true;
       lsp-status.enable = true;
-      lualine.enable = true;
       neoscroll.enable = true;
       nix.enable = true;
       notify.enable = true;
@@ -114,7 +121,6 @@
       nvim-tree.enable = true;
       oil.enable = true;
       surround.enable = true;
-      treesitter-context.enable = true;
 
       cmp = {
         enable = true;
@@ -207,6 +213,81 @@
         };
       };
 
+      lualine = {
+        enable = true;
+
+        theme.__raw = ''(function()
+          local theme = require("lualine.themes.auto")
+
+          theme.normal.c.bg = nil
+          theme.inactive.c.bg = nil
+
+          return theme
+        end)()'';
+
+        componentSeparators = {
+          left = "";
+          right = "";
+        };
+
+        sectionSeparators = {
+          left = "";
+          right = "";
+        };
+
+        sections = {
+          lualine_a = [
+            {
+              name = "mode";
+              separator.left = "";
+
+              padding = {
+                left = 0;
+                right = 2;
+              };
+            }
+          ];
+
+          lualine_b = [ "filename" "branch" ];
+          lualine_c = [ "%=" ];
+
+          lualine_x = [ "fileformat" ];
+          lualine_y = [ "filetype" ];
+
+          lualine_z = [
+            {
+              name = "location";
+              separator.right = "";
+
+              padding = {
+                left = 2;
+                right = 0;
+              };
+            }
+          ];
+        };
+
+        inactiveSections = {
+          lualine_a = [ "" ];
+
+          lualine_b = [
+            {
+              name = "filename";
+
+              separator = {
+                left = "";
+                right = "";
+              };
+            }
+          ];
+
+          lualine_c = [ "" ];
+          lualine_x = [ "" ];
+          lualine_y = [ "" ];
+          lualine_z = [ "" ];
+        };
+      };
+
       noice = {
         enable = true;
         presets = {
@@ -257,13 +338,10 @@
         ];
       };
     };
-    
-    extraPlugins = let
-      lua = src: "lua<<EOF\n${src}\nEOF";
-    in with pkgs.vimPlugins; [
+
+    extraPlugins = [
       {
-        plugin = hex-nvim;
-        config = lua "require('hex').setup()";
+        plugin = pkgs.bg-nvim;
       }
     ];
   };
