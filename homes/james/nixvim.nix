@@ -76,6 +76,9 @@
     in [
       (mkCommand "d" "lua require('dapui').toggle()")
 
+      (mkCommand "xx" "Trouble diagnostics toggle")
+      (mkCommand "xX" "Trouble diagnostics toggle filter.buf=0")
+
       (mkAction "<F6>" "make")
 
       (mkAction "<F5>" "DapContinue")
@@ -87,7 +90,7 @@
       (mkAction "<C-f>" "Telescope live_grep")
       (mkAction "<C-i>" "Telescope lsp_references")
 
-      (mkAction "<C-t>" "NvimTreeToggle")
+      (mkAction "<C-t>" "Neotree position=current")
 
       (mkAction "-" "Oil")
       (mkAction "=" "ClangdSwitchSourceHeader")
@@ -112,13 +115,13 @@
       indent-blankline.enable = true;
       lspkind.enable = true;
       lsp-format.enable = true;
-      lsp-status.enable = true;
       neoscroll.enable = true;
+      neo-tree.enable = true;
       nix.enable = true;
       nvim-colorizer.enable = true;
-      nvim-tree.enable = true;
       oil.enable = true;
       surround.enable = true;
+      trouble.enable = true;
 
       cmp = {
         enable = true;
@@ -182,6 +185,7 @@
       lsp = {
         enable = true;
         inlayHints = true;
+
         servers = {
           clangd.enable = true;
           cmake.enable = true;
@@ -214,19 +218,29 @@
       lualine = {
         enable = true;
 
-        theme.__raw = ''(function()
-          local theme = require("lualine.themes.auto")
+        theme.__raw = ''(
+          function()
+            local theme = require("lualine.themes.auto")
 
-          theme.normal.c.bg = nil
-          theme.inactive.c.bg = nil
+            theme.normal.c.bg = nil
+            theme.inactive.c.bg = nil
 
-          return theme
-        end)()'';
+            return theme
+          end
+        )()'';
 
         componentSeparators = {
           left = "";
           right = "";
         };
+
+        extensions = [
+          "fugitive"
+          "neo-tree"
+          "nvim-dap-ui"
+          "oil"
+          "trouble"
+        ];
 
         sectionSeparators = {
           left = "";
