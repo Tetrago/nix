@@ -73,7 +73,7 @@ BraceWrapping:
   BeforeWhile:     true
   IndentBraces:    false
   SplitEmptyFunction: false
-  SplitEmptyRecord: true
+  SplitEmptyRecord: false
   SplitEmptyNamespace: true
 BreakAfterAttributes: Never
 BreakAfterJavaFieldAnnotations: false

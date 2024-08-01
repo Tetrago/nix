@@ -102,7 +102,14 @@
       s = "<Plug>(leap-forward)";
       S = "<Plug>(leap-backward)";
       gs = "<Plug>(leap-from-window)";
-    });
+    } ++ [
+      {
+        mode = [ "n" "i" ];
+        options.silent = true;
+        key = "<F1>";
+        action = "<Nop>";
+      }
+    ]);
 
     plugins = {
       autoclose.enable = true;
