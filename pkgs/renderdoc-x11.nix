@@ -10,6 +10,6 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     mkdir -p $out/share/applications
     cp ${renderdoc}/share/applications/renderdoc.desktop $out/share/applications/renderdoc-x11.desktop
-    sed -i 's@Exec=.*@Exec=VK_LAYER_PATH=${vulkan-validation-layers}/share/vulkan/explicit_layer.d env -u WAYLAND_DISPLAY ${renderdoc}/bin/qrenderdoc %f@g' $out/share/applications/renderdoc-x11.desktop
+    sed -i 's@Exec=.*@Exec=bash -c "VK_LAYER_PATH=${vulkan-validation-layers}/share/vulkan/explicit_layer.d env -u WAYLAND_DISPLAY ${renderdoc}/bin/qrenderdoc %f"@g' $out/share/applications/renderdoc-x11.desktop
   '';
 }
