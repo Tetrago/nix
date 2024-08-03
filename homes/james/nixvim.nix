@@ -3,9 +3,7 @@
 {
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
 
-  home.packages = with pkgs; [
-    xxd
-  ];
+  home.packages = with pkgs; [ xxd ];
 
   programs.nixvim = {
     enable = true;
@@ -108,14 +106,12 @@
       s = "<Plug>(leap-forward)";
       S = "<Plug>(leap-backward)";
       gs = "<Plug>(leap-from-window)";
-    } ++ [
-      {
-        mode = [ "n" "i" ];
-        options.silent = true;
-        key = "<F1>";
-        action = "<Nop>";
-      }
-    ]);
+    } ++ [{
+      mode = [ "n" "i" ];
+      options.silent = true;
+      key = "<F1>";
+      action = "<Nop>";
+    }]);
 
     plugins = {
       autoclose.enable = true;
@@ -127,7 +123,6 @@
       illuminate.enable = true;
       indent-blankline.enable = true;
       lspkind.enable = true;
-      lsp-format.enable = true;
       neoscroll.enable = true;
       neo-tree.enable = true;
       nix.enable = true;
@@ -144,7 +139,8 @@
             "<C-e>" = "cmp.mapping.close()";
             "<C-a>" = "cmp.mapping.abort()";
             "<CR>" = "cmp.mapping.confirm({ select = false })";
-            "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+            "<S-Tab>" =
+              "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
             "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           };
 
@@ -162,6 +158,30 @@
             documentation.border = "rounded";
           };
         };
+      };
+
+      conform-nvim = {
+        enable = true;
+
+        formattersByFt = {
+          cpp = [ "clang-format" ];
+          cmake = [ "cmake_format" ];
+          nix = [ "nixfmt" ];
+          "_" = [ "trim_whitespace" ];
+        };
+
+        formatters = {
+          nixfmt.command = "${pkgs.nixfmt}/bin/nixfmt";
+          "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
+          "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
+        };
+
+        formatOnSave = {
+          lspFallback = true;
+          timeoutMs = 500;
+        };
+
+        formatAfterSave = { lspFallback = true; };
       };
 
       dap = {
@@ -231,29 +251,24 @@
       lualine = {
         enable = true;
 
-        theme.__raw = ''(
-          function()
-            local theme = require("lualine.themes.auto")
+        theme.__raw = ''
+          (
+                    function()
+                      local theme = require("lualine.themes.auto")
 
-            theme.normal.c.bg = nil
-            theme.inactive.c.bg = nil
+                      theme.normal.c.bg = nil
+                      theme.inactive.c.bg = nil
 
-            return theme
-          end
-        )()'';
+                      return theme
+                    end
+                  )()'';
 
         componentSeparators = {
           left = "";
           right = "";
         };
 
-        extensions = [
-          "fugitive"
-          "neo-tree"
-          "nvim-dap-ui"
-          "oil"
-          "trouble"
-        ];
+        extensions = [ "fugitive" "neo-tree" "nvim-dap-ui" "oil" "trouble" ];
 
         sectionSeparators = {
           left = "";
@@ -261,17 +276,15 @@
         };
 
         sections = {
-          lualine_a = [
-            {
-              name = "mode";
-              separator.left = "";
+          lualine_a = [{
+            name = "mode";
+            separator.left = "";
 
-              padding = {
-                left = 0;
-                right = 2;
-              };
-            }
-          ];
+            padding = {
+              left = 0;
+              right = 2;
+            };
+          }];
 
           lualine_b = [ "filename" "branch" ];
           lualine_c = [ "%=" ];
@@ -279,32 +292,28 @@
           lualine_x = [ "fileformat" ];
           lualine_y = [ "filetype" ];
 
-          lualine_z = [
-            {
-              name = "location";
-              separator.right = "";
+          lualine_z = [{
+            name = "location";
+            separator.right = "";
 
-              padding = {
-                left = 2;
-                right = 0;
-              };
-            }
-          ];
+            padding = {
+              left = 2;
+              right = 0;
+            };
+          }];
         };
 
         inactiveSections = {
           lualine_a = [ "" ];
 
-          lualine_b = [
-            {
-              name = "filename";
+          lualine_b = [{
+            name = "filename";
 
-              separator = {
-                left = "";
-                right = "";
-              };
-            }
-          ];
+            separator = {
+              left = "";
+              right = "";
+            };
+          }];
 
           lualine_c = [ "" ];
           lualine_x = [ "" ];
@@ -335,20 +344,13 @@
       telescope = {
         enable = true;
         extensions.fzf-native.enable = true;
-        keymaps = {
-          "<C-p>".action = "find_files";
-        };
+        keymaps = { "<C-p>".action = "find_files"; };
       };
 
       transparent = {
         enable = true;
-        settings.groups = [
-          "StatusLine"
-          "StatusLineNC"
-          "Pmenu"
-          "Float"
-          "NormalFloat"
-        ];
+        settings.groups =
+          [ "StatusLine" "StatusLineNC" "Pmenu" "Float" "NormalFloat" ];
       };
 
       treesitter = {
@@ -380,10 +382,6 @@
       };
     };
 
-    extraPlugins = [
-      {
-        plugin = pkgs.bg-nvim;
-      }
-    ];
+    extraPlugins = [{ plugin = pkgs.bg-nvim; }];
   };
 }
