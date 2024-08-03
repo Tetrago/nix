@@ -47,35 +47,34 @@
     };
   };
 
-  outputs = { flake-utils, nixpkgs, self, ... }@inputs: let
-    inherit (self) outputs;
-  in {
-    nixosConfigurations = {
-      hydrogen = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs; };
-        system = "x86_64-linux";
-        modules = [ ./hosts/hydrogen/configuration.nix ];
+  outputs = { flake-utils, nixpkgs, self, ... }@inputs:
+    let inherit (self) outputs;
+    in {
+      nixosConfigurations = {
+        hydrogen = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          system = "x86_64-linux";
+          modules = [ ./hosts/hydrogen/configuration.nix ];
+        };
+
+        lithium = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          system = "x86_64-linux";
+          modules = [ ./hosts/lithium/configuration.nix ];
+        };
       };
 
-      lithium = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs; };
-        system = "x86_64-linux";
-        modules = [ ./hosts/lithium/configuration.nix ];
+      overlays = import ./overlays { inherit inputs; };
+
+      devShells."x86_64-linux" = import ./devShells {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [ outputs.overlays.default ];
+          config.allowUnfree = true;
+        };
       };
-    };
 
-    overlays = import ./overlays { inherit inputs; };
-
-    devShells."x86_64-linux" = import ./devShells {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [ outputs.overlays.default ];
-        config.allowUnfree = true;
-      };
+      packages."x86_64-linux" =
+        import ./pkgs { pkgs = nixpkgs.legacyPackages."x86_64-linux"; };
     };
-
-    packages."x86_64-linux" = import ./pkgs {
-      pkgs = nixpkgs.legacyPackages."x86_64-linux";
-    };
-  };
 }

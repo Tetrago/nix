@@ -9,8 +9,7 @@ let
       sha256 = "sha256-XSPaZL0mSGJHUwl+PUQMmrdGjO/k6yUiwaxTAP0vT+c=";
     };
   };
-in
-{
+in {
   programs.vscode = {
     enable = true;
     enableUpdateCheck = false;
@@ -22,7 +21,8 @@ in
       "workbench.startupEditor" = "none";
       "editor.minimap.enabled" = false;
       "editor.fontLigatures" = true;
-      "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Droid Sans Mono', 'monospace', monospace";
+      "editor.fontFamily" =
+        "'JetBrainsMono Nerd Font', 'Droid Sans Mono', 'monospace', monospace";
       "workbench.layoutControl.enabled" = false;
       "terminal.integrated.profiles.linux"."bash" = {
         path = "${pkgs.bashInteractive}/bin/bash";
@@ -30,9 +30,7 @@ in
       };
       "terminal.integrated.defaultProfile.linux" = "bash";
       "explorer.excludeGitIgnore" = true;
-      "[nix]" = {
-        "editor.tabSize" = 2;
-      };
+      "[nix]" = { "editor.tabSize" = 2; };
       "svelte.enable-ts-plugin" = true;
       "files.exclude" = {
         "**/.direnv" = true;

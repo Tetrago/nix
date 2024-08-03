@@ -1,21 +1,12 @@
-{
-  fetchFromGitHub,
-  rustPlatform,
-  openssl,
-  pkg-config
-}:
+{ fetchFromGitHub, rustPlatform, openssl, pkg-config }:
 
 rustPlatform.buildRustPackage rec {
   pname = "somo";
   version = "0.2.0";
 
-  nativeBuildInputs = [
-    pkg-config
-  ];
+  nativeBuildInputs = [ pkg-config ];
 
-  buildInputs = [
-    openssl
-  ];
+  buildInputs = [ openssl ];
 
   src = fetchFromGitHub {
     owner = "theopfr";

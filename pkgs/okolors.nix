@@ -1,7 +1,4 @@
-{
-  fetchFromGitHub,
-  rustPlatform
-}:
+{ fetchFromGitHub, rustPlatform }:
 
 rustPlatform.buildRustPackage rec {
   pname = "okolors";

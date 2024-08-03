@@ -37,7 +37,8 @@
       "ctrl+shift+n" = "new_os_window_with_cwd";
     };
 
-    settings = let colors = config.colorScheme.palette; in {
+    settings = let colors = config.colorScheme.palette;
+    in {
       shell = "${pkgs.bashInteractive}/bin/bash -l";
 
       background_opacity = "0.9";

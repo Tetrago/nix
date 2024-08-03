@@ -13,9 +13,10 @@
   ];
 
   home = {
-    packages = with pkgs; [
-      networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
-    ];
+    packages = with pkgs;
+      [
+        networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
+      ];
   };
 
   services = {

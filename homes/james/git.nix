@@ -7,8 +7,7 @@ let
     /.vscode/
     /result
   '';
-in
-{
+in {
   programs.git = {
     enable = true;
     delta.enable = true;

@@ -4,8 +4,7 @@ let
   inherit (config.hyprworld) time;
 
   iff = value: content: lib.strings.optionalString (value != 0) content;
-in
-{
+in {
   home.file.".config/hypr/hypridle.conf".text = ''
     general {
       lock_cmd = pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock
@@ -15,25 +14,25 @@ in
     }
 
     ${iff time.lock ''
-    listener {
-      timeout = ${toString (time.lock * 60)}
-      on-timeout = loginctl lock-session
-    }
+      listener {
+        timeout = ${toString (time.lock * 60)}
+        on-timeout = loginctl lock-session
+      }
     ''}
 
     ${iff time.screen ''
-    listener {
-      timeout = ${toString (time.screen * 60)}
-      on-timeout = hyprctl dispatch dpms off
-      on-resume = hyprctl dispatch dpms on
-    }
+      listener {
+        timeout = ${toString (time.screen * 60)}
+        on-timeout = hyprctl dispatch dpms off
+        on-resume = hyprctl dispatch dpms on
+      }
     ''}
 
     ${iff time.sleep ''
-    listener {
-      timeout = ${toString (time.sleep * 60)}
-      on-timeout = systemctl suspend
-    }
+      listener {
+        timeout = ${toString (time.sleep * 60)}
+        on-timeout = systemctl suspend
+      }
     ''}
   '';
 

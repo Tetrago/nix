@@ -7,10 +7,7 @@ pkgs.mkShell {
     ghidra
     burpsuite
 
-    (python3.withPackages (p: with p; [
-      pwntools
-      impacket
-    ]))
+    (python3.withPackages (p: with p; [ pwntools impacket ]))
 
     sqlmap
     stegseek

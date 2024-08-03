@@ -11,7 +11,7 @@
     ../../modules/nixos/home-manager
     ../../modules/nixos
   ];
-  
+
   boot = {
     blacklistedKernelModules = [ "mt76x2u" ];
     kernelPackages = pkgs.linuxKernel.packages.linux_6_9;
@@ -29,24 +29,20 @@
   };
 
   services.pipewire.extraConfig.pipewire-pulse."92-low-latency" = {
-    context.modules = [
-      {
-        name = "libpipewire-module-protocol-pulse";
-        args = {
-          pulse = {
-            default.req = "32/48000";
-            min.req = "32/48000";
-            max.req = "32/48000";
-            min.quantum = "32/48000";
-            max.quantum = "32/48000";
-          };
+    context.modules = [{
+      name = "libpipewire-module-protocol-pulse";
+      args = {
+        pulse = {
+          default.req = "32/48000";
+          min.req = "32/48000";
+          max.req = "32/48000";
+          min.quantum = "32/48000";
+          max.quantum = "32/48000";
         };
-      }
-    ];
+      };
+    }];
 
-    stream.properties = {
-      node.latency = "32/48000";
-    };
+    stream.properties = { node.latency = "32/48000"; };
   };
 
   networking = {
@@ -55,12 +51,10 @@
 
     bridges.br0.interfaces = [ "enp5s0" ];
 
-    interfaces.br0.ipv4.addresses = [
-      {
-        address = "192.168.1.111";
-        prefixLength = 24;
-      }
-    ];
+    interfaces.br0.ipv4.addresses = [{
+      address = "192.168.1.111";
+      prefixLength = 24;
+    }];
   };
 
   programs = {
@@ -132,12 +126,7 @@
       cpu = "intel";
       devices.enable = true;
 
-      passthrough = [
-        "10de:2705"
-        "10de:22bb"
-        "144d:a80c"
-        "1b21:2142"
-      ];
+      passthrough = [ "10de:2705" "10de:22bb" "144d:a80c" "1b21:2142" ];
 
       kvmfr = {
         enable = true;
@@ -149,14 +138,10 @@
   home-manager.users.james = { ... }: {
     imports = [ ../../homes/james ];
 
-    wayland.windowManager.hyprland.settings.windowrulev2 = [
-      "idleinhibit fullscreen,class:^(looking-glass-client)$"
-    ];
+    wayland.windowManager.hyprland.settings.windowrulev2 =
+      [ "idleinhibit fullscreen,class:^(looking-glass-client)$" ];
 
-    home.packages = with pkgs; [
-      blender
-      renderdoc-x11
-    ];
+    home.packages = with pkgs; [ blender renderdoc-x11 ];
 
     hyprworld = {
       bluetooth = true;
@@ -207,21 +192,12 @@
     programs = {
       looking-glass-client = {
         enable = true;
-        settings = {
-          app = {
-            shmFile = "/dev/kvmfr0";
-          };
-        };
+        settings = { app = { shmFile = "/dev/kvmfr0"; }; };
       };
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    curl
-    git
-    neovim
-    unzip
-  ];
+  environment.systemPackages = with pkgs; [ curl git neovim unzip ];
 
   system.stateVersion = "23.11";
 }

@@ -1,8 +1,4 @@
-{
-  fetchFromGitHub,
-  rustPlatform,
-  spotify
-}:
+{ fetchFromGitHub, rustPlatform, spotify }:
 
 let
   spotify-adblock = rustPlatform.buildRustPackage rec {
@@ -34,8 +30,7 @@ let
       install -D --mode=644 --strip target/release/libspotifyadblock.so $out/lib/libspotifyadblock.so
     '';
   };
-in
-spotify.overrideAttrs (final: prev: {
+in spotify.overrideAttrs (final: prev: {
   postInstall = (prev.postInstall or "") + ''
     wrapProgram $out/bin/spotify \
       --set LD_PRELOAD "${spotify-adblock}/lib/libspotifyadblock.so"

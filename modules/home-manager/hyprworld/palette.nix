@@ -6,9 +6,7 @@ let
 
     dontUnpack = true;
 
-    nativeBuildInputs = with pkgs; [
-      okolors
-    ];
+    nativeBuildInputs = with pkgs; [ okolors ];
 
     buildPhase = ''
       (echo [; okolors ${config.hyprworld.wallpaper} -w 0 -k 1 -l 10,20,30,50,80 | tail -n +2 | sed -e 's/\(.*\)/"\1"/'; echo ]) > ./default.nix

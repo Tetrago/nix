@@ -1,14 +1,5 @@
-{
-  fetchFromGitHub,
-  gnome-themes-extra,
-  gtk-engine-murrine,
-  inkscape,
-  optipng,
-  sassc,
-  stdenv,
-  highlight-color ? "123456",
-  highlight-text-color ? "987654"
-}:
+{ fetchFromGitHub, gnome-themes-extra, gtk-engine-murrine, inkscape, optipng
+, sassc, stdenv, highlight-color ? "123456", highlight-text-color ? "987654" }:
 
 stdenv.mkDerivation rec {
   pname = "flat-remix-gtk-variant";
@@ -21,16 +12,9 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-z/ILu8UPbyEN/ejsxZ3CII3y3dI04ZNa1i6nyjKFis8=";
   };
 
-  propagatedUserEnvPkgs = [
-    gtk-engine-murrine
-    gnome-themes-extra
-  ];
+  propagatedUserEnvPkgs = [ gtk-engine-murrine gnome-themes-extra ];
 
-  nativeBuildInputs = [
-    inkscape
-    optipng
-    sassc
-  ];
+  nativeBuildInputs = [ inkscape optipng sassc ];
 
   buildPhase = ''
     ./generate-color-theme.sh variant '#${highlight-color}' '#${highlight-text-color}'

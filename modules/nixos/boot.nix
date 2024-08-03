@@ -1,9 +1,7 @@
 { config, inputs, lib, ... }:
 
-let
-  inherit (lib) types mkOption mkEnableOption mkForce mkIf;
-in
-{
+let inherit (lib) types mkOption mkEnableOption mkForce mkIf;
+in {
   imports = [
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.grub2-themes.nixosModules.default
@@ -28,50 +26,50 @@ in
     };
   };
 
-  config = with config.tetrago.boot; mkIf enable {
-    assertions = [
-      {
+  config = with config.tetrago.boot;
+    mkIf enable {
+      assertions = [{
         assertion = !(loader == "grub" && secureboot.enable);
         message = "secureboot requires systemd-boot";
-      }
-    ];
+      }];
 
-    boot = {
-      loader = {
-        efi = {
-          canTouchEfiVariables = true;
-          efiSysMountPoint = "/boot/efi";
+      boot = {
+        loader = {
+          efi = {
+            canTouchEfiVariables = true;
+            efiSysMountPoint = "/boot/efi";
+          };
+
+          systemd-boot = {
+            enable = mkForce
+              (if loader == "systemd" then !secureboot.enable else false);
+            configurationLimit = 15;
+          };
+
+          grub = {
+            enable = mkForce (loader == "grub");
+            configurationLimit = 15;
+            efiSupport = true;
+            device = "nodev";
+          };
+
+          grub2-theme = mkIf (loader == "grub") {
+            enable = true;
+            screen = "2k";
+          };
+
+          timeout = mkIf skipBootMenu 0;
         };
 
-        systemd-boot = {
-          enable = mkForce (if loader == "systemd" then !secureboot.enable else false);
-          configurationLimit = 15;
-        };
-
-        grub = {
-          enable = mkForce (loader == "grub");
-          configurationLimit = 15;
-          efiSupport = true;
-          device = "nodev";
-        };
-
-        grub2-theme = mkIf (loader == "grub") {
+        lanzaboote = mkIf secureboot.enable {
           enable = true;
-          screen = "2k";
+          pkiBundle = "/etc/secureboot";
         };
 
-        timeout = mkIf skipBootMenu 0;
-      };
-
-      lanzaboote = mkIf secureboot.enable {
-        enable = true;
-        pkiBundle = "/etc/secureboot";
-      };
-
-      initrd.systemd = {
-        enable = true;
-        enableTpm2 = secureboot.enable && secureboot.enableTpm2;
+        initrd.systemd = {
+          enable = true;
+          enableTpm2 = secureboot.enable && secureboot.enableTpm2;
+        };
       };
     };
-  };
 }

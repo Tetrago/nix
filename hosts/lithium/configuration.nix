@@ -99,25 +99,18 @@
     hyprworld = {
       bluetooth = true;
 
-      monitors = [
-        {
-          name = "eDP-1";
-          resolution = {
-            width = 2256;
-            height = 1504;
-          };
-          scale = 1.3333;
-        }
-      ];
+      monitors = [{
+        name = "eDP-1";
+        resolution = {
+          width = 2256;
+          height = 1504;
+        };
+        scale = 1.3333;
+      }];
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    curl
-    git
-    neovim
-    unzip
-  ];
+  environment.systemPackages = with pkgs; [ curl git neovim unzip ];
 
   system.stateVersion = "23.11";
 }

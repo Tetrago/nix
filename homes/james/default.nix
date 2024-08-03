@@ -15,11 +15,10 @@
     ./nixvim.nix
   ];
 
-  hyprworld = {
-    wallpaper = "${./files/wallpaper.png}";
-  };
+  hyprworld = { wallpaper = "${./files/wallpaper.png}"; };
 
-  colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; }; in lb.colorSchemeFromPicture {
+  colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; };
+  in lb.colorSchemeFromPicture {
     path = ./files/wallpaper.png;
     variant = "dark";
   };
@@ -27,7 +26,7 @@
   home = {
     username = "james";
     homeDirectory = "/home/james";
-    
+
     file = {
       ".jdk".source = "${pkgs.jdk}/lib/openjdk";
       ".clang-format".source = ./files/clang-format;
@@ -97,11 +96,7 @@
         border = "no";
       };
 
-      scripts  = with pkgs.mpvScripts; [
-        mpris
-        uosc
-        thumbfast
-      ];
+      scripts = with pkgs.mpvScripts; [ mpris uosc thumbfast ];
     };
 
     obs-studio = {
@@ -120,12 +115,8 @@
 
   xdg = {
     mime.enable = true;
-    mimeApps.defaultApplications = {
-      "application/pdf" = "zathura.desktop";
-    };
+    mimeApps.defaultApplications = { "application/pdf" = "zathura.desktop"; };
   };
 
-  services = {
-    easyeffects.enable = true;
-  };
+  services = { easyeffects.enable = true; };
 }

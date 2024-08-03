@@ -16,8 +16,7 @@ let
     #!/usr/bin/env bash
     ${pkgs.fd}/bin/fd "^nvme" /sys/block/ | xargs -I{} sh -c "echo -n '{}  '; cat {}/device/address"
   '';
-in
-pkgs.mkShell {
+in pkgs.mkShell {
   name = "dev";
 
   packages = with pkgs; [

@@ -5,13 +5,9 @@ let
 
   resolutionType = types.submodule {
     options = {
-      width = mkOption {
-        type = types.ints.positive;
-      };
+      width = mkOption { type = types.ints.positive; };
 
-      height = mkOption {
-        type = types.ints.positive;
-      };
+      height = mkOption { type = types.ints.positive; };
 
       refreshRate = mkOption {
         type = with types; nullOr ints.positive;
@@ -68,8 +64,7 @@ let
       };
     };
   };
-in
-{
+in {
   options.hyprworld = {
     bluetooth = mkOption {
       type = types.bool;
@@ -90,26 +85,30 @@ in
 
     extraVolumeKeys = mkOption {
       type = types.bool;
-      description = "binds F10, F11, and F12 to mute, increase volume, and decrease volume respectively";
+      description =
+        "binds F10, F11, and F12 to mute, increase volume, and decrease volume respectively";
       default = false;
     };
 
     time = {
       lock = mkOption {
         type = types.ints.unsigned;
-        description = "minutes of inactivity until the screen locks, or zero to disable";
+        description =
+          "minutes of inactivity until the screen locks, or zero to disable";
         default = 5;
       };
 
       screen = mkOption {
         type = types.ints.unsigned;
-        description = "minutes of inactivity until the screen turns off, or zero to disable";
+        description =
+          "minutes of inactivity until the screen turns off, or zero to disable";
         default = 10;
       };
 
       sleep = mkOption {
         type = types.ints.unsigned;
-        description = "minutes of inactivity until the system suspend, or zero to disable";
+        description =
+          "minutes of inactivity until the system suspend, or zero to disable";
         default = 15;
       };
     };

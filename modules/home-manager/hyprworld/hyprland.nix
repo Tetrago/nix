@@ -4,26 +4,41 @@ let
   inherit (lib.strings) optionalString;
   inherit (lib.lists) flatten optional optionals;
 
-  monitorToString = m: if !m.enable then "${m.name},disable" else let
-    refreshRate = optionalString (m.resolution != null && m.resolution.refreshRate != null) "@${toString m.resolution.refreshRate}";
-    resolution = if m.resolution == null then "preferred" else "${toString m.resolution.width}x${toString m.resolution.height}${refreshRate}";
-    position = if m.position == null then "auto" else "${toString m.position.x}x${toString m.position.y}";
-    scale = if m.scale == null then "auto" else "${toString m.scale}";
-  in "${m.name},${resolution},${position},${scale}";
+  monitorToString = m:
+    if !m.enable then
+      "${m.name},disable"
+    else
+      let
+        refreshRate = optionalString
+          (m.resolution != null && m.resolution.refreshRate != null)
+          "@${toString m.resolution.refreshRate}";
+        resolution = if m.resolution == null then
+          "preferred"
+        else
+          "${toString m.resolution.width}x${
+            toString m.resolution.height
+          }${refreshRate}";
+        position = if m.position == null then
+          "auto"
+        else
+          "${toString m.position.x}x${toString m.position.y}";
+        scale = if m.scale == null then "auto" else "${toString m.scale}";
+      in "${m.name},${resolution},${position},${scale}";
 
-  monitorToWorkspace = m: optional (m.workspace != null) "${toString m.workspace},monitor:${m.name},default:true";
+  monitorToWorkspace = m:
+    optional (m.workspace != null)
+    "${toString m.workspace},monitor:${m.name},default:true";
 
-  monitors = optionals (config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null) (map monitorToString config.hyprworld.monitors);
-  workspaces = optionals (config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null) (flatten (map monitorToWorkspace config.hyprworld.monitors));
-in
-{
-  imports = [
-    inputs.hyprland.homeManagerModules.default
-  ];
+  monitors = optionals (config.hyprworld.monitors != null
+    && config.hyprworld.additionalMonitors == null)
+    (map monitorToString config.hyprworld.monitors);
+  workspaces = optionals (config.hyprworld.monitors != null
+    && config.hyprworld.additionalMonitors == null)
+    (flatten (map monitorToWorkspace config.hyprworld.monitors));
+in {
+  imports = [ inputs.hyprland.homeManagerModules.default ];
 
-  home.packages = with pkgs; [
-    wl-clipboard
-  ];
+  home.packages = with pkgs; [ wl-clipboard ];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -47,9 +62,7 @@ in
         "NIXOS_OZONE_WL,1"
       ];
 
-      debug = {
-        disable_logs = false;
-      };
+      debug = { disable_logs = false; };
 
       master = {
         new_status = "master";
@@ -71,7 +84,7 @@ in
         "col.inactive_border" = "rgba(4b4e69aa)";
         layout = "master";
       };
-      
+
       gestures = {
         "workspace_swipe" = true;
         "workspace_swipe_create_new" = false;
@@ -83,7 +96,7 @@ in
         blur.size = 3;
         blur.passes = 1;
         drop_shadow = true;
-        shadow_range = 4; 
+        shadow_range = 4;
         shadow_render_power = 3;
         "col.shadow" = "rgba(1a1a1aee)";
       };
@@ -100,7 +113,7 @@ in
 
       "$mod" = "SUPER";
 
-      bind = let 
+      bind = let
         hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
         thunar = "${pkgs.xfce.thunar}/bin/thunar";
         cliphist = "${pkgs.cliphist}/bin/cliphist";
@@ -110,10 +123,13 @@ in
         slurp = "${pkgs.slurp}/bin/slurp";
         grim = "${pkgs.grim}/bin/grim";
         swappy = "${pkgs.swappy}/bin/swappy";
-        find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
+        find = pkgs.writeShellScriptBin "findWindows" ''
+          hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
       in [
         "$mod, Return, exec, kitty"
-        "$mod, C, exec, ${inputs.ags.packages.${pkgs.system}.ags}/bin/ags -b hypr -t system_center"
+        "$mod, C, exec, ${
+          inputs.ags.packages.${pkgs.system}.ags
+        }/bin/ags -b hypr -t system_center"
         "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
         "$mod, W, killactive"
         "$mod, E, exec, ${thunar}"
@@ -124,9 +140,12 @@ in
         "CTRL, Home, fullscreen"
         "$mod, Space, exec, pidof wofi || wofi --show drun"
         "$mod, Tab, hyprexpo:expo, toggle"
-        ", Print, exec, pidof ${slurp} || ${grim} -g \"$(${slurp} -o -r)\" - | ${swappy} -f -"
-        "ALT, Print, exec, pidof ${slurp} || ${grim} -g \"$(${find}/bin/findWindows)\" - | ${swappy} -f -"
-        "$mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g \"$(${slurp})\" - | ${swappy} -f -"
+        ''
+          , Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
+        ''
+          ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
+        ''
+          $mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
         "$mod SHIFT, Z, movetoworkspace, special"
         "$mod, Z, togglespecialworkspace"
         "$mod SHIFT, Space, fullscreen, 1"
@@ -167,10 +186,7 @@ in
         ", XF86AudioNext, exec, ${playerctl} next"
       ];
 
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
+      bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
 
       binde = lib.mkMerge [
         ([
@@ -210,9 +226,8 @@ in
       enable = true;
       variables = [ "--all" ];
     };
-    
-    plugins = with inputs.hyprland-plugins.packages.${pkgs.system}; [
-      hyprexpo
-    ];
+
+    plugins = with inputs.hyprland-plugins.packages.${pkgs.system};
+      [ hyprexpo ];
   };
 }

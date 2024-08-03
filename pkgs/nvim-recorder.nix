@@ -1,7 +1,4 @@
-{
-  fetchFromGitHub,
-  vimUtils
-}:
+{ fetchFromGitHub, vimUtils }:
 
 vimUtils.buildVimPlugin rec {
   pname = "nvim-recorder";
