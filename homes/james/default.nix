@@ -12,6 +12,7 @@
     ./firefox.nix
     ./git.nix
     ./kitty.nix
+    ./media.nix
     ./nixvim.nix
   ];
 
@@ -77,28 +78,6 @@
       nix-direnv.enable = true;
     };
 
-    feh = {
-      enable = true;
-
-      buttons = {
-        prev_img = "";
-        next_img = "";
-        zoom_in = 4;
-        zoom_out = 5;
-      };
-    };
-
-    mpv = {
-      enable = true;
-
-      config = {
-        osd-bar = "no";
-        border = "no";
-      };
-
-      scripts = with pkgs.mpvScripts; [ mpris uosc thumbfast ];
-    };
-
     obs-studio = {
       enable = true;
       plugins = [ pkgs.obs-studio-plugins.looking-glass-obs ];
@@ -110,12 +89,6 @@
     };
 
     home-manager.enable = true;
-    zathura.enable = true;
-  };
-
-  xdg = {
-    mime.enable = true;
-    mimeApps.defaultApplications = { "application/pdf" = "zathura.desktop"; };
   };
 
   services = { easyeffects.enable = true; };
