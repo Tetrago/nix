@@ -11,6 +11,7 @@
     ./hyprland.nix
     ./networking.nix
     ./plymouth.nix
+    ./printing.nix
     ./steam.nix
     ./users.nix
     ./virtualization.nix

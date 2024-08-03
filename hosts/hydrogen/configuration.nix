@@ -97,6 +97,7 @@
     fonts.enable = true;
     greetd.enable = true;
     hyprland.enable = true;
+    printing.enable = true;
 
     boot = {
       enable = true;
