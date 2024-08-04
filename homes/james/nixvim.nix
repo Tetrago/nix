@@ -288,7 +288,7 @@
           }];
 
           lualine_b = [ "filename" "branch" ];
-          lualine_c = [ "%=" ];
+          lualine_c = [ "diagnostics" "%=" ];
 
           lualine_x = [ "fileformat" ];
           lualine_y = [ "filetype" ];

@@ -56,7 +56,6 @@
       gnome.file-roller
       gnome.gnome-calendar
       gnome.gnome-clocks
-      gnome.gnome-weather
 
       libreoffice-qt
       hunspell
