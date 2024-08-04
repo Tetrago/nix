@@ -91,7 +91,8 @@
       (mkAction "<F11>" "DapStepInto")
       (mkAction "<F12>" "DapStepOut")
 
-      (mkAction "<C-f>" "Telescope live_grep")
+      (mkAction "<C-f>" "Telescope current_buffer_fuzzy_find")
+      (mkAction "<C-k>" "Telescope live_grep")
       (mkAction "<C-i>" "Telescope lsp_references")
 
       (mkAction "<C-t>" "Neotree position=current")
