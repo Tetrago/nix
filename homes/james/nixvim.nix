@@ -1,9 +1,8 @@
 { inputs, lib, pkgs, ... }:
 
-{
+let inherit (lib) genAttrs mapAttrsToList;
+in {
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
-
-  home.packages = with pkgs; [ xxd ];
 
   programs.nixvim = {
     enable = true;
@@ -21,7 +20,7 @@
     };
 
     extraConfigLua = ''
-      vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+      vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions,options"
 
       vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
         pattern = "*",
@@ -47,6 +46,74 @@
       for type, icon in pairs(signs) do
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+      end
+
+      local dap, dapui = require("dap"), require("dapui")
+      dap.listeners.before.attach.dapui_config = dapui.open
+      dap.listeners.before.launch.dapui_config = dapui.open
+      dap.listeners.before.event_terminated.dapui_config = dapui.close
+      dap.listeners.before.event_exited.dapui_config = dapui.close
+
+      if not vim.g.debug then
+        vim.g.debug = {
+          program = nil,
+          cwd = "''${workspaceFolder}"
+        }
+      end
+
+      local function prompt_with(title, command, callback)
+        local pickers = require("telescope.pickers")
+        local finders = require("telescope.finders")
+        local conf = require("telescope.config").values
+        local actions = require("telescope.actions")
+        local action_state = require("telescope.actions.state")
+
+        pickers.new({}, {
+          prompt_title = "Working Directory",
+          finder = finders.new_oneshot_job({ "fd", "--type", "d", "--color", "never" }, {}),
+          sorter = conf.file_sorter({}),
+          attach_mappings = function(prompt_bufnr, map)
+            actions.select_default:replace(function()
+              actions.close(prompt_bufnr)
+              local selection = action_state.get_selected_entry()
+              if selection then callback(selection[1]) end
+            end)
+
+            return true
+          end
+        }):find()
+      end
+
+      local debug_options = {
+        ["Set program"] = function()
+          prompt_with("Program", { "fd", "--type", "f", "--color", "never" }, function(selection)
+            vim.g.debug.program = selection
+          end)
+        end,
+        ["Set working directory"] = function()
+          prompt_with("Working Directory", { "fd", "--type", "f", "--color", "never" }, function(selection)
+            vim.g.debug.cwd = selection
+          end)
+        end,
+        ["Clear working directory"] = function()
+          vim.g.debug.cwd = "''${workspaceFolder}"
+        end
+      }
+
+      function open_debug_options()
+        local options = {}
+
+        for k, _ in pairs(debug_options) do
+          options[#options + 1] = k
+        end
+
+        vim.ui.select(options, {
+          prompt = "Debug Options"
+        }, function(opt)
+          if opt then
+            options[opt]()
+          end
+        end)
       end
     '';
 
@@ -79,9 +146,10 @@
       };
     in [
       (mkCommand "d" "lua require('dapui').toggle()")
+      (mkCommand "D" "lua open_debug_options()")
 
-      (mkCommand "xx" "Trouble diagnostics toggle")
-      (mkCommand "xX" "Trouble diagnostics toggle filter.buf=0")
+      (mkCommand "x" "Trouble diagnostics toggle")
+      (mkCommand "X" "Trouble diagnostics toggle filter.buf=0")
 
       (mkAction "<F6>" "make")
 
@@ -99,7 +167,7 @@
 
       (mkAction "-" "Oil")
       (mkAction "=" "ClangdSwitchSourceHeader")
-    ] ++ (lib.attrsets.mapAttrsToList (key: action: {
+    ] ++ (mapAttrsToList (key: action: {
       mode = [ "n" "x" "o" ];
       options.silent = true;
       inherit action key;
@@ -116,9 +184,9 @@
 
     plugins = {
       autoclose.enable = true;
-      auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
+      dressing.enable = true;
       fugitive.enable = true;
       gitsigns.enable = true;
       illuminate.enable = true;
@@ -131,6 +199,13 @@
       oil.enable = true;
       surround.enable = true;
       trouble.enable = true;
+
+      auto-session = {
+        enable = true;
+        extraOptions = {
+          pre_save_cmds = [{ __raw = ''require("dapui").close''; }];
+        };
+      };
 
       cmp = {
         enable = true;
@@ -187,28 +262,35 @@
 
       dap = {
         enable = true;
-        adapters.executables = let
+
+        adapters.executables = {
           gdb = {
-            command = "gdb";
+            command = "${pkgs.gdb}/bin/gdb";
             args = [ "-i" "dap" ];
           };
-        in {
-          c = gdb;
-          cpp = gdb;
-          zig = gdb;
         };
+
+        configurations = genAttrs [ "c" "cpp" "zig" ] (_: [{
+          name = "Launch";
+          request = "launch";
+          program.__raw = "function() return vim.g.debug.program end";
+          cwd.__raw = "function() return vim.g.debug.cwd end";
+          type = "gdb";
+          stopOnEntry = false;
+        }]);
+
         extensions = {
           dap-ui.enable = true;
           dap-virtual-text.enable = true;
         };
-        signs.dapBreakpoint.text = "•";
-        extensionConfigLua = ''
-          local dap, dapui = require("dap"), require("dapui")
-          dap.listeners.before.attach.dapui_config = dapui.open
-          dap.listeners.before.launch.dapui_config = dapui.open
-          dap.listeners.before.event_terminated.dapui_config = dapui.close
-          dap.listeners.before.event_exited.dapui_config = dapui.close
-        '';
+
+        signs = {
+          dapBreakpoint.text = "•";
+          dapStopped = {
+            text = "•";
+            texthl = "DiagnosticError";
+          };
+        };
       };
 
       leap = {
@@ -253,23 +335,24 @@
         enable = true;
 
         theme.__raw = ''
-          (
-                    function()
-                      local theme = require("lualine.themes.auto")
+          (function()
+              local theme = require("lualine.themes.auto")
 
-                      theme.normal.c.bg = nil
-                      theme.inactive.c.bg = nil
+              theme.normal.c.bg = nil
+              theme.inactive.c.bg = nil
 
-                      return theme
-                    end
-                  )()'';
+              return theme
+            end
+          )()
+        '';
 
         componentSeparators = {
           left = "";
           right = "";
         };
 
-        extensions = [ "fugitive" "neo-tree" "nvim-dap-ui" "oil" "trouble" ];
+        extensions =
+          [ "fugitive" "neo-tree" "nvim-dap-ui" "oil" "trouble" "overseer" ];
 
         sectionSeparators = {
           left = "";
@@ -288,7 +371,7 @@
           }];
 
           lualine_b = [ "filename" "branch" ];
-          lualine_c = [ "diagnostics" "%=" ];
+          lualine_c = [ "diagnostics" "%=" "overseer" ];
 
           lualine_x = [ "fileformat" ];
           lualine_y = [ "filetype" ];
@@ -325,11 +408,13 @@
 
       noice = {
         enable = true;
+
         presets = {
           bottom_search = true;
           command_palette = true;
           long_message_to_split = true;
         };
+
         lsp.override = {
           "cmp.entry.get_documentation" = true;
           "vim.lsp.util.convert_input_to_markdown_lines" = true;
@@ -344,7 +429,12 @@
 
       telescope = {
         enable = true;
-        extensions.fzf-native.enable = true;
+
+        extensions = {
+          fzf-native.enable = true;
+          media-files.enable = true;
+        };
+
         keymaps = { "<C-p>".action = "find_files"; };
       };
 
