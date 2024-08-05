@@ -20,7 +20,7 @@ in {
     };
 
     extraConfigLua = ''
-      vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions,options"
+      vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
       vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
         pattern = "*",
@@ -53,68 +53,7 @@ in {
       dap.listeners.before.launch.dapui_config = dapui.open
       dap.listeners.before.event_terminated.dapui_config = dapui.close
       dap.listeners.before.event_exited.dapui_config = dapui.close
-
-      if not vim.g.debug then
-        vim.g.debug = {
-          program = nil,
-          cwd = "''${workspaceFolder}"
-        }
-      end
-
-      local function prompt_with(title, command, callback)
-        local pickers = require("telescope.pickers")
-        local finders = require("telescope.finders")
-        local conf = require("telescope.config").values
-        local actions = require("telescope.actions")
-        local action_state = require("telescope.actions.state")
-
-        pickers.new({}, {
-          prompt_title = "Working Directory",
-          finder = finders.new_oneshot_job({ "fd", "--type", "d", "--color", "never" }, {}),
-          sorter = conf.file_sorter({}),
-          attach_mappings = function(prompt_bufnr, map)
-            actions.select_default:replace(function()
-              actions.close(prompt_bufnr)
-              local selection = action_state.get_selected_entry()
-              if selection then callback(selection[1]) end
-            end)
-
-            return true
-          end
-        }):find()
-      end
-
-      local debug_options = {
-        ["Set program"] = function()
-          prompt_with("Program", { "fd", "--type", "f", "--color", "never" }, function(selection)
-            vim.g.debug.program = selection
-          end)
-        end,
-        ["Set working directory"] = function()
-          prompt_with("Working Directory", { "fd", "--type", "f", "--color", "never" }, function(selection)
-            vim.g.debug.cwd = selection
-          end)
-        end,
-        ["Clear working directory"] = function()
-          vim.g.debug.cwd = "''${workspaceFolder}"
-        end
-      }
-
-      function open_debug_options()
-        local options = {}
-
-        for k, _ in pairs(debug_options) do
-          options[#options + 1] = k
-        end
-
-        vim.ui.select(options, {
-          prompt = "Debug Options"
-        }, function(opt)
-          if opt then
-            options[opt]()
-          end
-        end)
-      end
+      require("dap.ext.vscode").load_launchjs()
     '';
 
     colorschemes.nightfox = {
@@ -146,7 +85,8 @@ in {
       };
     in [
       (mkCommand "d" "lua require('dapui').toggle()")
-      (mkCommand "D" "lua open_debug_options()")
+      (mkCommand "o" "OverseerToggle")
+      (mkCommand "r" "OverseerRun")
 
       (mkCommand "x" "Trouble diagnostics toggle")
       (mkCommand "X" "Trouble diagnostics toggle filter.buf=0")
@@ -203,7 +143,41 @@ in {
       auto-session = {
         enable = true;
         extraOptions = {
-          pre_save_cmds = [{ __raw = ''require("dapui").close''; }];
+          pre_save_cmds = [
+            { __raw = ''require("dapui").close''; }
+            {
+              __raw = ''
+                function()
+                  require("overseer").save_task_bundle(
+                    vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                    nil,
+                    { on_conflict = "overwrite" }
+                  )
+                end
+              '';
+            }
+          ];
+
+          pre_restore_cmds = [{
+            __raw = ''
+              function()
+                for _, task in ipairs(require("overseer").list_tasks({})) do
+                  task:dispose(true)
+                end
+              end
+            '';
+          }];
+
+          post_restore_cmds = [{
+            __raw = ''
+              function()
+                require("overseer").load_task_bundle(
+                  vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                  { ignore_missing = true }
+                )
+              end
+            '';
+          }];
         };
       };
 
@@ -263,21 +237,16 @@ in {
       dap = {
         enable = true;
 
-        adapters.executables = {
+        adapters.executables = let
           gdb = {
             command = "${pkgs.gdb}/bin/gdb";
             args = [ "-i" "dap" ];
           };
+        in {
+          c = gdb;
+          cpp = gdb;
+          zig = gdb;
         };
-
-        configurations = genAttrs [ "c" "cpp" "zig" ] (_: [{
-          name = "Launch";
-          request = "launch";
-          program.__raw = "function() return vim.g.debug.program end";
-          cwd.__raw = "function() return vim.g.debug.cwd end";
-          type = "gdb";
-          stopOnEntry = false;
-        }]);
 
         extensions = {
           dap-ui.enable = true;
@@ -371,7 +340,7 @@ in {
           }];
 
           lualine_b = [ "filename" "branch" ];
-          lualine_c = [ "diagnostics" "%=" "overseer" ];
+          lualine_c = [ "diagnostics" "%=" ];
 
           lualine_x = [ "fileformat" ];
           lualine_y = [ "filetype" ];
@@ -473,6 +442,18 @@ in {
       };
     };
 
-    extraPlugins = [{ plugin = pkgs.bg-nvim; }];
+    extraPlugins = let
+      lua = src: ''
+        lua<<EOF
+        ${src}
+        EOF
+      '';
+    in [
+      { plugin = pkgs.bg-nvim; }
+      {
+        plugin = pkgs.vimPlugins.overseer-nvim;
+        config = lua ''require("overseer").setup({})'';
+      }
+    ];
   };
 }
