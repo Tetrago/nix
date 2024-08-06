@@ -1,11 +1,14 @@
 { inputs, lib, pkgs, ... }:
 
-let inherit (lib) genAttrs mapAttrsToList;
+let
+  inherit (lib) mapAttrsToList;
+  inherit (lib.strings) concatStringsSep;
 in {
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
 
   programs.nixvim = {
     enable = true;
+    withRuby = false;
 
     opts = {
       number = true;
@@ -17,11 +20,22 @@ in {
 
       fillchars.eob = " ";
       mousemodel = "extend";
+
+      sessionoptions = concatStringsSep "," [
+        "blank"
+        "buffers"
+        "curdir"
+        "folds"
+        "help"
+        "tabpages"
+        "winsize"
+        "winpos"
+        "terminal"
+        "localoptions"
+      ];
     };
 
     extraConfigLua = ''
-      vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
       vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
         pattern = "*",
         callback = function()
@@ -47,7 +61,9 @@ in {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
       end
+    '';
 
+    extraConfigLuaPost = ''
       local dap, dapui = require("dap"), require("dapui")
       dap.listeners.before.attach.dapui_config = dapui.open
       dap.listeners.before.launch.dapui_config = dapui.open
@@ -148,11 +164,15 @@ in {
             {
               __raw = ''
                 function()
-                  require("overseer").save_task_bundle(
+                  local overseer = require("overseer")
+
+                  overseer.save_task_bundle(
                     vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
                     nil,
                     { on_conflict = "overwrite" }
                   )
+
+                  overseer.close()
                 end
               '';
             }
@@ -449,7 +469,7 @@ in {
         EOF
       '';
     in [
-      { plugin = pkgs.bg-nvim; }
+      pkgs.bg-nvim
       {
         plugin = pkgs.vimPlugins.overseer-nvim;
         config = lua ''require("overseer").setup({})'';
