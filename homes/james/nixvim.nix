@@ -104,8 +104,8 @@ in {
       (mkCommand "o" "OverseerToggle")
       (mkCommand "r" "OverseerRun")
 
-      (mkCommand "x" "Trouble diagnostics toggle")
-      (mkCommand "X" "Trouble diagnostics toggle filter.buf=0")
+      (mkCommand "X" "Trouble diagnostics toggle")
+      (mkCommand "x" "Trouble diagnostics toggle filter.buf=0")
 
       (mkAction "<F6>" "make")
 
