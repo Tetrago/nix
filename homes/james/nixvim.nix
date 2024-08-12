@@ -39,7 +39,7 @@ in {
       vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
         pattern = "*",
         callback = function()
-          if vim.api.nvim_buf_get_option(0, "filetype") == "notify" then
+          while vim.api.nvim_buf_get_option(0, "filetype") == "notify" do
             vim.cmd("wincmd w")
           end
         end
