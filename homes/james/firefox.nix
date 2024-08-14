@@ -44,6 +44,10 @@ in {
             "browser.search.suggest.enabled.private" = false;
             "browser.urlbar.suggest.searches" = false;
             "browser.urlbar.showSearchSuggestionsFirst" = false;
+            "media.getusermedia.audio.aprocessing.aec.enabled" = false;
+            "media.getusermedia.audio.aprocessing.agc.enabled" = false;
+            "media.getusermedia.audio.aprocessing.hpf.enabled" = false;
+            "media.getusermedia.audio.aprocessing.noise.enabled" = false;
           };
         };
       });
