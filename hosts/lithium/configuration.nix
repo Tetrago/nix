@@ -96,8 +96,6 @@
 
     steam.enable = true;
 
-    home.packages = with pkgs; [ ghidra ];
-
     hyprworld = {
       bluetooth = true;
 

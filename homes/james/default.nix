@@ -60,6 +60,7 @@
       blender
       gimp
       renderdoc-x11
+      ghidra
 
       libreoffice-qt
       hunspell
