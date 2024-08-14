@@ -8,6 +8,5 @@ in {
   nvim-recorder = callPackage ./nvim-recorder.nix { };
   renderdoc-x11 = callPackage ./renderdoc-x11.nix { };
   rp = callPackage ./rp.nix { };
-  spotify-adblock = callPackage ./spotify-adblock.nix { };
   somo = callPackage ./somo.nix { };
 }

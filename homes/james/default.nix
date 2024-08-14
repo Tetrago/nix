@@ -46,7 +46,7 @@
       below
 
       bottles
-      spotify-adblock
+      meld
       obsidian
       imhex
       aseprite
@@ -56,6 +56,10 @@
       gnome.file-roller
       gnome.gnome-calendar
       gnome.gnome-clocks
+      qemu
+      blender
+      gimp
+      renderdoc-x11
 
       libreoffice-qt
       hunspell

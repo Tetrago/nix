@@ -113,8 +113,6 @@
     wayland.windowManager.hyprland.settings.windowrulev2 =
       [ "idleinhibit fullscreen,class:^(looking-glass-client)$" ];
 
-    home.packages = with pkgs; [ blender renderdoc-x11 ];
-
     hyprworld = {
       bluetooth = true;
       extraVolumeKeys = true;
