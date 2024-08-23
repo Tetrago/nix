@@ -9,4 +9,5 @@ in {
   renderdoc-x11 = callPackage ./renderdoc-x11.nix { };
   rp = callPackage ./rp.nix { };
   somo = callPackage ./somo.nix { };
+  vsg = callPackage ./vsg.nix { };
 }

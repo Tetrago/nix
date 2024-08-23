@@ -47,7 +47,7 @@
     users.james = {
       username = "james";
       name = "James";
-      groups = [ "wheel" "docker" "libvirtd" ];
+      groups = [ "wheel" "docker" "libvirtd" "networkmanager" ];
     };
   };
 

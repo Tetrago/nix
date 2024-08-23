@@ -58,6 +58,7 @@ in {
           "image/x-portable-pixmap"
           "image/x-tga"
           "image/x-xbitmap"
+          "image/webp"
         ];
         noDisplay = true;
       };

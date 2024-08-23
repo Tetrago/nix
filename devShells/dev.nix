@@ -29,5 +29,7 @@ in pkgs.mkShell {
     cpu-x
     lsiommu
     lsnvme
+    nerdfetch
+    cpufetch
   ];
 }

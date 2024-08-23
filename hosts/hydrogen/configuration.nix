@@ -17,17 +17,17 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_6_9;
   };
 
-  networking = {
-    defaultGateway = "192.168.1.1";
-    nameservers = [ "8.8.8.8" ];
+  #networking = {
+  #  defaultGateway = "192.168.1.1";
+  #  nameservers = [ "8.8.8.8" ];
 
-    bridges.br0.interfaces = [ "enp5s0" ];
+  #  bridges.br0.interfaces = [ "enp5s0" ];
 
-    interfaces.br0.ipv4.addresses = [{
-      address = "192.168.1.111";
-      prefixLength = 24;
-    }];
-  };
+  #  interfaces.br0.ipv4.addresses = [{
+  #    address = "192.168.1.111";
+  #    prefixLength = 24;
+  #  }];
+  #};
 
   programs = {
     command-not-found.enable = false;
@@ -53,6 +53,20 @@
     ollama.enable = true;
     udisks2.enable = true;
     upower.enable = true;
+  };
+
+  power.ups = {
+    enable = true;
+    ups."cp1500pfclcd" = {
+      driver = "usbhid-ups";
+      port = "auto";
+    };
+
+    users.upsmon = {
+      passwordFile = "${pkgs.writeText "upsmon-pw.txt" "upsmon"}";
+    };
+
+    upsmon.monitor.cp1500pfclcd.user = "upsmon";
   };
 
   virtualisation.docker.enable = true;
@@ -90,7 +104,7 @@
     users.james = {
       username = "james";
       name = "James";
-      groups = [ "wheel" "docker" "libvirtd" "kvm" ];
+      groups = [ "wheel" "docker" "libvirtd" "kvm" "networkmanager" ];
     };
 
     virtualization = {
@@ -124,39 +138,62 @@
 
       monitors = [
         {
+          name = "DP-1";
+          resolution = {
+            width = 2560;
+            height = 1440;
+            refreshRate = 144;
+          };
+          position.x = 2560;
+          workspace = 1;
+        }
+        {
           name = "HDMI-A-1";
           resolution = {
             width = 2560;
             height = 1440;
             refreshRate = 144;
           };
-          position.x = 1920;
-          workspace = 1;
-        }
-        {
-          name = "DP-3";
-          resolution = {
-            width = 1920;
-            height = 1080;
-            refreshRate = 60;
-          };
           position.x = 0;
           workspace = 2;
         }
-        {
-          name = "DP-4";
-          resolution = {
-            width = 1920;
-            height = 1080;
-            refreshRate = 60;
-          };
-          position = {
-            x = 1920 + 2560;
-            y = 480;
-          };
-          workspace = 3;
-        }
       ];
+
+      #monitors = [
+      #  {
+      #    name = "HDMI-A-1";
+      #    resolution = {
+      #      width = 2560;
+      #      height = 1440;
+      #      refreshRate = 144;
+      #    };
+      #    position.x = 1920;
+      #    workspace = 1;
+      #  }
+      #  {
+      #    name = "DP-3";
+      #    resolution = {
+      #      width = 1920;
+      #      height = 1080;
+      #      refreshRate = 60;
+      #    };
+      #    position.x = 0;
+      #    workspace = 2;
+      #  }
+      #  {
+      #    name = "DP-4";
+      #    resolution = {
+      #      width = 1920;
+      #      height = 1080;
+      #      refreshRate = 60;
+      #    };
+      #    position = {
+      #      x = 1920 + 2560;
+      #      y = 480;
+      #    };
+      #    workspace = 3;
+      #  }
+      #];
     };
 
     programs = {

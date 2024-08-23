@@ -237,6 +237,7 @@ in {
           cpp = [ "clang-format" ];
           cmake = [ "cmake_format" ];
           nix = [ "nixfmt" ];
+          vhdl = [ "vsg" ];
           "_" = [ "trim_whitespace" ];
         };
 
@@ -244,6 +245,7 @@ in {
           nixfmt.command = "${pkgs.nixfmt}/bin/nixfmt";
           "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
           "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
+          vsg.command = "${pkgs.vsg}/bin/vsg";
         };
 
         formatOnSave = {
