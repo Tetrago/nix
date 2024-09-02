@@ -3,7 +3,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.default
-    inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.nix-index-database.nixosModules.nix-index
 
