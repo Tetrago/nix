@@ -11,7 +11,10 @@ buildPythonPackage rec {
     hash = "sha256-3jVkyeGMPPUktYXwI7DbByiyPMefuvXx++5y+Xr+69I=";
   };
 
-  nativeBuildInputs = [ setuptools-scm setuptools-git-versioning ];
+  nativeBuildInputs = [
+    setuptools-scm
+    setuptools-git-versioning
+  ];
 
   propagatedBuildInputs = [ pyyaml ];
 }

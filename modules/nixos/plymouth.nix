@@ -1,7 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let inherit (lib) mkEnableOption mkOption types mkIf;
-in {
+let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    ;
+in
+{
   options.tetrago.plymouth = {
     enable = mkEnableOption "enable plymouth";
 
@@ -17,7 +29,8 @@ in {
     };
   };
 
-  config = with config.tetrago.plymouth;
+  config =
+    with config.tetrago.plymouth;
     mkIf enable {
       boot = {
         consoleLogLevel = 0;

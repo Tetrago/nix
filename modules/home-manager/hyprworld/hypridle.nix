@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (config.hyprworld) time;
 
   iff = value: content: lib.strings.optionalString (value != 0) content;
-in {
+in
+{
   home.file.".config/hypr/hypridle.conf".text = ''
     general {
       lock_cmd = pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock

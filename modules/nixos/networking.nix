@@ -1,7 +1,14 @@
 { lib, config, ... }:
 
-let inherit (lib) mkEnableOption mkOption types mkIf;
-in {
+let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    ;
+in
+{
   options.tetrago.networking = {
     enable = mkEnableOption "enable default networking options";
 
@@ -16,7 +23,8 @@ in {
     };
   };
 
-  config = with config.tetrago.networking;
+  config =
+    with config.tetrago.networking;
     mkIf enable {
       networking = {
         hostName = "${hostname}";

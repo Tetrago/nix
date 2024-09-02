@@ -1,7 +1,9 @@
 { config, ... }:
 
-let colors = config.colorScheme.palette;
-in {
+let
+  colors = config.colorScheme.palette;
+in
+{
   programs.wofi = {
     enable = true;
     settings = {

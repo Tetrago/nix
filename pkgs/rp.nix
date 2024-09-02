@@ -1,10 +1,20 @@
-{ cmake, fetchFromGitHub, ninja, stdenv, makeWrapper }:
+{
+  cmake,
+  fetchFromGitHub,
+  ninja,
+  stdenv,
+  makeWrapper,
+}:
 
 stdenv.mkDerivation rec {
   pname = "rp++";
   version = "2.1.3";
 
-  nativeBuildInputs = [ cmake ninja makeWrapper ];
+  nativeBuildInputs = [
+    cmake
+    ninja
+    makeWrapper
+  ];
 
   src = fetchFromGitHub {
     owner = "0vercl0k";

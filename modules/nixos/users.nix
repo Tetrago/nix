@@ -1,11 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib) mkIf mkOption types;
   inherit (lib.attrsets) mapAttrs;
-in {
+in
+{
   options.tetrago.users = mkOption {
-    type = with types;
+    type =
+      with types;
       attrsOf (submodule {
         options = {
           username = mkOption {

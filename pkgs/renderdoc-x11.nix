@@ -1,4 +1,8 @@
-{ renderdoc, stdenvNoCC, vulkan-validation-layers }:
+{
+  renderdoc,
+  stdenvNoCC,
+  vulkan-validation-layers,
+}:
 
 stdenvNoCC.mkDerivation {
   pname = "renderdoc-x11";

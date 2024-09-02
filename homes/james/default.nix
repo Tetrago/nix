@@ -16,13 +16,18 @@
     ./nixvim.nix
   ];
 
-  hyprworld = { wallpaper = "${./files/wallpaper.png}"; };
-
-  colorScheme = let lb = inputs.nix-colors.lib.contrib { inherit pkgs; };
-  in lb.colorSchemeFromPicture {
-    path = ./files/wallpaper.png;
-    variant = "dark";
+  hyprworld = {
+    wallpaper = "${./files/wallpaper.png}";
   };
+
+  colorScheme =
+    let
+      lb = inputs.nix-colors.lib.contrib { inherit pkgs; };
+    in
+    lb.colorSchemeFromPicture {
+      path = ./files/wallpaper.png;
+      variant = "dark";
+    };
 
   home = {
     username = "james";
@@ -97,5 +102,7 @@
     home-manager.enable = true;
   };
 
-  services = { easyeffects.enable = true; };
+  services = {
+    easyeffects.enable = true;
+  };
 }

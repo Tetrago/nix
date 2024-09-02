@@ -1,4 +1,10 @@
-{ config, inputs, lib, pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -13,10 +19,9 @@
   ];
 
   home = {
-    packages = with pkgs;
-      [
-        networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
-      ];
+    packages = with pkgs; [
+      networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
+    ];
   };
 
   services = {
@@ -34,7 +39,10 @@
   xdg = {
     portal = {
       enable = true;
-      config.hyprland.default = [ "hyprland" "gtk" ];
+      config.hyprland.default = [
+        "hyprland"
+        "gtk"
+      ];
       extraPortals = [
         (inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland.override {
           hyprland = config.wayland.windowManager.hyprland.finalPackage;

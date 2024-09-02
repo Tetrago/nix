@@ -1,7 +1,9 @@
 { pkgs }:
 
-let inherit (pkgs) callPackage;
-in {
+let
+  inherit (pkgs) callPackage;
+in
+{
   bg-nvim = callPackage ./bg-nvim.nix { };
   flat-remix-gtk-variant = callPackage ./flat-remix-gtk-variant.nix { };
   okolors = callPackage ./okolors.nix { };

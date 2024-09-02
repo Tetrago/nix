@@ -4,7 +4,8 @@ let
   inherit (config.hyprworld) lockscreen;
 
   palette = import ./palette.nix { inherit config pkgs; };
-in {
+in
+{
   home.file.".config/hypr/hyprlock.conf".text = ''
     background {
       monitor =

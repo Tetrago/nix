@@ -1,4 +1,9 @@
-{ fetchFromGitHub, rustPlatform, openssl, pkg-config }:
+{
+  fetchFromGitHub,
+  rustPlatform,
+  openssl,
+  pkg-config,
+}:
 
 rustPlatform.buildRustPackage rec {
   pname = "somo";

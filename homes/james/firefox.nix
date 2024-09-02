@@ -1,16 +1,18 @@
 { pkgs, ... }:
 
 let
-  userChrome = builtins.readFile (builtins.fetchurl {
-    url =
-      "https://raw.githubusercontent.com/crambaud/waterfall/main/userChrome.css";
-    sha256 = "62008a97381cf0b8b57e5a0b39cf13305903f3b32e3b31fe209182bfe317affa";
-  });
-in {
+  userChrome = builtins.readFile (
+    builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/crambaud/waterfall/main/userChrome.css";
+      sha256 = "62008a97381cf0b8b57e5a0b39cf13305903f3b32e3b31fe209182bfe317affa";
+    }
+  );
+in
+{
   programs.firefox = {
     enable = true;
-    package = (pkgs.wrapFirefox
-      (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) {
+    package = (
+      pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) {
         extraPolicies = {
           DisableTelemetry = true;
           DisableFirefoxStudies = true;
@@ -21,19 +23,19 @@ in {
           DontCheckDefaultBrowser = true;
           DisplayBookmarksToolbar = "never";
 
-          ExtensionSessings = let
-            plug = name: {
-              install_url =
-                "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-              installation_mode = "force_installed";
+          ExtensionSessings =
+            let
+              plug = name: {
+                install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+                installation_mode = "force_installed";
+              };
+            in
+            {
+              "addon@fastforward.team" = plug "fastforwardteam";
+              "sponsorBlocker@ajay.app" = plug "sponsorblock";
+              "uBlock0@raymondhill.net" = plug "ublock-origin";
+              "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" = plug "video-downloadhelper";
             };
-          in {
-            "addon@fastforward.team" = plug "fastforwardteam";
-            "sponsorBlocker@ajay.app" = plug "sponsorblock";
-            "uBlock0@raymondhill.net" = plug "ublock-origin";
-            "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" =
-              plug "video-downloadhelper";
-          };
 
           Preferences = {
             "extensions.pocket.enabled" = false;
@@ -50,7 +52,8 @@ in {
             "media.getusermedia.audio.aprocessing.noise.enabled" = false;
           };
         };
-      });
+      }
+    );
 
     profiles.default = {
       userChrome = userChrome;

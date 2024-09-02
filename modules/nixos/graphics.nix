@@ -1,7 +1,21 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let inherit (lib) mkEnableOption mkOption mkForce mkMerge mkIf types;
-in {
+let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkForce
+    mkMerge
+    mkIf
+    types
+    ;
+in
+{
   options.tetrago.graphics = {
     nvidia = {
       enable = mkEnableOption "enable NVIDIA support";
@@ -18,10 +32,13 @@ in {
       };
     };
 
-    intel = { enable = mkEnableOption "enable Intel support"; };
+    intel = {
+      enable = mkEnableOption "enable Intel support";
+    };
   };
 
-  config = with config.tetrago.graphics;
+  config =
+    with config.tetrago.graphics;
     mkMerge [
       ({
         assertions = [
@@ -48,7 +65,10 @@ in {
       })
 
       (mkIf nvidia.blacklist {
-        boot.blacklistedKernelModules = [ "nouveau" "nvidia" ];
+        boot.blacklistedKernelModules = [
+          "nouveau"
+          "nvidia"
+        ];
       })
 
       (mkIf intel.enable {

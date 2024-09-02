@@ -47,18 +47,30 @@
     };
   };
 
-  outputs = { flake-utils, nixpkgs, self, ... }@inputs:
-    let inherit (self) outputs;
-    in {
+  outputs =
+    {
+      flake-utils,
+      nixpkgs,
+      self,
+      ...
+    }@inputs:
+    let
+      inherit (self) outputs;
+    in
+    {
       nixosConfigurations = {
         hydrogen = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
+          specialArgs = {
+            inherit inputs outputs;
+          };
           system = "x86_64-linux";
           modules = [ ./hosts/hydrogen/configuration.nix ];
         };
 
         lithium = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
+          specialArgs = {
+            inherit inputs outputs;
+          };
           system = "x86_64-linux";
           modules = [ ./hosts/lithium/configuration.nix ];
         };
@@ -74,7 +86,6 @@
         };
       };
 
-      packages."x86_64-linux" =
-        import ./pkgs { pkgs = nixpkgs.legacyPackages."x86_64-linux"; };
+      packages."x86_64-linux" = import ./pkgs { pkgs = nixpkgs.legacyPackages."x86_64-linux"; };
     };
 }

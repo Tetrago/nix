@@ -1,7 +1,20 @@
-{ config, inputs, lib, ... }:
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
 
-let inherit (lib) types mkOption mkEnableOption mkForce mkIf;
-in {
+let
+  inherit (lib)
+    types
+    mkOption
+    mkEnableOption
+    mkForce
+    mkIf
+    ;
+in
+{
   imports = [
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.grub2-themes.nixosModules.default
@@ -11,7 +24,10 @@ in {
     enable = mkEnableOption "enable boot configuration";
 
     loader = mkOption {
-      type = types.enum [ "systemd" "grub" ];
+      type = types.enum [
+        "systemd"
+        "grub"
+      ];
       default = "systemd";
     };
 
@@ -26,12 +42,15 @@ in {
     };
   };
 
-  config = with config.tetrago.boot;
+  config =
+    with config.tetrago.boot;
     mkIf enable {
-      assertions = [{
-        assertion = !(loader == "grub" && secureboot.enable);
-        message = "secureboot requires systemd-boot";
-      }];
+      assertions = [
+        {
+          assertion = !(loader == "grub" && secureboot.enable);
+          message = "secureboot requires systemd-boot";
+        }
+      ];
 
       boot = {
         loader = {
@@ -41,8 +60,7 @@ in {
           };
 
           systemd-boot = {
-            enable = mkForce
-              (if loader == "systemd" then !secureboot.enable else false);
+            enable = mkForce (if loader == "systemd" then !secureboot.enable else false);
             configurationLimit = 15;
           };
 

@@ -1,7 +1,9 @@
 { config, lib, ... }:
 
-let inherit (lib) mkEnableOption mkIf mkForce;
-in {
+let
+  inherit (lib) mkEnableOption mkIf mkForce;
+in
+{
   options.tetrago.audio = {
     enable = mkEnableOption "enable audio configuration";
   };

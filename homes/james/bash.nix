@@ -1,7 +1,16 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ somo scc duf dust pastel choose bandwhich tldr ];
+  home.packages = with pkgs; [
+    somo
+    scc
+    duf
+    dust
+    pastel
+    choose
+    bandwhich
+    tldr
+  ];
 
   programs = {
     atuin = {
@@ -34,10 +43,8 @@
         tree = "${tre-command}/bin/tre";
         nnn = "xplr";
         ranger = "xplr";
-        "e.patch" = ''
-          ${patchelf}/bin/patchelf --set-interpreter "$(${coreutils}/bin/cat ${stdenv.cc}/nix-support/dynamic-linker)"'';
-        "e.unpatch" = ''
-          ${patchelf}/bin/patchelf --set-interpreter "/lib64/ld-linux-x86-64.so.2"'';
+        "e.patch" = ''${patchelf}/bin/patchelf --set-interpreter "$(${coreutils}/bin/cat ${stdenv.cc}/nix-support/dynamic-linker)"'';
+        "e.unpatch" = ''${patchelf}/bin/patchelf --set-interpreter "/lib64/ld-linux-x86-64.so.2"'';
         gdb = "gdb -q";
         md = "${glow}/bin/glow";
         ps = "${procs}/bin/procs";

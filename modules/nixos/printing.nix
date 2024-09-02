@@ -1,7 +1,9 @@
 { config, lib, ... }:
 
-let inherit (lib) mkEnableOption mkIf;
-in {
+let
+  inherit (lib) mkEnableOption mkIf;
+in
+{
   options.tetrago.printing = {
     enable = mkEnableOption "enable printing services";
   };

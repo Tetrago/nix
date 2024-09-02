@@ -104,7 +104,13 @@
     users.james = {
       username = "james";
       name = "James";
-      groups = [ "wheel" "docker" "libvirtd" "kvm" "networkmanager" ];
+      groups = [
+        "wheel"
+        "docker"
+        "libvirtd"
+        "kvm"
+        "networkmanager"
+      ];
     };
 
     virtualization = {
@@ -112,7 +118,12 @@
       cpu = "intel";
       devices.enable = true;
 
-      passthrough = [ "10de:2705" "10de:22bb" "144d:a80c" "1b21:2142" ];
+      passthrough = [
+        "10de:2705"
+        "10de:22bb"
+        "144d:a80c"
+        "1b21:2142"
+      ];
 
       kvmfr = {
         enable = true;
@@ -121,90 +132,102 @@
     };
   };
 
-  home-manager.users.james = { ... }: {
-    imports = [ ../../homes/james ];
+  home-manager.users.james =
+    { ... }:
+    {
+      imports = [ ../../homes/james ];
 
-    wayland.windowManager.hyprland.settings.windowrulev2 =
-      [ "idleinhibit fullscreen,class:^(looking-glass-client)$" ];
-
-    hyprworld = {
-      bluetooth = true;
-      extraVolumeKeys = true;
-
-      time = {
-        screen = 0;
-        sleep = 0;
-      };
-
-      monitors = [
-        {
-          name = "DP-1";
-          resolution = {
-            width = 2560;
-            height = 1440;
-            refreshRate = 144;
-          };
-          position.x = 2560;
-          workspace = 1;
-        }
-        {
-          name = "HDMI-A-1";
-          resolution = {
-            width = 2560;
-            height = 1440;
-            refreshRate = 144;
-          };
-          position.x = 0;
-          workspace = 2;
-        }
+      wayland.windowManager.hyprland.settings.windowrulev2 = [
+        "idleinhibit fullscreen,class:^(looking-glass-client)$"
       ];
 
-      #monitors = [
-      #  {
-      #    name = "HDMI-A-1";
-      #    resolution = {
-      #      width = 2560;
-      #      height = 1440;
-      #      refreshRate = 144;
-      #    };
-      #    position.x = 1920;
-      #    workspace = 1;
-      #  }
-      #  {
-      #    name = "DP-3";
-      #    resolution = {
-      #      width = 1920;
-      #      height = 1080;
-      #      refreshRate = 60;
-      #    };
-      #    position.x = 0;
-      #    workspace = 2;
-      #  }
-      #  {
-      #    name = "DP-4";
-      #    resolution = {
-      #      width = 1920;
-      #      height = 1080;
-      #      refreshRate = 60;
-      #    };
-      #    position = {
-      #      x = 1920 + 2560;
-      #      y = 480;
-      #    };
-      #    workspace = 3;
-      #  }
-      #];
-    };
+      hyprworld = {
+        bluetooth = true;
+        extraVolumeKeys = true;
 
-    programs = {
-      looking-glass-client = {
-        enable = true;
-        settings = { app = { shmFile = "/dev/kvmfr0"; }; };
+        time = {
+          screen = 0;
+          sleep = 0;
+        };
+
+        monitors = [
+          {
+            name = "DP-1";
+            resolution = {
+              width = 2560;
+              height = 1440;
+              refreshRate = 144;
+            };
+            position.x = 2560;
+            workspace = 1;
+          }
+          {
+            name = "HDMI-A-1";
+            resolution = {
+              width = 2560;
+              height = 1440;
+              refreshRate = 144;
+            };
+            position.x = 0;
+            workspace = 2;
+          }
+        ];
+
+        #monitors = [
+        #  {
+        #    name = "HDMI-A-1";
+        #    resolution = {
+        #      width = 2560;
+        #      height = 1440;
+        #      refreshRate = 144;
+        #    };
+        #    position.x = 1920;
+        #    workspace = 1;
+        #  }
+        #  {
+        #    name = "DP-3";
+        #    resolution = {
+        #      width = 1920;
+        #      height = 1080;
+        #      refreshRate = 60;
+        #    };
+        #    position.x = 0;
+        #    workspace = 2;
+        #  }
+        #  {
+        #    name = "DP-4";
+        #    resolution = {
+        #      width = 1920;
+        #      height = 1080;
+        #      refreshRate = 60;
+        #    };
+        #    position = {
+        #      x = 1920 + 2560;
+        #      y = 480;
+        #    };
+        #    workspace = 3;
+        #  }
+        #];
+      };
+
+      programs = {
+        looking-glass-client = {
+          enable = true;
+          settings = {
+            app = {
+              shmFile = "/dev/kvmfr0";
+            };
+          };
+        };
       };
     };
-  };
 
-  environment.systemPackages = with pkgs; [ curl git neovim unzip ];
+  environment.systemPackages = with pkgs; [
+    curl
+    git
+    neovim
+    unzip
+  ];
 
   system.stateVersion = "23.11";
 }

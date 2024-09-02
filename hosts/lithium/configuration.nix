@@ -47,7 +47,12 @@
     users.james = {
       username = "james";
       name = "James";
-      groups = [ "wheel" "docker" "libvirtd" "networkmanager" ];
+      groups = [
+        "wheel"
+        "docker"
+        "libvirtd"
+        "networkmanager"
+      ];
     };
   };
 
@@ -91,26 +96,35 @@
 
   virtualisation.docker.enable = true;
 
-  home-manager.users.james = { ... }: {
-    imports = [ ../../homes/james ];
+  home-manager.users.james =
+    { ... }:
+    {
+      imports = [ ../../homes/james ];
 
-    steam.enable = true;
+      steam.enable = true;
 
-    hyprworld = {
-      bluetooth = true;
+      hyprworld = {
+        bluetooth = true;
 
-      monitors = [{
-        name = "eDP-1";
-        resolution = {
-          width = 2256;
-          height = 1504;
-        };
-        scale = 1.3333;
-      }];
+        monitors = [
+          {
+            name = "eDP-1";
+            resolution = {
+              width = 2256;
+              height = 1504;
+            };
+            scale = 1.3333;
+          }
+        ];
+      };
     };
-  };
 
-  environment.systemPackages = with pkgs; [ curl git neovim unzip ];
+  environment.systemPackages = with pkgs; [
+    curl
+    git
+    neovim
+    unzip
+  ];
 
   system.stateVersion = "23.11";
 }

@@ -1,41 +1,46 @@
-{ config, inputs, lib, pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib.strings) optionalString;
   inherit (lib.lists) flatten optional optionals;
 
-  monitorToString = m:
+  monitorToString =
+    m:
     if !m.enable then
       "${m.name},disable"
     else
       let
-        refreshRate = optionalString
-          (m.resolution != null && m.resolution.refreshRate != null)
-          "@${toString m.resolution.refreshRate}";
-        resolution = if m.resolution == null then
-          "preferred"
-        else
-          "${toString m.resolution.width}x${
-            toString m.resolution.height
-          }${refreshRate}";
-        position = if m.position == null then
-          "auto"
-        else
-          "${toString m.position.x}x${toString m.position.y}";
+        refreshRate = optionalString (
+          m.resolution != null && m.resolution.refreshRate != null
+        ) "@${toString m.resolution.refreshRate}";
+        resolution =
+          if m.resolution == null then
+            "preferred"
+          else
+            "${toString m.resolution.width}x${toString m.resolution.height}${refreshRate}";
+        position =
+          if m.position == null then "auto" else "${toString m.position.x}x${toString m.position.y}";
         scale = if m.scale == null then "auto" else "${toString m.scale}";
-      in "${m.name},${resolution},${position},${scale}";
+      in
+      "${m.name},${resolution},${position},${scale}";
 
-  monitorToWorkspace = m:
-    optional (m.workspace != null)
-    "${toString m.workspace},monitor:${m.name},default:true";
+  monitorToWorkspace =
+    m: optional (m.workspace != null) "${toString m.workspace},monitor:${m.name},default:true";
 
-  monitors = optionals (config.hyprworld.monitors != null
-    && config.hyprworld.additionalMonitors == null)
-    (map monitorToString config.hyprworld.monitors);
-  workspaces = optionals (config.hyprworld.monitors != null
-    && config.hyprworld.additionalMonitors == null)
-    (flatten (map monitorToWorkspace config.hyprworld.monitors));
-in {
+  monitors = optionals (
+    config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null
+  ) (map monitorToString config.hyprworld.monitors);
+  workspaces = optionals (
+    config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null
+  ) (flatten (map monitorToWorkspace config.hyprworld.monitors));
+in
+{
   imports = [ inputs.hyprland.homeManagerModules.default ];
 
   home.packages = with pkgs; [ wl-clipboard ];
@@ -62,7 +67,9 @@ in {
         "NIXOS_OZONE_WL,1"
       ];
 
-      debug = { disable_logs = false; };
+      debug = {
+        disable_logs = false;
+      };
 
       master = {
         new_status = "master";
@@ -113,80 +120,79 @@ in {
 
       "$mod" = "SUPER";
 
-      bind = let
-        hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
-        thunar = "${pkgs.xfce.thunar}/bin/thunar";
-        cliphist = "${pkgs.cliphist}/bin/cliphist";
-        jq = "${pkgs.jq}/bin/jq";
-        brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-        playerctl = "${pkgs.playerctl}/bin/playerctl";
-        slurp = "${pkgs.slurp}/bin/slurp";
-        grim = "${pkgs.grim}/bin/grim";
-        swappy = "${pkgs.swappy}/bin/swappy";
-        find = pkgs.writeShellScriptBin "findWindows" ''
-          hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
-      in [
-        "$mod, Return, exec, kitty"
-        "$mod, C, exec, ${
-          inputs.ags.packages.${pkgs.system}.ags
-        }/bin/ags -b hypr -t system_center"
-        "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
-        "$mod, W, killactive"
-        "$mod, E, exec, ${thunar}"
-        "$mod, L, exec, loginctl lock-session"
-        "$mod SHIFT, V, exec, ${cliphist} wipe"
-        "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | wofi --dmenu | ${cliphist} decode | wl-copy"
-        "$mod, F, togglefloating"
-        "CTRL, Home, fullscreen"
-        "$mod, Space, exec, pidof wofi || wofi --show drun"
-        "$mod, Tab, hyprexpo:expo, toggle"
-        ''
-          , Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
-        ''
-          ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
-        ''
-          $mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
-        "$mod SHIFT, Z, movetoworkspace, special"
-        "$mod, Z, togglespecialworkspace"
-        "$mod SHIFT, Space, fullscreen, 1"
+      bind =
+        let
+          hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
+          thunar = "${pkgs.xfce.thunar}/bin/thunar";
+          cliphist = "${pkgs.cliphist}/bin/cliphist";
+          jq = "${pkgs.jq}/bin/jq";
+          brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+          playerctl = "${pkgs.playerctl}/bin/playerctl";
+          slurp = "${pkgs.slurp}/bin/slurp";
+          grim = "${pkgs.grim}/bin/grim";
+          swappy = "${pkgs.swappy}/bin/swappy";
+          find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
+        in
+        [
+          "$mod, Return, exec, kitty"
+          "$mod, C, exec, ${inputs.ags.packages.${pkgs.system}.ags}/bin/ags -b hypr -t system_center"
+          "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
+          "$mod, W, killactive"
+          "$mod, E, exec, ${thunar}"
+          "$mod, L, exec, loginctl lock-session"
+          "$mod SHIFT, V, exec, ${cliphist} wipe"
+          "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | wofi --dmenu | ${cliphist} decode | wl-copy"
+          "$mod, F, togglefloating"
+          "CTRL, Home, fullscreen"
+          "$mod, Space, exec, pidof wofi || wofi --show drun"
+          "$mod, Tab, hyprexpo:expo, toggle"
+          '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
+          ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
+          ''$mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
+          "$mod SHIFT, Z, movetoworkspace, special"
+          "$mod, Z, togglespecialworkspace"
+          "$mod SHIFT, Space, fullscreen, 1"
 
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod, M, exec, hyprctl dispatch layoutmsg swapwithmaster"
+          "$mod, left, movefocus, l"
+          "$mod, right, movefocus, r"
+          "$mod, up, movefocus, u"
+          "$mod, down, movefocus, d"
+          "$mod, M, exec, hyprctl dispatch layoutmsg swapwithmaster"
 
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod, 0, workspace, 10"
+          "$mod, 1, workspace, 1"
+          "$mod, 2, workspace, 2"
+          "$mod, 3, workspace, 3"
+          "$mod, 4, workspace, 4"
+          "$mod, 5, workspace, 5"
+          "$mod, 6, workspace, 6"
+          "$mod, 7, workspace, 7"
+          "$mod, 8, workspace, 8"
+          "$mod, 9, workspace, 9"
+          "$mod, 0, workspace, 10"
 
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod SHIFT, 0, movetoworkspace, 10"
+          "$mod SHIFT, 1, movetoworkspace, 1"
+          "$mod SHIFT, 2, movetoworkspace, 2"
+          "$mod SHIFT, 3, movetoworkspace, 3"
+          "$mod SHIFT, 4, movetoworkspace, 4"
+          "$mod SHIFT, 5, movetoworkspace, 5"
+          "$mod SHIFT, 6, movetoworkspace, 6"
+          "$mod SHIFT, 7, movetoworkspace, 7"
+          "$mod SHIFT, 8, movetoworkspace, 8"
+          "$mod SHIFT, 9, movetoworkspace, 9"
+          "$mod SHIFT, 0, movetoworkspace, 10"
 
-        ", XF86MonBrightnessUp, exec, ${brightnessctl} set +10%"
-        ", XF86MonBrightnessDown, exec, ${brightnessctl} set 10%-"
-        ", XF86AudioPlay, exec, ${playerctl} play-pause"
-        ", XF86AudioStop, exec, ${playerctl} stop"
-        ", XF86AudioPrev, exec, ${playerctl} previous"
-        ", XF86AudioNext, exec, ${playerctl} next"
+          ", XF86MonBrightnessUp, exec, ${brightnessctl} set +10%"
+          ", XF86MonBrightnessDown, exec, ${brightnessctl} set 10%-"
+          ", XF86AudioPlay, exec, ${playerctl} play-pause"
+          ", XF86AudioStop, exec, ${playerctl} stop"
+          ", XF86AudioPrev, exec, ${playerctl} previous"
+          ", XF86AudioNext, exec, ${playerctl} next"
+        ];
+
+      bindm = [
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
       ];
-
-      bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
 
       binde = lib.mkMerge [
         ([
@@ -227,7 +233,6 @@ in {
       variables = [ "--all" ];
     };
 
-    plugins = with inputs.hyprland-plugins.packages.${pkgs.system};
-      [ hyprexpo ];
+    plugins = with inputs.hyprland-plugins.packages.${pkgs.system}; [ hyprexpo ];
   };
 }

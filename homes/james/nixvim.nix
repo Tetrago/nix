@@ -1,9 +1,15 @@
-{ inputs, lib, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib) mapAttrsToList;
   inherit (lib.strings) concatStringsSep;
-in {
+in
+{
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
 
   programs.nixvim = {
@@ -86,57 +92,74 @@ in {
 
     globals.mapleader = " ";
 
-    keymaps = let
-      mkCommand = key: command: {
-        mode = "n";
-        key = "<Leader>${key}";
-        options.silent = true;
-        action = "<Cmd>${command}<CR>";
-      };
-      mkAction = key: command: {
-        mode = "n";
-        inherit key;
-        options.silent = true;
-        action = "<Cmd>${command}<CR>";
-      };
-    in [
-      (mkCommand "d" "lua require('dapui').toggle()")
-      (mkCommand "o" "OverseerToggle")
-      (mkCommand "r" "OverseerRun")
+    keymaps =
+      let
+        mkCommand = key: command: {
+          mode = "n";
+          key = "<Leader>${key}";
+          options.silent = true;
+          action = "<Cmd>${command}<CR>";
+        };
+        mkAction = key: command: {
+          mode = "n";
+          inherit key;
+          options.silent = true;
+          action = "<Cmd>${command}<CR>";
+        };
+      in
+      [
+        (mkCommand "d" "lua require('dapui').toggle()")
+        (mkCommand "o" "OverseerToggle")
+        (mkCommand "r" "OverseerRun")
 
-      (mkCommand "X" "Trouble diagnostics toggle")
-      (mkCommand "x" "Trouble diagnostics toggle filter.buf=0")
+        (mkCommand "X" "Trouble diagnostics toggle")
+        (mkCommand "x" "Trouble diagnostics toggle filter.buf=0")
 
-      (mkAction "<F6>" "make")
+        (mkAction "<F6>" "make")
 
-      (mkAction "<F5>" "DapContinue")
-      (mkAction "<F9>" "DapToggleBreakpoint")
-      (mkAction "<F10>" "DapStepOver")
-      (mkAction "<F11>" "DapStepInto")
-      (mkAction "<F12>" "DapStepOut")
+        (mkAction "<F5>" "DapContinue")
+        (mkAction "<F9>" "DapToggleBreakpoint")
+        (mkAction "<F10>" "DapStepOver")
+        (mkAction "<F11>" "DapStepInto")
+        (mkAction "<F12>" "DapStepOut")
 
-      (mkAction "<C-f>" "Telescope current_buffer_fuzzy_find")
-      (mkAction "<C-k>" "Telescope live_grep")
-      (mkAction "<C-i>" "Telescope lsp_references")
+        (mkAction "<C-f>" "Telescope current_buffer_fuzzy_find")
+        (mkAction "<C-k>" "Telescope live_grep")
+        (mkAction "<C-i>" "Telescope lsp_references")
 
-      (mkAction "<C-t>" "Neotree position=current")
+        (mkAction "<C-t>" "Neotree position=current")
 
-      (mkAction "-" "Oil")
-      (mkAction "=" "ClangdSwitchSourceHeader")
-    ] ++ (mapAttrsToList (key: action: {
-      mode = [ "n" "x" "o" ];
-      options.silent = true;
-      inherit action key;
-    }) {
-      s = "<Plug>(leap-forward)";
-      S = "<Plug>(leap-backward)";
-      gs = "<Plug>(leap-from-window)";
-    } ++ [{
-      mode = [ "n" "i" ];
-      options.silent = true;
-      key = "<F1>";
-      action = "<Nop>";
-    }]);
+        (mkAction "-" "Oil")
+        (mkAction "=" "ClangdSwitchSourceHeader")
+      ]
+      ++ (
+        mapAttrsToList
+          (key: action: {
+            mode = [
+              "n"
+              "x"
+              "o"
+            ];
+            options.silent = true;
+            inherit action key;
+          })
+          {
+            s = "<Plug>(leap-forward)";
+            S = "<Plug>(leap-backward)";
+            gs = "<Plug>(leap-from-window)";
+          }
+        ++ [
+          {
+            mode = [
+              "n"
+              "i"
+            ];
+            options.silent = true;
+            key = "<F1>";
+            action = "<Nop>";
+          }
+        ]
+      );
 
     plugins = {
       autoclose.enable = true;
@@ -178,26 +201,30 @@ in {
             }
           ];
 
-          pre_restore_cmds = [{
-            __raw = ''
-              function()
-                for _, task in ipairs(require("overseer").list_tasks({})) do
-                  task:dispose(true)
+          pre_restore_cmds = [
+            {
+              __raw = ''
+                function()
+                  for _, task in ipairs(require("overseer").list_tasks({})) do
+                    task:dispose(true)
+                  end
                 end
-              end
-            '';
-          }];
+              '';
+            }
+          ];
 
-          post_restore_cmds = [{
-            __raw = ''
-              function()
-                require("overseer").load_task_bundle(
-                  vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                  { ignore_missing = true }
-                )
-              end
-            '';
-          }];
+          post_restore_cmds = [
+            {
+              __raw = ''
+                function()
+                  require("overseer").load_task_bundle(
+                    vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                    { ignore_missing = true }
+                  )
+                end
+              '';
+            }
+          ];
         };
       };
 
@@ -209,8 +236,7 @@ in {
             "<C-e>" = "cmp.mapping.close()";
             "<C-a>" = "cmp.mapping.abort()";
             "<CR>" = "cmp.mapping.confirm({ select = false })";
-            "<S-Tab>" =
-              "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+            "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
             "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           };
 
@@ -253,22 +279,29 @@ in {
           timeoutMs = 500;
         };
 
-        formatAfterSave = { lspFallback = true; };
+        formatAfterSave = {
+          lspFallback = true;
+        };
       };
 
       dap = {
         enable = true;
 
-        adapters.executables = let
-          gdb = {
-            command = "${pkgs.gdb}/bin/gdb";
-            args = [ "-i" "dap" ];
+        adapters.executables =
+          let
+            gdb = {
+              command = "${pkgs.gdb}/bin/gdb";
+              args = [
+                "-i"
+                "dap"
+              ];
+            };
+          in
+          {
+            c = gdb;
+            cpp = gdb;
+            zig = gdb;
           };
-        in {
-          c = gdb;
-          cpp = gdb;
-          zig = gdb;
-        };
 
         extensions = {
           dap-ui.enable = true;
@@ -342,8 +375,14 @@ in {
           right = "";
         };
 
-        extensions =
-          [ "fugitive" "neo-tree" "nvim-dap-ui" "oil" "trouble" "overseer" ];
+        extensions = [
+          "fugitive"
+          "neo-tree"
+          "nvim-dap-ui"
+          "oil"
+          "trouble"
+          "overseer"
+        ];
 
         sectionSeparators = {
           left = "";
@@ -351,44 +390,56 @@ in {
         };
 
         sections = {
-          lualine_a = [{
-            name = "mode";
-            separator.left = "";
+          lualine_a = [
+            {
+              name = "mode";
+              separator.left = "";
 
-            padding = {
-              left = 0;
-              right = 2;
-            };
-          }];
+              padding = {
+                left = 0;
+                right = 2;
+              };
+            }
+          ];
 
-          lualine_b = [ "filename" "branch" ];
-          lualine_c = [ "diagnostics" "%=" ];
+          lualine_b = [
+            "filename"
+            "branch"
+          ];
+          lualine_c = [
+            "diagnostics"
+            "%="
+          ];
 
           lualine_x = [ "fileformat" ];
           lualine_y = [ "filetype" ];
 
-          lualine_z = [{
-            name = "location";
-            separator.right = "";
+          lualine_z = [
+            {
+              name = "location";
+              separator.right = "";
 
-            padding = {
-              left = 2;
-              right = 0;
-            };
-          }];
+              padding = {
+                left = 2;
+                right = 0;
+              };
+            }
+          ];
         };
 
         inactiveSections = {
           lualine_a = [ "" ];
 
-          lualine_b = [{
-            name = "filename";
+          lualine_b = [
+            {
+              name = "filename";
 
-            separator = {
-              left = "";
-              right = "";
-            };
-          }];
+              separator = {
+                left = "";
+                right = "";
+              };
+            }
+          ];
 
           lualine_c = [ "" ];
           lualine_x = [ "" ];
@@ -426,13 +477,20 @@ in {
           media-files.enable = true;
         };
 
-        keymaps = { "<C-p>".action = "find_files"; };
+        keymaps = {
+          "<C-p>".action = "find_files";
+        };
       };
 
       transparent = {
         enable = true;
-        settings.groups =
-          [ "StatusLine" "StatusLineNC" "Pmenu" "Float" "NormalFloat" ];
+        settings.groups = [
+          "StatusLine"
+          "StatusLineNC"
+          "Pmenu"
+          "Float"
+          "NormalFloat"
+        ];
       };
 
       treesitter = {
@@ -464,18 +522,20 @@ in {
       };
     };
 
-    extraPlugins = let
-      lua = src: ''
-        lua<<EOF
-        ${src}
-        EOF
-      '';
-    in [
-      pkgs.bg-nvim
-      {
-        plugin = pkgs.vimPlugins.overseer-nvim;
-        config = lua ''require("overseer").setup({})'';
-      }
-    ];
+    extraPlugins =
+      let
+        lua = src: ''
+          lua<<EOF
+          ${src}
+          EOF
+        '';
+      in
+      [
+        pkgs.bg-nvim
+        {
+          plugin = pkgs.vimPlugins.overseer-nvim;
+          config = lua ''require("overseer").setup({})'';
+        }
+      ];
   };
 }
