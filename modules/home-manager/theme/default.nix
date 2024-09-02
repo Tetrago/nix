@@ -1,9 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   options.theme = {
     variant = lib.mkOption {
-      type = lib.types.enum [ "light" "dark" ];
+      type = lib.types.enum [
+        "light"
+        "dark"
+      ];
       default = "dark";
     };
   };
@@ -42,7 +50,7 @@
 
     qt = {
       enable = true;
-      platformTheme = "gtk";
+      platformTheme.name = "gtk";
     };
   };
 }

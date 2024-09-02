@@ -14,7 +14,7 @@ in {
     };
 
     passthrough = mkOption {
-      type = with types; nullOr (listOf string);
+      type = with types; nullOr (listOf str);
       default = null;
       example = [ "10de:1e87" ];
     };
@@ -92,30 +92,30 @@ in {
               }).fd
             ];
           };
+
+          verbatimConfig = mkIf devices.enable (let
+            inherit (lib.lists) imap0;
+
+            deviceList = [
+              "null"
+              "full"
+              "zero"
+              "random"
+              "urandom"
+              "ptmx"
+              "kvm"
+              "kqemu"
+              "rtc"
+              "hpet"
+              "vfio"
+            ] ++ optionals (kvmfr.enable && devices.kvmfr)
+              (imap0 (i: _: "kvmfr${toString i}") kvmfr.sizes);
+          in ''
+            cgroup_device_acl = [${
+              concatStringsSep "," (map (v: ''"/dev/${v}"'') deviceList)
+            }]
+          '');
         };
-
-        qemuVerbatimConfig = mkIf devices.enable (let
-          inherit (lib.lists) imap0;
-
-          deviceList = [
-            "null"
-            "full"
-            "zero"
-            "random"
-            "urandom"
-            "ptmx"
-            "kvm"
-            "kqemu"
-            "rtc"
-            "hpet"
-            "vfio"
-          ] ++ optionals (kvmfr.enable && devices.kvmfr)
-            (imap0 (i: _: "kvmfr${toString i}") kvmfr.sizes);
-        in ''
-          cgroup_device_acl = [${
-            concatStringsSep "," (map (v: ''"/dev/${v}"'') deviceList)
-          }]
-        '');
       };
     };
 }

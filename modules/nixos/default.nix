@@ -18,10 +18,10 @@
   ];
 
   config = {
-    nix = {
-      settings.experimental-features = [ "nix-command" "flakes" ];
-      extraOptions = "warn-dirty = false";
-    };
+    nix.settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
 
     nixpkgs = {
       overlays = [ outputs.overlays.default ];

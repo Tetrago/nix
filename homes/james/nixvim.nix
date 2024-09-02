@@ -242,7 +242,7 @@ in {
         };
 
         formatters = {
-          nixfmt.command = "${pkgs.nixfmt}/bin/nixfmt";
+          nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
           "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
           "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
           vsg.command = "${pkgs.vsg}/bin/vsg";
@@ -304,7 +304,7 @@ in {
           java-language-server.enable = true;
           jsonls.enable = true;
           lua-ls.enable = true;
-          nil_ls.enable = true;
+          nil-ls.enable = true;
           ocamllsp.enable = true;
           taplo.enable = true;
           vhdl-ls.enable = true;

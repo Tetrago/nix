@@ -52,7 +52,7 @@ in {
       })
 
       (mkIf intel.enable {
-        hardware.opengl = {
+        hardware.graphics = {
           extraPackages = with pkgs; [
             intel-media-driver
             intel-vaapi-driver
@@ -67,6 +67,11 @@ in {
         };
       })
 
-      (mkIf (intel.enable || nvidia.enable) { hardware.opengl.enable = true; })
+      (mkIf (intel.enable || nvidia.enable) {
+        hardware.graphics = {
+          enable = true;
+          enable32Bit = true;
+        };
+      })
     ];
 }

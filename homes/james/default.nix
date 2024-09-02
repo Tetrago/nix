@@ -61,6 +61,7 @@
       gimp
       renderdoc-x11
       ghidra
+      drawio
 
       libreoffice-qt
       hunspell
