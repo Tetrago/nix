@@ -25,7 +25,7 @@
       enable = true;
       enableCompletion = true;
 
-      profileExtra = "${pkgs.fortune}/bin/fortune | ${pkgs.cowsay}/bin/cowsay -f stegosaurus | ${pkgs.lolcat}/bin/lolcat";
+      initExtra = "${pkgs.fortune}/bin/fortune | ${pkgs.cowsay}/bin/cowsay -f stegosaurus";
 
       sessionVariables = {
         EDITOR = "nvim";
