@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  imports = [ ./starship.nix ];
+
   home.packages = with pkgs; [
     somo
     scc
@@ -50,19 +52,6 @@
         gdb = "gdb -q";
         md = "${glow}/bin/glow";
         ps = "${procs}/bin/procs";
-      };
-    };
-
-    starship = {
-      enable = true;
-      settings = {
-        add_newline = false;
-        right_format = "$time";
-        time = {
-          disabled = false;
-          style = "bold bright-black";
-          format = "[$time]($style)";
-        };
       };
     };
 
