@@ -23,6 +23,8 @@
       enable = true;
       enableCompletion = true;
 
+      profileExtra = "${pkgs.fortune}/bin/fortune | ${pkgs.cowsay}/bin/cowsay -f stegosaurus | ${pkgs.lolcat}/bin/lolcat";
+
       sessionVariables = {
         EDITOR = "nvim";
         MANPAGER = "sh -c 'col -bx | ${pkgs.bat} -l man -p'";
