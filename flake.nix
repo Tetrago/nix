@@ -79,6 +79,8 @@
       overlays = import ./overlays { inherit inputs; };
 
       devShells."x86_64-linux" = import ./devShells {
+        inherit (nixpkgs) lib;
+
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           overlays = [ outputs.overlays.default ];
