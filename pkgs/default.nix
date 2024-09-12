@@ -4,6 +4,7 @@ let
   inherit (pkgs) callPackage;
 in
 {
+  binaryninja = callPackage ./binaryninja.nix { };
   bg-nvim = callPackage ./bg-nvim.nix { };
   flat-remix-gtk-variant = callPackage ./flat-remix-gtk-variant.nix { };
   okolors = callPackage ./okolors.nix { };

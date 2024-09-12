@@ -31,6 +31,7 @@
 
     networking = {
       enable = true;
+      nftables = false;
       hostname = "lithium";
     };
 
@@ -51,6 +52,7 @@
         "wheel"
         "docker"
         "libvirtd"
+        "kvm"
         "networkmanager"
       ];
     };

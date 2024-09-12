@@ -71,6 +71,7 @@
       blender
       gimp
       renderdoc-x11
+      binaryninja
       ghidra
       drawio
 
