@@ -432,7 +432,7 @@ in
             ];
           };
 
-          inactiveSections = {
+          inactive_sections = {
             lualine_a = [ "" ];
 
             lualine_b = [
@@ -501,7 +501,7 @@ in
 
       treesitter = {
         enable = true;
-        settings.ensureInstalled = [
+        settings.ensure_installed = [
           "nix"
           "bash"
           "lua"
