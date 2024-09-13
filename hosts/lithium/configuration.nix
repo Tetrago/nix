@@ -103,7 +103,10 @@
     {
       imports = [ ../../homes/james ];
 
-      steam.enable = true;
+      tetrago = {
+        cyber.enable = true;
+        steam.enable = true;
+      };
 
       hyprworld = {
         bluetooth = true;

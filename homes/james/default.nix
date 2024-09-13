@@ -37,12 +37,6 @@
       ".jdk/21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
       ".cmake-format".source = ./files/cmake-format;
-      ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
-
-      ".config/pwn.conf".text = ''
-        [context]
-        terminal=["kitty", "sh", "-c"]
-      '';
     };
 
     packages = with pkgs; [
@@ -72,7 +66,6 @@
       gimp
       renderdoc-x11
       drawio
-      binaryninja
 
       libreoffice-qt
       hunspell
