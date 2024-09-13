@@ -71,8 +71,8 @@
       blender
       gimp
       renderdoc-x11
-      binaryninja
       drawio
+      binaryninja
 
       libreoffice-qt
       hunspell
