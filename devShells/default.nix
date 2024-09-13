@@ -2,5 +2,5 @@
 
 {
   cyber = callPackage ./cyber.nix { };
-  dev = callPackage ./dev.nix { };
+  device = callPackage ./device.nix { };
 }

@@ -53,34 +53,33 @@
       inherit (lib) nixosSystem;
       inherit (lib.attrsets) filterAttrs genAttrs;
 
-      eachSystem = fn: genAttrs [ "x86_64-linux" ] fn;
+      hosts = builtins.attrNames (filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
+      systems = [ "x86_64-linux" ];
+
+      eachSystem = fn: genAttrs systems fn;
     in
     {
-      nixosConfigurations =
-        let
-          hosts = builtins.attrNames (filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
-        in
-        genAttrs hosts (
-          host:
-          nixosSystem {
-            specialArgs = {
-              inherit inputs outputs;
-            };
-            system = "x86_64-linux";
-            modules = [ ./hosts/${host}/configuration.nix ];
-          }
-        );
+      nixosConfigurations = genAttrs hosts (
+        host:
+        nixosSystem {
+          specialArgs = {
+            inherit inputs outputs;
+          };
+          system = "x86_64-linux";
+          modules = [ ./hosts/${host}/configuration.nix ];
+        }
+      );
 
       devShells = eachSystem (
         system:
         let
-          allPkgs = import nixpkgs {
+          pkgs = import nixpkgs {
             inherit system;
             overlays = [ outputs.overlays.default ];
             config.allowUnfree = true;
           };
         in
-        import ./devShells { inherit (allPkgs) callPackage; }
+        import ./devShells { inherit (pkgs) callPackage; }
       );
 
       overlays = import ./overlays { inherit inputs; };

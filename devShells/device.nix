@@ -31,7 +31,7 @@ let
   '';
 in
 mkShell {
-  name = "dev";
+  name = "device";
 
   packages = [
     pciutils
