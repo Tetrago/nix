@@ -1,7 +1,20 @@
-{ pkgs }:
+{
+  fd,
+  writeShellScriptBin,
+  mkShell,
+  pciutils,
+  usbutils,
+  util-linux,
+  hwloc,
+  amdgpu_top,
+  intel-gpu-tools,
+  cpu-x,
+  nerdfetch,
+  cpufetch,
+}:
 
 let
-  lsiommu = pkgs.writeShellScriptBin "lsiommu" ''
+  lsiommu = writeShellScriptBin "lsiommu" ''
     #!/usr/bin/env bash
     shopt -s nullglob
     for g in $(find /sys/kernel/iommu_groups/* -maxdepth 0 -type d | sort -V); do
@@ -12,15 +25,15 @@ let
     done;
   '';
 
-  lsnvme = pkgs.writeShellScriptBin "lsnvme" ''
+  lsnvme = writeShellScriptBin "lsnvme" ''
     #!/usr/bin/env bash
-    ${pkgs.fd}/bin/fd "^nvme" /sys/block/ | xargs -I{} sh -c "echo -n '{}  '; cat {}/device/address"
+    ${fd}/bin/fd "^nvme" /sys/block/ | xargs -I{} sh -c "echo -n '{}  '; cat {}/device/address"
   '';
 in
-pkgs.mkShell {
+mkShell {
   name = "dev";
 
-  packages = with pkgs; [
+  packages = [
     pciutils
     usbutils
     util-linux

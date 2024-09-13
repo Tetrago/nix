@@ -1,5 +1,5 @@
 { inputs }:
 
 {
-  default = final: prev: import ../pkgs { pkgs = prev; };
+  default = final: prev: import ../packages { inherit (prev) callPackage; };
 }

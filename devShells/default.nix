@@ -1,10 +1,6 @@
-{ lib, pkgs }:
+{ callPackage }:
 
 {
-  cyber = import ./cyber.nix {
-    inherit lib;
-    inherit pkgs;
-  };
-
-  dev = import ./dev.nix { inherit pkgs; };
+  cyber = callPackage ./cyber.nix { };
+  dev = callPackage ./dev.nix { };
 }

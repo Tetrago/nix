@@ -17,7 +17,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-utils.url = "github:numtide/flake-utils";
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
@@ -44,45 +43,55 @@
 
   outputs =
     {
-      flake-utils,
       nixpkgs,
       self,
       ...
     }@inputs:
     let
       inherit (self) outputs;
+      inherit (nixpkgs) lib;
+      inherit (lib) nixosSystem;
+      inherit (lib.attrsets) genAttrs;
+
+      hosts = [
+        "hydrogen"
+        "lithium"
+      ];
+
+      eachSystem = fn: genAttrs [ "x86_64-linux" ] fn;
     in
     {
-      nixosConfigurations = {
-        hydrogen = nixpkgs.lib.nixosSystem {
+      nixosConfigurations = genAttrs hosts (
+        host:
+        nixosSystem {
           specialArgs = {
             inherit inputs outputs;
           };
           system = "x86_64-linux";
-          modules = [ ./hosts/hydrogen/configuration.nix ];
-        };
+          modules = [ ./hosts/${host}/configuration.nix ];
+        }
+      );
 
-        lithium = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
+      devShells = eachSystem (
+        system:
+        let
+          allPkgs = import nixpkgs {
+            inherit system;
+            overlays = [ outputs.overlays.default ];
+            config.allowUnfree = true;
           };
-          system = "x86_64-linux";
-          modules = [ ./hosts/lithium/configuration.nix ];
-        };
-      };
+        in
+        import ./devShells { inherit (allPkgs) callPackage; }
+      );
 
       overlays = import ./overlays { inherit inputs; };
 
-      devShells."x86_64-linux" = import ./devShells {
-        inherit (nixpkgs) lib;
-
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [ outputs.overlays.default ];
-          config.allowUnfree = true;
-        };
-      };
-
-      packages."x86_64-linux" = import ./pkgs { pkgs = nixpkgs.legacyPackages."x86_64-linux"; };
+      packages = eachSystem (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        import ./packages { inherit (pkgs) callPackage; }
+      );
     };
 }

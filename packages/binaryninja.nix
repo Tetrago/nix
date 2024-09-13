@@ -10,7 +10,7 @@ buildFHSEnv {
   targetPkgs =
     pkgs: with pkgs; [
       binaryninja-unwrapped
-      (python3.withPackages (pkgs: with pkgs; [ torch ]))
+      (python3.withPackages (p: with p; [ torch ]))
     ];
 
   multiPkgs =

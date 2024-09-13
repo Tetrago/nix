@@ -1,8 +1,5 @@
-{ pkgs }:
+{ callPackage }:
 
-let
-  inherit (pkgs) callPackage;
-in
 {
   binaryninja = callPackage ./binaryninja.nix { };
   binaryninja-unwrapped = callPackage ./binaryninja-unwrapped.nix { };
