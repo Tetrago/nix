@@ -212,6 +212,11 @@ in
         "noshadow,class:^(steam_app_\\d+)$"
         "noborder,class:^(steam_app_\\d+)$"
       ];
+
+      layerrule = [
+        "noanim,hyprpicker"
+        "noanim,selection"
+      ];
     };
 
     systemd = {
