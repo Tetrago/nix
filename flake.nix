@@ -51,26 +51,25 @@
       inherit (self) outputs;
       inherit (nixpkgs) lib;
       inherit (lib) nixosSystem;
-      inherit (lib.attrsets) genAttrs;
-
-      hosts = [
-        "hydrogen"
-        "lithium"
-      ];
+      inherit (lib.attrsets) filterAttrs genAttrs;
 
       eachSystem = fn: genAttrs [ "x86_64-linux" ] fn;
     in
     {
-      nixosConfigurations = genAttrs hosts (
-        host:
-        nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-          };
-          system = "x86_64-linux";
-          modules = [ ./hosts/${host}/configuration.nix ];
-        }
-      );
+      nixosConfigurations =
+        let
+          hosts = builtins.attrNames (filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
+        in
+        genAttrs hosts (
+          host:
+          nixosSystem {
+            specialArgs = {
+              inherit inputs outputs;
+            };
+            system = "x86_64-linux";
+            modules = [ ./hosts/${host}/configuration.nix ];
+          }
+        );
 
       devShells = eachSystem (
         system:
