@@ -64,15 +64,14 @@
       inkscape
       jetbrains.idea-community
       godot_4
-      gnome.file-roller
-      gnome.gnome-calendar
-      gnome.gnome-clocks
+      file-roller
+      gnome-calendar
+      gnome-clocks
       qemu
       blender
       gimp
       renderdoc-x11
       binaryninja
-      ghidra
       drawio
 
       libreoffice-qt

@@ -145,7 +145,6 @@ in
           "$mod, F, togglefloating"
           "CTRL, Home, fullscreen"
           "$mod, Space, exec, pidof wofi || wofi --show drun"
-          "$mod, Tab, hyprexpo:expo, toggle"
           '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
           ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
           ''$mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
@@ -213,26 +212,11 @@ in
         "noshadow,class:^(steam_app_\\d+)$"
         "noborder,class:^(steam_app_\\d+)$"
       ];
-
-      plugin = {
-        hyprexpo = {
-          columns = 3;
-          gap_size = 5;
-          bg_col = "rgb(${config.colorScheme.palette.base00})";
-          workspace_method = "center first";
-
-          enable_gesture = true;
-          gesture_distance = 300;
-          gesture_positive = false;
-        };
-      };
     };
 
     systemd = {
       enable = true;
       variables = [ "--all" ];
     };
-
-    plugins = with inputs.hyprland-plugins.packages.${pkgs.system}; [ hyprexpo ];
   };
 }

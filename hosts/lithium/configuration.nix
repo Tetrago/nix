@@ -31,7 +31,6 @@
 
     networking = {
       enable = true;
-      nftables = false;
       hostname = "lithium";
     };
 

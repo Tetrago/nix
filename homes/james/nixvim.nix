@@ -259,28 +259,30 @@ in
       conform-nvim = {
         enable = true;
 
-        formattersByFt = {
-          cpp = [ "clang-format" ];
-          cmake = [ "cmake_format" ];
-          nix = [ "nixfmt" ];
-          vhdl = [ "vsg" ];
-          "_" = [ "trim_whitespace" ];
-        };
+        settings = {
+          formatters_by_ft = {
+            cpp = [ "clang-format" ];
+            cmake = [ "cmake_format" ];
+            nix = [ "nixfmt" ];
+            vhdl = [ "vsg" ];
+            "_" = [ "trim_whitespace" ];
+          };
 
-        formatters = {
-          nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
-          "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
-          "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
-          vsg.command = "${pkgs.vsg}/bin/vsg";
-        };
+          formatters = {
+            nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+            "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
+            "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
+            vsg.command = "${pkgs.vsg}/bin/vsg";
+          };
 
-        formatOnSave = {
-          lspFallback = true;
-          timeoutMs = 500;
-        };
+          format_on_save = {
+            lsp_format = "fallback";
+            timeout_ms = 500;
+          };
 
-        formatAfterSave = {
-          lspFallback = true;
+          format_after_save = {
+            lsp_format = "fallback";
+          };
         };
       };
 
@@ -358,93 +360,97 @@ in
       lualine = {
         enable = true;
 
-        theme.__raw = ''
-          (function()
-              local theme = require("lualine.themes.auto")
+        settings = {
+          options = {
+            component_separators = {
+              left = "";
+              right = "";
+            };
 
-              theme.normal.c.bg = nil
-              theme.inactive.c.bg = nil
+            section_separators = {
+              left = "";
+              right = "";
+            };
 
-              return theme
-            end
-          )()
-        '';
+            theme.__raw = ''
+              (function()
+                  local theme = require("lualine.themes.auto")
 
-        componentSeparators = {
-          left = "";
-          right = "";
-        };
+                  theme.normal.c.bg = nil
+                  theme.inactive.c.bg = nil
 
-        extensions = [
-          "fugitive"
-          "neo-tree"
-          "nvim-dap-ui"
-          "oil"
-          "trouble"
-          "overseer"
-        ];
+                  return theme
+                end
+              )()
+            '';
+          };
 
-        sectionSeparators = {
-          left = "";
-          right = "";
-        };
-
-        sections = {
-          lualine_a = [
-            {
-              name = "mode";
-              separator.left = "";
-
-              padding = {
-                left = 0;
-                right = 2;
-              };
-            }
+          extensions = [
+            "fugitive"
+            "neo-tree"
+            "nvim-dap-ui"
+            "oil"
+            "trouble"
+            "overseer"
           ];
 
-          lualine_b = [
-            "filename"
-            "branch"
-          ];
-          lualine_c = [
-            "diagnostics"
-            "%="
-          ];
+          sections = {
+            lualine_a = [
+              {
+                __unkeyed-1 = "mode";
+                separator.left = "";
 
-          lualine_x = [ "fileformat" ];
-          lualine_y = [ "filetype" ];
+                padding = {
+                  left = 0;
+                  right = 2;
+                };
+              }
+            ];
 
-          lualine_z = [
-            {
-              name = "location";
-              separator.right = "";
+            lualine_b = [
+              "filename"
+              "branch"
+            ];
+            lualine_c = [
+              "diagnostics"
+              "%="
+            ];
 
-              padding = {
-                left = 2;
-                right = 0;
-              };
-            }
-          ];
-        };
+            lualine_x = [ "fileformat" ];
+            lualine_y = [ "filetype" ];
 
-        inactiveSections = {
-          lualine_a = [ "" ];
+            lualine_z = [
+              {
+                __unkeyed-1 = "location";
+                separator.right = "";
 
-          lualine_b = [
-            {
-              name = "filename";
+                padding = {
+                  left = 2;
+                  right = 0;
+                };
+              }
+            ];
+          };
 
-              separator = {
-                left = "";
-                right = "";
-              };
-            }
-          ];
+          inactiveSections = {
+            lualine_a = [ "" ];
 
-          lualine_c = [ "" ];
-          lualine_x = [ "" ];
-          lualine_y = [ "" ];
-          lualine_z = [ "" ];
+            lualine_b = [
+              {
+                __unkeyed-1 = "filename";
+
+                separator = {
+                  left = "";
+                  right = "";
+                };
+              }
+            ];
+
+            lualine_c = [ "" ];
+            lualine_x = [ "" ];
+            lualine_y = [ "" ];
+            lualine_z = [ "" ];
+          };
         };
       };
 
@@ -495,7 +501,7 @@ in
 
       treesitter = {
         enable = true;
-        ensureInstalled = [
+        settings.ensureInstalled = [
           "nix"
           "bash"
           "lua"

@@ -14,20 +14,8 @@
 
   boot = {
     blacklistedKernelModules = [ "mt76x2u" ];
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_9;
+    kernelPackages = pkgs.linuxPackages_6_6;
   };
-
-  #networking = {
-  #  defaultGateway = "192.168.1.1";
-  #  nameservers = [ "8.8.8.8" ];
-
-  #  bridges.br0.interfaces = [ "enp5s0" ];
-
-  #  interfaces.br0.ipv4.addresses = [{
-  #    address = "192.168.1.111";
-  #    prefixLength = 24;
-  #  }];
-  #};
 
   programs = {
     command-not-found.enable = false;
@@ -93,7 +81,6 @@
 
     networking = {
       enable = true;
-      nftables = false;
       hostname = "hydrogen";
     };
 

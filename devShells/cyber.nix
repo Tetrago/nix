@@ -10,9 +10,6 @@ pkgs.mkShell {
   NIX_LD = fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
 
   packages = with pkgs; [
-    ghidra
-    burpsuite
-
     (python3.withPackages (
       p: with p; [
         pwntools

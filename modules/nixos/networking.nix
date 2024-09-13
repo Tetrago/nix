@@ -12,11 +12,6 @@ in
   options.tetrago.networking = {
     enable = mkEnableOption "enable default networking options";
 
-    nftables = mkOption {
-      type = types.bool;
-      default = true;
-    };
-
     hostname = mkOption {
       type = types.str;
       description = "hostname";
@@ -30,7 +25,7 @@ in
         hostName = "${hostname}";
         networkmanager.enable = true;
         firewall.enable = true;
-        nftables.enable = nftables;
+        nftables.enable = !config.virtualisation.libvirtd.enable;
       };
 
       services.automatic-timezoned.enable = true;
