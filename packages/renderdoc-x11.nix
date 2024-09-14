@@ -11,9 +11,15 @@ stdenvNoCC.mkDerivation {
   dontUnpack = true;
   dontBuild = true;
 
-  installPhase = ''
-    mkdir -p $out/share/applications
-    cp ${renderdoc}/share/applications/renderdoc.desktop $out/share/applications/renderdoc-x11.desktop
-    sed -i 's@Exec=.*@Exec=bash -c "VK_LAYER_PATH=${vulkan-validation-layers}/share/vulkan/explicit_layer.d env -u WAYLAND_DISPLAY ${renderdoc}/bin/qrenderdoc %f"@g' $out/share/applications/renderdoc-x11.desktop
-  '';
+  installPhase =
+    let
+      cmd = "VK_LAYER_PATH=${vulkan-validation-layers}/share/vulkan/explicit_layer.d env -u WAYLAND_DISPLAY ${renderdoc}/bin/qrenderdoc %f";
+    in
+    ''
+      mkdir -p $out/share/applications
+      cp ${renderdoc}/share/applications/renderdoc.desktop $out/share/applications/renderdoc-x11.desktop
+
+      substituteInPlace $out/share/applications/renderdoc-x11.desktop \
+        --replace-fail "Exec=qrenderdoc" "Exec=sh -c '${cmd}'"
+    '';
 }

@@ -6,8 +6,8 @@
   optipng,
   sassc,
   stdenv,
-  highlight-color ? "123456",
-  highlight-text-color ? "987654",
+  highlight-color ? "",
+  highlight-text-color ? "",
 }:
 
 stdenv.mkDerivation rec {
