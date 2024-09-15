@@ -1,4 +1,4 @@
-{ outputs, ... }:
+{ outputs, pkgs, ... }:
 
 {
   imports = [
@@ -17,17 +17,26 @@
     ./virtualization.nix
   ];
 
-  config = {
-    nix.settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
-    nixpkgs = {
-      overlays = [ outputs.overlays.default ];
-      config.allowUnfree = true;
-    };
-
-    i18n.defaultLocale = "en_US.UTF-8";
+  nixpkgs = {
+    overlays = [ outputs.overlays.default ];
+    config.allowUnfree = true;
   };
+
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  programs = {
+    git.enable = true;
+    nano.enable = false;
+    neovim.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    curl
+    unzip
+  ];
 }

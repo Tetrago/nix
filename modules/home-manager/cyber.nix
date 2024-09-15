@@ -20,14 +20,14 @@ in
 
         ".config/pwn.conf".text = ''
           [context]
-          terminal=["${config.home.programs.kitty.package}/bin/kitty", "sh", "-c"]
+          terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
         '';
       };
 
       packages = with pkgs; [
         binaryninja
         burpsuite
-        ghidra
+        ghidra-bin
       ];
     };
   };

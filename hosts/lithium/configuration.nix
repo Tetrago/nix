@@ -124,12 +124,5 @@
       };
     };
 
-  environment.systemPackages = with pkgs; [
-    curl
-    git
-    neovim
-    unzip
-  ];
-
   system.stateVersion = "23.11";
 }
