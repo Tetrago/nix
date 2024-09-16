@@ -104,7 +104,6 @@
       imports = [ ../../homes/james ];
 
       tetrago = {
-        cyber.enable = true;
         steam.enable = true;
       };
 

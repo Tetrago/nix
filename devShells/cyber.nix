@@ -36,6 +36,8 @@ mkShell {
   packages = [
     (python3.withPackages (
       p: with p; [
+        numpy
+        pillow
         pwntools
         impacket
       ]

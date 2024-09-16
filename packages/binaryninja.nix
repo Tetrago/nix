@@ -1,32 +1,44 @@
 {
-  binaryninja-unwrapped,
-  buildFHSEnv,
+  autoPatchelfHook,
+  dbus,
+  fetchurl,
+  fontconfig,
+  freetype,
+  libGL,
+  libxkbcommon,
+  libxml2,
+  stdenv,
+  unzip,
+  wayland,
+  xorg,
+  zlib,
 }:
 
-buildFHSEnv {
-  name = "binaryninja";
-  runScript = "binaryninja";
+stdenv.mkDerivation {
+  pname = "binaryninja";
+  version = "4.1.5902";
 
-  targetPkgs =
-    pkgs: with pkgs; [
-      binaryninja-unwrapped
-      (python3.withPackages (p: with p; [ torch ]))
-    ];
+  src = fetchurl {
+    url = "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip";
+    sha256 = "sha256-OCMOJKC0X0mGV3snfeumzHCXrnjobQb78dWQFv73uU4=";
+  };
 
-  multiPkgs =
+  nativeBuildInputs = [
+    unzip
+    autoPatchelfHook
+  ];
+
+  buildInputs =
     let
-      xorgDeps =
-        pkgs: with pkgs.xorg; [
-          libX11
-          libxcb
-          xcbutilimage
-          xcbutilkeysyms
-          xcbutilrenderutil
-          xcbutilwm
-        ];
+      xorgDeps = with xorg; [
+        libX11
+        libxcb
+        xcbutilimage
+        xcbutilkeysyms
+        xcbutilrenderutil
+        xcbutilwm
+      ];
     in
-    pkgs:
-    with pkgs;
     [
       dbus
       fontconfig
@@ -34,13 +46,34 @@ buildFHSEnv {
       libGL
       libxkbcommon
       libxml2
+      stdenv.cc.cc
       wayland
       zlib
     ]
-    ++ xorgDeps pkgs;
+    ++ xorgDeps;
 
-  extraInstallCommands = ''
+  dontBuild = true;
+
+  unpackPhase = ''
     mkdir -p $out/share
-    ln -s ${binaryninja-unwrapped}/share/applications $out/share/applications
+    unzip $src -d $out/share
+  '';
+
+  installPhase = ''
+    mkdir -p $out/bin
+    chmod +x $out/share/binaryninja/binaryninja
+    ln -s $out/share/binaryninja/binaryninja $out/bin/binaryninja
+
+    mkdir -p $out/share/applications
+    cat > $out/share/applications/binaryninja.desktop <<EOF
+    [Desktop Entry]
+    Name=Binary Ninja
+    Exec=binaryninja %u
+    Terminal=false
+    Type=Application
+    MimeType=application/x-binaryninja;x-scheme-handler/binaryninja
+    Categories=Utility
+    Comment=Binary Ninja: A Reverse Engineering Platform
+    EOF
   '';
 }

@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -20,6 +25,10 @@
     wallpaper = "${./files/wallpaper.png}";
   };
 
+  wayland.windowManager.hyprland.settings.windowrulev2 = [
+    "stayfocused,class:^(com.vector35.binaryninja)$,title:^([^B])(.*)$"
+  ];
+
   colorScheme =
     let
       lb = inputs.nix-colors.lib.contrib { inherit pkgs; };
@@ -37,6 +46,12 @@
       ".jdk/21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
       ".cmake-format".source = ./files/cmake-format;
+      ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
+
+      ".config/pwn.conf".text = ''
+        [context]
+        terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
+      '';
     };
 
     packages = with pkgs; [
@@ -66,6 +81,7 @@
       gimp
       renderdoc-x11
       drawio
+      binaryninja
 
       libreoffice-qt
       hunspell
