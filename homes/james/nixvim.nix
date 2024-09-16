@@ -501,30 +501,37 @@ in
 
       treesitter = {
         enable = true;
-        settings.ensure_installed = [
-          "nix"
-          "bash"
-          "lua"
-          "python"
-          "json"
-          "javascript"
-          "c"
-          "cpp"
-          "cmake"
-          "rust"
-          "java"
-          "make"
-          "markdown"
-          "markdown_inline"
-          "haskell"
-          "c_sharp"
-          "regex"
-          "toml"
-          "dockerfile"
-          "rust"
-          "typescript"
-          "zig"
-        ];
+        settings = {
+          ensure_installed = [
+            "nix"
+            "bash"
+            "lua"
+            "python"
+            "json"
+            "javascript"
+            "c"
+            "cpp"
+            "cmake"
+            "rust"
+            "java"
+            "make"
+            "markdown"
+            "markdown_inline"
+            "haskell"
+            "c_sharp"
+            "regex"
+            "toml"
+            "dockerfile"
+            "rust"
+            "typescript"
+            "zig"
+          ];
+
+          highlight = {
+            enable = true;
+            additional_vim_regex_highlighting = true;
+          };
+        };
       };
     };
 
