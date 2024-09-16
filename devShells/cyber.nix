@@ -2,22 +2,10 @@
   lib,
   mkShell,
   stdenv,
-  sqlmap,
-  stegseek,
-  ffuf,
-  nmap,
-  netexec,
-  metasploit,
-  seclists,
-  exploitdb,
-  hashcat,
-  john,
-  file,
   binutils,
   binwalk,
   strace,
   ltrace,
-  openvpn,
   gdb,
   rp,
   radare2,
@@ -43,22 +31,10 @@ mkShell {
       ]
     ))
 
-    sqlmap
-    stegseek
-    ffuf
-    nmap
-    netexec
-    metasploit
-    seclists
-    exploitdb
-    hashcat
-    john
-    file
     binutils
     binwalk
     strace
     ltrace
-    openvpn
     gdb
     rp
     radare2

@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   pkgs,
   ...
@@ -46,12 +45,6 @@
       ".jdk/21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
       ".cmake-format".source = ./files/cmake-format;
-      ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
-
-      ".config/pwn.conf".text = ''
-        [context]
-        terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
-      '';
     };
 
     packages = with pkgs; [
@@ -64,6 +57,7 @@
       nvd
       ctop
       below
+      file
 
       bottles
       meld
@@ -81,7 +75,6 @@
       gimp
       renderdoc-x11
       drawio
-      binaryninja
 
       libreoffice-qt
       hunspell
