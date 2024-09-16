@@ -176,6 +176,7 @@ in
       nix.enable = true;
       nvim-colorizer.enable = true;
       oil.enable = true;
+      sleuth.enable = true;
       surround.enable = true;
       trouble.enable = true;
 
@@ -261,10 +262,17 @@ in
 
         settings = {
           formatters_by_ft = {
-            cpp = [ "clang-format" ];
             cmake = [ "cmake_format" ];
+            cpp = [ "clang-format" ];
+            css = [ "stylelint" ];
+            json = [ "yq" ];
+            html = [ "djlint" ];
             nix = [ "nixfmt" ];
+            scss = [ "stylelint" ];
+            toml = [ "yq" ];
             vhdl = [ "vsg" ];
+            xml = [ "yq" ];
+            yaml = [ "yq" ];
             "_" = [ "trim_whitespace" ];
           };
 
@@ -272,6 +280,9 @@ in
             nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
             "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
             "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
+            djlint.command = "${pkgs.djlint}/bin/djlint";
+            stylelint.command = "${pkgs.stylelint}/bin/stylelint";
+            yq.command = "${pkgs.yq}/bin/yq";
             vsg.command = "${pkgs.vsg}/bin/vsg";
           };
 
