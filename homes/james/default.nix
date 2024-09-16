@@ -75,6 +75,7 @@
       gimp
       renderdoc-x11
       drawio
+      remmina
 
       libreoffice-qt
       hunspell

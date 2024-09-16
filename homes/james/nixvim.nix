@@ -264,15 +264,15 @@ in
           formatters_by_ft = {
             cmake = [ "cmake_format" ];
             cpp = [ "clang-format" ];
-            css = [ "stylelint" ];
-            json = [ "yq" ];
-            html = [ "djlint" ];
+            css = [ "prettierd" ];
+            javascript = [ "prettierd" ];
+            json = [ "prettierd" ];
+            html = [ "prettierd" ];
             nix = [ "nixfmt" ];
-            scss = [ "stylelint" ];
-            toml = [ "yq" ];
+            scss = [ "prettierd" ];
+            typescript = [ "prettierd" ];
             vhdl = [ "vsg" ];
-            xml = [ "yq" ];
-            yaml = [ "yq" ];
+            yaml = [ "prettierd" ];
             "_" = [ "trim_whitespace" ];
           };
 
@@ -280,9 +280,7 @@ in
             nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
             "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
             "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
-            djlint.command = "${pkgs.djlint}/bin/djlint";
-            stylelint.command = "${pkgs.stylelint}/bin/stylelint";
-            yq.command = "${pkgs.yq}/bin/yq";
+            prettierd.command = "${pkgs.prettierd}/bin/prettierd";
             vsg.command = "${pkgs.vsg}/bin/vsg";
           };
 
