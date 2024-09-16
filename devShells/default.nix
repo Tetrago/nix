@@ -1,6 +1,6 @@
 { callPackage }:
 
 {
-  cyber = callPackage ./cyber.nix { };
   device = callPackage ./device.nix { };
+  pwn = callPackage ./pwn.nix { };
 }
