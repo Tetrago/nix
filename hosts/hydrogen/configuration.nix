@@ -201,6 +201,10 @@
             app = {
               shmFile = "/dev/kvmfr0";
             };
+
+            input = {
+              escapeKey = 104;
+            };
           };
         };
       };
