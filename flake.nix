@@ -82,7 +82,7 @@
         import ./devShells { inherit (pkgs) callPackage; }
       );
 
-      overlays = import ./overlays { inherit inputs; };
+      overlays = import ./overlays;
 
       packages = eachSystem (
         system:

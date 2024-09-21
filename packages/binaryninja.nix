@@ -1,36 +1,24 @@
 {
-  autoPatchelfHook,
-  dbus,
-  fetchurl,
-  fontconfig,
-  freetype,
-  libGL,
-  libxkbcommon,
-  libxml2,
-  stdenv,
-  unzip,
-  wayland,
-  xorg,
-  zlib,
+  buildFHSEnv,
+  writeShellScript,
 }:
 
-stdenv.mkDerivation {
-  pname = "binaryninja";
-  version = "4.1.5902";
+buildFHSEnv {
+  name = "binaryninja";
 
-  src = fetchurl {
-    url = "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip";
-    sha256 = "sha256-OCMOJKC0X0mGV3snfeumzHCXrnjobQb78dWQFv73uU4=";
-  };
+  runScript = writeShellScript "binaryninja.sh" ''
+    set -e
+    exec "$HOME/.local/share/binaryninja/binaryninja" "$@"
+  '';
 
-  nativeBuildInputs = [
-    unzip
-    autoPatchelfHook
-  ];
-
-  buildInputs =
+  targetPkgs =
+    pkgs:
     let
-      xorgDeps = with xorg; [
+      kdeDeps = with pkgs.kdePackages; [
+        qtbase
+        qtdeclarative
+      ];
+      xorgDeps = with pkgs.xorg; [
         libX11
         libxcb
         xcbutilimage
@@ -39,6 +27,7 @@ stdenv.mkDerivation {
         xcbutilwm
       ];
     in
+    with pkgs;
     [
       dbus
       fontconfig
@@ -46,24 +35,15 @@ stdenv.mkDerivation {
       libGL
       libxkbcommon
       libxml2
+      (python3.withPackages (p: with p; [ torch ]))
       stdenv.cc.cc
       wayland
       zlib
     ]
+    ++ kdeDeps
     ++ xorgDeps;
 
-  dontBuild = true;
-
-  unpackPhase = ''
-    mkdir -p $out/share
-    unzip $src -d $out/share
-  '';
-
-  installPhase = ''
-    mkdir -p $out/bin
-    chmod +x $out/share/binaryninja/binaryninja
-    ln -s $out/share/binaryninja/binaryninja $out/bin/binaryninja
-
+  extraInstallCommands = ''
     mkdir -p $out/share/applications
     cat > $out/share/applications/binaryninja.desktop <<EOF
     [Desktop Entry]

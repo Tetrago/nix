@@ -76,6 +76,7 @@
       renderdoc-x11
       drawio
       remmina
+      binaryninja
 
       libreoffice-qt
       hunspell
