@@ -38,5 +38,7 @@
   environment.systemPackages = with pkgs; [
     curl
     unzip
+    man-pages
+    man-pages-posix
   ];
 }

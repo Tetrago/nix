@@ -29,7 +29,7 @@
 
       sessionVariables = {
         EDITOR = "nvim";
-        MANPAGER = "sh -c 'col -bx | ${pkgs.bat} -l man -p'";
+        MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
         MANROFFOPT = "-c";
       };
 
