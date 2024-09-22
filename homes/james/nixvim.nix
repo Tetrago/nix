@@ -16,6 +16,10 @@ in
     enable = true;
     withRuby = false;
 
+    globals = {
+      c_syntax_for_h = 1;
+    };
+
     opts = {
       number = true;
       relativenumber = true;
