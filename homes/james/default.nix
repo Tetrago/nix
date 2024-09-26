@@ -52,7 +52,6 @@
       fzf
       fd
       httpie
-      eva
       nix-output-monitor
       nvd
       ctop

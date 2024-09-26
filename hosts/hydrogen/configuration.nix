@@ -34,7 +34,6 @@
 
   services = {
     gvfs.enable = true;
-    hardware.openrgb.enable = true;
     ollama.enable = true;
     udisks2.enable = true;
     upower.enable = true;
@@ -60,7 +59,6 @@
     audio.enable = true;
     bluetooth.enable = true;
     fonts.enable = true;
-    greetd.enable = true;
     hyprland.enable = true;
     printing.enable = true;
 
@@ -73,6 +71,20 @@
     graphics = {
       intel.enable = true;
       nvidia.blacklist = true;
+    };
+
+    greetd = {
+      enable = true;
+      theme = {
+        prompt = "green";
+        time = "red";
+        input = "red";
+        text = "cyan";
+        border = "magenta";
+        button = "yellow";
+        action = "blue";
+        container = "black";
+      };
     };
 
     networking = {
