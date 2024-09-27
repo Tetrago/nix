@@ -133,6 +133,10 @@
     {
       imports = [ ../../homes/james ];
 
+      home.packages = with pkgs; [
+        openttd
+      ];
+
       wayland.windowManager.hyprland.settings.windowrulev2 = [
         "idleinhibit fullscreen,class:^(looking-glass-client)$"
       ];

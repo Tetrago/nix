@@ -25,6 +25,7 @@
   exploitdb,
   seclists,
   avalonia-ilspy,
+  wireshark,
 }:
 
 let
@@ -69,5 +70,6 @@ mkShell {
     netexec
     exploitdb
     avalonia-ilspy
+    wireshark
   ];
 }

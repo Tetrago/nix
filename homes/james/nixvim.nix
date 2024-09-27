@@ -266,13 +266,14 @@ in
 
         settings = {
           formatters_by_ft = {
-            cmake = [ "cmake_format" ];
+            cmake = [ "gersemi" ];
             cpp = [ "clang-format" ];
             css = [ "prettierd" ];
             javascript = [ "prettierd" ];
             json = [ "prettierd" ];
             html = [ "prettierd" ];
             nix = [ "nixfmt" ];
+            python = [ "yapf" ];
             scss = [ "prettierd" ];
             typescript = [ "prettierd" ];
             vhdl = [ "vsg" ];
@@ -283,8 +284,9 @@ in
           formatters = {
             nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
             "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
-            "cmake_format".command = "${pkgs.cmake-format}/bin/cmake-format";
+            gersemi.command = "${pkgs.gersemi}/bin/gersemi";
             prettierd.command = "${pkgs.prettierd}/bin/prettierd";
+            yapf.command = "${pkgs.yapf}/bin/yapf";
             vsg.command = "${pkgs.vsg}/bin/vsg";
           };
 

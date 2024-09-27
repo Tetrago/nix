@@ -47,9 +47,7 @@
 
     file = {
       ".jdk/21".source = "${pkgs.jdk21_headless.home}";
-
       ".clang-format".source = ./files/clang-format;
-      ".cmake-format".source = ./files/cmake-format;
 
       ".config/pwn.conf".text =
         let
