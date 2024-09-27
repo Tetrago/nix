@@ -27,6 +27,9 @@
 
   wayland.windowManager.hyprland.settings.windowrulev2 = [
     "stayfocused,class:^(com.vector35.binaryninja)$,title:^([^B])(.*)$"
+    "size 0 0,class:^(ghidra-Ghidra)$,title:^(Ghidra)$"
+    "tile,class:^(ghidra-Ghidra)$,title:^(Ghidra:)(.*)$"
+    "tile,class:^(ghidra-Ghidra)$,title:^(CodeBrowser)$"
   ];
 
   colorScheme =
