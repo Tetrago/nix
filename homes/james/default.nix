@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   ...
@@ -43,8 +44,21 @@
 
     file = {
       ".jdk/21".source = "${pkgs.jdk21_headless.home}";
+
       ".clang-format".source = ./files/clang-format;
       ".cmake-format".source = ./files/cmake-format;
+
+      ".config/pwn.conf".text =
+        let
+          gdbinit = pkgs.writeText "gdbinit" ''
+            source ${pkgs.gef}/share/gef/gef.py
+          '';
+        in
+        ''
+          [context]
+          terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
+          gdbinit="${gdbinit}"
+        '';
     };
 
     packages = with pkgs; [

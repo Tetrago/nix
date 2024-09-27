@@ -79,7 +79,7 @@
             config.allowUnfree = true;
           };
         in
-        import ./devShells { inherit (pkgs) callPackage; }
+        pkgs.callPackage ./devShells { inherit (pkgs) callPackage; }
       );
 
       overlays = import ./overlays;
@@ -89,7 +89,7 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
-        import ./packages { inherit (pkgs) callPackage; }
+        pkgs.callPackage ./packages { inherit (pkgs) callPackage; }
       );
     };
 }

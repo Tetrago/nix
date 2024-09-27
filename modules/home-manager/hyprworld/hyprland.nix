@@ -56,7 +56,8 @@ in
       ];
 
       env = [
-        "XCURSOR_SIZE,24"
+        "XCURSOR_SIZE,32"
+        "GDK_SCALE,2"
         "XDG_SESSION_TYPE,wayland"
         "XDG_SESSION_DESKTOP,Hyprland"
         "QT_QPA_PLATFORM,wayland;xcb"
@@ -74,6 +75,10 @@ in
       master = {
         new_status = "master";
         mfact = 0.5;
+      };
+
+      xwayland = {
+        force_zero_scaling = true;
       };
 
       input = {
