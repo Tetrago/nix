@@ -16,7 +16,6 @@
     bluetooth.enable = true;
     fonts.enable = true;
     graphics.intel.enable = true;
-    greetd.enable = true;
     hyprland.enable = true;
     virtualization.enable = true;
 
@@ -26,6 +25,20 @@
       secureboot = {
         enable = true;
         enableTpm2 = true;
+      };
+    };
+
+    greetd = {
+      enable = true;
+      theme = {
+        prompt = "green";
+        time = "red";
+        input = "red";
+        text = "cyan";
+        border = "magenta";
+        button = "yellow";
+        action = "blue";
+        container = "black";
       };
     };
 

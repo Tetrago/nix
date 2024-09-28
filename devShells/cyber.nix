@@ -11,7 +11,6 @@
   openvpn,
   metasploit,
   gdb,
-  gef,
   ghidra-bin,
   rp,
   radare2,
@@ -54,7 +53,6 @@ mkShell {
     strace
     ltrace
     gdb
-    gef
     rp
     radare2
     ghidra-bin

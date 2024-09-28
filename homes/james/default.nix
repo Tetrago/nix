@@ -49,17 +49,11 @@
       ".jdk/21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
 
-      ".config/pwn.conf".text =
-        let
-          gdbinit = pkgs.writeText "gdbinit" ''
-            source ${pkgs.gef}/share/gef/gef.py
-          '';
-        in
-        ''
-          [context]
-          terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
-          gdbinit="${gdbinit}"
-        '';
+      ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
+      ".config/pwn.conf".text = ''
+        [context]
+        terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
+      '';
     };
 
     packages = with pkgs; [
