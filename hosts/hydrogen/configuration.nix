@@ -134,7 +134,7 @@
       imports = [ ../../homes/james ];
 
       home.packages = with pkgs; [
-        openttd
+        openttd-jgrpp
       ];
 
       wayland.windowManager.hyprland.settings.windowrulev2 = [
