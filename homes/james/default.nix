@@ -30,6 +30,7 @@
     "size 0 0,class:^(ghidra-Ghidra)$,title:^(Ghidra)$"
     "tile,class:^(ghidra-Ghidra)$,title:^(Ghidra:)(.*)$"
     "tile,class:^(ghidra-Ghidra)$,title:^(CodeBrowser)$"
+    "tile,title:^(OpenTTD)(.*)$"
   ];
 
   colorScheme =
@@ -51,6 +52,9 @@
 
       ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
       ".config/pwn.conf".text = ''
+        [update]
+        interval=never
+
         [context]
         terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
       '';

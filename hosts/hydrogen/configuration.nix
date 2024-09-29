@@ -133,9 +133,18 @@
     {
       imports = [ ../../homes/james ];
 
-      home.packages = with pkgs; [
-        openttd-jgrpp
-      ];
+      home.packages =
+        let
+          openttd = (
+            import (builtins.fetchTarball {
+              url = "https://github.com/NixOS/nixpkgs/archive/18e3cb306213bf2d58e28515624d2f5cf3740ea8.tar.gz";
+              sha256 = "sha256:18z9f1r05dfr2i4lvm58dnhfqqm27zhrbh0imjcsj92xkvc9hrjh";
+            }) { inherit (pkgs) system; }
+          );
+        in
+        [
+          openttd.openttd-jgrpp
+        ];
 
       wayland.windowManager.hyprland.settings.windowrulev2 = [
         "idleinhibit fullscreen,class:^(looking-glass-client)$"
