@@ -23,6 +23,7 @@
   netexec,
   exploitdb,
   seclists,
+  sliver,
   avalonia-ilspy,
   wireshark,
 }:
@@ -68,6 +69,7 @@ mkShell {
     netexec
     exploitdb
     avalonia-ilspy
+    sliver
     wireshark
   ];
 }
