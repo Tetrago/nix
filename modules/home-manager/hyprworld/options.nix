@@ -90,6 +90,12 @@ in
       default = false;
     };
 
+    globalScale = mkOption {
+      type = with types; nullOr numbers.positive;
+      description = "global scale setting; used for GDK_SCALE";
+      default = null;
+    };
+
     time = {
       lock = mkOption {
         type = types.ints.unsigned;

@@ -118,6 +118,7 @@
 
       hyprworld = {
         bluetooth = true;
+        globalScale = 1.5;
 
         monitors = [
           {

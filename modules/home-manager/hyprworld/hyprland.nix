@@ -56,9 +56,6 @@ in
       ];
 
       env = [
-        "XCURSOR_SIZE,32"
-        "GDK_SCALE,2"
-        "XDG_SESSION_TYPE,wayland"
         "XDG_SESSION_DESKTOP,Hyprland"
         "QT_QPA_PLATFORM,wayland;xcb"
         "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
@@ -66,7 +63,7 @@ in
         "GTK_BACKEND,wayland"
         "GTK_USE_PORTAL,1"
         "NIXOS_OZONE_WL,1"
-      ];
+      ] ++ optional (config.hyprworld.globalScale != null) "GDK_SCALE,${config.hyprworld.globalScale}";
 
       debug = {
         disable_logs = false;
