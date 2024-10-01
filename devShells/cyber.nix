@@ -26,10 +26,39 @@
   sliver,
   avalonia-ilspy,
   wireshark,
+  writeShellScriptBin,
 }:
 
 let
   inherit (lib) fileContents makeLibraryPath;
+
+  q = writeShellScriptBin "q" ''
+    "$@" & disown
+  '';
+
+  q-bn = writeShellScriptBin "q.bn" ''
+    binaryninja "$@" & disown
+  '';
+
+  q-bs = writeShellScriptBin "q.bs" ''
+    burpsuite "$@" & disown
+  '';
+
+  q-script = writeShellScriptBin "q.s" ''
+    cat <<EOF > exploit.py
+    #!/usr/bin/env python3
+
+    from pwn import *
+
+    elf = ELF("$1")
+
+    io = elf.process()
+
+    io.interactive()
+    EOF
+
+    chmod +x exploit.py
+  '';
 in
 mkShell {
   name = "cyber";
@@ -71,5 +100,9 @@ mkShell {
     avalonia-ilspy
     sliver
     wireshark
+    q
+    q-bn
+    q-bs
+    q-script
   ];
 }
