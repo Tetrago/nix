@@ -25,8 +25,6 @@
       enable = true;
       enableCompletion = true;
 
-      initExtra = "${pkgs.fortune}/bin/fortune | ${pkgs.cowsay}/bin/cowsay -f stegosaurus";
-
       sessionVariables = {
         EDITOR = "nvim";
         MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
