@@ -74,7 +74,7 @@ mkShell {
         numpy
         pillow
         pwntools
-        pycrypto
+        pycryptodome
         impacket
       ]
     ))
