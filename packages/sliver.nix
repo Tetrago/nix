@@ -15,12 +15,12 @@ stdenvNoCC.mkDerivation rec {
   srcs = [
     (fetchurl {
       url = "https://github.com/BishopFox/sliver/releases/download/v${version}/sliver-client_linux";
-      sha256 = "sha256-xTvBMXC5/yawzKk3FelHMY4Gyv4NmM+CXqv/48f3Y8s=";
+      hash = "sha256-xTvBMXC5/yawzKk3FelHMY4Gyv4NmM+CXqv/48f3Y8s=";
       name = "client";
     })
     (fetchurl {
       url = "https://github.com/BishopFox/sliver/releases/download/v${version}/sliver-server_linux";
-      sha256 = "sha256-LOarLUjWE4MPLNeSDO2Gyntngtuv5kr4S6R29x0IYg4=";
+      hash = "sha256-LOarLUjWE4MPLNeSDO2Gyntngtuv5kr4S6R29x0IYg4=";
       name = "server";
     })
   ];

@@ -32,33 +32,33 @@
 let
   inherit (lib) fileContents makeLibraryPath;
 
-  q = writeShellScriptBin "q" ''
-    "$@" & disown
-  '';
+  scripts = [
+    (writeShellScriptBin ".q" ''
+      "$@" & disown
+    '')
 
-  q-bn = writeShellScriptBin "q.bn" ''
-    binaryninja "$@" & disown
-  '';
+    (writeShellScriptBin ".bn" ''
+      binaryninja "$@" & disown
+    '')
 
-  q-bs = writeShellScriptBin "q.bs" ''
-    burpsuite "$@" & disown
-  '';
+    (writeShellScriptBin ".bs" ''
+      burpsuite "$@" & disown
+    '')
 
-  q-script = writeShellScriptBin "q.s" ''
-    cat <<EOF > exploit.py
-    #!/usr/bin/env python3
+    (writeShellScriptBin ".s" ''
+      NAME="$1"
 
-    from pwn import *
+      if [[ -z "$NAME" ]]; then
+        NAME="script"
+      fi
 
-    elf = ELF("$1")
+      cat <<EOF > $NAME.py
+      #!/usr/bin/env python3
+      EOF
 
-    io = elf.process()
-
-    io.interactive()
-    EOF
-
-    chmod +x exploit.py
-  '';
+      chmod +x $NAME.py
+    '')
+  ];
 in
 mkShell {
   name = "cyber";
@@ -70,6 +70,7 @@ mkShell {
   packages = [
     (python3.withPackages (
       p: with p; [
+        angrop
         numpy
         pillow
         pwntools
@@ -100,9 +101,5 @@ mkShell {
     avalonia-ilspy
     sliver
     wireshark
-    q
-    q-bn
-    q-bs
-    q-script
-  ];
+  ] ++ scripts;
 }

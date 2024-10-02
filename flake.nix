@@ -75,8 +75,12 @@
         let
           pkgs = import nixpkgs {
             inherit system;
-            overlays = [ outputs.overlays.default ];
             config.allowUnfree = true;
+
+            overlays = with outputs.overlays; [
+              default
+              angrop
+            ];
           };
         in
         pkgs.callPackage ./devShells { inherit (pkgs) callPackage; }
