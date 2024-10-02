@@ -55,15 +55,19 @@ in
         "wl-paste --type image --watch ${cliphist}/bin/cliphist store"
       ];
 
-      env = [
-        "XDG_SESSION_DESKTOP,Hyprland"
-        "QT_QPA_PLATFORM,wayland;xcb"
-        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
-        "_JAVA_AWT_WM_NONREPARENTING,1"
-        "GTK_BACKEND,wayland"
-        "GTK_USE_PORTAL,1"
-        "NIXOS_OZONE_WL,1"
-      ] ++ optional (config.hyprworld.globalScale != null) "GDK_SCALE,${config.hyprworld.globalScale}";
+      env =
+        [
+          "XDG_SESSION_DESKTOP,Hyprland"
+          "QT_QPA_PLATFORM,wayland;xcb"
+          "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+          "_JAVA_AWT_WM_NONREPARENTING,1"
+          "GTK_BACKEND,wayland"
+          "GTK_USE_PORTAL,1"
+          "NIXOS_OZONE_WL,1"
+        ]
+        ++ optional (
+          config.hyprworld.globalScale != null
+        ) "GDK_SCALE,${toString config.hyprworld.globalScale}";
 
       debug = {
         disable_logs = false;
