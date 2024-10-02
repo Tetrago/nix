@@ -36,7 +36,7 @@ stdenvNoCC.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
 
-    cp client $out/bin/sliver-server
+    cp server $out/bin/sliver-server
     chmod +x $out/bin/sliver-server
 
     cp client $out/bin/sliver-client
