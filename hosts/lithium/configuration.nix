@@ -120,6 +120,10 @@
         bluetooth = true;
         globalScale = 1.5;
 
+        time = {
+          sleep = 0;
+        };
+
         monitors = [
           {
             name = "eDP-1";

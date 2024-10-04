@@ -181,8 +181,9 @@ in
       nvim-colorizer.enable = true;
       oil.enable = true;
       sleuth.enable = true;
-      surround.enable = true;
+      vim-surround.enable = true;
       trouble.enable = true;
+      web-devicons.enable = true;
 
       auto-session = {
         enable = true;
