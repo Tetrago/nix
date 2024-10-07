@@ -89,7 +89,6 @@
     fwupd.enable = true;
     gvfs.enable = true;
     hardware.bolt.enable = true;
-    ollama.enable = true;
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;

@@ -6,6 +6,7 @@
   flat-remix-gtk-variant = callPackage ./flat-remix-gtk-variant.nix { };
   okolors = callPackage ./okolors.nix { };
   renderdoc-x11 = callPackage ./renderdoc-x11.nix { };
+  ropium = callPackage ./ropium.nix { };
   rp = callPackage ./rp.nix { };
   sliver = callPackage ./sliver.nix { };
   somo = callPackage ./somo.nix { };

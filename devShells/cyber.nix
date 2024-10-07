@@ -27,6 +27,7 @@
   avalonia-ilspy,
   wireshark,
   writeShellScriptBin,
+  ropium,
 }:
 
 let
@@ -90,6 +91,7 @@ mkShell {
     binaryninja
     burpsuite
     openvpn
+    ropium
     metasploit
     hashcat
     john
