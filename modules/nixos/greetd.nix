@@ -80,8 +80,9 @@ in
                 inherit (config.tetrago.greetd) theme;
               in
               optionalString (theme != null) (
-                "--theme "
+                "--theme '"
                 + (concatStringsSep ";" (mapAttrsToList (k: v: "${k}=${v}") (filterAttrs (_: v: v != null) theme)))
+                + "'"
               );
           in
           {
