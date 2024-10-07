@@ -70,6 +70,10 @@
     };
   };
 
+  networking = {
+    nftables.enable = false; # libvirt issue with nftables
+  };
+
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;

@@ -25,7 +25,6 @@ in
         hostName = "${hostname}";
         networkmanager.enable = true;
         firewall.enable = true;
-        nftables.enable = !config.virtualisation.libvirtd.enable;
       };
 
       services.automatic-timezoned.enable = true;

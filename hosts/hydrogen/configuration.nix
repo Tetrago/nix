@@ -39,6 +39,10 @@
     upower.enable = true;
   };
 
+  networking = {
+    nftables.enable = false; # libvirt issue with nftables
+  };
+
   power.ups = {
     enable = true;
     ups."cp1500pfclcd" = {
