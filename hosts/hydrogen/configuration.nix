@@ -41,6 +41,11 @@
 
   networking = {
     nftables.enable = false; # libvirt issue with nftables
+    firewall.extraCommands = ''
+      iptables -A OUTPUT -d _gateway -j ACCEPT
+      iptables -A OUTPUT -d 10.136.0.0/16 -j REJECT --reject-with icmp-net-prohibited
+      iptables -A INPUT -s 10.10.14.0/23 -j ACCEPT
+    '';
   };
 
   power.ups = {
