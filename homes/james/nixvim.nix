@@ -180,7 +180,6 @@ in
       nix.enable = true;
       nvim-colorizer.enable = true;
       oil.enable = true;
-      sleuth.enable = true;
       vim-surround.enable = true;
       trouble.enable = true;
       web-devicons.enable = true;
