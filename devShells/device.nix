@@ -9,7 +9,6 @@
   amdgpu_top,
   intel-gpu-tools,
   cpu-x,
-  nerdfetch,
   cpufetch,
 }:
 
@@ -43,7 +42,6 @@ mkShell {
     cpu-x
     lsiommu
     lsnvme
-    nerdfetch
     cpufetch
   ];
 }
