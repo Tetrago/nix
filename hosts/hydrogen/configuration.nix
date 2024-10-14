@@ -231,5 +231,7 @@
       };
     };
 
+  environment.etc.hosts.mode = "0644";
+
   system.stateVersion = "23.11";
 }
