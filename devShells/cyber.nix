@@ -28,7 +28,6 @@
   wireshark,
   writeShellScriptBin,
   ropium,
-  bloodhound,
   bloodhound-py,
   evil-winrm,
 }:
@@ -105,7 +104,6 @@ mkShell {
     avalonia-ilspy
     sliver
     wireshark
-    bloodhound
     bloodhound-py
     evil-winrm
   ] ++ scripts;
