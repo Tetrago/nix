@@ -86,7 +86,7 @@ in
 
         initrd.systemd = {
           enable = true;
-          enableTpm2 = secureboot.enable && secureboot.enableTpm2;
+          tpm2.enable = secureboot.enable && secureboot.enableTpm2;
         };
       };
     };

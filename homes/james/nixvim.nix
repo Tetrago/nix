@@ -186,7 +186,7 @@ in
 
       auto-session = {
         enable = true;
-        extraOptions = {
+        settings = {
           pre_save_cmds = [
             { __raw = ''require("dapui").close''; }
             {
@@ -346,28 +346,31 @@ in
         servers = {
           clangd.enable = true;
           cmake.enable = true;
-          docker-compose-language-service.enable = true;
+          docker_compose_language_service.enable = true;
           dockerls.enable = true;
           gopls.enable = true;
           html.enable = true;
-          hls.enable = true;
-          java-language-server.enable = true;
+          java_language_server.enable = true;
           jsonls.enable = true;
-          lua-ls.enable = true;
-          nil-ls.enable = true;
-          ocamllsp.enable = true;
+          lua_ls.enable = true;
+          nil_ls.enable = true;
           taplo.enable = true;
-          vhdl-ls.enable = true;
+          vhdl_ls.enable = true;
+
+          hls = {
+            enable = true;
+            installGhc = true;
+          };
+
+          rust_analyzer = {
+            enable = true;
+            installCargo = false;
+            installRustc = false;
+          };
 
           zls = {
             enable = true;
             onAttach.function = "vim.g.zig_fmt_autosave = 0";
-          };
-
-          rust-analyzer = {
-            enable = true;
-            installCargo = false;
-            installRustc = false;
           };
         };
       };

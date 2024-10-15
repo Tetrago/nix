@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -69,22 +68,6 @@ in
           "nouveau"
           "nvidia"
         ];
-      })
-
-      (mkIf intel.enable {
-        hardware.graphics = {
-          extraPackages = with pkgs; [
-            intel-media-driver
-            intel-vaapi-driver
-            libvdpau-va-gl
-          ];
-
-          extraPackages32 = with pkgs.driversi686Linux; [
-            intel-media-driver
-            intel-vaapi-driver
-            libvdpau-va-gl
-          ];
-        };
       })
 
       (mkIf (intel.enable || nvidia.enable) {

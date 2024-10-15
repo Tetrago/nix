@@ -28,6 +28,9 @@
   wireshark,
   writeShellScriptBin,
   ropium,
+  bloodhound,
+  bloodhound-py,
+  evil-winrm,
 }:
 
 let
@@ -71,7 +74,6 @@ mkShell {
   packages = [
     (python3.withPackages (
       p: with p; [
-        angrop
         numpy
         pillow
         pwntools
@@ -103,5 +105,8 @@ mkShell {
     avalonia-ilspy
     sliver
     wireshark
+    bloodhound
+    bloodhound-py
+    evil-winrm
   ] ++ scripts;
 }
