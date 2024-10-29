@@ -113,8 +113,6 @@ in
       in
       [
         (mkCommand "d" "lua require('dapui').toggle()")
-        (mkCommand "o" "OverseerToggle")
-        (mkCommand "r" "OverseerRun")
 
         (mkCommand "X" "Trouble diagnostics toggle")
         (mkCommand "x" "Trouble diagnostics toggle filter.buf=0")
@@ -167,6 +165,7 @@ in
 
     plugins = {
       autoclose.enable = true;
+      auto-session.enable = true;
       barbecue.enable = true;
       clangd-extensions.enable = true;
       dressing.enable = true;
@@ -183,55 +182,6 @@ in
       vim-surround.enable = true;
       trouble.enable = true;
       web-devicons.enable = true;
-
-      auto-session = {
-        enable = true;
-        settings = {
-          pre_save_cmds = [
-            { __raw = ''require("dapui").close''; }
-            {
-              __raw = ''
-                function()
-                  local overseer = require("overseer")
-
-                  overseer.save_task_bundle(
-                    vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                    nil,
-                    { on_conflict = "overwrite" }
-                  )
-
-                  overseer.close()
-                end
-              '';
-            }
-          ];
-
-          pre_restore_cmds = [
-            {
-              __raw = ''
-                function()
-                  for _, task in ipairs(require("overseer").list_tasks({})) do
-                    task:dispose(true)
-                  end
-                end
-              '';
-            }
-          ];
-
-          post_restore_cmds = [
-            {
-              __raw = ''
-                function()
-                  require("overseer").load_task_bundle(
-                    vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                    { ignore_missing = true }
-                  )
-                end
-              '';
-            }
-          ];
-        };
-      };
 
       cmp = {
         enable = true;
@@ -409,7 +359,6 @@ in
             "nvim-dap-ui"
             "oil"
             "trouble"
-            "overseer"
           ];
 
           sections = {
@@ -553,20 +502,6 @@ in
       };
     };
 
-    extraPlugins =
-      let
-        lua = src: ''
-          lua<<EOF
-          ${src}
-          EOF
-        '';
-      in
-      [
-        pkgs.bg-nvim
-        {
-          plugin = pkgs.vimPlugins.overseer-nvim;
-          config = lua ''require("overseer").setup({})'';
-        }
-      ];
+    extraPlugins = [ pkgs.bg-nvim ];
   };
 }
