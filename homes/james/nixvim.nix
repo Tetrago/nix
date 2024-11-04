@@ -225,6 +225,7 @@ in
             nix = [ "nixfmt" ];
             python = [ "yapf" ];
             scss = [ "prettierd" ];
+            systemverilog = [ "verible" ];
             typescript = [ "prettierd" ];
             vhdl = [ "vsg" ];
             yaml = [ "prettierd" ];
@@ -237,6 +238,7 @@ in
             gersemi.command = "${pkgs.gersemi}/bin/gersemi";
             prettierd.command = "${pkgs.prettierd}/bin/prettierd";
             yapf.command = "${pkgs.yapf}/bin/yapf";
+            verible.command = "${pkgs.verible}/bin/verible-verilog-format";
             vsg.command = "${pkgs.vsg}/bin/vsg";
           };
 
@@ -304,6 +306,7 @@ in
           jsonls.enable = true;
           lua_ls.enable = true;
           nil_ls.enable = true;
+          svls.enable = true;
           taplo.enable = true;
           vhdl_ls.enable = true;
 
