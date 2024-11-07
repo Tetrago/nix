@@ -179,8 +179,10 @@ in
       nix.enable = true;
       nvim-colorizer.enable = true;
       oil.enable = true;
-      vim-surround.enable = true;
+      sleuth.enable = true;
       trouble.enable = true;
+      vimtex.enable = true;
+      vim-surround.enable = true;
       web-devicons.enable = true;
 
       cmp = {
