@@ -90,6 +90,8 @@
       remmina
       binaryninja
 
+      kdenlive
+      handbrake
       libreoffice-qt
       hunspell
       hunspellDicts.en_US

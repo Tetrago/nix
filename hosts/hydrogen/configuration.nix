@@ -17,6 +17,10 @@
     kernelPackages = pkgs.linuxPackages_6_6;
   };
 
+  hardware = {
+    graphics.extraPackages = [ pkgs.vpl-gpu-rt ];
+  };
+
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
