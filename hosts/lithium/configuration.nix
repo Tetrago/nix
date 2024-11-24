@@ -131,6 +131,43 @@
             scale = 1.3333;
           }
         ];
+
+        additionalMonitors = {
+          home = [
+            {
+              name = "eDP-1";
+              enable = false;
+            }
+            {
+              name = "DP-5";
+              resolution = {
+                width = 1920;
+                height = 1080;
+              };
+              position.x = 0;
+              workspace = 2;
+            }
+            {
+              name = "DP-6";
+              resolution = {
+                width = 1920;
+                height = 1080;
+              };
+              position.x = 2560 + 1920;
+              workspace = 3;
+            }
+            {
+              name = "DP-7";
+              resolution = {
+                width = 2560;
+                height = 1440;
+                refreshRate = 144;
+              };
+              position.x = 1920;
+              workspace = 1;
+            }
+          ];
+        };
       };
     };
 
