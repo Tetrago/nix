@@ -41,18 +41,9 @@ in
       services.xserver.displayManager.session = optional addSession {
         manage = "desktop";
         name = "Hyprland";
-        start =
-          let
-            path = "$HOME/.local/share/hypr";
-          in
-          ''
-            mkdir -p ${path}
-            number=`ls -1 ${path} | wc -l`
-            format=`seq -f "%05g" $number $number`
-
-            ${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/Hyprland &> ${path}/''${format}.txt &
-            waitPID=$!
-          '';
+        start = "exec ${
+          inputs.hyprland.packages.${pkgs.system}.hyprland
+        }/bin/Hyprland 1>/dev/null 2>/dev/null";
       };
     };
 }
