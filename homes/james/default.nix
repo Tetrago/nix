@@ -89,6 +89,7 @@
       drawio
       remmina
       binaryninja
+      chromium
 
       kdenlive
       handbrake
