@@ -5,6 +5,11 @@ let
   inherit (lib) mkMerge;
 in
 {
+  wayland.windowManager.hyprland.settings.windowrulev2 = [
+    "float,class:(feh)"
+    "float,class:(mpv)"
+  ];
+
   programs = {
     feh = {
       enable = true;
@@ -40,16 +45,8 @@ in
       desktopEntries = {
         feh = {
           name = "Feh";
-          genericName = "Image viewer";
-          comment = "Fast Imlib2-based Image Viewer";
-          exec = ''bash -c "f=%f; feh -. --start-at ./\\$(realpath --relative-to=\\$(dirname \\$f) \\$f)"'';
+          exec = "feh --start-at %U";
           terminal = false;
-          type = "Application";
-          categories = [
-            "Graphics"
-            "2DGraphics"
-            "Viewer"
-          ];
           mimeType = [
             "image/bmp"
             "image/gif"
@@ -72,20 +69,45 @@ in
           noDisplay = true;
         };
 
+        firefox = {
+          categories = [
+            "Network"
+            "WebBrowser"
+          ];
+          name = "Firefox";
+          genericName = "Web Browser";
+          startupNotify = true;
+          type = "Application";
+          exec = "firefox --name firefox %U";
+          terminal = false;
+          mimeType = [
+            "text/html"
+            "text/xml"
+            "application/xhtml+xml"
+            "application/vnd.mozilla.xul+xml"
+            "x-scheme-handler/http"
+            "x-scheme-handler/https"
+          ];
+          actions = {
+            "new-private-window" = {
+              exec = "firefox --private-window %U";
+              name = "New Private Window";
+            };
+            "new-window" = {
+              exec = "firefox --new-window %U";
+              name = "New Window";
+            };
+            "profile-manager-window" = {
+              exec = "firefox --ProfileManager";
+              name = "Profile Manager";
+            };
+          };
+        };
+
         mpv = {
           name = "mpv Media Player";
-          genericName = "Multimedia player";
-          comment = "Play movies and songs";
           exec = "mpv -- %U";
           terminal = false;
-          type = "Application";
-          categories = [
-            "AudioVideo"
-            "Audio"
-            "Video"
-            "Player"
-            "TV"
-          ];
           mimeType = [
             "application/ogg"
             "application/x-ogg"
@@ -210,25 +232,19 @@ in
             "audio/vnd.wave"
             "video/vnd.avi"
           ];
+          noDisplay = true;
         };
 
         zathura = {
-          type = "Application";
           name = "Zathura";
-          comment = "A minimalistic PDF viewer";
           exec = "zathura %f";
           terminal = false;
-          categories = [
-            "Office"
-            "Viewer"
-          ];
           mimeType = [ "application/pdf" ];
           noDisplay = true;
         };
       };
     in
     {
-
       inherit desktopEntries;
 
       mimeApps = {

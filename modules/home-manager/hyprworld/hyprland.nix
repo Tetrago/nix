@@ -149,7 +149,7 @@ in
           "$mod SHIFT, V, exec, ${cliphist} wipe"
           "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | wofi --dmenu | ${cliphist} decode | wl-copy"
           "$mod, F, togglefloating"
-          "CTRL, Home, fullscreen"
+          "$mod, Escape, fullscreen"
           "$mod, Space, exec, pidof wofi || wofi --show drun"
           '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
           ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
@@ -213,7 +213,6 @@ in
       ];
 
       windowrulev2 = [
-        "float,class:(feh)"
         "rounding 0,class:^(steam_app_\\d+)$"
         "noshadow,class:^(steam_app_\\d+)$"
         "noborder,class:^(steam_app_\\d+)$"
