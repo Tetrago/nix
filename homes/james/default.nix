@@ -79,9 +79,11 @@
       inkscape
       jetbrains.idea-community
       godot_4
-      file-roller
+      kdePackages.ark
       gnome-calendar
       gnome-clocks
+      gnome-mines
+      gnome-sudoku
       qemu
       blender
       gimp
