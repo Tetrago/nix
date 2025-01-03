@@ -73,6 +73,7 @@
     nix-index-database.comma.enable = true;
     nix-ld.enable = true;
     virt-manager.enable = true;
+    xfconf.enable = true; # thunar
 
     nh = {
       enable = true;
@@ -86,6 +87,7 @@
     gvfs.enable = true;
     hardware.bolt.enable = true;
     thermald.enable = true;
+    tumbler.enable = true;
     udisks2.enable = true;
     upower.enable = true;
   };
