@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -47,7 +48,8 @@
     homeDirectory = "/home/james";
 
     file = {
-      ".jdk/21".source = "${pkgs.jdk21_headless.home}";
+      ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
+
       ".clang-format".source = ./files/clang-format;
 
       ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
@@ -77,7 +79,6 @@
       imhex
       aseprite
       inkscape
-      jetbrains.idea-community
       godot_4
       kdePackages.ark
       gnome-calendar
@@ -92,6 +93,8 @@
       remmina
       binaryninja
       chromium
+      jetbrains.idea-community
+      blockbench
 
       kdenlive
       handbrake
