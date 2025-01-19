@@ -32,6 +32,7 @@
     "tile,class:^(ghidra-Ghidra)$,title:^(Ghidra:)(.*)$"
     "tile,class:^(ghidra-Ghidra)$,title:^(CodeBrowser)$"
     "tile,title:^(OpenTTD)(.*)$"
+    "tile,class:^(Aseprite)$"
   ];
 
   colorScheme =
