@@ -177,7 +177,7 @@ in
       neoscroll.enable = true;
       neo-tree.enable = true;
       nix.enable = true;
-      nvim-colorizer.enable = true;
+      colorizer.enable = true;
       oil.enable = true;
       sleuth.enable = true;
       trouble.enable = true;
@@ -428,17 +428,18 @@ in
 
       noice = {
         enable = true;
+        settings = {
+          presets = {
+            bottom_search = true;
+            command_palette = true;
+            long_message_to_split = true;
+          };
 
-        presets = {
-          bottom_search = true;
-          command_palette = true;
-          long_message_to_split = true;
-        };
-
-        lsp.override = {
-          "cmp.entry.get_documentation" = true;
-          "vim.lsp.util.convert_input_to_markdown_lines" = true;
-          "vim.lsp.util.stylize_markdown" = true;
+          lsp.override = {
+            "cmp.entry.get_documentation" = true;
+            "vim.lsp.util.convert_input_to_markdown_lines" = true;
+            "vim.lsp.util.stylize_markdown" = true;
+          };
         };
       };
 

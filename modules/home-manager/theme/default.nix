@@ -30,7 +30,7 @@
 
       font = {
         name = "Ubuntu Nerd Font";
-        package = pkgs.nerdfonts.override { fonts = [ "Ubuntu" ]; };
+        package = pkgs.nerd-fonts.ubuntu;
         size = 11;
       };
 
