@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
@@ -39,15 +38,25 @@
   xdg = {
     portal = {
       enable = true;
-      config.hyprland.default = [
-        "hyprland"
-        "gtk"
-      ];
+
+      config = {
+        hyprland = {
+          default = [
+            "hyprland"
+            "gtk"
+          ];
+
+          "org.freedesktop.impl.portal.Settings" = [
+            "darkman"
+            "gtk"
+          ];
+        };
+      };
+
       extraPortals = [
-        (inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland.override {
-          hyprland = config.wayland.windowManager.hyprland.finalPackage;
-        })
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
         pkgs.xdg-desktop-portal-gtk
+        pkgs.darkman
       ];
     };
   };

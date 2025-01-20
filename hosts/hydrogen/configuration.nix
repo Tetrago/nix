@@ -9,12 +9,13 @@
 
     ./hardware-configuration.nix
     ../../modules/nixos/home-manager
+    ../../modules/nixos/hyprworld
     ../../modules/nixos
   ];
 
   boot = {
     blacklistedKernelModules = [ "mt76x2u" ];
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_12;
   };
 
   hardware = {
@@ -27,7 +28,6 @@
     nix-index-database.comma.enable = true;
     nix-ld.enable = true;
     virt-manager.enable = true;
-    xfconf.enable = true; # thunar
 
     nh = {
       enable = true;
@@ -38,10 +38,7 @@
   security.polkit.enable = true;
 
   services = {
-    gvfs.enable = true;
     ollama.enable = true;
-    tumbler.enable = true;
-    udisks2.enable = true;
     upower.enable = true;
   };
 

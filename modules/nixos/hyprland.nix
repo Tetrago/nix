@@ -36,14 +36,17 @@ in
         trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
       };
 
-      programs.hyprland.enable = true;
+      programs.hyprland = {
+        enable = true;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        portalPackage =
+          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      };
 
       services.xserver.displayManager.session = optional addSession {
         manage = "desktop";
         name = "Hyprland";
-        start = "exec ${
-          inputs.hyprland.packages.${pkgs.system}.hyprland
-        }/bin/Hyprland 1>/dev/null 2>/dev/null";
+        start = "exec  Hyprland 1>/dev/null 2>/dev/null";
       };
     };
 }

@@ -8,6 +8,7 @@
 
     ./hardware-configuration.nix
     ../../modules/nixos/home-manager
+    ../../modules/nixos/hyprworld
     ../../modules/nixos
   ];
 
@@ -73,7 +74,6 @@
     nix-index-database.comma.enable = true;
     nix-ld.enable = true;
     virt-manager.enable = true;
-    xfconf.enable = true; # thunar
 
     nh = {
       enable = true;
@@ -84,11 +84,8 @@
   services = {
     fprintd.enable = true;
     fwupd.enable = true;
-    gvfs.enable = true;
     hardware.bolt.enable = true;
     thermald.enable = true;
-    tumbler.enable = true;
-    udisks2.enable = true;
     upower.enable = true;
   };
 
