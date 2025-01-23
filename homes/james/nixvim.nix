@@ -244,13 +244,16 @@ in
             cpp = [ "clang-format" ];
             css = [ "prettierd" ];
             javascript = [ "prettierd" ];
+            javascriptreact = [ "prettierd" ];
             json = [ "prettierd" ];
             html = [ "prettierd" ];
             nix = [ "nixfmt" ];
             python = [ "yapf" ];
+            rust = [ "rustfmt" ];
             scss = [ "prettierd" ];
             systemverilog = [ "verible" ];
             typescript = [ "prettierd" ];
+            typescriptreact = [ "prettierd" ];
             vhdl = [ "vsg" ];
             yaml = [ "prettierd" ];
             "_" = [ "trim_whitespace" ];
@@ -259,6 +262,7 @@ in
           formatters = {
             nixfmt.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
             "clang-format".command = "${pkgs.clang-tools}/bin/clang-format";
+            rustfmt.command = "${pkgs.rustfmt}/bin/rustfmt";
             gersemi.command = "${pkgs.gersemi}/bin/gersemi";
             prettierd.command = "${pkgs.prettierd}/bin/prettierd";
             yapf.command = "${pkgs.yapf}/bin/yapf";
@@ -333,6 +337,7 @@ in
           svls.enable = true;
           taplo.enable = true;
           vhdl_ls.enable = true;
+          vtsls.enable = true;
 
           hls = {
             enable = true;
