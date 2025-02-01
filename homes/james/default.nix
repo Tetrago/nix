@@ -10,7 +10,6 @@
     inputs.nix-colors.homeManagerModules.default
 
     ../../modules/home-manager/hyprworld
-    ../../modules/home-manager/theme
     ../../modules/home-manager
 
     ./bash.nix
@@ -20,6 +19,10 @@
     ./media.nix
     ./nixvim.nix
   ];
+
+  tetrago = {
+    theme.enable = true;
+  };
 
   hyprworld = {
     wallpaper = "${./files/wallpaper.png}";

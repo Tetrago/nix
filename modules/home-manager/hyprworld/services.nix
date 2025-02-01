@@ -32,7 +32,7 @@ in
     };
 
     Install = {
-      WantedBy = [ "hyprland-session.target" ];
+      WantedBy = [ "graphical-session.target" ];
     };
   }) config.hyprworld.services;
 }

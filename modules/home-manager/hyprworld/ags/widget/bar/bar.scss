@@ -1,83 +1,84 @@
 .bar {
+  @include border-md;
+  background-color: $bg;
+
+  .battery {
+    @include border-full;
+    padding: 0 0.4em;
+    margin: 0.2em 0;
+    color: $dark-bg;
+  }
+
+  .date {
+    @include border-full;
+    border: none;
+    background: none;
+    color: $fg;
+    margin: 0.2em 0;
+    padding: 0;
+
+    &:hover {
+      background-color: $fg;
+      color: $bg;
+    }
+
+    &.active {
+      background-color: $light-bg;
+      color: $fg;
+    }
+
+    .time {
+      padding: 0 0.8em;
+      background: none;
+    }
+  }
+
+  .tray {
     @include border-md;
-    background-color: $bg;
+    border: none;
+    background-color: $dark-bg;
+    color: $fg;
 
-    .battery {
-        @include border-full;
-        padding: 0 0.4em;
-        margin: 0.2em 0;
-        color: $dark-bg;
+    .item {
+      border: none;
+      background: none;
+    }
+  }
+
+  .workspace {
+    @include border-md;
+    border: none;
+    background-color: $dark-bg;
+    padding: 0 3pt;
+
+    &.special {
+      border: 1px solid $light-bg;
+
+      &.active {
+        border-color: $fg;
+      }
     }
 
-    .date {
-        @include border-full;
-        border: none;
-        background: none;
-        color: $fg;
-        margin: 0.2em 0;
-        padding: 0;
+    .indicator {
+      font-size: 0;
+      min-width: 8pt;
+      min-height: 8pt;
+      @include border-full;
+      background-color: transparent;
+      margin: 0 3pt;
 
-        &:hover {
-            background-color: $fg;
-            color: $bg;
-        }
-        
-        &.active {
-            background-color: $light-bg;
-            color: $fg;
-        }
+      &.occupied {
+        background-color: $light-bg;
+      }
 
-        .time {
-            padding: 0 0.8em;
-            background: none;
-        }
+      &.present {
+        background-color: $bg;
+      }
+
+      &.active {
+        background-color: $fg;
+      }
     }
-
-    .tray {
-        @include border-md;
-        border: none;
-        background-color: $dark-bg;
-        color: $fg;
-
-        .item {
-            border: none;
-            background: none;
-        }
-    }
-
-    .workspace {
-        @include border-md;
-        border: none;
-        background-color: $dark-bg;
-        padding: 0 3pt;
-
-        &.special {
-            border: 1px solid $light-bg;
-
-            &.active {
-                border-color: $fg;
-            }
-        }
-
-        .indicator {
-            font-size: 0;
-            min-width: 8pt;
-            min-height: 8pt;
-            @include border-full;
-            background-color: transparent;
-            margin: 0 3pt;
-
-            &.occupied {
-                background-color: $light-bg;
-            }
-
-            &.present {
-                background-color: $bg;
-            }
-
-            &.active {
-                background-color: $fg;
-            }
-        }
-    }
+  }
 }
+
