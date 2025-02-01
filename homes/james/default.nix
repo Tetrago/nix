@@ -97,6 +97,7 @@
       blockbench
       kiwix
       zeal
+      typora
 
       kdenlive
       handbrake
