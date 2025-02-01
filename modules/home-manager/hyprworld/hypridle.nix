@@ -11,7 +11,7 @@ let
   iff = value: content: lib.strings.optionalString (value != 0) content;
 in
 {
-  home.file.".config/hypr/hypridle.conf".text = ''
+  xdg.configFile."hypr/hypridle.conf".text = ''
     general {
       lock_cmd = pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock
       before_sleep_cmd = loginctl lock-session

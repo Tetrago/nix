@@ -18,11 +18,8 @@
     ./kitty.nix
     ./media.nix
     ./nixvim.nix
+    ./theme.nix
   ];
-
-  tetrago = {
-    theme.enable = true;
-  };
 
   hyprworld = {
     wallpaper = "${./files/wallpaper.png}";
@@ -52,17 +49,8 @@
 
     file = {
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
-
       ".clang-format".source = ./files/clang-format;
-
       ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
-      ".config/pwn.conf".text = ''
-        [update]
-        interval=never
-
-        [context]
-        terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
-      '';
     };
 
     packages = with pkgs; [
@@ -140,5 +128,18 @@
 
   services = {
     easyeffects.enable = true;
+  };
+
+  xdg = {
+    enable = true;
+    configFile = {
+      "pwn.conf".text = ''
+        [update]
+        interval=never
+
+        [context]
+        terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
+      '';
+    };
   };
 }

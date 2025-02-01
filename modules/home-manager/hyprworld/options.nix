@@ -1,7 +1,7 @@
 { lib, ... }:
 
 let
-  inherit (lib) mkOption types;
+  inherit (lib) mkOption mkEnableOption types;
 
   resolutionType = types.submodule {
     options = {
@@ -127,5 +127,68 @@ in
       description = "additional monitor configurations used for hot-swapping";
       default = null;
     };
+
+    theme =
+      let
+        options = {
+          font = mkOption {
+            type =
+              with types;
+              nullOr (submodule {
+                options = {
+                  name = mkOption {
+                    type = str;
+                  };
+                  size = mkOption {
+                    type = positive;
+                  };
+                };
+              });
+            default = null;
+          };
+
+          cursorTheme = mkOption {
+            type =
+              with types;
+              nullOr (submodule {
+                options = {
+                  name = mkOption {
+                    type = str;
+                  };
+                  size = mkOption {
+                    type = positive;
+                    default = 32;
+                  };
+                };
+              });
+            default = null;
+          };
+
+          theme = mkOption {
+            type = with types; nullOr str;
+            default = null;
+          };
+
+          iconTheme = mkOption {
+            type = with types; nullOr str;
+            default = null;
+          };
+        };
+      in
+      mkOption {
+        type =
+          with types;
+          nullOr (submodule {
+            options = {
+              dark = mkOption {
+                type = submodule { inherit options; };
+              };
+              light = mkOption {
+                type = submodule { inherit options; };
+              };
+            };
+          });
+        default = null;
+      };
   };
 }

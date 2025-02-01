@@ -3,7 +3,7 @@
 {
   imports = [ ./options.nix ];
 
-  home.file.".config/hypr/hyprpaper.conf".text = ''
+  xdg.configFile."hypr/hyprpaper.conf".text = ''
     preload = ${config.hyprworld.wallpaper}
     wallpaper = ,${config.hyprworld.wallpaper}
     ipc = off

@@ -13,6 +13,7 @@
     ./hyprlock.nix
     ./hyprpaper.nix
     ./services.nix
+    ./theme.nix
     ./kanshi.nix
     ./wofi.nix
   ];

@@ -6,7 +6,7 @@ let
   palette = import ./palette.nix { inherit config pkgs; };
 in
 {
-  home.file.".config/hypr/hyprlock.conf".text = ''
+  xdg.configFile."hypr/hyprlock.conf".text = ''
     background {
       monitor =
       path = ${if lockscreen != null then lockscreen else "screenshot"}
