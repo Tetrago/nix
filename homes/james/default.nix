@@ -95,6 +95,8 @@
       chromium
       jetbrains.idea-community
       blockbench
+      kiwix
+      zeal
 
       kdenlive
       handbrake
