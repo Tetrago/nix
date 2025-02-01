@@ -40,6 +40,18 @@
   services = {
     ollama.enable = true;
     upower.enable = true;
+
+    displayManager.sddm = {
+      enable = true;
+      package = pkgs.kdePackages.sddm;
+      extraPackages = with pkgs.kdePackages; [
+        qtmultimedia
+        qtsvg
+        qtvirtualkeyboard
+      ];
+      wayland.enable = true;
+      theme = "sddm-astronaut-theme";
+    };
   };
 
   networking = {
@@ -71,7 +83,6 @@
     audio.enable = true;
     bluetooth.enable = true;
     fonts.enable = true;
-    greetd.enable = true;
     hyprland.enable = true;
     printing.enable = true;
 
@@ -198,7 +209,13 @@
       };
     };
 
-  environment.etc.hosts.mode = "0644";
+  environment = {
+    etc.hosts.mode = "0644";
+
+    systemPackages = with pkgs; [
+      sddm-astronaut
+    ];
+  };
 
   system.stateVersion = "23.11";
 }
