@@ -167,6 +167,11 @@
             }
           ];
         };
+
+        wallpaper.transition = {
+          step = 10;
+          fps = 60;
+        };
       };
     };
 

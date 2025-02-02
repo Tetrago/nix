@@ -200,6 +200,11 @@
             workspace = 2;
           }
         ];
+
+        wallpaper.transition = {
+          step = 5;
+          fps = 144;
+        };
       };
 
       programs = {

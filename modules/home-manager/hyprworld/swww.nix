@@ -14,6 +14,8 @@ let
     types
     getExe
     ;
+  inherit (lib.attrsets) mapAttrsToList;
+  inherit (lib.strings) concatStringsSep;
 in
 {
   options.hyprworld.swww = {
@@ -25,10 +27,12 @@ in
 
   config =
     let
+      inherit (pkgs) writeShellScript;
+
       cfg = config.hyprworld;
       swww = getExe cfg.swww.package;
 
-      set-wallpaper = pkgs.writeShellScript "update-wallpaper" ''
+      set-wallpaper = writeShellScript "update-wallpaper" ''
         mode="$(darkman get)"
 
         if [ "$mode" = "dark" ]; then
@@ -38,12 +42,16 @@ in
         fi
       '';
 
-      set-dark-wallpaper = pkgs.writeShellScript "set-dark-mode" ''
-        ${swww} img ${cfg.wallpaper.dark} --transition-type any --transition-fps 60 --transition-step 10
+      transitions = concatStringsSep " " (
+        mapAttrsToList (k: v: "--transition-${k} ${toString v}") cfg.wallpaper.transition
+      );
+
+      set-dark-wallpaper = writeShellScript "set-dark-mode" ''
+        ${swww} img ${cfg.wallpaper.dark} --transition-type outer ${transitions}
       '';
 
-      set-light-wallpaper = pkgs.writeShellScript "set-light-mode" ''
-        ${swww} img ${cfg.wallpaper.light} --transition-type any --transition-fps 60 --transition-step 10
+      set-light-wallpaper = writeShellScript "set-light-mode" ''
+        ${swww} img ${cfg.wallpaper.light} --transition-type grow ${transitions}
       '';
     in
     mkMerge [

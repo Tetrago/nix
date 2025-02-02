@@ -84,6 +84,10 @@ in
             light = mkOption {
               type = str;
             };
+            transition = mkOption {
+              type = attrsOf anything;
+              default = { };
+            };
           };
         });
       description = "path to wallpaper(s)";

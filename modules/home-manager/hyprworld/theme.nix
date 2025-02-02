@@ -17,6 +17,8 @@ in
 {
   config = mkIf (cfg != null) (
     let
+      inherit (pkgs) writeShellScript writeText;
+
       coalesceAttrs = attrs: {
         cursorTheme = if (attrs.cursorTheme != null) then attrs.cursorTheme else config.gtk.cursorTheme;
         font = if (attrs.font != null) then attrs.font else config.gtk.font;
@@ -79,12 +81,12 @@ in
         ++ (mapAttrsToList (k: v: "${k}=${toString v}") (mapTheme theme))
         ++ optional (cfg.extraSettings != null) cfg.extraSettings;
 
-      makeGtk2Config = theme: pkgs.writeText ".gtkrc-2.0" (concatLines (mapToGtk2Theme theme));
-      makeGtk3Config = theme: pkgs.writeText "settings.ini" (concatLines (mapToGtk3Theme theme));
+      makeGtk2Config = theme: writeText ".gtkrc-2.0" (concatLines (mapToGtk2Theme theme));
+      makeGtk3Config = theme: writeText "settings.ini" (concatLines (mapToGtk3Theme theme));
 
       makeDconfScript =
         theme:
-        pkgs.writeShellScript "update-dconf" (
+        writeShellScript "update-dconf" (
           concatLines (
             mapAttrsToList (
               k: v: ''${pkgs.glib.bin}/bin/gsettings set org.gnome.desktop.interface ${k} "${toString v}"''
@@ -94,7 +96,7 @@ in
 
       set-mode =
         theme:
-        pkgs.writeShellScript "set-dark-mode" ''
+        writeShellScript "set-dark-mode" ''
           GSETTINGS_SCHEMA_DIR="$(realpath ${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/*/*/schemas)" ${makeDconfScript theme}
 
           cp -f ${makeGtk2Config theme} $HOME/.gtkrc-2.0
