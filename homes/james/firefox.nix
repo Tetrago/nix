@@ -11,49 +11,48 @@ in
 {
   programs.firefox = {
     enable = true;
-    package = (
-      pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) {
-        extraPolicies = {
-          DisableTelemetry = true;
-          DisableFirefoxStudies = true;
-          DisablePocket = true;
-          DisableFirefoxScreenshots = true;
-          OverrideFirstRunPage = "";
-          OverridePostUpdatePage = "";
-          DontCheckDefaultBrowser = true;
-          DisplayBookmarksToolbar = "never";
+    package = pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { };
 
-          ExtensionSessings =
-            let
-              plug = name: {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-                installation_mode = "force_installed";
-              };
-            in
-            {
-              "addon@fastforward.team" = plug "fastforwardteam";
-              "sponsorBlocker@ajay.app" = plug "sponsorblock";
-              "uBlock0@raymondhill.net" = plug "ublock-origin";
-              "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" = plug "video-downloadhelper";
-            };
+    policies = {
+      DisableTelemetry = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableFirefoxScreenshots = true;
+      OverrideFirstRunPage = "";
+      OverridePostUpdatePage = "";
+      DontCheckDefaultBrowser = true;
+      DisplayBookmarksToolbar = "never";
 
-          Preferences = {
-            "extensions.pocket.enabled" = false;
-            "extensions.screenshots.disabled" = true;
-            "browser.topsites.contile.enabled" = false;
-            "browser.formfill.enable" = false;
-            "browser.search.suggest.enabled" = false;
-            "browser.search.suggest.enabled.private" = false;
-            "browser.urlbar.suggest.searches" = false;
-            "browser.urlbar.showSearchSuggestionsFirst" = false;
-            "media.getusermedia.audio.aprocessing.aec.enabled" = false;
-            "media.getusermedia.audio.aprocessing.agc.enabled" = false;
-            "media.getusermedia.audio.aprocessing.hpf.enabled" = false;
-            "media.getusermedia.audio.aprocessing.noise.enabled" = false;
+      ExtensionSettings =
+        let
+          plug = name: {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+            installation_mode = "force_installed";
           };
+        in
+        {
+          "addon@fastforward.team" = plug "fastforwardteam";
+          "sponsorBlocker@ajay.app" = plug "sponsorblock";
+          "uBlock0@raymondhill.net" = plug "ublock-origin";
+          "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" = plug "video-downloadhelper";
+          "addon@darkreader.org" = plug "darkreader";
         };
-      }
-    );
+
+      Preferences = {
+        "extensions.pocket.enabled" = false;
+        "extensions.screenshots.disabled" = true;
+        "browser.topsites.contile.enabled" = false;
+        "browser.formfill.enable" = false;
+        "browser.search.suggest.enabled" = false;
+        "browser.search.suggest.enabled.private" = false;
+        "browser.urlbar.suggest.searches" = false;
+        "browser.urlbar.showSearchSuggestionsFirst" = false;
+        "media.getusermedia.audio.aprocessing.aec.enabled" = false;
+        "media.getusermedia.audio.aprocessing.agc.enabled" = false;
+        "media.getusermedia.audio.aprocessing.hpf.enabled" = false;
+        "media.getusermedia.audio.aprocessing.noise.enabled" = false;
+      };
+    };
 
     profiles.default = {
       userChrome = userChrome;
