@@ -58,13 +58,15 @@
       inherit (lib) nixosSystem;
       inherit (lib.attrsets) filterAttrs genAttrs;
 
-      hosts = builtins.attrNames (filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
       systems = [ "x86_64-linux" ];
 
+      eachDir =
+        path: fn:
+        genAttrs (builtins.attrNames (filterAttrs (_: v: v == "directory") (builtins.readDir path))) fn;
       eachSystem = fn: genAttrs systems fn;
     in
     {
-      nixosConfigurations = genAttrs hosts (
+      nixosConfigurations = eachDir ./hosts (
         host:
         nixosSystem {
           specialArgs = {
@@ -74,6 +76,8 @@
           modules = [ ./hosts/${host}/configuration.nix ];
         }
       );
+
+      homeManagerModules = eachDir ./homes (home: import ./homes/${home});
 
       devShells = eachSystem (
         system:

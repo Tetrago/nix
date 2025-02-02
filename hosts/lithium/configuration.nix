@@ -104,9 +104,9 @@
   virtualisation.docker.enable = true;
 
   home-manager.users.james =
-    { ... }:
+    { outputs, ... }:
     {
-      imports = [ ../../homes/james ];
+      imports = [ outputs.homeManagerModules.james ];
 
       tetrago = {
         steam.enable = true;
