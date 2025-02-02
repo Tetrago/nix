@@ -15,7 +15,7 @@
     ./services.nix
     ./theme.nix
     ./kanshi.nix
-    ./wofi.nix
+    ./walker.nix
   ];
 
   home = {

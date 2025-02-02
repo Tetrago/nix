@@ -255,7 +255,6 @@ in
           exec = "typora %U";
           terminal = false;
           mimeType = [ "text/markdown" ];
-          noDisplay = true;
         };
 
         zathura = {
