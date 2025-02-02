@@ -186,6 +186,12 @@ in
               light = mkOption {
                 type = submodule { inherit options; };
               };
+              extraSettings = mkOption {
+                type = nullOr lines;
+                description = "extra gtk3 settings";
+                default = null;
+                example = "gtk-decoration-layout=appmenu:none";
+              };
             };
           });
         default = null;

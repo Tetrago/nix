@@ -74,7 +74,10 @@ in
         ) (mapTheme theme);
 
       mapToGtk3Theme =
-        theme: [ "[Settings]" ] ++ (mapAttrsToList (k: v: "${k}=${toString v}") (mapTheme theme));
+        theme:
+        [ "[Settings]" ]
+        ++ (mapAttrsToList (k: v: "${k}=${toString v}") (mapTheme theme))
+        ++ optional (cfg.extraSettings != null) cfg.extraSettings;
 
       makeGtk2Config = theme: pkgs.writeText ".gtkrc-2.0" (concatLines (mapToGtk2Theme theme));
       makeGtk3Config = theme: pkgs.writeText "settings.ini" (concatLines (mapToGtk3Theme theme));

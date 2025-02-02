@@ -48,5 +48,9 @@
       theme = "Colloid-Light";
       iconTheme = "Colloid-Light";
     };
+
+    extraSettings = ''
+      gtk-decoration-layout=appmenu:none
+    '';
   };
 }
