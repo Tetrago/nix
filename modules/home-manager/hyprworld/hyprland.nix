@@ -155,6 +155,7 @@ in
           "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | walker -d -p Search... | ${cliphist} decode | wl-copy"
           "$mod, F, togglefloating"
           "$mod, Escape, fullscreen"
+          "$mod SHIFT, Escape, exec, darkman toggle"
           "$mod, Space, exec, pidof walker || walker"
           '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
           ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
