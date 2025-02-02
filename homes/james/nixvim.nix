@@ -55,39 +55,6 @@ in
         end
       })
 
-      local dark_mode = nil
-
-      function set_dark_mode(value)
-        if dark_mode ~= value then
-          dark_mode = value
-
-          if dark_mode then
-            vim.cmd("colorscheme carbonfox")
-          else
-            vim.cmd("colorscheme dayfox")
-          end
-        end
-      end
-
-      if vim.fn.executable("busctl") ~= 0 then
-        vim.system({
-          "busctl", "--user", "call", "org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop",
-          "org.freedesktop.portal.Settings", "Read", "ss", "org.freedesktop.appearance", "color-scheme"
-        }, { text = true }, function(result)
-          local color_scheme = result.stdout:match("[uv ]+(%d)")
-
-          vim.schedule(function()
-            set_dark_mode(color_scheme ~= "2")
-          end)
-        end)
-      else
-        set_dark_mode(true)
-      end
-
-      vim.keymap.set("n", "<C-g>", function()
-        set_dark_mode(not dark_mode)
-      end, { silent = true, noremap = true })
-
       local signs = { Error = "󰅚 ", Warning = " ", Hint = "󰌶 ", Information = " " }
       for type, icon in pairs(signs) do
         local hl = "DiagnosticSign" .. type
@@ -535,6 +502,24 @@ in
       };
     };
 
-    extraPlugins = [ pkgs.bg-nvim ];
+    extraPlugins =
+      let
+        lua = str: "lua<<EOF\n${str}\nEOF\n";
+      in
+      [
+        pkgs.bg-nvim
+        {
+          plugin = pkgs.darkman-nvim;
+          config = lua ''
+            require("darkman").setup({
+              change_background = false,
+              colorscheme = {
+                dark = "carbonfox",
+                light = "dayfox"
+              }
+            })
+          '';
+        }
+      ];
   };
 }
