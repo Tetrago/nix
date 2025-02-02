@@ -40,18 +40,6 @@
   services = {
     ollama.enable = true;
     upower.enable = true;
-
-    displayManager.sddm = {
-      enable = true;
-      package = pkgs.kdePackages.sddm;
-      extraPackages = with pkgs.kdePackages; [
-        qtmultimedia
-        qtsvg
-        qtvirtualkeyboard
-      ];
-      wayland.enable = true;
-      theme = "sddm-astronaut-theme";
-    };
   };
 
   networking = {
@@ -105,6 +93,27 @@
     plymouth = {
       enable = true;
       theme = "red_loader";
+    };
+
+    sddm = {
+      enable = true;
+      package = pkgs.kdePackages.sddm;
+      theme = {
+        name = "sddm-astronaut-theme";
+        package = pkgs.sddm-astronaut.override {
+          themeConfig = {
+            Background = pkgs.fetchurl {
+              url = "https://raw.githubusercontent.com/vinceliuice/WhiteSur-wallpapers/refs/heads/main/Wallpaper-nord/WhiteSur-nord-light.png";
+              hash = "sha256-jcX00tiPje0YGe38y0Vr0FA5Mg21XpHYp4m6ptx2iAw=";
+            };
+          };
+        };
+        extraPackages = with pkgs.kdePackages; [
+          qtmultimedia
+          qtsvg
+          qtvirtualkeyboard
+        ];
+      };
     };
 
     users.james = {
@@ -211,10 +220,6 @@
 
   environment = {
     etc.hosts.mode = "0644";
-
-    systemPackages = with pkgs; [
-      sddm-astronaut
-    ];
   };
 
   system.stateVersion = "23.11";

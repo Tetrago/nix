@@ -12,6 +12,7 @@
     ./networking.nix
     ./plymouth.nix
     ./printing.nix
+    ./sddm.nix
     ./steam.nix
     ./users.nix
     ./virtualization.nix
