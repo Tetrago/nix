@@ -103,8 +103,8 @@
         package = pkgs.sddm-astronaut.override {
           themeConfig = {
             Background = pkgs.fetchurl {
-              url = "https://raw.githubusercontent.com/vinceliuice/WhiteSur-wallpapers/refs/heads/main/Wallpaper-nord/WhiteSur-nord-light.png";
-              hash = "sha256-jcX00tiPje0YGe38y0Vr0FA5Mg21XpHYp4m6ptx2iAw=";
+              url = "https://raw.githubusercontent.com/vinceliuice/WhiteSur-wallpapers/3a24624d04aedc638e042a1de81238b95b46a342/Wallpaper-nord/WhiteSur-nord-light.png";
+              sha256 = "sha256-jcX00tiPje0YGe38y0Vr0FA5Mg21XpHYp4m6ptx2iAw=";
             };
           };
         };

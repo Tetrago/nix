@@ -254,7 +254,10 @@ in
           name = "Typora";
           exec = "typora %U";
           terminal = false;
-          mimeType = [ "text/markdown" ];
+          mimeType = [
+            "text/x-markdown"
+            "text/markdown"
+          ];
         };
 
         zathura = {
@@ -263,6 +266,23 @@ in
           terminal = false;
           mimeType = [ "application/pdf" ];
           noDisplay = true;
+        };
+
+        neovim = {
+          name = "Neovim";
+          exec = "kitty -e nvim %f";
+          terminal = false;
+          icon = "nvim";
+          noDisplay = true;
+          mimeType = [
+            "text/plain"
+            "text/html"
+            "text/css"
+            "application/xml"
+            "application/json"
+            ""
+          ];
+          startupNotify = true;
         };
       };
     in
