@@ -10,6 +10,12 @@ in
     "float,class:(mpv)"
   ];
 
+  home.packages = with pkgs; [
+    file-roller
+    typora
+    xfce.thunar
+  ];
+
   programs = {
     feh = {
       enable = true;
@@ -232,6 +238,23 @@ in
             "audio/vnd.wave"
             "video/vnd.avi"
           ];
+          noDisplay = true;
+        };
+
+        thunar = {
+          name = "Thunar File Manager";
+          exec = "thunar %U";
+          terminal = false;
+          noDisplay = true;
+          startupNotify = true;
+          mimeType = [ "inode/directory" ];
+        };
+
+        typora = {
+          name = "Typora";
+          exec = "typora %U";
+          terminal = false;
+          mimeType = [ "text/markdown" ];
           noDisplay = true;
         };
 

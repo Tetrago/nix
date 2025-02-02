@@ -71,7 +71,6 @@
       aseprite
       inkscape
       godot_4
-      kdePackages.ark
       gnome-calendar
       gnome-clocks
       gnome-mines
@@ -88,7 +87,6 @@
       blockbench
       kiwix
       zeal
-      typora
 
       kdenlive
       handbrake
