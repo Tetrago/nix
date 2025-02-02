@@ -1,13 +1,17 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 let
   inherit (builtins) mapAttrs;
-  inherit (lib) types mkOption isDerivation;
+  inherit (lib)
+    types
+    mkOption
+    isDerivation
+    getExe
+    ;
 in
 {
   options.hyprworld = {
@@ -20,15 +24,14 @@ in
 
   config.systemd.user.services = mapAttrs (_: atom: {
     Unit = {
+      ConditionEnvironment = "WAYLAND_DISPLAY";
       PartOf = [ "graphical-session.target" ];
       After = [ "graphical-session-pre.target" ];
     };
 
     Service = {
-      ExecStart = if (isDerivation atom) then "${atom}/bin/${atom.pname}" else atom;
-      ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+      ExecStart = if (isDerivation atom) then "${getExe atom}" else atom;
       Restart = "on-failure";
-      KillMode = "mixed";
     };
 
     Install = {

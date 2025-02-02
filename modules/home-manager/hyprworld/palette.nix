@@ -1,6 +1,8 @@
 { config, pkgs }:
 
 let
+  inherit (builtins) isString;
+
   colors = import (
     pkgs.stdenvNoCC.mkDerivation {
       name = "hyprworld_stylesheet";
@@ -9,9 +11,17 @@ let
 
       nativeBuildInputs = with pkgs; [ okolors ];
 
-      buildPhase = ''
-        (echo [; okolors ${config.hyprworld.wallpaper} -w 0 -k 1 -l 10,20,30,50,80 | tail -n +2 | sed -e 's/\(.*\)/"\1"/'; echo ]) > ./default.nix
-      '';
+      buildPhase =
+        let
+          wallpaper =
+            if (isString config.hyprworld.wallpaper) then
+              config.hyprworld.wallpaper
+            else
+              config.hyprworld.wallpaper.dark;
+        in
+        ''
+          (echo [; okolors ${wallpaper} -w 0 -k 1 -l 10,20,30,50,80 | tail -n +2 | sed -e 's/\(.*\)/"\1"/'; echo ]) > ./default.nix
+        '';
 
       installPhase = ''
         mkdir -p $out

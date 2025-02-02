@@ -1,14 +1,12 @@
 { lib, ... }:
 
 let
-  inherit (lib) mkOption mkEnableOption types;
+  inherit (lib) mkOption types;
 
   resolutionType = types.submodule {
     options = {
       width = mkOption { type = types.ints.positive; };
-
       height = mkOption { type = types.ints.positive; };
-
       refreshRate = mkOption {
         type = with types; nullOr ints.positive;
         default = null;
@@ -16,19 +14,21 @@ let
     };
   };
 
-  positionType = types.submodule {
-    options = {
-      x = mkOption {
-        type = types.int;
-        default = 0;
-      };
+  positionType =
+    with types;
+    submodule {
+      options = {
+        x = mkOption {
+          type = types.int;
+          default = 0;
+        };
 
-      y = mkOption {
-        type = types.int;
-        default = 0;
+        y = mkOption {
+          type = types.int;
+          default = 0;
+        };
       };
     };
-  };
 
   monitorType = types.submodule {
     options = {
@@ -74,8 +74,19 @@ in
     };
 
     wallpaper = mkOption {
-      type = types.str;
-      description = "path to wallpaper";
+      type =
+        with types;
+        either str (submodule {
+          options = {
+            dark = mkOption {
+              type = str;
+            };
+            light = mkOption {
+              type = str;
+            };
+          };
+        });
+      description = "path to wallpaper(s)";
     };
 
     lockscreen = mkOption {
@@ -156,7 +167,7 @@ in
                     type = str;
                   };
                   size = mkOption {
-                    type = positive;
+                    type = ints.positive;
                     default = 32;
                   };
                 };

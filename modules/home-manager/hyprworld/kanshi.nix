@@ -47,7 +47,7 @@ let
 
   mapMonitorsToProfile = list: {
     exec = [
-      "systemctl --user restart ags.service hyprpaper.service"
+      "systemctl --user restart ags.service swww.service"
     ] ++ (builtins.filter (v: v != "") (mapMonitorsToExec list));
     outputs = map mapMonitorToOutput list;
   };

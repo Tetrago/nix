@@ -22,7 +22,10 @@
   ];
 
   hyprworld = {
-    wallpaper = "${./files/wallpaper.png}";
+    wallpaper = {
+      dark = "${./files/dark.png}";
+      light = "${./files/light.png}";
+    };
   };
 
   wayland.windowManager.hyprland.settings.windowrulev2 = [
@@ -39,7 +42,7 @@
       lb = inputs.nix-colors.lib.contrib { inherit pkgs; };
     in
     lb.colorSchemeFromPicture {
-      path = ./files/wallpaper.png;
+      path = ./files/dark.png;
       variant = "dark";
     };
 

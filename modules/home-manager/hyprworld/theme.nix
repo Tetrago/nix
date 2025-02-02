@@ -126,10 +126,12 @@ in
       wayland.windowManager.hyprland.settings.exec =
         let
           update-theme = pkgs.writeShellScript "update-theme" ''
-            if [ "$(darkman get)" = "light" ]; then
-              ${set-light-mode}
-            elif [ "$(darkman get)" = "dark" ]; then
+            mode="$(darkman get)"
+
+            if [ "$mode" = "dark" ]; then
               ${set-dark-mode}
+            elif [ "$mode" = "light" ]; then
+              ${set-light-mode}
             fi
           '';
         in

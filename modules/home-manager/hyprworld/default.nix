@@ -11,8 +11,9 @@
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
-    ./hyprpaper.nix
+    ./options.nix
     ./services.nix
+    ./swww.nix
     ./theme.nix
     ./kanshi.nix
     ./walker.nix
