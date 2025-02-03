@@ -42,16 +42,36 @@ in
         fi
       '';
 
+      get-transition-pos =
+        let
+          jq = getExe pkgs.jq;
+        in
+        writeShellScript "get-transition-pos" ''
+          monitor=$(hyprctl monitors -j | ${jq} ".[] | select(.id == $(hyprctl activeworkspace -j | ${jq} .monitorID)) | {x, y, height}")
+          mx=$(echo "$monitor" | ${jq} .x)
+          my=$(echo "$monitor" | ${jq} .y)
+          height=$(echo "$monitor" | ${jq} .height)
+
+          cursor=$(hyprctl cursorpos -j)
+          cx=$(echo "$cursor" | ${jq} .x)
+          cy=$(echo "$cursor" | ${jq} .y)
+
+          x=$((cx - mx))
+          y=$((height - (cy - my)))
+
+          echo "$x,$y"
+        '';
+
       transitions = concatStringsSep " " (
         mapAttrsToList (k: v: "--transition-${k} ${toString v}") cfg.wallpaper.transition
       );
 
       set-dark-wallpaper = writeShellScript "set-dark-mode" ''
-        ${swww} img ${cfg.wallpaper.dark} --transition-type outer ${transitions}
+        ${swww} img ${cfg.wallpaper.dark} --transition-type outer --transition-pos $(${get-transition-pos}) ${transitions}
       '';
 
       set-light-wallpaper = writeShellScript "set-light-mode" ''
-        ${swww} img ${cfg.wallpaper.light} --transition-type grow ${transitions}
+        ${swww} img ${cfg.wallpaper.light} --transition-type grow --transition-pos $(${get-transition-pos}) ${transitions}
       '';
     in
     mkMerge [
