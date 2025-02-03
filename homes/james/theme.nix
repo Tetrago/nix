@@ -30,7 +30,7 @@
     };
 
     iconTheme = {
-      package = pkgs.colloid-icon-theme;
+      package = pkgs.whitesur-icon-theme;
     };
 
     theme = {
@@ -41,12 +41,12 @@
   hyprworld.theme = {
     dark = {
       theme = "Colloid-Dark";
-      iconTheme = "Colloid-Dark";
+      iconTheme = "WhiteSur-dark";
     };
 
     light = {
       theme = "Colloid-Light";
-      iconTheme = "Colloid-Light";
+      iconTheme = "WhiteSur-light";
     };
 
     extraSettings = ''
