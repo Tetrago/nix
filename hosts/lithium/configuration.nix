@@ -116,11 +116,6 @@
       hyprlock.fprintAuth = false;
       su.fprintAuth = false;
       sudo.fprintAuth = false;
-      sddm.text = ''
-        auto  [success=1 new_authtok_reqd=1 default=ignore] pam_unix.so tryu_first_pass likeauth
-        nullok
-        auth  sufficient  pam_fprintd.so
-      '';
     };
   };
 
