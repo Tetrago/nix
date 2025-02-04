@@ -152,7 +152,7 @@ in
           "$mod, E, exec, ${thunar}"
           "$mod, L, exec, loginctl lock-session"
           "$mod SHIFT, V, exec, ${cliphist} wipe"
-          "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | walker -d -p Search... | ${cliphist} decode | wl-copy"
+          "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | walker -k -d -p Search... | ${cliphist} decode | wl-copy"
           "$mod, F, togglefloating"
           "$mod, Escape, fullscreen"
           "$mod SHIFT, Escape, exec, darkman toggle"
