@@ -2,6 +2,7 @@
 
 {
   programs = {
+    dconf.enable = true;
     xfconf.enable = true;
   };
 

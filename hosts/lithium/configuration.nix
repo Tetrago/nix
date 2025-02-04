@@ -89,7 +89,6 @@
 
   programs = {
     command-not-found.enable = false;
-    dconf.enable = true;
     gamemode.enable = true;
     nix-index-database.comma.enable = true;
     nix-ld.enable = true;

@@ -24,7 +24,6 @@
 
   programs = {
     command-not-found.enable = false;
-    dconf.enable = true;
     nix-index-database.comma.enable = true;
     nix-ld.enable = true;
     virt-manager.enable = true;
