@@ -6,5 +6,10 @@
   programs.walker = {
     enable = true;
     runAsService = false;
+    config = {
+      builtins.applications.actions = {
+        enabled = false;
+      };
+    };
   };
 }
