@@ -62,16 +62,28 @@ in
           echo "$x,$y"
         '';
 
-      transitions = concatStringsSep " " (
-        mapAttrsToList (k: v: "--transition-${k} ${toString v}") cfg.wallpaper.transition
-      );
+      transitions =
+        base:
+        concatStringsSep " " (
+          mapAttrsToList (k: v: "--transition-${k} ${toString v}") (base // cfg.wallpaper.transition)
+        );
 
       set-dark-wallpaper = writeShellScript "set-dark-mode" ''
-        ${swww} img ${cfg.wallpaper.dark} --transition-type outer --transition-pos $(${get-transition-pos}) ${transitions}
+        ${swww} img ${cfg.wallpaper.dark} ${
+          transitions {
+            type = "outer";
+            pos = "$(${get-transition-pos})";
+          }
+        }
       '';
 
       set-light-wallpaper = writeShellScript "set-light-mode" ''
-        ${swww} img ${cfg.wallpaper.light} --transition-type grow --transition-pos $(${get-transition-pos}) ${transitions}
+        ${swww} img ${cfg.wallpaper.light} ${
+          transitions {
+            type = "grow";
+            pos = "$(${get-transition-pos})";
+          }
+        }
       '';
     in
     mkMerge [
