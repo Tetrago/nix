@@ -172,7 +172,6 @@ in
                   };
                   size = mkOption {
                     type = ints.positive;
-                    default = 32;
                   };
                 };
               });

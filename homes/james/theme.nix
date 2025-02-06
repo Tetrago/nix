@@ -3,8 +3,9 @@
 {
   home = {
     pointerCursor = {
-      name = "capitaine-cursors";
-      package = pkgs.capitaine-cursors;
+      name = "phinger-cursors-light";
+      size = 24;
+      package = pkgs.phinger-cursors;
       gtk.enable = true;
     };
 
@@ -42,13 +43,21 @@
     dark = {
       theme = "Colloid-Dark";
       iconTheme = "WhiteSur-dark";
-      cursorTheme.name = "capitaine-cursors";
+
+      cursorTheme = {
+        name = "phinger-cursors-dark";
+        size = 24;
+      };
     };
 
     light = {
       theme = "Colloid-Light";
       iconTheme = "WhiteSur-light";
-      cursorTheme.name = "capitaine-cursors-white";
+
+      cursorTheme = {
+        name = "phinger-cursors-light";
+        size = 24;
+      };
     };
 
     extraSettings = ''

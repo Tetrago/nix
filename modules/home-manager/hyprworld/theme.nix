@@ -9,7 +9,7 @@ let
   inherit (builtins) isString;
   inherit (lib) mkIf;
   inherit (lib.attrsets) optionalAttrs mapAttrsToList;
-  inherit (lib.strings) concatLines;
+  inherit (lib.strings) concatLines optionalString;
   inherit (lib.lists) optional;
 
   cfg = config.hyprworld.theme;
@@ -101,6 +101,10 @@ in
 
           cp -f ${makeGtk2Config theme} $HOME/.gtkrc-2.0
           cp -f ${makeGtk3Config theme} $HOME/.config/gtk-3.0/settings.ini
+
+          ${optionalString (
+            theme.cursorTheme != null
+          ) "hyprctl setcursor ${theme.cursorTheme.name} ${toString theme.cursorTheme.size}"}
         '';
 
       set-dark-mode = set-mode cfg.dark;
@@ -112,6 +116,27 @@ in
           assertion = !config.gtk.enable;
           message = "hyprworld.theme conflicts with gtk.enable";
         }
+        {
+          assertion =
+            (cfg.light.theme != null && cfg.dark.theme != null) || (cfg.light.theme == cfg.dark.theme);
+          message = "theme should be specified for both light and dark variants";
+        }
+        {
+          assertion =
+            (cfg.light.iconTheme != null && cfg.dark.iconTheme != null)
+            || (cfg.light.iconTheme == cfg.dark.iconTheme);
+          message = "icon theme should be specified for both light and dark variants";
+        }
+        {
+          assertion =
+            (cfg.light.cursorTheme != null && cfg.dark.cursorTheme != null)
+            || (cfg.light.cursorTheme == cfg.dark.cursorTheme);
+          message = "icon theme should be specified for both light and dark variants";
+        }
+        {
+          assertion = (cfg.light.font != null && cfg.dark.font != null) || (cfg.light.font == cfg.dark.font);
+          message = "font should be specified for both light and dark variants";
+        }
       ];
 
       xdg.dataFile = {
@@ -119,11 +144,13 @@ in
         "light-mode.d/update-theme".source = set-light-mode;
       };
 
-      home.packages =
-        optional (config.gtk.font.package or null != null) config.gtk.font.package
-        ++ optional (config.gtk.iconTheme.package or null != null) config.gtk.iconTheme.package
-        ++ optional (config.gtk.theme.package or null != null) config.gtk.theme.package
-        ++ optional (config.gtk.cursorTheme.package or null != null) config.gtk.cursorTheme.package;
+      home = {
+        packages =
+          optional (config.gtk.font.package or null != null) config.gtk.font.package
+          ++ optional (config.gtk.iconTheme.package or null != null) config.gtk.iconTheme.package
+          ++ optional (config.gtk.theme.package or null != null) config.gtk.theme.package
+          ++ optional (config.gtk.cursorTheme.package or null != null) config.gtk.cursorTheme.package;
+      };
 
       wayland.windowManager.hyprland.settings.exec =
         let
