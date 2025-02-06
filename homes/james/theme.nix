@@ -42,11 +42,13 @@
     dark = {
       theme = "Colloid-Dark";
       iconTheme = "WhiteSur-dark";
+      cursorTheme.name = "capitaine-cursors";
     };
 
     light = {
       theme = "Colloid-Light";
       iconTheme = "WhiteSur-light";
+      cursorTheme.name = "capitaine-cursors-white";
     };
 
     extraSettings = ''
