@@ -76,13 +76,13 @@ in
     wallpaper = mkOption {
       type =
         with types;
-        either str (submodule {
+        either path (submodule {
           options = {
             dark = mkOption {
-              type = str;
+              type = path;
             };
             light = mkOption {
-              type = str;
+              type = path;
             };
             transition = mkOption {
               type = attrsOf anything;

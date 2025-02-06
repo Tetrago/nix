@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (builtins) isString;
+  inherit (builtins) isPath;
   inherit (lib)
     mkMerge
     mkIf
@@ -87,7 +87,7 @@ in
       '';
     in
     mkMerge [
-      ({
+      {
         systemd.user.services.swww = {
           Unit = {
             ConditionEnvironment = "WAYLAND_DISPLAY";
@@ -104,11 +104,11 @@ in
             WantedBy = [ "graphical-session.target" ];
           };
         };
-      })
-      (mkIf (isString cfg.wallpaper) {
+      }
+      (mkIf (isPath cfg.wallpaper) {
         systemd.user.services.swww.Service.ExecStartPost = "${swww} img ${cfg.wallpaper}";
       })
-      (mkIf (!(isString cfg.wallpaper)) {
+      (mkIf (!(isPath cfg.wallpaper)) {
         systemd.user.services.swww.Service.ExecStartPost = "${set-wallpaper}";
 
         xdg.dataFile = {
