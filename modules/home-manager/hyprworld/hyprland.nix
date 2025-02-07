@@ -7,6 +7,7 @@
 }:
 
 let
+  inherit (lib) getExe;
   inherit (lib.strings) optionalString;
   inherit (lib.lists) flatten optional optionals;
 
@@ -133,30 +134,43 @@ in
 
       bind =
         let
-          hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
-          thunar = "${pkgs.xfce.thunar}/bin/thunar";
-          cliphist = "${pkgs.cliphist}/bin/cliphist";
-          jq = "${pkgs.jq}/bin/jq";
-          brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-          playerctl = "${pkgs.playerctl}/bin/playerctl";
-          slurp = "${pkgs.slurp}/bin/slurp";
-          grim = "${pkgs.grim}/bin/grim";
-          swappy = "${pkgs.swappy}/bin/swappy";
+          ags = getExe inputs.ags.packages.${pkgs.system}.ags;
+          hyprpicker = getExe pkgs.hyprpicker;
+          thunar = getExe pkgs.xfce.thunar;
+          cliphist = getExe pkgs.cliphist;
+          cliphist-rofi-img = getExe (
+            pkgs.symlinkJoin {
+              name = "cliphist-rofi-img-packaged";
+              paths = [ pkgs.cliphist ];
+              buildInputs = [ pkgs.makeWrapper ];
+              postBuild = ''
+                wrapProgram $out/bin/cliphist-rofi-img \
+                  --prefix PATH : ${lib.makeBinPath [ pkgs.cliphist ]}
+              '';
+              meta.mainProgram = "cliphist-rofi-img";
+            }
+          );
+          jq = getExe pkgs.jq;
+          brightnessctl = getExe pkgs.brightnessctl;
+          playerctl = getExe pkgs.playerctl;
+          slurp = getExe pkgs.slurp;
+          grim = getExe pkgs.grim;
+          swappy = getExe pkgs.swappy;
           find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
         in
         [
           "$mod, Return, exec, kitty"
-          "$mod, C, exec, ${inputs.ags.packages.${pkgs.system}.ags}/bin/ags -b hypr -t system_center"
+          "$mod, C, exec, ${ags} -b hypr -t system_center"
           "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
           "$mod, W, killactive"
           "$mod, E, exec, ${thunar}"
           "$mod, L, exec, loginctl lock-session"
           "$mod SHIFT, V, exec, ${cliphist} wipe"
-          "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | cut -f2- | rofi -sorting-method fzf -scroll-method 1 -dmenu | ${cliphist} decode | wl-copy"
+          "$mod, V, exec, rofi -modi clipboard:${cliphist-rofi-img} -show-icons -sorting-method fzf -scroll-method 1 -show clipboard"
           "$mod, F, togglefloating"
           "$mod, Escape, fullscreen"
           "$mod SHIFT, Escape, exec, darkman toggle"
-          "$mod, Space, exec, rofi -show run -show-icons -sorting-method fzf"
+          "$mod, Space, exec, rofi -show drun -show-icons -sorting-method fzf -scroll-method 1"
           '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
           ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
           ''$mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
