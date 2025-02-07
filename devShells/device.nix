@@ -1,5 +1,6 @@
 {
   fd,
+  fastfetch,
   writeShellScriptBin,
   mkShell,
   pciutils,
@@ -43,5 +44,6 @@ mkShell {
     lsiommu
     lsnvme
     cpufetch
+    fastfetch
   ];
 }
