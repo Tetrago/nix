@@ -149,13 +149,7 @@ in
       programs.bash.initExtra = ''
         if [[ $TERM != "dumb" ]]; then
           if [[ -v WAYLAND_DISPLAY ]]; then
-            mode="$(darkman get)"
-
-            if [ "$mode" = "dark" ]; then
-              export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/dark.toml
-            elif [ "$mode" = "light" ]; then
-              export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/light.toml
-            fi
+            export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/$(darkman get).toml
           fi
 
           eval "$(${config.home.profileDirectory}/bin/starship init bash --print-full-init)"
