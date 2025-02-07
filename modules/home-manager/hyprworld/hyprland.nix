@@ -152,11 +152,11 @@ in
           "$mod, E, exec, ${thunar}"
           "$mod, L, exec, loginctl lock-session"
           "$mod SHIFT, V, exec, ${cliphist} wipe"
-          "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | walker -k -d -p Search... | ${cliphist} decode | wl-copy"
+          "$mod, V, exec, pidof ${cliphist} || ${cliphist} list | cut -f2- | rofi -sorting-method fzf -scroll-method 1 -dmenu | ${cliphist} decode | wl-copy"
           "$mod, F, togglefloating"
           "$mod, Escape, fullscreen"
           "$mod SHIFT, Escape, exec, darkman toggle"
-          "$mod, Space, exec, pidof walker || walker -m applications"
+          "$mod, Space, exec, rofi -show run -show-icons -sorting-method fzf"
           '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
           ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
           ''$mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''

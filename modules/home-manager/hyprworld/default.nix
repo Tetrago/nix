@@ -12,11 +12,11 @@
     ./hyprland.nix
     ./hyprlock.nix
     ./options.nix
+    ./rofi.nix
     ./services.nix
     ./swww.nix
     ./theme.nix
     ./kanshi.nix
-    ./walker.nix
   ];
 
   home = {
