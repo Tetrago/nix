@@ -94,6 +94,7 @@ in
             "x-scheme-handler/http"
             "x-scheme-handler/https"
           ];
+          icon = "firefox";
           actions = {
             "new-private-window" = {
               exec = "firefox --private-window %U";
@@ -258,6 +259,7 @@ in
             "text/x-markdown"
             "text/markdown"
           ];
+          icon = "typora";
         };
 
         zathura = {
