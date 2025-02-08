@@ -89,7 +89,10 @@
             ];
           };
         in
-        pkgs.callPackage ./devShells { inherit (pkgs) callPackage; }
+        pkgs.callPackage ./devShells {
+          inherit (pkgs) callPackage;
+          inherit inputs;
+        }
       );
 
       overlays = import ./overlays;

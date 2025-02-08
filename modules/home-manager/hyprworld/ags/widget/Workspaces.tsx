@@ -10,9 +10,6 @@ type Props = {
 export default function Workspaces({ monitor }: Props) {
   return (
     <box
-      visible={bind(hyprland, "workspaces").as(
-        (workspaces) => workspaces.length > 1,
-      )}
       spacing={5}
       cssClasses={bind(hyprland, "workspaces").as(
         (workspaces: Hyprland.Workspace[]) => [
@@ -38,9 +35,24 @@ export default function Workspaces({ monitor }: Props) {
               .filter((workspace) => workspace.id >= 1 && workspace.id <= 10)
               .forEach((workspace) => (list[workspace.id - 1] = workspace));
 
-            return list.map((workspace) => {
-              if (!workspace) {
-                return <label label={"\uf4aa"} />;
+            return list.map((workspace, index) => {
+              function switchWorkspace() {
+                if (workspace !== undefined) {
+                  workspace.focus();
+                } else {
+                  hyprland.dispatch(
+                    "focusworkspaceoncurrentmonitor",
+                    `${index + 1}`,
+                  );
+                }
+              }
+
+              if (workspace === undefined) {
+                return (
+                  <button onClicked={switchWorkspace}>
+                    <label label={"\uf4aa"} />
+                  </button>
+                );
               }
 
               const hasClients = workspace.clients.length > 0;
@@ -55,10 +67,12 @@ export default function Workspaces({ monitor }: Props) {
                   : "\uf4aa";
 
               return (
-                <label
-                  cssClasses={isLocalToMonitor ? ["local"] : []}
-                  label={icon}
-                />
+                <button onClicked={switchWorkspace}>
+                  <label
+                    cssClasses={isLocalToMonitor ? ["local"] : []}
+                    label={icon}
+                  />
+                </button>
               );
             });
           },

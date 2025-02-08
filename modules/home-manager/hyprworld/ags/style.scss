@@ -89,6 +89,18 @@ window.Bar {
     &.special {
       border: 2px solid $fg-color;
     }
+
+    button {
+      all: unset;
+
+      &:hover {
+        color: $selected-bg-color;
+
+        .local {
+          color: unset;
+        }
+      }
+    }
   }
 }
 
@@ -151,7 +163,6 @@ window.Notification {
     }
 
     button.dismiss {
-      min-width: 20%;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       background-color: $error-color;
