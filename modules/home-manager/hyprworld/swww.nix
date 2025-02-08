@@ -34,56 +34,23 @@ in
 
       set-wallpaper = writeShellScript "update-wallpaper" ''
         mode="$(darkman get)"
-
-        if [ "$mode" = "dark" ]; then
-          ${swww} img ${cfg.wallpaper.dark}
-        elif [ "$mode" = "light" ]; then
-          ${swww} img ${cfg.wallpaper.light}
-        fi
+        dark="${cfg.wallpaper.dark}"
+        light="${cfg.wallpaper.light}"
+        ${swww} img ''${!mode} --transition-type none
       '';
 
-      get-transition-pos =
-        let
-          jq = getExe pkgs.jq;
-        in
-        writeShellScript "get-transition-pos" ''
-          monitor=$(hyprctl monitors -j | ${jq} ".[] | select(.id == $(hyprctl activeworkspace -j | ${jq} .monitorID)) | {x, y, height}")
-          mx=$(echo "$monitor" | ${jq} .x)
-          my=$(echo "$monitor" | ${jq} .y)
-          height=$(echo "$monitor" | ${jq} .height)
-
-          cursor=$(hyprctl cursorpos -j)
-          cx=$(echo "$cursor" | ${jq} .x)
-          cy=$(echo "$cursor" | ${jq} .y)
-
-          x=$((cx - mx))
-          y=$((height - (cy - my)))
-
-          echo "$x,$y"
-        '';
-
-      transitions =
-        base:
-        concatStringsSep " " (
-          mapAttrsToList (k: v: "--transition-${k} ${toString v}") (base // cfg.wallpaper.transition)
-        );
+      transitions = concatStringsSep " " (
+        mapAttrsToList (k: v: "--transition-${k} ${toString v}") (
+          { type = "wave"; } // cfg.wallpaper.transition
+        )
+      );
 
       set-dark-wallpaper = writeShellScript "set-dark-mode" ''
-        ${swww} img ${cfg.wallpaper.dark} ${
-          transitions {
-            type = "outer";
-            pos = "$(${get-transition-pos})";
-          }
-        }
+        ${swww} img ${cfg.wallpaper.dark} ${transitions}
       '';
 
       set-light-wallpaper = writeShellScript "set-light-mode" ''
-        ${swww} img ${cfg.wallpaper.light} ${
-          transitions {
-            type = "grow";
-            pos = "$(${get-transition-pos})";
-          }
-        }
+        ${swww} img ${cfg.wallpaper.light} ${transitions}
       '';
     in
     mkMerge [
