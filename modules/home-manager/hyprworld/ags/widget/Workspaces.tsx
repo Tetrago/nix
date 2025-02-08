@@ -3,7 +3,11 @@ import { bind, Variable } from "astal";
 
 const hyprland = Hyprland.get_default();
 
-export default function Workspaces(props: { monitor: number }) {
+type Props = {
+  monitor: number;
+};
+
+export default function Workspaces({ monitor }: Props) {
   return (
     <box
       visible={bind(hyprland, "workspaces").as(
@@ -23,44 +27,40 @@ export default function Workspaces(props: { monitor: number }) {
         Variable.derive(
           [
             bind(hyprland, "workspaces"),
-            bind(hyprland, "monitors"),
-            bind(hyprland, "focused_workspace"),
+            bind(hyprland, "focusedWorkspace"),
             bind(hyprland, "clients"),
           ],
-          (
-            workspaces: Hyprland.Workspace[],
-            monitors: Hyprland.Monitor[],
-            focusedWorkspace: Hyprland.Workspace,
-          ) => {
-            const activeMonitor = monitors.find(
-              (monitor) => monitor.get_id() === props.monitor,
-            );
-            const activeWorkspace = activeMonitor.get_active_workspace();
+          (workspaces) => {
+            const list = new Array<Hyprland.Workspace | undefined>(10);
+            list.fill(undefined);
 
-            return workspaces
-              .filter((workspace) => workspace.get_id() >= 0)
-              .sort((a, b) => a.get_id() - b.get_id())
-              .map((workspace) => {
-                const isLocalActive =
-                  workspace.get_id() === activeWorkspace.get_id();
-                const isGlobalActive =
-                  workspace.get_id() == focusedWorkspace.get_id();
-                const isLocal =
-                  workspace.get_monitor().get_id() === activeMonitor.get_id();
+            workspaces
+              .filter((workspace) => workspace.id >= 1 && workspace.id <= 10)
+              .forEach((workspace) => (list[workspace.id - 1] = workspace));
 
-                return (
-                  <label
-                    cssClasses={isLocal ? ["local"] : []}
-                    label={
-                      isLocalActive
-                        ? "\uf111"
-                        : isGlobalActive
-                          ? "\uf192"
-                          : "\uf4aa"
-                    }
-                  />
-                );
-              });
+            return list.map((workspace) => {
+              if (!workspace) {
+                return <label label={"\uf4aa"} />;
+              }
+
+              const hasClients = workspace.clients.length > 0;
+              const isLocalToMonitor = workspace.monitor.id === monitor;
+              const isMonitorFocus =
+                workspace.monitor.active_workspace.id === workspace.id;
+
+              const icon = isMonitorFocus
+                ? "\uf111"
+                : hasClients
+                  ? "\uf192"
+                  : "\uf4aa";
+
+              return (
+                <label
+                  cssClasses={isLocalToMonitor ? ["local"] : []}
+                  label={icon}
+                />
+              );
+            });
           },
         ),
       )}
