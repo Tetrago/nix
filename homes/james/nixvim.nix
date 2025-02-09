@@ -528,6 +528,7 @@ in
         lua = str: "lua<<EOF\n${str}\nEOF\n";
       in
       [
+        pkgs.bg-nvim
         {
           plugin = pkgs.darkman-nvim;
           config = lua ''
