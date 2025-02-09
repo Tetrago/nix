@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   pkgs,
   ...
@@ -45,7 +44,6 @@
     file = {
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
-      ".gdbinit".text = "source ${pkgs.gef}/share/gef/gef.py";
     };
 
     packages = with pkgs; [
@@ -125,14 +123,12 @@
 
   xdg = {
     enable = true;
-    configFile = {
-      "pwn.conf".text = ''
-        [update]
-        interval=never
+    configFile."pwn.conf".text = ''
+      [update]
+      interval=never
 
-        [context]
-        terminal=["ghostty", "-e", "sh" "-c"]
-      '';
-    };
+      [context]
+      terminal=["ghostty", "-e", "sh", "-c"]
+    '';
   };
 }

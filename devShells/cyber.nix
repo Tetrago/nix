@@ -10,7 +10,7 @@
   ltrace,
   openvpn,
   metasploit,
-  gdb,
+  pwndbg,
   ghidra-bin,
   rp,
   radare2,
@@ -75,7 +75,7 @@ mkShell {
       p: with p; [
         numpy
         pillow
-        pwntools
+        (pwntools.override { debugger = pwndbg; })
         pycryptodome
         impacket
       ]
@@ -85,7 +85,7 @@ mkShell {
     binwalk
     strace
     ltrace
-    gdb
+    pwndbg
     rp
     radare2
     ghidra-bin
