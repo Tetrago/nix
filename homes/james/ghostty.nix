@@ -54,13 +54,15 @@ in
     settings = {
       theme = "dark:base16-dark,light:base16-light";
 
-      font-family = "JetBrainsMono Nerd Font Mono";
+      font-family = "Monaspace Neon";
+      font-family-italic = "Monaspace Radon";
+      font-family-bold-italic = "Monaspace Radon";
       font-style = "Regular";
       font-style-bold = "Bold";
-      font-style-italic = "Italic";
-      font-style-bold-italic = "Bold Italic";
+      font-style-italic = "Regular";
+      font-style-bold-italic = "Bold";
       font-synthetic-style = false;
-      font-feature = "calt";
+      font-feature = "calt, liga, ss01, ss02, ss03, ss04, ss07, ss08, ss09, ss10, cv01=2, cv10, cv11, cv30, cv31";
 
       background-opacity = 0.9;
       background-blur = true;
@@ -110,6 +112,6 @@ in
   };
 
   home.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
+    monaspace
   ];
 }
