@@ -155,7 +155,6 @@ in
     plugins = {
       autoclose.enable = true;
       auto-session.enable = true;
-      barbecue.enable = true;
       clangd-extensions.enable = true;
       dressing.enable = true;
       fugitive.enable = true;
@@ -458,11 +457,33 @@ in
       transparent = {
         enable = true;
         settings.groups = [
+          "Normal"
+          "NormalNC"
+          "EndOfBuffer"
+          "MsgArea"
+          "FloatBorder"
+          "VertSplit"
+          "SignColumn"
           "StatusLine"
           "StatusLineNC"
+          "WinSeparator"
+          "CursorLine"
+          "CursorLineNr"
+          "LineNr"
+          "FoldColumn"
           "Pmenu"
-          "Float"
-          "NormalFloat"
+          "PmenuSel"
+          "PmenuSbar"
+          "PmenuThumb"
+
+          "NeoTreeNormal"
+          "NeoTreeNormalNC"
+          "NeoTreeVertSplit"
+          "NeoTreeWinSeparator"
+          "NeoTreeEndOfBuffer"
+
+          "TelescopeNormal"
+          "TelescopeBorder"
         ];
       };
 
@@ -507,7 +528,6 @@ in
         lua = str: "lua<<EOF\n${str}\nEOF\n";
       in
       [
-        pkgs.bg-nvim
         {
           plugin = pkgs.darkman-nvim;
           config = lua ''

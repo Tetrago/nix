@@ -75,6 +75,7 @@ in
       window-padding-y = 2;
       window-padding-balance = true;
       window-new-tab-position = "end";
+      window-theme = "system";
 
       keybind = [
         "ctrl+shift+enter=new_tab"

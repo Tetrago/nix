@@ -2,7 +2,6 @@
 
 {
   binaryninja = callPackage ./binaryninja.nix { };
-  bg-nvim = callPackage ./bg-nvim.nix { };
   darkman-nvim = callPackage ./darkman-nvim.nix { };
   flat-remix-gtk-variant = callPackage ./flat-remix-gtk-variant.nix { };
   renderdoc-x11 = callPackage ./renderdoc-x11.nix { };
