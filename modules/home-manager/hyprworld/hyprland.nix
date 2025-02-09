@@ -177,6 +177,7 @@ in
           "$mod SHIFT, Z, movetoworkspace, special"
           "$mod, Z, togglespecialworkspace"
           "$mod SHIFT, Space, fullscreen, 1"
+          "$mod, Tab, overview:toggle"
 
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"
@@ -243,6 +244,10 @@ in
         "noanim,selection"
       ];
     };
+
+    plugins = [
+      inputs.hyprspace.packages.${pkgs.system}.Hyprspace
+    ];
 
     systemd = {
       enable = true;
