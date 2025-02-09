@@ -1,17 +1,9 @@
 {
   config,
-  inputs,
-  lib,
-  pkgs,
   ...
 }:
 
 let
-  inherit (lib) mkMerge mkIf;
-
-  tomlFormat = pkgs.formats.toml { };
-  isThemed = !(builtins.isPath config.hyprworld.wallpaper);
-
   makeSettings = colors: {
     "add_newline" = false;
     "c" = {
@@ -134,37 +126,9 @@ let
   };
 in
 {
-  config = mkMerge [
-    (mkIf (!isThemed) {
-      programs.starship = {
-        enable = true;
-        settings = mkIf (!isThemed) (makeSettings config.colorScheme.palette);
-      };
-    })
-    (mkIf isThemed {
-      home.packages = [ config.programs.starship.package ];
-
-      programs.bash.initExtra = ''
-        if [[ $TERM != "dumb" ]]; then
-          if [[ -v WAYLAND_DISPLAY ]]; then
-            export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/$(darkman get).toml
-          fi
-
-          eval "$(${config.home.profileDirectory}/bin/starship init bash --print-full-init)"
-        fi
-      '';
-
-      xdg.configFile = {
-        "starship.toml".source = tomlFormat.generate "startship-config" (makeSettings config.colors.dark);
-
-        "starship/dark.toml".source = tomlFormat.generate "startship-config-dark" (
-          makeSettings config.colors.dark
-        );
-
-        "starship/light.toml".source = tomlFormat.generate "startship-config-light" (
-          makeSettings config.colors.light
-        );
-      };
-    })
-  ];
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    settings = makeSettings config.colors.dark;
+  };
 }

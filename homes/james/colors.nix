@@ -35,7 +35,7 @@ in
       light =
         mkForce
           (nix-colors-contrib.colorSchemeFromPicture {
-            path = config.hyprworld.wallpaper.dark;
+            path = config.hyprworld.wallpaper.light;
             variant = "light";
           }).palette;
     };
