@@ -13,9 +13,10 @@
     ../../modules/home-manager
 
     ./bash.nix
+    ./colors.nix
     ./firefox.nix
     ./git.nix
-    ./kitty.nix
+    ./ghostty.nix
     ./media.nix
     ./nixvim.nix
     ./theme.nix
@@ -36,15 +37,6 @@
     "tile,title:^(OpenTTD)(.*)$"
     "tile,class:^(Aseprite)$"
   ];
-
-  colorScheme =
-    let
-      lb = inputs.nix-colors.lib.contrib { inherit pkgs; };
-    in
-    lb.colorSchemeFromPicture {
-      path = ./files/dark.png;
-      variant = "dark";
-    };
 
   home = {
     username = "james";
@@ -139,7 +131,7 @@
         interval=never
 
         [context]
-        terminal=["${config.programs.kitty.package}/bin/kitty", "sh", "-c"]
+        terminal=["ghostty", "-e", "sh" "-c"]
       '';
     };
   };

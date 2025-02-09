@@ -272,7 +272,7 @@ in
 
         neovim = {
           name = "Neovim";
-          exec = "kitty -e nvim %f";
+          exec = "ghostty -e nvim %f";
           terminal = false;
           icon = "nvim";
           noDisplay = true;
@@ -297,7 +297,7 @@ in
           let
             auto = mapAttrsToList (key: value: genAttrs value.mimeType (name: "${key}.desktop")) desktopEntries;
           in
-          mkMerge (auto ++ [ { "application/x-terminal-emulator" = "kitty.desktop"; } ]);
+          mkMerge (auto ++ [ { "application/x-terminal-emulator" = "ghostty.desktop"; } ]);
       };
     };
 }

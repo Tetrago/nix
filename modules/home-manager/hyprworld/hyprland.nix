@@ -159,7 +159,7 @@ in
           find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
         in
         [
-          "$mod, Return, exec, kitty"
+          "$mod, Return, exec, ghostty"
           "$mod, C, exec, ${ags} -b hypr -t system_center"
           "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
           "$mod, W, killactive"

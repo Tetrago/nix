@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   home = {
@@ -39,29 +42,31 @@
     };
   };
 
-  hyprworld.theme = {
-    dark = {
-      theme = "Colloid-Dark";
-      iconTheme = "WhiteSur-dark";
+  hyprworld = {
+    theme = {
+      dark = {
+        theme = "Colloid-Dark";
+        iconTheme = "WhiteSur-dark";
 
-      cursorTheme = {
-        name = "phinger-cursors-dark";
-        size = 24;
+        cursorTheme = {
+          name = "phinger-cursors-dark";
+          size = 24;
+        };
       };
-    };
 
-    light = {
-      theme = "Colloid-Light";
-      iconTheme = "WhiteSur-light";
+      light = {
+        theme = "Colloid-Light";
+        iconTheme = "WhiteSur-light";
 
-      cursorTheme = {
-        name = "phinger-cursors-light";
-        size = 24;
+        cursorTheme = {
+          name = "phinger-cursors-light";
+          size = 24;
+        };
       };
-    };
 
-    extraSettings = ''
-      gtk-decoration-layout=appmenu:none
-    '';
+      extraSettings = ''
+        gtk-decoration-layout=appmenu:none
+      '';
+    };
   };
 }

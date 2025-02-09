@@ -132,8 +132,6 @@ let
       "style_user" = "bg:color_orange fg:color_fg0";
     };
   };
-
-  nix-colors-lib = inputs.nix-colors.lib.contrib { inherit pkgs; };
 in
 {
   config = mkMerge [
@@ -157,26 +155,14 @@ in
       '';
 
       xdg.configFile = {
-        "starship.toml".source = tomlFormat.generate "startship-config" (
-          makeSettings config.colorScheme.palette
-        );
+        "starship.toml".source = tomlFormat.generate "startship-config" (makeSettings config.colors.dark);
 
         "starship/dark.toml".source = tomlFormat.generate "startship-config-dark" (
-          makeSettings (
-            (nix-colors-lib.colorSchemeFromPicture {
-              path = config.hyprworld.wallpaper.dark;
-              variant = "dark";
-            }).palette
-          )
+          makeSettings config.colors.dark
         );
 
         "starship/light.toml".source = tomlFormat.generate "startship-config-light" (
-          makeSettings (
-            (nix-colors-lib.colorSchemeFromPicture {
-              path = config.hyprworld.wallpaper.light;
-              variant = "dark"; # Intentional for better contrast
-            }).palette
-          )
+          makeSettings config.colors.light
         );
       };
     })
