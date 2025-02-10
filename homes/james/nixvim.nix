@@ -472,7 +472,6 @@ in
           "LineNr"
           "FoldColumn"
           "Pmenu"
-          "PmenuSel"
           "PmenuSbar"
           "PmenuThumb"
 
