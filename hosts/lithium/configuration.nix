@@ -139,7 +139,7 @@
       };
 
       hyprworld = {
-        bluetooth = true;
+        bluetooth.enable = true;
         globalScale = 1.5;
 
         idle = {
