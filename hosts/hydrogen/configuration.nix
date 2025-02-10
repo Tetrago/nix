@@ -174,12 +174,12 @@
       ];
 
       hyprworld = {
-        bluetooth = true;
+        bluetooth.enable = true;
         extraVolumeKeys = true;
 
-        time = {
-          screen = 0;
-          sleep = 0;
+        idle = {
+          screen = null;
+          sleep = null;
         };
 
         monitors = [

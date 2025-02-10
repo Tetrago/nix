@@ -12,7 +12,7 @@ ags.lib.bundle {
   gtk4 = true;
 
   extraPackages =
-    (with ags.packages.${pkgs.system}; [
+    (with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
       tray
       wireplumber
       hyprland

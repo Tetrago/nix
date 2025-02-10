@@ -1,46 +1,72 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 let
-  inherit (config.hyprworld) time;
+  inherit (lib) mkIf mkOption types;
+  inherit (lib.lists) optional;
 
-  iff = value: content: lib.strings.optionalString (value != 0) content;
+  mkListener =
+    time: attrs:
+    optional (time != null) (
+      {
+        timeout = time * 60;
+      }
+      // attrs
+    );
 in
 {
-  xdg.configFile."hypr/hypridle.conf".text = ''
-    general {
-      lock_cmd = pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock
-      before_sleep_cmd = loginctl lock-session
-      after_sleep_cmd = hyprctl dispatch dpms on
-      ignore_dbus_inhibit = false
-    }
+  options.hyprworld = {
+    idle = {
+      lock = mkOption {
+        type = with types; nullOr ints.positive;
+        description = "minutes of inactivity until the screen locks";
+        default = 5;
+      };
 
-    ${iff time.lock ''
-      listener {
-        timeout = ${toString (time.lock * 60)}
-        on-timeout = loginctl lock-session
-      }
-    ''}
+      screen = mkOption {
+        type = with types; nullOr ints.positive;
+        description = "minutes of inactivity until the screen turns off";
+        default = 10;
+      };
 
-    ${iff time.screen ''
-      listener {
-        timeout = ${toString (time.screen * 60)}
-        on-timeout = hyprctl dispatch dpms off
-        on-resume = hyprctl dispatch dpms on
-      }
-    ''}
+      sleep = mkOption {
+        type = with types; nullOr ints.positive;
+        description = "minutes of inactivity until the system suspend";
+        default = 15;
+      };
+    };
+  };
 
-    ${iff time.sleep ''
-      listener {
-        timeout = ${toString (time.sleep * 60)}
-        on-timeout = systemctl suspend
-      }
-    ''}
-  '';
+  config =
+    let
+      cfg = config.hyprworld;
+    in
+    mkIf cfg.enable {
+      services.hypridle = {
+        enable = true;
+        settings = {
+          general = {
+            lock_cmd = "pidof hyprlock || hyprlock";
+            before_sleep_cmd = "loginctl lock-session";
+            after_sleep_cmd = "hyprctl dispatch dpms on";
+            ignore_dbus_inhibit = false;
+          };
 
-  hyprworld.services.hypridle = pkgs.hypridle;
+          listener =
+            mkListener cfg.idle.lock {
+              on-timeout = "loginctl lock-session";
+            }
+            ++ mkListener cfg.idle.screen {
+              on-timeout = "hyprctl dispatch dpms off";
+              on-resume = "hyprctl dispatch dpms on";
+            }
+            ++ mkListener cfg.idle.sleep {
+              on-timeout = "systemctl suspend";
+            };
+        };
+      };
+    };
 }

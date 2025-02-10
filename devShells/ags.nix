@@ -7,8 +7,8 @@
 
 mkShell {
   packages = [
-    (ags.packages.${pkgs.system}.default.override {
-      extraPackages = with ags.packages.${pkgs.system}; [
+    (ags.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+      extraPackages = with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
         libadwaita
         tray
         wireplumber

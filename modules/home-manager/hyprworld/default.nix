@@ -1,65 +1,77 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
 
+let
+  inherit (lib) mkEnableOption mkIf;
+in
 {
   imports = [
     ./ags.nix
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
-    ./options.nix
+    ./monitors.nix
     ./rofi.nix
-    ./services.nix
     ./swww.nix
     ./theme.nix
     ./kanshi.nix
   ];
 
-  home = {
-    packages = with pkgs; [
-      networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
-    ];
+  options.hyprworld = {
+    enable = mkEnableOption "enable hyprworld desktop environment";
+    bluetooth.enable = mkEnableOption "enable bluetooth support";
   };
 
-  services = {
-    blueman-applet.enable = config.hyprworld.bluetooth;
-    mpris-proxy.enable = true;
-    network-manager-applet.enable = true;
+  config =
+    let
+      cfg = config.hyprworld;
+    in
+    mkIf cfg.enable {
+      home = {
+        packages = with pkgs; [
+          networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
+        ];
+      };
 
-    udiskie = {
-      enable = true;
-      automount = true;
-      notify = true;
-    };
-  };
+      services = {
+        blueman-applet.enable = mkIf cfg.bluetooth.enable true;
+        mpris-proxy.enable = true;
+        network-manager-applet.enable = true;
 
-  xdg = {
-    portal = {
-      enable = true;
-
-      config = {
-        hyprland = {
-          default = [
-            "hyprland"
-            "gtk"
-          ];
-
-          "org.freedesktop.impl.portal.Settings" = [
-            "darkman"
-            "gtk"
-          ];
+        udiskie = {
+          enable = true;
+          automount = true;
+          notify = true;
         };
       };
 
-      extraPortals = [
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.darkman
-      ];
+      xdg.portal = {
+        enable = true;
+
+        config = {
+          hyprland = {
+            default = [
+              "hyprland"
+              "gtk"
+            ];
+
+            "org.freedesktop.impl.portal.Settings" = [
+              "darkman"
+              "gtk"
+            ];
+          };
+        };
+
+        extraPortals = [
+          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
+          pkgs.xdg-desktop-portal-gtk
+          pkgs.darkman
+        ];
+      };
     };
-  };
 }

@@ -53,9 +53,15 @@ let
   };
 in
 {
-  services.kanshi = mkIf (config.hyprworld.additionalMonitors != null) {
-    enable = true;
-    systemdTarget = "hyprland-session.target";
-    profiles = mapAttrs (_: value: mapMonitorsToProfile value) monitors;
-  };
+  config =
+    let
+      cfg = config.hyprworld;
+    in
+    mkIf cfg.enable {
+      services.kanshi = mkIf (config.hyprworld.additionalMonitors != null) {
+        enable = true;
+        systemdTarget = "hyprland-session.target";
+        profiles = mapAttrs (_: value: mapMonitorsToProfile value) monitors;
+      };
+    };
 }

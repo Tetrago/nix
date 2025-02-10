@@ -22,6 +22,8 @@
   ];
 
   hyprworld = {
+    enable = true;
+
     wallpaper = {
       dark = "${./files/dark.png}";
       light = "${./files/light.png}";

@@ -44,7 +44,7 @@ in
     enable = true;
     enableBashIntegration = true;
     clearDefaultKeybinds = true;
-    package = inputs.ghostty.packages.${pkgs.system}.default;
+    package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     themes = {
       base16-dark = makeTheme config.colors.dark;

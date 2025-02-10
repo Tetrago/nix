@@ -142,8 +142,8 @@
         bluetooth = true;
         globalScale = 1.5;
 
-        time = {
-          sleep = 0;
+        idle = {
+          sleep = null;
         };
 
         monitors = [

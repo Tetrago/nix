@@ -7,18 +7,87 @@
 
 let
   inherit (builtins) isString;
-  inherit (lib) mkIf;
+  inherit (lib)
+    mkIf
+    mkOption
+    mkEnableOption
+    types
+    ;
   inherit (lib.attrsets) optionalAttrs mapAttrsToList;
   inherit (lib.strings) concatLines optionalString;
   inherit (lib.lists) optional;
+  inherit (pkgs) writeShellScript writeText;
 
-  cfg = config.hyprworld.theme;
+  cfg = config.hyprworld;
+
+  mkThemeOption =
+    description:
+    mkOption {
+      inherit description;
+      type =
+        with types;
+        nullOr (submodule {
+          options = {
+            font = mkOption {
+              type = nullOr (submodule {
+                options = {
+                  name = mkOption {
+                    type = str;
+                  };
+                  size = mkOption {
+                    type = positive;
+                  };
+                };
+              });
+              default = null;
+            };
+
+            cursorTheme = mkOption {
+              type = nullOr (submodule {
+                options = {
+                  name = mkOption {
+                    type = str;
+                  };
+                  size = mkOption {
+                    type = ints.positive;
+                  };
+                };
+              });
+              default = null;
+            };
+
+            theme = mkOption {
+              type = nullOr str;
+              default = null;
+            };
+
+            iconTheme = mkOption {
+              type = nullOr str;
+              default = null;
+            };
+          };
+        });
+    };
 in
 {
-  config = mkIf (cfg != null) (
-    let
-      inherit (pkgs) writeShellScript writeText;
+  options.hyprworld = {
+    theme = {
+      enable = mkEnableOption "enable hyprworld theme handler";
 
+      dark = mkThemeOption "dark theme";
+      light = mkThemeOption "light theme";
+
+      extraSettings = mkOption {
+        type = with types; nullOr lines;
+        description = "extra gtk3 settings";
+        default = null;
+        example = "gtk-decoration-layout=appmenu:none";
+      };
+    };
+  };
+
+  config = mkIf (cfg.enable && cfg.theme.enable) (
+    let
       coalesceAttrs = attrs: {
         cursorTheme = if (attrs.cursorTheme != null) then attrs.cursorTheme else config.gtk.cursorTheme;
         font = if (attrs.font != null) then attrs.font else config.gtk.font;
@@ -79,12 +148,12 @@ in
         theme:
         [ "[Settings]" ]
         ++ (mapAttrsToList (k: v: "${k}=${toString v}") (mapTheme theme))
-        ++ optional (cfg.extraSettings != null) cfg.extraSettings;
+        ++ optional (cfg.theme.extraSettings != null) cfg.theme.extraSettings;
 
-      makeGtk2Config = theme: writeText ".gtkrc-2.0" (concatLines (mapToGtk2Theme theme));
-      makeGtk3Config = theme: writeText "settings.ini" (concatLines (mapToGtk3Theme theme));
+      mkGtk2Config = theme: writeText ".gtkrc-2.0" (concatLines (mapToGtk2Theme theme));
+      mkGtk3Config = theme: writeText "settings.ini" (concatLines (mapToGtk3Theme theme));
 
-      makeDconfScript =
+      mkDconfScript =
         theme:
         writeShellScript "update-dconf" (
           concatLines (
@@ -94,54 +163,61 @@ in
           )
         );
 
-      set-mode =
+      setMode =
         theme:
-        writeShellScript "set-dark-mode" ''
-          GSETTINGS_SCHEMA_DIR="$(realpath ${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/*/*/schemas)" ${makeDconfScript theme}
+        writeShellScript "setDarkMode" ''
+          GSETTINGS_SCHEMA_DIR="$(realpath ${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/*/*/schemas)" ${mkDconfScript theme}
 
-          cp -f ${makeGtk2Config theme} $HOME/.gtkrc-2.0
-          cp -f ${makeGtk3Config theme} $HOME/.config/gtk-3.0/settings.ini
+          cp -f ${mkGtk2Config theme} $HOME/.gtkrc-2.0
+          cp -f ${mkGtk3Config theme} $HOME/.config/gtk-3.0/settings.ini
 
           ${optionalString (
             theme.cursorTheme != null
           ) "hyprctl setcursor ${theme.cursorTheme.name} ${toString theme.cursorTheme.size}"}
         '';
 
-      set-dark-mode = set-mode cfg.dark;
-      set-light-mode = set-mode cfg.light;
+      setDarkMode = setMode cfg.theme.dark;
+      setLightMode = setMode cfg.theme.light;
     in
     {
       assertions = [
+        {
+          assertion = cfg.theme.dark != null && cfg.theme.light != null;
+          message = "both theme variants must be set";
+        }
         {
           assertion = !config.gtk.enable;
           message = "hyprworld.theme conflicts with gtk.enable";
         }
         {
           assertion =
-            (cfg.light.theme != null && cfg.dark.theme != null) || (cfg.light.theme == cfg.dark.theme);
+            (cfg.theme.light.theme != null && cfg.theme.dark.theme != null)
+            || (cfg.theme.light.theme == cfg.theme.dark.theme);
           message = "theme should be specified for both light and dark variants";
         }
         {
           assertion =
-            (cfg.light.iconTheme != null && cfg.dark.iconTheme != null)
-            || (cfg.light.iconTheme == cfg.dark.iconTheme);
+            (cfg.theme.light.iconTheme != null && cfg.theme.dark.iconTheme != null)
+            || (cfg.theme.light.iconTheme == cfg.theme.dark.iconTheme);
           message = "icon theme should be specified for both light and dark variants";
         }
         {
           assertion =
-            (cfg.light.cursorTheme != null && cfg.dark.cursorTheme != null)
-            || (cfg.light.cursorTheme == cfg.dark.cursorTheme);
-          message = "icon theme should be specified for both light and dark variants";
+            (cfg.theme.light.cursorTheme != null && cfg.theme.dark.cursorTheme != null)
+            || (cfg.theme.light.cursorTheme == cfg.theme.dark.cursorTheme);
+          message = "cursor theme should be specified for both light and dark variants";
         }
         {
-          assertion = (cfg.light.font != null && cfg.dark.font != null) || (cfg.light.font == cfg.dark.font);
+          assertion =
+            (cfg.theme.light.font != null && cfg.theme.dark.font != null)
+            || (cfg.theme.light.font == cfg.theme.dark.font);
           message = "font should be specified for both light and dark variants";
         }
       ];
 
       xdg.dataFile = {
-        "dark-mode.d/update-theme".source = set-dark-mode;
-        "light-mode.d/update-theme".source = set-light-mode;
+        "dark-mode.d/updateTheme".source = setDarkMode;
+        "light-mode.d/updateTheme".source = setLightMode;
       };
 
       home = {
@@ -152,21 +228,17 @@ in
           ++ optional (config.gtk.cursorTheme.package or null != null) config.gtk.cursorTheme.package;
       };
 
-      wayland.windowManager.hyprland.settings.exec =
-        let
-          update-theme = pkgs.writeShellScript "update-theme" ''
-            mode="$(darkman get)"
+      wayland.windowManager.hyprland.settings.exec = toString (
+        writeShellScript "updateTheme" ''
+          mode="$(darkman get)"
 
-            if [ "$mode" = "dark" ]; then
-              ${set-dark-mode}
-            elif [ "$mode" = "light" ]; then
-              ${set-light-mode}
-            fi
-          '';
-        in
-        [
-          "${update-theme}"
-        ];
+          if [ "$mode" = "dark" ]; then
+            ${setDarkMode}
+          elif [ "$mode" = "light" ]; then
+            ${setLightMode}
+          fi
+        ''
+      );
     }
   );
 }

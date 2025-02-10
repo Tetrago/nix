@@ -44,6 +44,8 @@
 
   hyprworld = {
     theme = {
+      enable = true;
+
       dark = {
         theme = "Colloid-Dark";
         iconTheme = "WhiteSur-dark";

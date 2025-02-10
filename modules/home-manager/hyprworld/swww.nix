@@ -10,6 +10,7 @@ let
   inherit (lib)
     mkMerge
     mkIf
+    mkPackageOption
     mkOption
     types
     getExe
@@ -18,10 +19,31 @@ let
   inherit (lib.strings) concatStringsSep;
 in
 {
-  options.hyprworld.swww = {
-    package = mkOption {
-      type = types.package;
-      default = pkgs.swww;
+  options.hyprworld = {
+    wallpaper = mkOption {
+      type =
+        with types;
+        either path (submodule {
+          options = {
+            dark = mkOption {
+              type = path;
+            };
+            light = mkOption {
+              type = path;
+            };
+            transition = mkOption {
+              type = attrsOf anything;
+              default = { };
+            };
+          };
+        });
+      description = "path to wallpaper(s)";
+    };
+
+    swww = {
+      package = mkPackageOption pkgs "swww" {
+        default = [ "swww" ];
+      };
     };
   };
 
@@ -32,7 +54,7 @@ in
       cfg = config.hyprworld;
       swww = getExe cfg.swww.package;
 
-      set-wallpaper = writeShellScript "update-wallpaper" ''
+      setWallpaper = writeShellScript "update-wallpaper" ''
         mode="$(darkman get)"
         dark="${cfg.wallpaper.dark}"
         light="${cfg.wallpaper.light}"
@@ -45,30 +67,31 @@ in
         )
       );
 
-      set-dark-wallpaper = writeShellScript "set-dark-mode" ''
+      setDarkWallpaper = writeShellScript "set-dark-mode" ''
         ${swww} img ${cfg.wallpaper.dark} ${transitions}
       '';
 
-      set-light-wallpaper = writeShellScript "set-light-mode" ''
+      setLightWallpaper = writeShellScript "set-light-mode" ''
         ${swww} img ${cfg.wallpaper.light} ${transitions}
       '';
     in
-    mkMerge [
+    mkIf cfg.enable (mkMerge [
       {
         systemd.user.services.swww = {
           Unit = {
             ConditionEnvironment = "WAYLAND_DISPLAY";
-            PartOf = [ "graphical-session.target" ];
-            After = [ "graphical-session-pre.target" ];
+            PartOf = [ config.wayland.systemd.target ];
+            After = [ config.wayland.systemd.target ];
           };
 
           Service = {
             ExecStart = "${cfg.swww.package}/bin/swww-daemon";
             Restart = "on-failure";
+            RestartSec = "10";
           };
 
           Install = {
-            WantedBy = [ "graphical-session.target" ];
+            WantedBy = [ config.wayland.systemd.target ];
           };
         };
       }
@@ -76,12 +99,12 @@ in
         systemd.user.services.swww.Service.ExecStartPost = "${swww} img ${cfg.wallpaper}";
       })
       (mkIf (!(isPath cfg.wallpaper)) {
-        systemd.user.services.swww.Service.ExecStartPost = "${set-wallpaper}";
+        systemd.user.services.swww.Service.ExecStartPost = "${setWallpaper}";
 
         xdg.dataFile = {
-          "dark-mode.d/update-wallpaper".source = set-dark-wallpaper;
-          "light-mode.d/update-wallpaper".source = set-light-wallpaper;
+          "dark-mode.d/update-wallpaper".source = setDarkWallpaper;
+          "light-mode.d/update-wallpaper".source = setLightWallpaper;
         };
       })
-    ];
+    ]);
 }
