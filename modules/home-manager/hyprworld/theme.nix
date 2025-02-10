@@ -216,8 +216,8 @@ in
       ];
 
       xdg.dataFile = {
-        "dark-mode.d/updateTheme".source = setDarkMode;
-        "light-mode.d/updateTheme".source = setLightMode;
+        "dark-mode.d/update-theme".source = setDarkMode;
+        "light-mode.d/update-theme".source = setLightMode;
       };
 
       home = {
