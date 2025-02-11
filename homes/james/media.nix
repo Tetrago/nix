@@ -282,7 +282,6 @@ in
             "text/css"
             "application/xml"
             "application/json"
-            ""
           ];
           startupNotify = true;
         };

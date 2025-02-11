@@ -165,7 +165,7 @@ in
 
       setMode =
         theme:
-        writeShellScript "setDarkMode" ''
+        writeShellScript "setMode" ''
           GSETTINGS_SCHEMA_DIR="$(realpath ${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/*/*/schemas)" ${mkDconfScript theme}
 
           cp -f ${mkGtk2Config theme} $HOME/.gtkrc-2.0
