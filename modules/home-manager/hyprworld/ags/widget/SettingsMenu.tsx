@@ -75,7 +75,7 @@ export default function SettingsMenu() {
       {
         name: "Settings",
         icon: "preferences-system",
-        callback: (parent) => dialog.present(parent.get_root()),
+        callback: () => dialog.present(),
       },
     ],
     [

@@ -1,11 +1,7 @@
-import { GLib, timeout } from "astal";
 import { Gtk } from "astal/gtk4";
 import Pango from "gi://Pango";
 import Notifd from "gi://AstalNotifd";
-
-const isIcon = (icon: string) => new Gtk.IconTheme().has_icon(icon);
-
-const fileExists = (path: string) => GLib.file_test(path, GLib.FileTest.EXISTS);
+import { fileExists, isIcon } from "../lib/lib";
 
 function urgency(notification: Notifd.Notification) {
   switch (notification.urgency) {
@@ -25,10 +21,7 @@ type Props = {
 
 export default function Notification({ notification }: Props) {
   return (
-    <box
-      name={notification.id.toString()}
-      cssClasses={["notification", urgency(notification)]}
-    >
+    <box name={notification.id.toString()} cssClasses={["notification"]}>
       <box
         cssClasses={["content"]}
         orientation={Gtk.Orientation.VERTICAL}
@@ -70,7 +63,7 @@ export default function Notification({ notification }: Props) {
       </box>
       <button
         vexpand
-        cssClasses={["dismiss"]}
+        cssClasses={["dismiss", urgency(notification)]}
         onClicked={() => notification.dismiss()}
       >
         <image

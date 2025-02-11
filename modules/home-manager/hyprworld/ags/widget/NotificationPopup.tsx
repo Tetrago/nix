@@ -27,7 +27,10 @@ export default function NotificationPopup(monitor: number) {
           self.set_visible(false);
           self.set_child(null);
           processing = undefined;
-          timeout(300, process);
+
+          if (queue.length > 0) {
+            timeout(300, process);
+          }
         }
 
         function process() {
@@ -55,7 +58,10 @@ export default function NotificationPopup(monitor: number) {
         hook(self, notifd, "notified", (_, id: number) => {
           if (hyprland.get_focused_monitor().get_id() === monitor) {
             queue.push(id);
-            process();
+
+            if (queue.length === 1) {
+              process();
+            }
           }
         });
 

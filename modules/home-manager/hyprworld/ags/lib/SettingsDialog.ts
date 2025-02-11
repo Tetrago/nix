@@ -3,37 +3,37 @@ import { register } from "astal/gobject";
 import { Gtk } from "astal/gtk4";
 import Adw from "gi://Adw";
 import Wp from "gi://AstalWp";
+import Notifd from "gi://AstalNotifd";
+import NotificationRow from "./NotificationRow";
 
 const audio = Wp.get_default()!.audio;
+const notifd = Notifd.get_default();
 
 @register({ GTypeName: "SettingsDialog" })
-export default class SettingsDialog extends Adw.Dialog {
+export default class SettingsDialog extends Adw.Window {
   view: Adw.NavigationSplitView;
   audio: Adw.NavigationPage = this.createAudioPage();
+  notifications: Adw.NavigationPage = this.createNotificationsPage();
 
   constructor() {
     super({
       title: "Settings",
-      contentWidth: 800,
-      contentHeight: 800,
+      defaultWidth: 800,
+      defaultHeight: 800,
     });
 
     this.view = new Adw.NavigationSplitView({
       sidebarWidthFraction: 0.3,
       minSidebarWidth: 200,
       maxSidebarWidth: 300,
-    });
-
-    this.set_child(this.view);
-
-    this.view.set_sidebar(
-      new Adw.NavigationPage({
+      sidebar: new Adw.NavigationPage({
         title: "Settings",
         child: this.createSidebar(),
       }),
-    );
+      content: this.audio,
+    });
 
-    this.view.set_content(this.audio);
+    this.set_content(this.view);
   }
 
   private switchContent(page: Adw.NavigationPage) {
@@ -50,30 +50,36 @@ export default class SettingsDialog extends Adw.Dialog {
       marginEnd: 12,
     });
 
-    const audioRow = new Adw.ActionRow({
-      title: "Audio",
-      activatable: true,
-    });
+    function addPage(title: string, icon: string, callback: () => void) {
+      const row = new Adw.ActionRow({
+        title,
+        activatable: true,
+      });
 
-    audioRow.add_prefix(
-      new Gtk.Image({
-        iconName: "audio-speakers-symbolic",
-        marginEnd: 12,
-      }),
+      row.add_prefix(
+        new Gtk.Image({
+          iconName: icon,
+          marginEnd: 12,
+        }),
+      );
+
+      row.connect("activated", callback);
+
+      group.add(row);
+    }
+
+    addPage("Audio", "audio-speakers-symbolic", () =>
+      this.switchContent(this.audio),
     );
 
-    audioRow.connect("activated", () => {
-      this.switchContent(this.audio);
-    });
+    addPage("Noficiations", "bell-symbolic", () =>
+      this.switchContent(this.notifications),
+    );
 
-    group.add(audioRow);
-
-    const scrolled = new Gtk.ScrolledWindow({
+    return new Gtk.ScrolledWindow({
       hscrollbarPolicy: Gtk.PolicyType.NEVER,
+      child: new Adw.Clamp({ child: group }),
     });
-
-    scrolled.set_child(new Adw.Clamp({ child: group }));
-    return scrolled;
   }
 
   private createAudioPage(): Adw.NavigationPage {
@@ -142,7 +148,7 @@ export default class SettingsDialog extends Adw.Dialog {
     function createActionRow(
       title: string,
       endpoint: Wp.Endpoint,
-      property: string,
+      property: keyof Wp.Audio,
     ) {
       const expander = new Adw.ExpanderRow({ title });
 
@@ -178,13 +184,17 @@ export default class SettingsDialog extends Adw.Dialog {
     }
 
     options.add(
-      createActionRow("Speaker", audio.get_default_speaker(), "defaultSpeaker"),
+      createActionRow(
+        "Speaker",
+        audio.get_default_speaker()!,
+        "defaultSpeaker",
+      ),
     );
 
     options.add(
       createActionRow(
         "Microphone",
-        audio.get_default_microphone(),
+        audio.get_default_microphone()!,
         "defaultMicrophone",
       ),
     );
@@ -193,6 +203,64 @@ export default class SettingsDialog extends Adw.Dialog {
     page.add(devices);
     page.add(options);
 
-    return new Adw.NavigationPage({ title: "Audio", child: page });
+    const toolbar = new Adw.ToolbarView({ content: page });
+    toolbar.add_top_bar(new Adw.HeaderBar());
+
+    return new Adw.NavigationPage({ title: "Audio", child: toolbar });
+  }
+
+  private createNotificationsPage() {
+    const list = new Gtk.ListBox({
+      selectionMode: Gtk.SelectionMode.NONE,
+      cssClasses: ["content"],
+    });
+
+    const scrolled = new Gtk.ScrolledWindow({
+      hscrollbarPolicy: Gtk.PolicyType.NEVER,
+      vexpand: true,
+      child: list,
+    });
+
+    const bin = new Adw.Bin({
+      child: scrolled,
+      marginStart: 12,
+      marginEnd: 12,
+      marginBottom: 12,
+    });
+
+    const clearButton = new Gtk.Button({
+      iconName: "edit-clear-symbolic",
+      tooltipText: "Clear all notifications",
+    });
+
+    const header = new Adw.HeaderBar();
+    header.pack_end(clearButton);
+
+    const toolbar = new Adw.ToolbarView({ content: bin });
+    toolbar.add_top_bar(header);
+
+    const notifications = new Map<number, Gtk.Widget>();
+
+    clearButton.connect("clicked", () => {
+      notifications.forEach((_, id) => notifd.get_notification(id)?.dismiss());
+    });
+
+    notifd.connect("notified", (_, id) => {
+      const row = new NotificationRow(notifd.get_notification(id));
+
+      notifications.set(id, row);
+      list.prepend(row);
+    });
+
+    notifd.connect("resolved", (_, id) => {
+      const widget = notifications.get(id);
+      if (widget !== undefined) {
+        list.remove(widget);
+      }
+
+      notifications.delete(id);
+    });
+
+    return new Adw.NavigationPage({ title: "Notifications", child: toolbar });
   }
 }
