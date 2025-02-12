@@ -9,11 +9,19 @@ import NotificationRow from "./NotificationRow";
 const audio = Wp.get_default()!.audio;
 const notifd = Notifd.get_default();
 
-@register({ GTypeName: "SettingsDialog" })
-export default class SettingsDialog extends Adw.Window {
+@register({ GTypeName: "SettingsWindow" })
+export default class SettingsWindow extends Adw.Window {
+  static instance: SettingsWindow | undefined = undefined;
   view: Adw.NavigationSplitView;
   audio: Adw.NavigationPage = this.createAudioPage();
   notifications: Adw.NavigationPage = this.createNotificationsPage();
+
+  static show() {
+    if (this.instance === undefined) {
+      this.instance = new SettingsWindow();
+      this.instance.present();
+    }
+  }
 
   constructor() {
     super({
@@ -34,6 +42,11 @@ export default class SettingsDialog extends Adw.Window {
     });
 
     this.set_content(this.view);
+
+    this.connect("close-request", () => {
+      SettingsWindow.instance = undefined;
+      this.destroy();
+    });
   }
 
   private switchContent(page: Adw.NavigationPage) {

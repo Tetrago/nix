@@ -2,7 +2,7 @@ import { Gtk } from "astal/gtk4";
 import Adw from "gi://Adw";
 import Gio from "gi://Gio";
 import { exec } from "astal/process";
-import SettingsDialog from "../lib/SettingsDialog";
+import SettingsWindow from "../lib/SettingsWindow";
 
 interface Item {
   name: string;
@@ -46,8 +46,6 @@ function createActionGroupFromItems(parent: Gtk.Widget, items: Item[][]) {
 }
 
 export default function SettingsMenu() {
-  const dialog = new SettingsDialog();
-
   const prompt = (
     parent: Gtk.Widget,
     confirmation: string,
@@ -75,7 +73,7 @@ export default function SettingsMenu() {
       {
         name: "Settings",
         icon: "preferences-system",
-        callback: () => dialog.present(),
+        callback: () => SettingsWindow.show(),
       },
     ],
     [
