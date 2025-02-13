@@ -8,7 +8,7 @@ export default function Battery() {
     <box
       visible={bind(battery, "isBattery")}
       tooltipMarkup={bind(battery, "percentage").as(
-        (value: number) => `${value * 100}%`,
+        (value: number) => `${Math.floor(value * 100)}%`,
       )}
       cssClasses={bind(
         Variable.derive(
