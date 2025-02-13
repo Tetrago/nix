@@ -62,7 +62,6 @@
       bottles
       meld
       obsidian
-      imhex
       aseprite
       inkscape
       godot_4
