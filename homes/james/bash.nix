@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
+let
+  inherit (lib) getExe;
+in
 {
   imports = [ ./starship.nix ];
 
@@ -27,7 +30,7 @@
 
       sessionVariables = {
         EDITOR = "nvim";
-        MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+        MANPAGER = "sh -c 'col -bx | ${getExe pkgs.bat} -l man -p'";
         MANROFFOPT = "-c";
       };
 
@@ -39,15 +42,16 @@
         ip = "ip -color=auto";
         cat = "bat -Pu";
         cd = "z";
-        hx = "${hexyl}/bin/hexyl";
+        hx = getExe hexyl;
         cp = "cp -i";
         mv = "mv -i";
-        tree = "${tre-command}/bin/tre";
+        tree = getExe tre-command;
         nnn = "xplr";
         ranger = "xplr";
         gdb = "gdb -q";
-        md = "${glow}/bin/glow";
-        ps = "${procs}/bin/procs";
+        md = getExe glow;
+        ps = getExe procs;
+        maath = getExe numbat;
       };
     };
 
