@@ -104,6 +104,7 @@ export default class SettingsWindow extends Adw.Window {
       title: string,
       added: string,
       removed: string,
+      property: keyof Wp.Audio,
     ) {
       const expander = new Adw.ExpanderRow({ title });
       const buttonGroup = new Gtk.CheckButton();
@@ -131,6 +132,12 @@ export default class SettingsWindow extends Adw.Window {
 
       const map = new Map();
 
+      audio[property].forEach((endpoint: Wp.Endpoint) => {
+        const row = createRow(endpoint);
+        expander.add_row(row);
+        map.set(endpoint, row);
+      });
+
       audio.connect(added, (_: Wp.Audio, endpoint: Wp.Endpoint) => {
         const row = createRow(endpoint);
         expander.add_row(row);
@@ -148,12 +155,18 @@ export default class SettingsWindow extends Adw.Window {
       devices.add(expander);
     }
 
-    addExpanderFromEndpoints("Speaker", "speaker-added", "speaker-removed");
+    addExpanderFromEndpoints(
+      "Speaker",
+      "speaker-added",
+      "speaker-removed",
+      "speakers",
+    );
 
     addExpanderFromEndpoints(
       "Microphone",
       "microphone-added",
       "microphone-removed",
+      "microphones",
     );
 
     const options = new Adw.PreferencesGroup({ title: "Options" });
