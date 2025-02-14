@@ -262,6 +262,18 @@ in
             "rounding 0,class:^(steam_app_\\d+)$"
             "noshadow,class:^(steam_app_\\d+)$"
             "noborder,class:^(steam_app_\\d+)$"
+
+            "float,title:^(File Operation Progress)$"
+            "size 400 100,title:^(File Operation Progress)$"
+            "center,title:^(File Operation Progress)$"
+
+            "float,title:^(Properties)$"
+            "size 400 600,title:^(Properties)$"
+            "center,title:^(Properties)$"
+
+            "float,title:^(Bulk Rename)$"
+            "size 800 600,title:^(Bulk Rename)$"
+            "center,title:^(Bulk Rename)$"
           ];
 
           layerrule = [
