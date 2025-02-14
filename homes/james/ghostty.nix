@@ -67,7 +67,6 @@ in
       background-opacity = 0.9;
       background-blur = true;
 
-      linux-cgroup = "always";
       gtk-tabs-location = "bottom";
       copy-on-select = false;
       resize-overlay = "never";
