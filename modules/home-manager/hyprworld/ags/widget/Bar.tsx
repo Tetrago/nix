@@ -1,6 +1,7 @@
 import { App, Astal } from "astal/gtk4";
 import { Variable } from "astal";
 import Battery from "./Battery";
+import Caffeine from "./Caffeine";
 import Tray from "./Tray";
 import Workspaces from "./Workspaces";
 
@@ -25,6 +26,7 @@ export default function Bar(monitor: number) {
         <Workspaces monitor={monitor} />
         <box spacing={5}>
           <Battery />
+          <Caffeine />
           <Tray />
         </box>
       </centerbox>

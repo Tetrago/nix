@@ -64,6 +64,18 @@ window.Bar {
     }
   }
 
+  .Caffeine {
+    @extend .panel;
+    padding: 0 $spacing;
+    background-color: $bg-color;
+    color: $fg-color;
+
+    &.active {
+      background-color: $fg-color;
+      color: $bg-color;
+    }
+  }
+
   .Tray {
     @extend .panel;
 

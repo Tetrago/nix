@@ -9,7 +9,7 @@ const maxBrightness = screen
 
 @register({ GTypeName: "Brightness" })
 export default class Brightness extends GObject.Object {
-  static instance: Brightness;
+  private static instance: Brightness;
 
   static get_default() {
     if (!this.instance) {
