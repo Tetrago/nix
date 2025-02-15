@@ -115,7 +115,6 @@
     fprintd.enable = true;
     fwupd.enable = true;
     hardware.bolt.enable = true;
-    logind.killUserProcesses = true;
     thermald.enable = true;
     upower.enable = true;
   };

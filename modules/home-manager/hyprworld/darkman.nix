@@ -41,6 +41,9 @@ in
       };
 
       systemd.user.services.darkman = {
+        # if these settings are not made, darkman firing updateWallpaper on startup
+        # will cause the swww daemon to hyjack the currently wayland display and
+        # brick the session
         Unit = {
           ConditionEnvironment = "WAYLAND_DISPLAY";
           After = [ config.wayland.systemd.target ];

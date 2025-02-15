@@ -81,10 +81,7 @@ in
           Unit = {
             ConditionEnvironment = "WAYLAND_DISPLAY";
             PartOf = [ config.wayland.systemd.target ];
-            After = [
-              config.wayland.systemd.target
-              "ags.service"
-            ];
+            After = [ config.wayland.systemd.target ];
           };
 
           Service = {

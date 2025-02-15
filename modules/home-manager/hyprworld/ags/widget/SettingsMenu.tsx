@@ -81,7 +81,9 @@ export default function SettingsMenu() {
         name: "Log out",
         icon: "system-log-out",
         callback: (parent) =>
-          prompt(parent, "log out", () => exec("hyprctl dispatch exit")),
+          prompt(parent, "log out", () =>
+            exec(["bash", "-c", "loginctl kill-user $USER --signal=SIGINT"]),
+          ),
       },
       {
         name: "Sleep",

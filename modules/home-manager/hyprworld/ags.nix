@@ -21,7 +21,10 @@ in
         Unit = {
           ConditionEnvironment = "WAYLAND_DISPLAY";
           PartOf = [ config.wayland.systemd.target ];
-          After = [ config.wayland.systemd.target ];
+          After = [
+            config.wayland.systemd.target
+            "hypridle.service"
+          ];
         };
 
         Service = {

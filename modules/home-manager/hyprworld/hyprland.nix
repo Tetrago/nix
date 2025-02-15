@@ -283,6 +283,8 @@ in
             "noanim,hyprpicker"
             "noanim,selection"
           ];
+
+          "plugin:overview:showNewWorkspace" = false;
         };
 
         plugins =
