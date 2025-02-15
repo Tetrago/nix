@@ -12,6 +12,10 @@
     ../../modules/nixos
   ];
 
+  boot = {
+    kernelPackages = pkgs.linuxPackages_6_12;
+  };
+
   tetrago = {
     audio.enable = true;
     bluetooth.enable = true;
