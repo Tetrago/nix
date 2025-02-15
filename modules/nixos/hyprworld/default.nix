@@ -26,6 +26,7 @@ in
         services = {
           gvfs.enable = true;
           udisks2.enable = true;
+          logind.extraConfig = "UserTasksMax=1";
         };
       };
 }

@@ -46,7 +46,7 @@ in
       services.xserver.displayManager.session = optional addSession {
         manage = "desktop";
         name = "Hyprland";
-        start = "exec  Hyprland 1>/dev/null 2>/dev/null";
+        start = "exec Hyprland 1>/dev/null 2>/dev/null";
       };
     };
 }
