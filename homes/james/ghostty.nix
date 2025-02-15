@@ -71,6 +71,7 @@ in
       copy-on-select = false;
       resize-overlay = "never";
       cursor-style = "bar";
+      linux-cgroup = "always";
 
       window-padding-x = 2;
       window-padding-y = 2;

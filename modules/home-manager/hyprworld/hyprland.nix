@@ -181,6 +181,7 @@ in
               slurp = getExe pkgs.slurp;
               grim = getExe pkgs.grim;
               swappy = getExe pkgs.swappy;
+              hyprmag = getExe inputs.hyprmag.packages.${pkgs.stdenv.hostPlatform.system}.default;
               find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
             in
             [
@@ -203,6 +204,8 @@ in
               "$mod, Z, togglespecialworkspace"
               "$mod SHIFT, Space, fullscreen, 1"
               "$mod, Tab, overview:toggle"
+              "$mod, I, invertactivewindow"
+              "$mod, O, exec, ${hyprmag}"
 
               "$mod, left, movefocus, l"
               "$mod, right, movefocus, r"
@@ -282,9 +285,15 @@ in
           ];
         };
 
-        plugins = [
-          inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.Hyprspace
-        ];
+        plugins =
+          let
+            inherit (pkgs.stdenv.hostPlatform) system;
+          in
+          with inputs;
+          [
+            hyprspace.packages.${system}.Hyprspace
+            hypr-darkwindow.packages.${system}.Hypr-DarkWindow
+          ];
 
         systemd = {
           enable = true;

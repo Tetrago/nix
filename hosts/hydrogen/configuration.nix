@@ -37,6 +37,7 @@
   security.polkit.enable = true;
 
   services = {
+    logind.killUserProcesses = true;
     ollama.enable = true;
     upower.enable = true;
   };

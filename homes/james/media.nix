@@ -6,8 +6,10 @@ let
 in
 {
   wayland.windowManager.hyprland.settings.windowrulev2 = [
-    "float,class:(feh)"
-    "float,class:(mpv)"
+    "float,class:^(feh)$"
+    "float,class:^(mpv)$"
+    "float,class:^(com.github.neithern.g4music)$"
+    "size 350 500,class:^(com.github.neithern.g4music)$"
   ];
 
   home.packages = with pkgs; [

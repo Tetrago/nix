@@ -58,6 +58,11 @@ in
           enable = true;
           wayland.enable = cfg.wayland;
           package = mkIf (cfg.package != null) cfg.package;
+          settings = {
+            General = {
+              InputMethod = "qtvirtualkeyboard";
+            };
+          };
         };
       })
       (mkIf (cfg.theme != null) {
