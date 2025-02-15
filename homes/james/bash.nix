@@ -51,7 +51,7 @@ in
         gdb = "gdb -q";
         md = getExe glow;
         ps = getExe procs;
-        maath = getExe numbat;
+        math = getExe numbat;
       };
     };
 
