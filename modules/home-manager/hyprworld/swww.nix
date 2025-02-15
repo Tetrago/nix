@@ -101,9 +101,9 @@ in
       (mkIf (!(isPath cfg.wallpaper)) {
         systemd.user.services.swww.Service.ExecStartPost = "${setWallpaper}";
 
-        xdg.dataFile = {
-          "dark-mode.d/update-wallpaper".source = setDarkWallpaper;
-          "light-mode.d/update-wallpaper".source = setLightWallpaper;
+        hyprworld.scripts = {
+          dark.updateWallpaper = setDarkWallpaper;
+          light.updateWallpaper = setLightWallpaper;
         };
       })
     ]);

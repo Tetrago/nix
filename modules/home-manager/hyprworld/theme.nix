@@ -215,9 +215,9 @@ in
         }
       ];
 
-      xdg.dataFile = {
-        "dark-mode.d/update-theme".source = setDarkMode;
-        "light-mode.d/update-theme".source = setLightMode;
+      hyprworld.scripts = {
+        dark.updateTheme = setDarkMode;
+        light.updateTheme = setLightMode;
       };
 
       home = {

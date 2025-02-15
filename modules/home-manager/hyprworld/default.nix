@@ -12,6 +12,7 @@ in
 {
   imports = [
     ./ags.nix
+    ./darkman.nix
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
@@ -59,18 +60,12 @@ in
               "hyprland"
               "gtk"
             ];
-
-            "org.freedesktop.impl.portal.Settings" = [
-              "darkman"
-              "gtk"
-            ];
           };
         };
 
         extraPortals = [
           inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
           pkgs.xdg-desktop-portal-gtk
-          pkgs.darkman
         ];
       };
     };
