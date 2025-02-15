@@ -16,17 +16,19 @@ let
 in
 {
   options.tetrago.sddm = {
-    enable = mkEnableOption "enable sddm display manager";
+    enable = mkEnableOption "SDDM display manager";
     wayland = mkOption {
       type = types.bool;
       default = true;
     };
+
     package = mkOption {
       type = with types; nullOr package;
-      description = "optional sddm package override";
+      description = "Optional sddm package override";
       default = null;
       example = pkgs.kdePackages.sddm;
     };
+
     theme = mkOption {
       type =
         with types;
@@ -53,13 +55,13 @@ in
       cfg = config.tetrago.sddm;
     in
     mkIf cfg.enable (mkMerge [
-      ({
+      {
         services.displayManager.sddm = {
           enable = true;
           wayland.enable = cfg.wayland;
           package = mkIf (cfg.package != null) cfg.package;
         };
-      })
+      }
       (mkIf (cfg.theme != null) {
         services.displayManager.sddm = {
           theme = cfg.theme.name;

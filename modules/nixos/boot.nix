@@ -21,7 +21,7 @@ in
   ];
 
   options.tetrago.boot = {
-    enable = mkEnableOption "enable boot configuration";
+    enable = mkEnableOption "boot configuration handler";
 
     loader = mkOption {
       type = types.enum [
@@ -38,17 +38,19 @@ in
 
     secureboot = {
       enable = mkEnableOption "enable secureboot";
-      enableTpm2 = mkEnableOption "enable tpm2 support";
+      tpm2.enable = mkEnableOption "enable tpm2 support";
     };
   };
 
   config =
-    with config.tetrago.boot;
-    mkIf enable {
+    let
+      cfg = config.tetrago.boot;
+    in
+    mkIf cfg.enable {
       assertions = [
         {
-          assertion = !(loader == "grub" && secureboot.enable);
-          message = "secureboot requires systemd-boot";
+          assertion = !(cfg.loader == "grub" && cfg.secureboot.enable);
+          message = "Secureboot requires systemd-boot";
         }
       ];
 
@@ -60,33 +62,33 @@ in
           };
 
           systemd-boot = {
-            enable = mkForce (if loader == "systemd" then !secureboot.enable else false);
+            enable = mkForce (if cfg.loader == "systemd" then !cfg.secureboot.enable else false);
             configurationLimit = 15;
           };
 
           grub = {
-            enable = mkForce (loader == "grub");
+            enable = mkForce (cfg.loader == "grub");
             configurationLimit = 15;
             efiSupport = true;
             device = "nodev";
           };
 
-          grub2-theme = mkIf (loader == "grub") {
+          grub2-theme = mkIf (cfg.loader == "grub") {
             enable = true;
             screen = "2k";
           };
 
-          timeout = mkIf skipBootMenu 0;
+          timeout = mkIf cfg.skipBootMenu 0;
         };
 
-        lanzaboote = mkIf secureboot.enable {
+        lanzaboote = mkIf cfg.secureboot.enable {
           enable = true;
           pkiBundle = "/etc/secureboot";
         };
 
         initrd.systemd = {
           enable = true;
-          tpm2.enable = secureboot.enable && secureboot.enableTpm2;
+          tpm2.enable = cfg.secureboot.enable && cfg.secureboot.tpm2.enable;
         };
       };
     };

@@ -40,14 +40,18 @@ in
       });
   };
 
-  config.users.users = mapAttrs (name: value: {
-    isNormalUser = true;
-    description = mkIf (value.name != null) value.name;
+  config.users.users =
+    let
+      cfg = config.tetrago.users;
+    in
+    mapAttrs (name: value: {
+      isNormalUser = true;
+      description = mkIf (value.name != null) value.name;
 
-    createHome = true;
-    home = "/home/${value.username}";
+      createHome = true;
+      home = "/home/${value.username}";
 
-    shell = value.shell;
-    extraGroups = value.groups;
-  }) config.tetrago.users;
+      shell = value.shell;
+      extraGroups = value.groups;
+    }) cfg;
 }

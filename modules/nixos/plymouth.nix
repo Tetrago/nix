@@ -15,7 +15,7 @@ let
 in
 {
   options.tetrago.plymouth = {
-    enable = mkEnableOption "enable plymouth";
+    enable = mkEnableOption "plymouth";
 
     theme = mkOption {
       type = types.str;
@@ -30,8 +30,10 @@ in
   };
 
   config =
-    with config.tetrago.plymouth;
-    mkIf enable {
+    let
+      cfg = config.tetrago.plymouth;
+    in
+    mkIf cfg.enable {
       boot = {
         consoleLogLevel = 0;
 
@@ -45,8 +47,8 @@ in
         plymouth = {
           enable = true;
           themePackages = [ pkgs.adi1090x-plymouth-themes ];
-          inherit theme;
-          extraConfig = "DeviceScale=${toString scale}";
+          inherit (cfg) theme;
+          extraConfig = "DeviceScale=${toString cfg.scale}";
         };
       };
     };

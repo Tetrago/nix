@@ -17,7 +17,7 @@ let
 in
 {
   options.tetrago.virtualization = {
-    enable = mkEnableOption "enable libvirt";
+    enable = mkEnableOption "libvirt and virt-manager";
 
     cpu = mkOption {
       type =
@@ -36,45 +36,47 @@ in
     };
 
     kvmfr = {
-      enable = mkEnableOption "enable kvmfr";
+      enable = mkEnableOption "kvmfr";
 
       sizes = mkOption {
         type = with types; listOf ints.positive;
         default = [ ];
         example = [ 32 ];
-        description = "next power of 2 from (width * height * depth * 2 / 1024 / 1024 + 10) where depth is 4 for sdr and 8 for hdr";
+        description = "Next power of 2 from (width * height * depth * 2 / 1024 / 1024 + 10) where depth is 4 for sdr and 8 for hdr";
       };
     };
 
     devices = {
-      enable = mkEnableOption "enable cgroup exceptions";
+      enable = mkEnableOption "cgroup exceptions";
 
       kvmfr = mkOption {
         type = types.bool;
         default = true;
-        description = "passthrough kvmfr devices when available";
+        description = "Passthrough kvmfr devices when available";
       };
     };
   };
 
   config =
-    with config.tetrago.virtualization;
-    mkIf enable {
-      assertions = mkIf (passthrough != null) [
+    let
+      cfg = config.tetrago.virtualization;
+    in
+    mkIf cfg.enable {
+      assertions = mkIf (cfg.passthrough != null) [
         {
-          assertion = allUnique passthrough;
-          message = "passthroughs should be unique";
+          assertion = allUnique cfg.passthrough;
+          message = "Passthroughs should be unique";
         }
         {
-          assertion = cpu != null;
-          message = "virtualization cpu not selected";
+          assertion = cfg.cpu != null;
+          message = "Virtualization cpu not selected";
         }
       ];
 
-      boot = mkIf (passthrough != null) {
-        extraModulePackages = mkIf kvmfr.enable (with config.boot.kernelPackages; [ kvmfr ]);
+      boot = mkIf (cfg.passthrough != null) {
+        extraModulePackages = mkIf cfg.kvmfr.enable (with config.boot.kernelPackages; [ kvmfr ]);
 
-        kernelModules = mkIf kvmfr.enable [ "kvmfr" ];
+        kernelModules = mkIf cfg.kvmfr.enable [ "kvmfr" ];
 
         initrd.kernelModules = [
           "vfio"
@@ -84,14 +86,14 @@ in
 
         kernelParams =
           [
-            "${toString cpu}_iommu=on"
+            "${toString cfg.cpu}_iommu=on"
             "iommu=pt"
-            "vfio-pci.ids=${concatStringsSep "," passthrough}"
+            "vfio-pci.ids=${concatStringsSep "," cfg.passthrough}"
           ]
-          ++ optional kvmfr.enable "kvmfr.static_size_mb=${concatStringsSep "," (map toString kvmfr.sizes)}";
+          ++ optional cfg.kvmfr.enable "kvmfr.static_size_mb=${concatStringsSep "," (map toString cfg.kvmfr.sizes)}";
       };
 
-      services.udev.extraRules = mkIf kvmfr.enable ''SUBSYSTEM=="kvmfr", GROUP="kvm", MODE="0660"'';
+      services.udev.extraRules = mkIf cfg.kvmfr.enable ''SUBSYSTEM=="kvmfr", GROUP="kvm", MODE="0660"'';
 
       virtualisation.libvirtd = {
         enable = true;
@@ -111,23 +113,27 @@ in
             ];
           };
 
-          verbatimConfig = mkIf devices.enable (
+          verbatimConfig = mkIf cfg.devices.enable (
             let
               inherit (lib.lists) imap0;
 
-              deviceList = [
-                "null"
-                "full"
-                "zero"
-                "random"
-                "urandom"
-                "ptmx"
-                "kvm"
-                "kqemu"
-                "rtc"
-                "hpet"
-                "vfio"
-              ] ++ optionals (kvmfr.enable && devices.kvmfr) (imap0 (i: _: "kvmfr${toString i}") kvmfr.sizes);
+              deviceList =
+                [
+                  "null"
+                  "full"
+                  "zero"
+                  "random"
+                  "urandom"
+                  "ptmx"
+                  "kvm"
+                  "kqemu"
+                  "rtc"
+                  "hpet"
+                  "vfio"
+                ]
+                ++ optionals (cfg.kvmfr.enable && cfg.devices.kvmfr) (
+                  imap0 (i: _: "kvmfr${toString i}") cfg.kvmfr.sizes
+                );
             in
             ''
               cgroup_device_acl = [${concatStringsSep "," (map (v: ''"/dev/${v}"'') deviceList)}]

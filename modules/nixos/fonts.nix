@@ -10,14 +10,17 @@ let
 in
 {
   options.tetrago.fonts = {
-    enable = mkEnableOption "enable standard fonts";
+    enable = mkEnableOption "standard fonts";
   };
 
-  config = mkIf config.tetrago.fonts.enable {
-    fonts.packages = with pkgs; [
-      noto-fonts
-      vistafonts
-      pkgs.nerd-fonts.jetbrains-mono
-    ];
-  };
+  config =
+    let
+      cfg = config.tetrago.fonts;
+    in
+    mkIf cfg.enable {
+      fonts.packages = with pkgs; [
+        noto-fonts
+        vistafonts
+      ];
+    };
 }

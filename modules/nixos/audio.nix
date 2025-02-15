@@ -5,18 +5,22 @@ let
 in
 {
   options.tetrago.audio = {
-    enable = mkEnableOption "enable audio configuration";
+    enable = mkEnableOption "default audio configuration";
   };
 
-  config = mkIf config.tetrago.audio.enable {
-    security.rtkit.enable = true;
+  config =
+    let
+      cfg = config.tetrago.audio;
+    in
+    mkIf cfg.enable {
+      security.rtkit.enable = true;
 
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      jack.enable = true;
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+        jack.enable = true;
+      };
     };
-  };
 }

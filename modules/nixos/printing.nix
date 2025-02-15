@@ -5,18 +5,22 @@ let
 in
 {
   options.tetrago.printing = {
-    enable = mkEnableOption "enable printing services";
+    enable = mkEnableOption "printing services";
   };
 
-  config = mkIf config.tetrago.printing.enable {
-    services = {
-      avahi = {
-        enable = true;
-        nssmdns4 = true;
-        openFirewall = true;
+  config =
+    let
+      cfg = config.tetrago.printing;
+    in
+    mkIf cfg.enable {
+      services = {
+        avahi = {
+          enable = true;
+          nssmdns4 = true;
+          openFirewall = true;
+        };
+
+        printing.enable = true;
       };
-
-      printing.enable = true;
     };
-  };
 }

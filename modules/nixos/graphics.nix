@@ -17,7 +17,7 @@ in
 {
   options.tetrago.graphics = {
     nvidia = {
-      enable = mkEnableOption "enable NVIDIA support";
+      enable = mkEnableOption "NVIDIA graphics support";
 
       modesetting = mkOption {
         type = types.bool;
@@ -27,35 +27,37 @@ in
       blacklist = mkOption {
         type = types.bool;
         default = false;
-        description = "blacklist NVIDIA drivers";
+        description = "Blacklist NVIDIA drivers";
       };
     };
 
     intel = {
-      enable = mkEnableOption "enable Intel support";
+      enable = mkEnableOption "Intel graphics support";
     };
   };
 
   config =
-    with config.tetrago.graphics;
+    let
+      cfg = config.tetrago.graphics;
+    in
     mkMerge [
-      ({
+      {
         assertions = [
           {
-            assertion = nvidia.enable != intel.enable;
-            message = "cannot enable multiple drivers";
+            assertion = cfg.nvidia.enable != cfg.intel.enable;
+            message = "Cannot enable multiple drivers";
           }
           {
-            assertion = !(nvidia.enable && nvidia.blacklist);
-            message = "cannot both enable and blacklist NVIDA drivers";
+            assertion = !(cfg.nvidia.enable && cfg.nvidia.blacklist);
+            message = "Cannot both enable and blacklist NVIDA drivers";
           }
         ];
-      })
+      }
 
-      (mkIf nvidia.enable {
+      (mkIf cfg.nvidia.enable {
         hardware.nvidia = {
           nvidiaSettings = true;
-          modesetting.enable = nvidia.modesetting;
+          modesetting.enable = cfg.nvidia.modesetting;
           open = false;
           package = config.boot.kernelPackages.nvidiaPackages.beta;
         };
@@ -63,14 +65,14 @@ in
         services.xserver.videoDrivers = mkForce [ "nvidia" ];
       })
 
-      (mkIf nvidia.blacklist {
+      (mkIf cfg.nvidia.blacklist {
         boot.blacklistedKernelModules = [
           "nouveau"
           "nvidia"
         ];
       })
 
-      (mkIf (intel.enable || nvidia.enable) {
+      (mkIf (cfg.intel.enable || cfg.nvidia.enable) {
         hardware.graphics = {
           enable = true;
           enable32Bit = true;

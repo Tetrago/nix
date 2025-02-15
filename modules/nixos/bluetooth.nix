@@ -5,15 +5,19 @@ let
 in
 {
   options.tetrago.bluetooth = {
-    enable = mkEnableOption "enable bluetooth";
+    enable = mkEnableOption "default bluetooth configuration";
   };
 
-  config = mkIf config.tetrago.bluetooth.enable {
-    hardware.bluetooth = {
-      enable = true;
-      powerOnBoot = true;
+  config =
+    let
+      cfg = config.tetrago.bluetooth;
+    in
+    mkIf cfg.enable {
+      hardware.bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+      };
+
+      services.blueman.enable = true;
     };
-
-    services.blueman.enable = true;
-  };
 }

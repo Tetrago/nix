@@ -17,7 +17,7 @@ let
 in
 {
   options.tetrago.greetd = {
-    enable = mkEnableOption "enable greetd";
+    enable = mkEnableOption "greetd";
     theme = mkOption {
       type =
         with types;
@@ -65,31 +65,34 @@ in
     };
   };
 
-  config = mkIf config.tetrago.greetd.enable {
-    services.greetd = {
-      enable = true;
-      restart = true;
-      settings = {
-        default_session =
-          let
-            sessions = concatStringsSep ":" (
-              map (session: "${session}/share/xsessions") config.services.displayManager.sessionPackages
-            );
-            theme =
-              let
-                inherit (config.tetrago.greetd) theme;
-              in
-              optionalString (theme != null) (
-                "--theme '"
-                + (concatStringsSep ";" (mapAttrsToList (k: v: "${k}=${v}") (filterAttrs (_: v: v != null) theme)))
-                + "'"
-              );
-          in
-          {
+  config =
+    let
+      cfg = config.tetrago.greetd;
+
+      sessions = concatStringsSep ":" (
+        map (session: "${session}/share/xsessions") config.services.displayManager.sessionPackages
+      );
+
+      theme =
+        let
+          inherit (config.tetrago.greetd) theme;
+        in
+        optionalString (theme != null) (
+          "--theme '"
+          + (concatStringsSep ";" (mapAttrsToList (k: v: "${k}=${v}") (filterAttrs (_: v: v != null) theme)))
+          + "'"
+        );
+    in
+    mkIf cfg.enable {
+      services.greetd = {
+        enable = true;
+        restart = true;
+        settings = {
+          default_session = {
             command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --sessions ${sessions} ${theme}";
             user = "greeter";
           };
+        };
       };
     };
-  };
 }
