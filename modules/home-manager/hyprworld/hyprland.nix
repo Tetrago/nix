@@ -161,7 +161,7 @@ in
             let
               ags = getExe inputs.ags.packages.${pkgs.stdenv.hostPlatform.system}.ags;
               hyprpicker = getExe pkgs.hyprpicker;
-              thunar = getExe pkgs.xfce.thunar;
+              nautilus = getExe pkgs.nautilus;
               cliphist = getExe pkgs.cliphist;
               cliphist-rofi-img = getExe (
                 pkgs.symlinkJoin {
@@ -186,9 +186,9 @@ in
             [
               "$mod, Return, exec, ghostty"
               "$mod, C, exec, ${ags} -b hypr -t system_center"
-              "$mod SHIFT, C, exec, pid of ${hyprpicker} || ${hyprpicker} -a"
+              "$mod SHIFT, C, exec, pidof hyprpicker || ${hyprpicker} -a"
               "$mod, W, killactive"
-              "$mod, E, exec, ${thunar}"
+              "$mod, E, exec, ${nautilus}"
               "$mod, L, exec, loginctl lock-session"
               "$mod SHIFT, V, exec, ${cliphist} wipe"
               "$mod, V, exec, rofi -modi clipboard:${cliphist-rofi-img} -show-icons -sorting-method fzf -scroll-method 1 -show clipboard"
@@ -196,9 +196,9 @@ in
               "$mod, Escape, fullscreen"
               "$mod SHIFT, Escape, exec, darkman toggle"
               "$mod, Space, exec, rofi -show drun -show-icons -sorting-method fzf -scroll-method 1"
-              '', Print, exec, pidof ${slurp} || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
-              ''ALT, Print, exec, pidof ${slurp} || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
-              ''$mod SHIFT, S, exec, pidof ${slurp} || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
+              '', Print, exec, pidof slurp || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
+              ''ALT, Print, exec, pidof slurp || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
+              ''$mod SHIFT, S, exec, pidof slurp || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
               "$mod SHIFT, Z, movetoworkspace, special"
               "$mod, Z, togglespecialworkspace"
               "$mod SHIFT, Space, fullscreen, 1"

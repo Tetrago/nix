@@ -13,7 +13,7 @@ in
   home.packages = with pkgs; [
     file-roller
     typora
-    xfce.thunar
+    g4music
   ];
 
   programs = {
@@ -242,9 +242,9 @@ in
           noDisplay = true;
         };
 
-        thunar = {
-          name = "Thunar File Manager";
-          exec = "thunar %U";
+        nautilus = {
+          name = "Files";
+          exec = "nautilus --new-window %U";
           terminal = false;
           noDisplay = true;
           startupNotify = true;

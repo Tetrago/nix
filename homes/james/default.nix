@@ -69,6 +69,9 @@
       gnome-clocks
       gnome-mines
       gnome-sudoku
+      collision # Hash calculator
+      impression # Removable media writer
+      apostrophe # Markdown editor
       qemu
       blender
       gimp
@@ -124,6 +127,7 @@
 
   xdg = {
     enable = true;
+
     configFile."pwn.conf".text = ''
       [update]
       interval=never
@@ -131,5 +135,16 @@
       [context]
       terminal=["ghostty", "-e", "sh", "-c"]
     '';
+
+    userDirs = {
+      enable = true;
+      createDirectories = false;
+      desktop = null;
+      documents = null;
+      pictures = null;
+      publicShare = null;
+      templates = null;
+      videos = null;
+    };
   };
 }
