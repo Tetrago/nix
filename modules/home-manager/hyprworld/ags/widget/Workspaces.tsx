@@ -50,7 +50,7 @@ export default function Workspaces({ monitor }: Props) {
               if (workspace === undefined) {
                 return (
                   <button onClicked={switchWorkspace}>
-                    <label label={"\uf4aa"} />
+                    <label label={""} />
                   </button>
                 );
               }
@@ -60,11 +60,7 @@ export default function Workspaces({ monitor }: Props) {
               const isMonitorFocus =
                 workspace.monitor.active_workspace.id === workspace.id;
 
-              const icon = isMonitorFocus
-                ? "\uf111"
-                : hasClients
-                  ? "\uf192"
-                  : "\uf4aa";
+              const icon = isMonitorFocus ? "" : hasClients ? "" : "";
 
               return (
                 <button onClicked={switchWorkspace}>
