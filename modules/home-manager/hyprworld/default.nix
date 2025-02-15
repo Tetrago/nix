@@ -19,7 +19,6 @@ in
     ./monitors.nix
     ./rofi.nix
     ./swww.nix
-    ./theme.nix
     ./kanshi.nix
   ];
 

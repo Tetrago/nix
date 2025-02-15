@@ -1,33 +1,15 @@
 { config, lib, ... }:
 
 let
-  inherit (lib) mkIf mkOption types;
+  inherit (lib) mkIf;
 in
 {
-  options.hyprworld = {
-    scripts = {
-      dark = mkOption {
-        type = with types; attrsOf path;
-        default = [ ];
-      };
-
-      light = mkOption {
-        type = with types; attrsOf path;
-        default = [ ];
-      };
-    };
-  };
-
   config =
     let
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
-      services.darkman = {
-        enable = true;
-        darkModeScripts = cfg.scripts.dark;
-        lightModeScripts = cfg.scripts.light;
-      };
+      services.darkman.enable = true;
 
       xdg.portal = {
         config.hyprland."org.freedesktop.impl.portal.Settings" = [
@@ -41,8 +23,8 @@ in
       };
 
       systemd.user.services.darkman = {
-        # if these settings are not made, darkman firing updateWallpaper on startup
-        # will cause the swww daemon to hyjack the currently wayland display and
+        # If these changes are not made, darkman firing updateWallpaper on startup
+        # will cause the swww daemon to hijack the current wayland display and
         # brick the session
         Unit = {
           ConditionEnvironment = "WAYLAND_DISPLAY";

@@ -1,5 +1,6 @@
 {
   inputs,
+  outputs,
   pkgs,
   ...
 }:
@@ -8,8 +9,8 @@
   imports = [
     inputs.nix-colors.homeManagerModules.default
 
-    ../../modules/home-manager/hyprworld
-    ../../modules/home-manager
+    outputs.homeManagerModules.default
+    outputs.homeManagerModules.hyprworld
 
     ./bash.nix
     ./colors.nix

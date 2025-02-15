@@ -101,9 +101,9 @@ in
       (mkIf (!(isPath cfg.wallpaper)) {
         systemd.user.services.swww.Service.ExecStartPost = "${setWallpaper}";
 
-        hyprworld.scripts = {
-          dark.updateWallpaper = setDarkWallpaper;
-          light.updateWallpaper = setLightWallpaper;
+        services.darkman = {
+          darkModeScripts.wallpaper = setDarkWallpaper;
+          lightModeScripts.wallpaper = setLightWallpaper;
         };
       })
     ]);
