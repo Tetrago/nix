@@ -60,7 +60,7 @@ in
     mkIf cfg.enable {
       services.kanshi = mkIf (config.hyprworld.additionalMonitors != null) {
         enable = true;
-        systemdTarget = "hyprland-session.target";
+        systemdTarget = config.wayland.systemd.target;
         profiles = mapAttrs (_: value: mapMonitorsToProfile value) monitors;
       };
     };

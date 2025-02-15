@@ -41,6 +41,11 @@ in
       };
 
       systemd.user.services.darkman = {
+        Unit = {
+          ConditionEnvironment = "WAYLAND_DISPLAY";
+          After = [ config.wayland.systemd.target ];
+        };
+
         Service = {
           Environment = [
             "XDG_RUNTIME_DIR=/run/user/%U"
