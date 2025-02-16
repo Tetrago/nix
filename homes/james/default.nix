@@ -142,10 +142,8 @@
       createDirectories = false;
       desktop = null;
       documents = null;
-      pictures = null;
       publicShare = null;
       templates = null;
-      videos = null;
     };
   };
 }
