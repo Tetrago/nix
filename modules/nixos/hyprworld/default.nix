@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   ...
 }:
@@ -11,8 +10,6 @@ let
   inherit (lib.attrsets) mapAttrsToList;
 in
 {
-  imports = [ inputs.home-manager.nixosModules.default ];
-
   config =
     mkIf
       (any (x: x.enable) (

@@ -2,14 +2,10 @@
 
 {
   imports = [
-    inputs.home-manager.nixosModules.default
     inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
-    inputs.nix-index-database.nixosModules.nix-index
 
     ./hardware-configuration.nix
-    ../../modules/nixos/home-manager
-    ../../modules/nixos/hyprworld
-    ../../modules/nixos
+    ../desktop
   ];
 
   boot = {
@@ -17,11 +13,8 @@
   };
 
   tetrago = {
-    audio.enable = true;
     bluetooth.enable = true;
-    fonts.enable = true;
     graphics.intel.enable = true;
-    hyprland.enable = true;
     virtualization.enable = true;
 
     boot = {
@@ -43,49 +36,9 @@
       scale = 1.3;
     };
 
-    sddm = {
-      enable = true;
-      package = pkgs.kdePackages.sddm;
-      theme = {
-        name = "sddm-astronaut-theme";
-        package = pkgs.sddm-astronaut.override {
-          themeConfig = {
-            Font = "Ubuntu Sans";
-            HourFormat = "hh:mm AP";
-            DateFormat = "dddd, MMMM d";
-            Background = pkgs.fetchurl {
-              url = "https://raw.githubusercontent.com/vinceliuice/WhiteSur-wallpapers/3a24624d04aedc638e042a1de81238b95b46a342/Wallpaper-nord/WhiteSur-nord-light.png";
-              sha256 = "sha256-jcX00tiPje0YGe38y0Vr0FA5Mg21XpHYp4m6ptx2iAw=";
-            };
-            DimBackground = "0.3";
-            PartialBlur = "false";
-          };
-        };
-        extraPackages =
-          (with pkgs; [ ubuntu-sans ])
-          ++ (with pkgs.kdePackages; [
-            qtmultimedia
-            qtsvg
-            qtvirtualkeyboard
-          ]);
-      };
-    };
-
     steam = {
       enable = true;
       users = [ "james" ];
-    };
-
-    users.james = {
-      username = "james";
-      name = "James";
-      groups = [
-        "wheel"
-        "docker"
-        "libvirtd"
-        "kvm"
-        "networkmanager"
-      ];
     };
   };
 
@@ -99,16 +52,9 @@
   };
 
   programs = {
-    command-not-found.enable = false;
     gamemode.enable = true;
-    nix-index-database.comma.enable = true;
     nix-ld.enable = true;
     virt-manager.enable = true;
-
-    nh = {
-      enable = true;
-      flake = "/etc/nixos";
-    };
   };
 
   services = {
@@ -120,8 +66,6 @@
   };
 
   security = {
-    polkit.enable = true;
-
     pam.services = {
       hyprlock.fprintAuth = false;
       su.fprintAuth = false;

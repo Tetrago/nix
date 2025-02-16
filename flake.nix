@@ -92,6 +92,12 @@
         lemur = import ./modules/home-manager/lemur;
       };
 
+      nixosModules = {
+        default = import ./modules/nixos;
+        hyprworld = import ./modules/nixos/hyprworld;
+        home-manager = import ./modules/nixos/home-manager;
+      };
+
       devShells = eachSystem (
         system:
         let
