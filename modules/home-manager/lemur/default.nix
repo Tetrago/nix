@@ -8,11 +8,13 @@
 let
   inherit (builtins)
     isString
+    listToAttrs
+    map
+    pathExists
     toString
     ;
 
   inherit (lib)
-    mkDefault
     mkEnableOption
     mkIf
     mkMerge
@@ -28,11 +30,12 @@ let
     ;
 
   inherit (lib.lists)
+    findFirst
     flatten
     unique
     ;
 
-  inherit (lib.strings) concatLines escape;
+  inherit (lib.strings) concatLines escape optionalString;
 
   inherit (pkgs) writeShellScript writeText;
 in
@@ -85,9 +88,6 @@ in
     {
       enable = mkEnableOption "lemur theme engine";
 
-      qt.enable = mkEnableOption "gtk qt backend";
-      xwayland.enable = mkEnableOption "XWayland requirements";
-
       darkman = {
         enable = mkEnableOption "darkman integration";
 
@@ -101,6 +101,16 @@ in
           type = types.str;
           description = "Name of variant to use for light mode";
           default = "light";
+        };
+      };
+
+      default = {
+        enable = mkEnableOption "default variant on graphical session startup";
+
+        name = mkOption {
+          type = types.str;
+          description = "Name of default variant to use. Even when disabled, this variant will be used to ser XCURSOR environment variables";
+          default = "default";
         };
       };
 
@@ -163,7 +173,7 @@ in
             in
             writeText "gtkrc-2.0" (concatLines (mapAttrsToList format gtkValues));
 
-          ini = lib.generators.toINI { } { Settings = gtkValues; };
+          ini = writeText "settings.ini" (lib.generators.toINI { } { Settings = gtkValues; });
 
           dconf =
             let
@@ -172,6 +182,16 @@ in
                 ''dconf write /org/gnome/desktop/interface/${n} "${if isString v then "'${v}'" else toString v}"'';
             in
             writeShellScript "dconf" (concatLines (mapAttrsToList write dconfValues));
+
+          iconsIndex = writeText "index.theme" (
+            lib.generators.toINI { } {
+              "Icon Theme" = {
+                Name = "Default";
+                Comment = "Variant Cursor Theme";
+                Inherits = variant.cursorTheme.name;
+              };
+            }
+          );
         in
         {
           inherit rc ini dconf;
@@ -188,6 +208,14 @@ in
             ${dconf}
 
             ${variant.scripts}
+
+            ${optionalString hasCursorTheme ''
+              mkdir -p $HOME/.icons/default
+              cp -f ${iconsIndex} $HOME/.icons/default/index.theme
+
+              mkdir -p $XDG_DATA_HOME/.icons/default
+              cp -f ${iconsIndex} $XDG_DATA_HOME/.icons/default/index.theme
+            ''}
           '';
         };
 
@@ -201,6 +229,34 @@ in
           cfg.variant;
 
       variant = mapAttrs (_: mapVariant) mergedVariant;
+
+      packages = unique (flatten (mapAttrsToList (_: v: v.packages) cfg.variant));
+
+      cursors = unique (
+        flatten (
+          mapAttrsToList (_: v: if v.cursorTheme != null then [ v.cursorTheme.name ] else [ ]) cfg.variant
+        )
+      );
+
+      findCursorPackage = cursor: findFirst (x: pathExists "${x}/share/icons/${cursor}") null packages;
+
+      mapCursorsToFiles =
+        path:
+        listToAttrs (
+          map (n: {
+            name = "${path}/${n}";
+            value =
+              let
+                package = findCursorPackage n;
+              in
+              if package != null then
+                {
+                  source = "${findCursorPackage n}/share/icons/${n}";
+                }
+              else
+                { enable = false; };
+          }) cursors
+        );
     in
     mkIf cfg.enable {
       assertions = mkMerge [
@@ -208,6 +264,10 @@ in
           {
             assertion = !config.gtk.enable;
             message = "Lemur conflicts with gtk module";
+          }
+          {
+            assertion = isNull config.home.pointerCursor;
+            message = "Lemur conflicts with home pointer cursor module";
           }
         ]
         (mkIf cfg.darkman.enable [
@@ -220,41 +280,77 @@ in
             message = "Light mode variant missing";
           }
         ])
+        (mkIf cfg.default.enable [
+          {
+            assertion = cfg.variant ? "${cfg.default.name}";
+            message = "Default variant does not exist";
+          }
+        ])
       ];
 
       home = {
         file = {
           ".gtkrc-2.0".enable = false;
+          ".icons/default/index.theme".enable = false;
+        } // mapCursorsToFiles ".icons";
+
+        inherit packages;
+
+        sessionVariables =
+          mkIf (cfg.variant ? "${cfg.default.name}" && cfg.variant.${cfg.default.name}.cursorTheme != null)
+            {
+              XCURSOR_PATH = "$XCURSOR_PATH\${XCURSOR_PATH:+:}${config.xdg.dataHome}/icons";
+              XCURSOR_SIZE = toString cfg.variant.${cfg.default.name}.cursorTheme.size;
+              XCURSOR_THEME = cfg.variant.${cfg.default.name}.cursorTheme.name;
+            };
+      };
+
+      xdg = {
+        enable = true;
+
+        configFile = {
+          "gtk-3.0/settings.ini".enable = false;
+          "gtk-4.0/settings.ini".enable = false;
         };
 
-        packages = unique (flatten (mapAttrsToList (_: v: v.packages) cfg.variant));
+        dataFile = {
+          "icons/default/index.theme".enable = false;
+        } // mapCursorsToFiles "icons";
       };
 
-      xdg.configFile = {
-        "gtk-3.0/settings.ini".enable = false;
-        "gtk-4.0/settings.ini".enable = false;
+      systemd.user.services = mkIf cfg.default.enable {
+        Unit = {
+          ConditionEnvironment = "WAYLAND_DISPLAY";
+          PartOf = [ config.wayland.systemd.target ];
+          After = [ config.wayland.systemd.target ];
+        };
+
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${cfg.apply.${cfg.default.name}}";
+          RemainAfterExit = "no";
+        };
+
+        Install = {
+          WantedBy = [ config.wayland.systemd.target ];
+        };
       };
 
-      lemur = {
-        qt.enable = mkDefault true;
-        xwayland.enable = mkDefault true;
-
-        apply = mapAttrs (_: v: v.activate) variant;
-      };
+      lemur.apply = mapAttrs (_: v: v.activate) variant;
 
       services = mkMerge [
+        {
+          xsettingsd.enable = true;
+        }
         (mkIf cfg.darkman.enable {
           darkman = {
             darkModeScripts.lemur = cfg.apply.${cfg.darkman.darkVariant};
             lightModeScripts.lemur = cfg.apply.${cfg.darkman.lightVariant};
           };
         })
-        (mkIf cfg.xwayland.enable {
-          xsettingsd.enable = true;
-        })
       ];
 
-      qt = mkIf cfg.qt.enable {
+      qt = {
         enable = true;
         platformTheme.name = "gtk";
       };

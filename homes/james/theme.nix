@@ -8,12 +8,6 @@
   imports = [ outputs.homeManagerModules.lemur ];
 
   home = {
-    pointerCursor = {
-      name = "phinger-cursors-light";
-      size = 24;
-      package = pkgs.phinger-cursors;
-    };
-
     packages = with pkgs; [
       gnome-themes-extra
     ];
@@ -21,7 +15,9 @@
 
   lemur = {
     enable = true;
+
     darkman.enable = true;
+    default.name = "dark";
 
     variant = {
       default = {
