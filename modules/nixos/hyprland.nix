@@ -19,12 +19,12 @@ in
   imports = [ inputs.hyprland.nixosModules.default ];
 
   options.tetrago.hyprland = {
-    enable = mkEnableOption "Hyprland";
+    enable = mkEnableOption "Hyprland.";
 
     session = mkOption {
       type = types.bool;
       default = true;
-      description = "Whether to add a Hyprland session file";
+      description = "Whether to add a Hyprland session file.";
     };
   };
 

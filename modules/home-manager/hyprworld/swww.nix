@@ -37,7 +37,7 @@ in
             };
           };
         });
-      description = "path to wallpaper(s)";
+      description = "Path to wallpaper(s).";
     };
 
     swww = {

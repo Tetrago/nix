@@ -15,12 +15,11 @@ let
 in
 {
   options.tetrago.plymouth = {
-    enable = mkEnableOption "plymouth";
+    enable = mkEnableOption "plymouth.";
 
     theme = mkOption {
       type = types.str;
       default = "spinner_alt";
-      description = "theme";
     };
 
     scale = mkOption {

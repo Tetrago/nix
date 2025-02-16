@@ -5,7 +5,7 @@ let
 in
 {
   options.tetrago.printing = {
-    enable = mkEnableOption "printing services";
+    enable = mkEnableOption "printing services.";
   };
 
   config =

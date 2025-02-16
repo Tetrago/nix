@@ -23,8 +23,8 @@ in
   ];
 
   options.hyprworld = {
-    enable = mkEnableOption "enable hyprworld desktop environment";
-    bluetooth.enable = mkEnableOption "enable bluetooth support";
+    enable = mkEnableOption "enable hyprworld desktop environment.";
+    bluetooth.enable = mkEnableOption "enable bluetooth support.";
   };
 
   config =

@@ -10,7 +10,7 @@ let
 in
 {
   options.tetrago.fonts = {
-    enable = mkEnableOption "standard fonts";
+    enable = mkEnableOption "standard fonts.";
   };
 
   config =

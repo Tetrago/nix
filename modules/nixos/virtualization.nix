@@ -17,7 +17,7 @@ let
 in
 {
   options.tetrago.virtualization = {
-    enable = mkEnableOption "libvirt and virt-manager";
+    enable = mkEnableOption "libvirt and virt-manager.";
 
     cpu = mkOption {
       type =
@@ -36,23 +36,23 @@ in
     };
 
     kvmfr = {
-      enable = mkEnableOption "kvmfr";
+      enable = mkEnableOption "kvmfr.";
 
       sizes = mkOption {
         type = with types; listOf ints.positive;
         default = [ ];
         example = [ 32 ];
-        description = "Next power of 2 from (width * height * depth * 2 / 1024 / 1024 + 10) where depth is 4 for sdr and 8 for hdr";
+        description = "Next power of 2 from (width * height * depth * 2 / 1024 / 1024 + 10) where depth is 4 for sdr and 8 for HDR.";
       };
     };
 
     devices = {
-      enable = mkEnableOption "cgroup exceptions";
+      enable = mkEnableOption "cgroup exceptions.";
 
       kvmfr = mkOption {
         type = types.bool;
         default = true;
-        description = "Passthrough kvmfr devices when available";
+        description = "Passthrough kvmfr devices when available.";
       };
     };
   };

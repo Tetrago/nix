@@ -59,7 +59,7 @@ let
 
       workspace = mkOption {
         type = with types; nullOr ints.unsigned;
-        description = "default workspace to assign";
+        description = "Default workspace to assign.";
         default = null;
       };
     };
@@ -69,13 +69,13 @@ in
   options.hyprworld = {
     monitors = mkOption {
       type = with types; nullOr (nonEmptyListOf monitorType);
-      description = "default monitor configuration to use on startup";
+      description = "Default monitor configuration to use on startup.";
       default = null;
     };
 
     additionalMonitors = mkOption {
       type = with types; nullOr (attrsOf (nonEmptyListOf monitorType));
-      description = "additional monitor configurations used for hot-swapping";
+      description = "Additional monitor configurations used for hot-swapping.";
       default = null;
     };
   };

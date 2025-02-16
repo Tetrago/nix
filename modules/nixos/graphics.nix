@@ -17,7 +17,7 @@ in
 {
   options.tetrago.graphics = {
     nvidia = {
-      enable = mkEnableOption "NVIDIA graphics support";
+      enable = mkEnableOption "NVIDIA graphics support.";
 
       modesetting = mkOption {
         type = types.bool;
@@ -27,12 +27,12 @@ in
       blacklist = mkOption {
         type = types.bool;
         default = false;
-        description = "Blacklist NVIDIA drivers";
+        description = "Blacklist NVIDIA drivers.";
       };
     };
 
     intel = {
-      enable = mkEnableOption "Intel graphics support";
+      enable = mkEnableOption "Intel graphics support.";
     };
   };
 

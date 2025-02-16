@@ -17,7 +17,7 @@ let
 in
 {
   options.tetrago.greetd = {
-    enable = mkEnableOption "greetd";
+    enable = mkEnableOption "greetd.";
     theme = mkOption {
       type =
         with types;

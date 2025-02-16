@@ -5,7 +5,7 @@ let
 in
 {
   options.tetrago.audio = {
-    enable = mkEnableOption "default audio configuration";
+    enable = mkEnableOption "default audio configuration.";
   };
 
   config =

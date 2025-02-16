@@ -11,11 +11,11 @@ let
 in
 {
   options.tetrago.steam = {
-    enable = mkEnableOption "Steam and its necessary modules";
+    enable = mkEnableOption "Steam and its necessary modules.";
 
     users = mkOption {
       type = with types; listOf str;
-      description = "List of users who will use Steam";
+      description = "List of users who will use Steam.";
       default = [ ];
     };
   };

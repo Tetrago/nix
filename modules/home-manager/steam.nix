@@ -10,7 +10,7 @@ let
 in
 {
   options.tetrago.steam = {
-    enable = mkEnableOption "steam compatibility tools";
+    enable = mkEnableOption "steam compatibility tools.";
   };
 
   config =

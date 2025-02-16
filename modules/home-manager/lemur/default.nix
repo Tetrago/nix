@@ -86,30 +86,30 @@ in
       };
     in
     {
-      enable = mkEnableOption "lemur theme engine";
+      enable = mkEnableOption "lemur theme engine.";
 
       darkman = {
         enable = mkEnableOption "darkman integration";
 
         darkVariant = mkOption {
           type = types.str;
-          description = "Name of variant to use for dark mode";
+          description = "Name of variant to use for dark mode.";
           default = "dark";
         };
 
         lightVariant = mkOption {
           type = types.str;
-          description = "Name of variant to use for light mode";
+          description = "Name of variant to use for light mode.";
           default = "light";
         };
       };
 
       default = {
-        enable = mkEnableOption "default variant on graphical session startup";
+        enable = mkEnableOption "default variant on graphical session startup.";
 
         name = mkOption {
           type = types.str;
-          description = "Name of default variant to use. Even when disabled, this variant will be used to ser XCURSOR environment variables";
+          description = "Name of default variant to use. Even when disabled, this variant will be used to ser XCURSOR environment variables.";
           default = "default";
         };
       };

@@ -5,7 +5,7 @@ let
 in
 {
   options.tetrago.bluetooth = {
-    enable = mkEnableOption "default bluetooth configuration";
+    enable = mkEnableOption "default bluetooth configuration.";
   };
 
   config =

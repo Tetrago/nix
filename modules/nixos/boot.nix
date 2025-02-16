@@ -21,7 +21,7 @@ in
   ];
 
   options.tetrago.boot = {
-    enable = mkEnableOption "boot configuration handler";
+    enable = mkEnableOption "boot configuration handler.";
 
     loader = mkOption {
       type = types.enum [
@@ -37,8 +37,8 @@ in
     };
 
     secureboot = {
-      enable = mkEnableOption "enable secureboot";
-      tpm2.enable = mkEnableOption "enable tpm2 support";
+      enable = mkEnableOption "enable secureboot.";
+      tpm2.enable = mkEnableOption "enable tpm2 support.";
     };
   };
 

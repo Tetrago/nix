@@ -16,7 +16,7 @@ let
 in
 {
   options.tetrago.sddm = {
-    enable = mkEnableOption "SDDM display manager";
+    enable = mkEnableOption "SDDM display manager.";
     wayland = mkOption {
       type = types.bool;
       default = true;
@@ -24,7 +24,7 @@ in
 
     package = mkOption {
       type = with types; nullOr package;
-      description = "Optional sddm package override";
+      description = "Optional sddm package override.";
       default = null;
       example = pkgs.kdePackages.sddm;
     };

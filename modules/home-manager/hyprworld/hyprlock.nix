@@ -13,7 +13,7 @@ in
   options.hyprworld = {
     lockscreen.background = mkOption {
       type = with types; nullOr path;
-      description = "background image for lockscreen or null for screenshot";
+      description = "background image for lockscreen or null for screenshot.";
       default = null;
     };
   };

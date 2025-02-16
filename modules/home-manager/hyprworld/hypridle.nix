@@ -22,19 +22,19 @@ in
     idle = {
       lock = mkOption {
         type = with types; nullOr ints.positive;
-        description = "minutes of inactivity until the screen locks";
+        description = "minutes of inactivity until the screen locks.";
         default = 5;
       };
 
       screen = mkOption {
         type = with types; nullOr ints.positive;
-        description = "minutes of inactivity until the screen turns off";
+        description = "minutes of inactivity until the screen turns off.";
         default = 10;
       };
 
       sleep = mkOption {
         type = with types; nullOr ints.positive;
-        description = "minutes of inactivity until the system suspend";
+        description = "minutes of inactivity until the system suspend.";
         default = 15;
       };
     };

@@ -53,13 +53,13 @@ in
   options.hyprworld = {
     extraVolumeKeys = mkOption {
       type = types.bool;
-      description = "binds F10, F11, and F12 to mute, increase volume, and decrease volume respectively";
+      description = "binds F10, F11, and F12 to mute, increase volume, and decrease volume respectively.";
       default = false;
     };
 
     globalScale = mkOption {
       type = with types; nullOr numbers.positive;
-      description = "global scale setting; used for GDK_SCALE";
+      description = "global scale setting; used for GDK_SCALE.";
       default = null;
     };
   };

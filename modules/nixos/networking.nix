@@ -10,7 +10,7 @@ let
 in
 {
   options.tetrago.networking = {
-    enable = mkEnableOption "default networking configuration";
+    enable = mkEnableOption "default networking configuration.";
 
     hostname = mkOption {
       type = types.str;
