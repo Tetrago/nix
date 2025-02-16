@@ -29,13 +29,17 @@
 
   tetrago = {
     audio.enable = true;
+    boot.enable = true;
     fonts.enable = true;
     hyprland.enable = true;
+    networking.enable = true;
+    plymouth.enable = true;
     printing.enable = true;
 
     sddm = {
       enable = true;
       package = pkgs.kdePackages.sddm;
+
       theme = {
         name = "sddm-astronaut-theme";
         package = pkgs.sddm-astronaut.override {

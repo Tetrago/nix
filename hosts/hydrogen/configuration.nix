@@ -57,7 +57,6 @@
     bluetooth.enable = true;
 
     boot = {
-      enable = true;
       loader = "grub";
       skipBootMenu = false;
     };
@@ -68,12 +67,10 @@
     };
 
     networking = {
-      enable = true;
       hostname = "hydrogen";
     };
 
     plymouth = {
-      enable = true;
       theme = "red_loader";
     };
 

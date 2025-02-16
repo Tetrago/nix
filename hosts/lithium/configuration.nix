@@ -18,8 +18,6 @@
     virtualization.enable = true;
 
     boot = {
-      enable = true;
-
       secureboot = {
         enable = true;
         tpm2.enable = true;
@@ -27,12 +25,10 @@
     };
 
     networking = {
-      enable = true;
       hostname = "lithium";
     };
 
     plymouth = {
-      enable = true;
       scale = 1.3;
     };
 
