@@ -285,6 +285,7 @@ in
           ];
 
           "plugin:overview:showNewWorkspace" = false;
+          "plugin:dynamic-cursors".mode = "none";
         };
 
         plugins =
@@ -295,6 +296,7 @@ in
           [
             hyprspace.packages.${system}.Hyprspace
             hypr-darkwindow.packages.${system}.Hypr-DarkWindow
+            hypr-dynamic-cursors.packages.${system}.hypr-dynamic-cursors
           ];
 
         systemd = {

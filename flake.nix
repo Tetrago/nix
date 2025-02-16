@@ -32,6 +32,11 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    hypr-dynamic-cursors = {
+      url = "github:VirtCode/hypr-dynamic-cursors";
+      inputs.hyprland.follows = "hyprland";
+    };
+
     hyprmag = {
       url = "github:SIMULATAN/hyprmag";
       inputs.nixpkgs.follows = "nixpkgs";
