@@ -1,10 +1,20 @@
 {
   inputs,
+  lib,
   outputs,
   pkgs,
   ...
 }:
 
+let
+  inherit (lib) getExe;
+
+  store = pkgs.writeShellScriptBin "store" ''
+    if dir=$(ls -d /nix/store/*/ | sed 's|^/nix/store/||' | ${getExe pkgs.fzf} --height 40% --layout=reverse); then
+      ${getExe pkgs.xplr} "/nix/store/$dir"
+    fi
+  '';
+in
 {
   imports = [
     inputs.nix-colors.homeManagerModules.default
@@ -59,6 +69,7 @@
       ctop
       below
       file
+      store
 
       bottles
       meld
