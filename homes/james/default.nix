@@ -70,6 +70,7 @@
       gnome-clocks
       gnome-mines
       gnome-sudoku
+      gnome-weather
       collision # Hash calculator
       impression # Removable media writer
       apostrophe # Markdown editor
