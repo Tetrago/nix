@@ -45,7 +45,9 @@ in
 
         plymouth = {
           enable = true;
-          themePackages = [ pkgs.adi1090x-plymouth-themes ];
+          themePackages = [
+            (pkgs.adi1090x-plymouth-themes.override { selected_themes = [ cfg.theme ]; })
+          ];
           inherit (cfg) theme;
           extraConfig = "DeviceScale=${toString cfg.scale}";
         };
