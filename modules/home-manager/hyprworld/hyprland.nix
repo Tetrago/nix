@@ -161,7 +161,6 @@ in
             let
               ags = getExe inputs.ags.packages.${pkgs.stdenv.hostPlatform.system}.ags;
               hyprpicker = getExe pkgs.hyprpicker;
-              nautilus = getExe pkgs.nautilus;
               cliphist = getExe pkgs.cliphist;
               cliphist-rofi-img = getExe (
                 pkgs.symlinkJoin {
@@ -189,7 +188,7 @@ in
               "$mod, C, exec, ${ags} -b hypr -t system_center"
               "$mod SHIFT, C, exec, pidof hyprpicker || ${hyprpicker} -a"
               "$mod, W, killactive"
-              "$mod, E, exec, ${nautilus}"
+              "$mod, E, exec, nautilus"
               "$mod, L, exec, loginctl lock-session"
               "$mod SHIFT, V, exec, ${cliphist} wipe"
               "$mod, V, exec, rofi -modi clipboard:${cliphist-rofi-img} -show-icons -sorting-method fzf -scroll-method 1 -show clipboard"

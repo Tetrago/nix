@@ -35,6 +35,17 @@ in
       home = {
         packages = with pkgs; [
           networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
+          (pkgs.nautilus.overrideAttrs (
+            final: prev: {
+              buildInputs =
+                prev.buildInputs
+                ++ (with pkgs.gst_all_1; [
+                  gst-plugins-good
+                  gst-plugins-ugly
+                  gst-plugins-bad
+                ]);
+            }
+          ))
         ];
       };
 
