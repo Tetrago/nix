@@ -10,11 +10,15 @@ in
     "float,class:^(mpv)$"
     "float,class:^(com.github.neithern.g4music)$"
     "size 350 500,class:^(com.github.neithern.g4music)$"
+    "float,class:^(org.gnome.Decibels)$"
+    "size 600 400,class:^(org.gnome.Decibels)$"
   ];
 
   home.packages = with pkgs; [
+    apostrophe
+    decibels
+    exhibit
     file-roller
-    typora
     g4music
   ];
 
@@ -51,6 +55,83 @@ in
   xdg =
     let
       desktopEntries = {
+        decibels = {
+          name = "Decibels";
+          type = "Application";
+          exec = "org.gnome.Decibels %U";
+          icon = "org.gnome.Decibels";
+          categories = [
+            "GNOME"
+            "GTK"
+            "Music"
+            "Audio"
+            "AudioVideo"
+          ];
+          startupNotify = true;
+          terminal = false;
+          noDisplay = true;
+          mimeType = [
+            "audio/mpeg"
+            "audio/wav"
+            "audio/x-aac"
+            "audio/x-aiff"
+            "audio/x-ape"
+            "audio/x-flac"
+            "audio/x-m4a"
+            "audio/x-m4b"
+            "audio/x-mp1"
+            "audio/x-mp2"
+            "audio/x-mp3"
+            "audio/x-mpg"
+            "audio/x-mpeg"
+            "audio/x-mpegurl"
+            "audio/x-opus+ogg"
+            "audio/x-pn-aiff"
+            "audio/x-pn-au"
+            "audio/x-pn-wav"
+            "audio/x-speex"
+            "audio/x-vorbis"
+            "audio/x-vorbis+ogg"
+            "audio/x-wavpack"
+          ];
+        };
+
+        exhibit = {
+          name = "Exhibit";
+          type = "Application";
+          exec = "exhibit %U";
+          icon = "io.github.nokse22.Exhibit";
+          categories = [
+            "GTK"
+            "Graphics"
+            "Science"
+            "3DGraphics"
+            "Viewer"
+            "GNOME"
+          ];
+          startupNotify = true;
+          terminal = false;
+          noDisplay = true;
+          mimeType = [
+            "model/3mf"
+            "model/step"
+            "model/obj"
+            "model/stl"
+            "application/octet-stream"
+            "model/x-other"
+            "application/vnd.ms-3mfdocument"
+            "application/prs.wavefront-obj"
+            "model/gltf-binary"
+            "model/gltf-json"
+            "text/vnd.abc"
+            "image/x-3ds"
+            "image/tiff"
+            "model/iges"
+            "application/gml+xml"
+            "image/vnd.dxf"
+          ];
+        };
+
         feh = {
           name = "Feh";
           exec = "feh --start-at %U";
@@ -128,43 +209,6 @@ in
             "application/x-streamingmedia"
             "application/vnd.rn-realmedia"
             "application/vnd.rn-realmedia-vbr"
-            "audio/aac"
-            "audio/x-aac"
-            "audio/vnd.dolby.heaac.1"
-            "audio/vnd.dolby.heaac.2"
-            "audio/aiff"
-            "audio/x-aiff"
-            "audio/m4a"
-            "audio/x-m4a"
-            "application/x-extension-m4a"
-            "audio/mp1"
-            "audio/x-mp1"
-            "audio/mp2"
-            "audio/x-mp2"
-            "audio/mp3"
-            "audio/x-mp3"
-            "audio/mpeg"
-            "audio/mpeg2"
-            "audio/mpeg3"
-            "audio/mpegurl"
-            "audio/x-mpegurl"
-            "audio/mpg"
-            "audio/x-mpg"
-            "audio/rn-mpeg"
-            "audio/musepack"
-            "audio/x-musepack"
-            "audio/ogg"
-            "audio/scpls"
-            "audio/x-scpls"
-            "audio/vnd.rn-realaudio"
-            "audio/wav"
-            "audio/x-pn-wav"
-            "audio/x-pn-windows-pcm"
-            "audio/x-realaudio"
-            "audio/x-pn-realaudio"
-            "audio/x-ms-wma"
-            "audio/x-pls"
-            "audio/x-wav"
             "video/mpeg"
             "video/x-mpeg2"
             "video/x-mpeg3"
@@ -244,24 +288,15 @@ in
           noDisplay = true;
         };
 
-        nautilus = {
-          name = "Files";
-          exec = "nautilus --new-window %U";
-          terminal = false;
-          noDisplay = true;
-          startupNotify = true;
-          mimeType = [ "inode/directory" ];
-        };
-
-        typora = {
-          name = "Typora";
-          exec = "typora %U";
+        apostrophe = {
+          name = "Apostrophe";
+          exec = "apostrophe %U";
           terminal = false;
           mimeType = [
             "text/x-markdown"
             "text/markdown"
           ];
-          icon = "typora";
+          icon = "org.gnome.gitlab.somas.Apostrophe";
         };
 
         zathura = {

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -17,6 +16,8 @@ in
     ./hyprland.nix
     ./hyprlock.nix
     ./monitors.nix
+    ./nautilus.nix
+    ./portal.nix
     ./rofi.nix
     ./swww.nix
     ./kanshi.nix
@@ -32,51 +33,25 @@ in
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
-      home = {
-        packages = with pkgs; [
-          networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
-          (pkgs.nautilus.overrideAttrs (
-            final: prev: {
-              buildInputs =
-                prev.buildInputs
-                ++ (with pkgs.gst_all_1; [
-                  gst-plugins-good
-                  gst-plugins-ugly
-                  gst-plugins-bad
-                ]);
-            }
-          ))
-        ];
-      };
+      home.packages = with pkgs; [
+        networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
+      ];
 
       services = {
         blueman-applet.enable = mkIf cfg.bluetooth.enable true;
         mpris-proxy.enable = true;
         network-manager-applet.enable = true;
 
+        gnome-keyring = {
+          enable = true;
+          components = [ "secrets" ];
+        };
+
         udiskie = {
           enable = true;
           automount = true;
           notify = true;
         };
-      };
-
-      xdg.portal = {
-        enable = true;
-
-        config = {
-          hyprland = {
-            default = [
-              "hyprland"
-              "gtk"
-            ];
-          };
-        };
-
-        extraPortals = [
-          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
-          pkgs.xdg-desktop-portal-gtk
-        ];
       };
     };
 }

@@ -44,6 +44,9 @@ buildFHSEnv {
     ++ xorgDeps;
 
   extraInstallCommands = ''
+    mkdir -p $out/share/icons
+    cp ${./logo.png} $out/share/icons/binaryninja.png
+
     mkdir -p $out/share/applications
     cat > $out/share/applications/binaryninja.desktop <<EOF
     [Desktop Entry]
@@ -54,6 +57,7 @@ buildFHSEnv {
     MimeType=application/x-binaryninja;x-scheme-handler/binaryninja
     Categories=Utility
     Comment=Binary Ninja: A Reverse Engineering Platform
+    Icon=binaryninja
     EOF
   '';
 }

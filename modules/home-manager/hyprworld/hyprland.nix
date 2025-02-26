@@ -276,6 +276,9 @@ in
             "float,title:^(Bulk Rename)$"
             "size 800 600,title:^(Bulk Rename)$"
             "center,title:^(Bulk Rename)$"
+
+            "float,class:^(xdg-desktop-portal-gtk)$"
+            "size 1280 720,class:^(xdg-desktop-portal-gtk)$"
           ];
 
           layerrule = [

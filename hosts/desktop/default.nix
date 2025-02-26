@@ -25,7 +25,10 @@
     };
   };
 
-  security.polkit.enable = true;
+  security = {
+    pam.services.sddm.enableGnomeKeyring = true;
+    polkit.enable = true;
+  };
 
   tetrago = {
     audio.enable = true;

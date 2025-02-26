@@ -11,17 +11,6 @@ in
     mkIf cfg.enable {
       services.darkman.enable = true;
 
-      xdg.portal = {
-        config.hyprland."org.freedesktop.impl.portal.Settings" = [
-          "darkman"
-          "gtk"
-        ];
-
-        extraPortals = [
-          config.services.darkman.package
-        ];
-      };
-
       systemd.user.services.darkman = {
         # If these changes are not made, darkman firing updateWallpaper on startup
         # will cause the swww daemon to hijack the current wayland display and

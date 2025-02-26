@@ -30,6 +30,7 @@ in
     ./media.nix
     ./nixvim.nix
     ./theme.nix
+    ./toolbox.nix
   ];
 
   hyprworld = {
@@ -60,49 +61,57 @@ in
     };
 
     packages = with pkgs; [
+      # CLI
       p7zip
       fzf
       fd
-      httpie
       nix-output-monitor
-      nvd
       ctop
-      below
       file
       store
 
-      bottles
-      meld
-      obsidian
+      # Media
       aseprite
       inkscape
-      godot_4
-      gnome-calendar
-      gnome-clocks
-      gnome-mines
-      gnome-sudoku
-      gnome-weather
-      collision # Hash calculator
-      impression # Removable media writer
-      apostrophe # Markdown editor
-      qemu
       blender
       gimp
-      renderdoc-x11
-      drawio
+      handbrake
+      kdenlive
+
+      # System
+      bottles
+      qemu
       remmina
-      binaryninja
-      chromium
+      inspector # System info
+      resources # Resource viewier
+      snoop # File search
+
+      # Development
+      meld
+      turtle
+      renderdoc-x11
       jetbrains.idea-community
       blockbench
-      kiwix
       zeal
 
-      kdenlive
-      handbrake
-      libreoffice-qt
-      hunspell
-      hunspellDicts.en_US
+      # Tools
+      binaryninja
+      cartero # HTTP toolkit
+      drawio
+
+      # Utility
+      obsidian
+      gnome-calendar
+      gnome-clocks
+      chromium
+      kiwix
+      mousam # Weather
+      alpaca # Ollama chat
+      gnome-graphs
+
+      # Games
+      gnome-mines
+      gnome-sudoku
     ];
 
     stateVersion = "23.11";
