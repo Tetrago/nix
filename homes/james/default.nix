@@ -137,6 +137,7 @@ in
 
     ssh = {
       enable = true;
+      addKeysToAgent = "yes";
       matchBlocks."*".setEnv.TERM = "xterm-256color";
     };
 
@@ -145,6 +146,7 @@ in
 
   services = {
     easyeffects.enable = true;
+    ssh-agent.enable = true;
   };
 
   xdg = {

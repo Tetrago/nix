@@ -44,7 +44,10 @@ in
 
         gnome-keyring = {
           enable = true;
-          components = [ "secrets" ];
+          components = [
+            "secrets"
+            "ssh"
+          ];
         };
 
         udiskie = {
