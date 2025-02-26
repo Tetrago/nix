@@ -11,11 +11,15 @@ in
 {
   programs.git = {
     enable = true;
-    delta.enable = true;
+    package = pkgs.git.override { withLibsecret = true; };
+
+    difftastic.enable = true;
     lfs.enable = true;
+
     userName = "James";
     extraConfig = {
       core.excludesFile = "${gitignore}";
+      credential.helper = "libsecret";
       init.defaultBranch = "develop";
     };
   };
