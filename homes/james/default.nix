@@ -148,8 +148,6 @@ in
     easyeffects.enable = true;
   };
 
-  systemd.user.sessionVariables.SSH_AUTH_SOCK = "/run/user/%u/keyring/ssh";
-
   xdg = {
     enable = true;
 

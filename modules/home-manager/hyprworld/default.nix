@@ -33,27 +33,46 @@ in
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
-      home.packages = with pkgs; [
-        networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
-      ];
+      home = {
+        packages = with pkgs; [
+          networkmanagerapplet # Necessary despite services.network-manager-applet.enable being set to true
+        ];
+
+        sessionVariables = {
+          SSH_AUTH_SOCK = "/run/user/$UID/keyring/ssh";
+        };
+      };
 
       services = {
         blueman-applet.enable = mkIf cfg.bluetooth.enable true;
         mpris-proxy.enable = true;
         network-manager-applet.enable = true;
 
-        gnome-keyring = {
-          enable = true;
-          components = [
-            "secrets"
-            "ssh"
-          ];
-        };
-
         udiskie = {
           enable = true;
           automount = true;
           notify = true;
+        };
+      };
+
+      systemd.user = {
+        services.gnome-keyring = {
+          Unit = {
+            PartOf = [ "graphical-session-pre.target" ];
+          };
+
+          Service = {
+            ExecStart = "/run/wrappers/bin/gnome-keyring-daemon --start --foreground --components=secrets,ssh";
+            Restart = "on-abort";
+          };
+
+          Install = {
+            WantedBy = [ "graphical-session-pre.target" ];
+          };
+        };
+
+        sessionVariables = {
+          SSH_AUTH_SOCK = "/run/user/%u/keyring/ssh";
         };
       };
     };
