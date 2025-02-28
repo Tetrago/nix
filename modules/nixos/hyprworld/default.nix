@@ -24,7 +24,6 @@ in
           gvfs.enable = true;
           udisks2.enable = true;
           logind.extraConfig = "UserTasksMax=1";
-          gnome.gnome-keyring.enable = true;
         };
       };
 }

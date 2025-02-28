@@ -148,13 +148,7 @@ in
     easyeffects.enable = true;
   };
 
-  systemd.user.services.ssh-agent = {
-    Install.WantedBy = [ "default.target" ];
-
-    Service = {
-      ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a %t/ssh-agent";
-    };
-  };
+  systemd.user.sessionVariables.SSH_AUTH_SOCK = "/run/user/%u/keyring/ssh";
 
   xdg = {
     enable = true;
