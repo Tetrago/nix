@@ -76,7 +76,7 @@ in
       blender
       gimp
       handbrake
-      kdenlive
+      davinci-resolve
 
       # System
       bottles

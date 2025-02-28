@@ -15,7 +15,10 @@
   };
 
   hardware = {
-    graphics.extraPackages = [ pkgs.vpl-gpu-rt ];
+    graphics.extraPackages = with pkgs; [
+      vpl-gpu-rt
+      intel-compute-runtime
+    ];
   };
 
   programs = {
