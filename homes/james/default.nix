@@ -146,7 +146,14 @@ in
 
   services = {
     easyeffects.enable = true;
-    ssh-agent.enable = true;
+  };
+
+  systemd.user.services.ssh-agent = {
+    Install.WantedBy = [ "default.target" ];
+
+    Service = {
+      ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a %t/ssh-agent";
+    };
   };
 
   xdg = {
