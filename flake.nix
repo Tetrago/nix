@@ -19,6 +19,7 @@
 
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixvim.url = "github:nix-community/nixvim";
 
     hyprland.url = "github:hyprwm/Hyprland";
 
@@ -44,11 +45,6 @@
 
     ags = {
       url = "github:Aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixvim = {
-      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

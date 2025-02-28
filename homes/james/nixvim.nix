@@ -266,11 +266,6 @@ in
             zig = gdb;
           };
 
-        extensions = {
-          dap-ui.enable = true;
-          dap-virtual-text.enable = true;
-        };
-
         signs = {
           dapBreakpoint.text = "•";
           dapStopped = {
@@ -279,6 +274,9 @@ in
           };
         };
       };
+
+      dap-ui.enable = true;
+      dap-virtual-text.enable = true;
 
       leap = {
         enable = true;
@@ -438,7 +436,7 @@ in
 
       notify = {
         enable = true;
-        stages = "static";
+        settings.stages = "static";
       };
 
       telescope = {

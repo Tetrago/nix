@@ -15,11 +15,11 @@ in
   ];
 
   home.packages = with pkgs; [
-    apostrophe
     decibels
     exhibit
     file-roller
     g4music
+    typora
   ];
 
   programs = {
@@ -211,7 +211,7 @@ in
 
         mpv = {
           name = "mpv Media Player";
-          exec = "mpv -- %U";
+          exec = "mpv --autofit=75%%x75%% -- %U";
           terminal = false;
           mimeType = [
             "application/ogg"
@@ -303,15 +303,15 @@ in
           noDisplay = true;
         };
 
-        apostrophe = {
-          name = "Apostrophe";
-          exec = "apostrophe %U";
+        typora = {
+          name = "Typora";
+          exec = "typora %U";
           terminal = false;
           mimeType = [
             "text/x-markdown"
             "text/markdown"
           ];
-          icon = "org.gnome.gitlab.somas.Apostrophe";
+          icon = "typora";
         };
 
         zathura = {
