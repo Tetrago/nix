@@ -56,18 +56,38 @@ in
       };
 
       systemd.user = {
-        services.gnome-keyring = {
-          Unit = {
-            PartOf = [ "graphical-session-pre.target" ];
+        services = {
+          gnome-keyring = {
+            Unit = {
+              PartOf = [ "graphical-session-pre.target" ];
+            };
+
+            Service = {
+              ExecStart = "/run/wrappers/bin/gnome-keyring-daemon --start --foreground --components=secrets,ssh";
+              Restart = "on-abort";
+            };
+
+            Install = {
+              WantedBy = [ "graphical-session-pre.target" ];
+            };
           };
 
-          Service = {
-            ExecStart = "/run/wrappers/bin/gnome-keyring-daemon --start --foreground --components=secrets,ssh";
-            Restart = "on-abort";
-          };
+          polkit-gnome-authentication-agent-1 = {
+            Unit = {
+              Wants = [ config.wayland.systemd.target ];
+              After = [ config.wayland.systemd.target ];
+            };
 
-          Install = {
-            WantedBy = [ "graphical-session-pre.target" ];
+            Service = {
+              ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+              Restart = "on-failure";
+              RestartSec = 1;
+              TimeoutStopSec = 10;
+            };
+
+            Install = {
+              WantedBy = [ config.wayland.systemd.target ];
+            };
           };
         };
 

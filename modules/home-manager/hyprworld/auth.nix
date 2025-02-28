@@ -14,7 +14,7 @@ in
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
-      systemd.user.services.polkit-gnome-authentication-agent-1 = {
+      polkit-gnome-authentication-agent-1 = {
         description = "polkit-gnome-authentication-agent-1";
         wantedBy = [ "graphical-session.target" ];
         wants = [ "graphical-session.target" ];
