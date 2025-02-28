@@ -7,6 +7,7 @@ in
 {
   wayland.windowManager.hyprland.settings.windowrulev2 = [
     "float,class:^(feh)$"
+    "size 75% 75%,class:^(feh)$"
     "float,class:^(mpv)$"
     "float,class:^(com.github.neithern.g4music)$"
     "size 350 500,class:^(com.github.neithern.g4music)$"
@@ -149,7 +150,7 @@ in
 
         feh = {
           name = "Feh";
-          exec = "feh --start-at %U";
+          exec = "feh --scale-down --start-at %U";
           terminal = false;
           mimeType = [
             "image/bmp"
