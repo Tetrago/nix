@@ -77,6 +77,7 @@ in
       gimp
       handbrake
       davinci-resolve
+      parabolic # Video downloader
 
       # System
       bottles
@@ -93,6 +94,7 @@ in
       jetbrains.idea-community
       blockbench
       zeal
+      ghex
 
       # Tools
       binaryninja
@@ -108,6 +110,8 @@ in
       mousam # Weather
       alpaca # Ollama chat
       gnome-graphs
+      key-rack # Secrets tracker
+      gnome-characters
 
       # Games
       gnome-mines

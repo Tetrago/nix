@@ -31,7 +31,19 @@ in
     in
     mkIf cfg.enable {
       home = {
-        sessionVariables.NAUTILUS_4_EXTENSION_DIR = "${pkgs.nautilus-python}/lib/nautilus/extensions-4";
+        sessionVariables =
+          let
+            extensions = pkgs.symlinkJoin {
+              name = "nautilus-extensions";
+              paths = with pkgs; [
+                file-roller
+                nautilus-python
+              ];
+            };
+          in
+          {
+            NAUTILUS_4_EXTENSION_DIR = "${extensions}/lib/nautilus/extensions-4";
+          };
 
         packages = [
           package
