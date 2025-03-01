@@ -123,34 +123,17 @@ in
         (mkAction "-" "Oil")
         (mkAction "=" "ClangdSwitchSourceHeader")
       ]
-      ++ (
-        mapAttrsToList
-          (key: action: {
-            mode = [
-              "n"
-              "x"
-              "o"
-            ];
-            options.silent = true;
-            inherit action key;
-          })
-          {
-            s = "<Plug>(leap-forward)";
-            S = "<Plug>(leap-backward)";
-            gs = "<Plug>(leap-from-window)";
-          }
-        ++ [
-          {
-            mode = [
-              "n"
-              "i"
-            ];
-            options.silent = true;
-            key = "<F1>";
-            action = "<Nop>";
-          }
-        ]
-      );
+      ++ [
+        {
+          mode = [
+            "n"
+            "i"
+          ];
+          options.silent = true;
+          key = "<F1>";
+          action = "<Nop>";
+        }
+      ];
 
     plugins = {
       autoclose.enable = true;
@@ -277,11 +260,6 @@ in
 
       dap-ui.enable = true;
       dap-virtual-text.enable = true;
-
-      leap = {
-        enable = true;
-        addDefaultMappings = false;
-      };
 
       lsp = {
         enable = true;
