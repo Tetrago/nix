@@ -15,6 +15,12 @@
     outputs.nixosModules.hyprworld
   ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   programs = {
     command-not-found.enable = false;
     nix-index-database.comma.enable = true;

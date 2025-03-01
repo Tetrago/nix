@@ -27,7 +27,12 @@
         };
 
         packages = with pkgs; [
-          colloid-gtk-theme
+          (colloid-gtk-theme.override {
+            tweaks = [
+              "normal"
+              "rimless"
+            ];
+          })
           nerd-fonts.ubuntu
           phinger-cursors
           whitesur-icon-theme
