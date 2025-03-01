@@ -12,6 +12,7 @@ in
   imports = [
     ./ags.nix
     ./darkman.nix
+    ./control.nix
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
