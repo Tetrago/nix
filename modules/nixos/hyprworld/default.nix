@@ -26,5 +26,7 @@ in
           logind.extraConfig = "UserTasksMax=1";
           udisks2.enable = true;
         };
+
+        security.pam.services.hyprlock.enableGnomeKeyring = true;
       };
 }

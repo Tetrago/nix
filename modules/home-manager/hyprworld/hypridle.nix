@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -49,7 +50,25 @@ in
         enable = true;
         settings = {
           general = {
-            lock_cmd = "pidof hyprlock || hyprlock";
+            lock_cmd = toString (
+              pkgs.writeShellScript "lock" ''
+                if ! pgrep -x hyprlock > /dev/null; then
+                  hyprlock &
+                  PID=$!
+
+                  sleep 1
+
+                  if kill -0 "$PID" 2>/dev/null; then
+                    dbus-send --session --dest=org.freedesktop.secrets \
+                      --type=method_call  \
+                      /org/freedesktop/secrets \
+                      org.freedesktop.Secret.Service.Lock \
+                      array:objpath:/org/freedesktop/secrets/collection/login
+                  fi
+                fi
+              ''
+            );
+
             before_sleep_cmd = "loginctl lock-session";
             after_sleep_cmd = "hyprctl dispatch dpms on";
             ignore_dbus_inhibit = false;
