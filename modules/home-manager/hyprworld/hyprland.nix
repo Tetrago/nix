@@ -205,6 +205,8 @@ in
               "$mod, Tab, overview:toggle"
               "$mod, I, invertactivewindow"
               "$mod, O, exec, ${hyprmag}"
+              "ALT, Tab, cyclenext, floating"
+              "ALT, Tab, bringactivetotop"
 
               "$mod, left, movefocus, l"
               "$mod, right, movefocus, r"
