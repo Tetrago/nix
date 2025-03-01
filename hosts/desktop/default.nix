@@ -33,6 +33,11 @@
 
   security.polkit.enable = true;
 
+  services.geoclue2 = {
+    enable = true;
+    geoProviderUrl = "https://beacondb.net/v1/geolocate";
+  };
+
   tetrago = {
     audio.enable = true;
     boot.enable = true;

@@ -167,7 +167,6 @@ in
       enable = true;
       createDirectories = false;
       desktop = null;
-      documents = null;
       publicShare = null;
       templates = null;
     };

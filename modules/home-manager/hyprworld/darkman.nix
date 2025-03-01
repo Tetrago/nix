@@ -11,6 +11,8 @@ in
     mkIf cfg.enable {
       services.darkman.enable = true;
 
+      xdg.configFile."darkman/config.yaml".text = "usegeoclue: true";
+
       systemd.user.services.darkman = {
         # If these changes are not made, darkman firing updateWallpaper on startup
         # will cause the swww daemon to hijack the current wayland display and
