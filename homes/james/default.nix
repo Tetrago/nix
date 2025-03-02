@@ -78,6 +78,7 @@ in
       handbrake
       davinci-resolve
       parabolic # Video downloader
+      vesktop
 
       # System
       bottles
