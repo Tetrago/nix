@@ -3,20 +3,23 @@
 {
   wayland.windowManager.hyprland.settings.windowrulev2 =
     let
-      mkFloat = name: [
-        "float,class:^(${name})$"
-        "size 350 500,class:^(${name})$"
-      ];
+      mkFloat =
+        name:
+        {
+          width ? 350,
+          height ? 500,
+        }:
+        [
+          "float,class:^(${name})$"
+          "size ${toString width} ${toString height},class:^(${name})$"
+        ];
     in
-    [
-      "float,class:^(io.github.fizzyizzy05.binary)$"
-      "size 350 350,class:^(io.github.fizzyizzy05.binary)$"
-    ]
-    ++ mkFloat "org.gnome.gitlab.cheywood.Buffer"
-    ++ mkFloat "dev.geopjr.Collision"
-    ++ mkFloat "com.github.huluti.Curtail"
-    ++ mkFloat "io.gitlab.adhami3310.Impression"
-    ++ mkFloat "io.github.zefr0x.hashes";
+    mkFloat "io.github.fizzyizzy05.binary" { height = 350; }
+    ++ mkFloat "org.gnome.gitlab.cheywood.Buffer" { width = 600; }
+    ++ mkFloat "dev.geopjr.Collision" { }
+    ++ mkFloat "com.github.huluti.Curtail" { }
+    ++ mkFloat "io.gitlab.adhami3310.Impression" { }
+    ++ mkFloat "io.github.zefr0x.hashes" { };
 
   home.packages = with pkgs; [
     binary # Base converter

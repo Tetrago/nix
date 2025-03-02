@@ -100,6 +100,7 @@ in
       binaryninja
       cartero # HTTP toolkit
       drawio
+      bustle # DBus log
 
       # Utility
       obsidian

@@ -45,12 +45,10 @@ in
         hx = getExe hexyl;
         cp = "cp -i";
         mv = "mv -i";
-        tree = getExe tre-command;
         nnn = "xplr";
         ranger = "xplr";
         gdb = "gdb -q";
         md = getExe glow;
-        ps = getExe procs;
         math = getExe numbat;
       };
     };
