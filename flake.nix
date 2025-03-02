@@ -54,6 +54,11 @@
     };
 
     ghostty.url = "github:ghostty-org/ghostty";
+
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

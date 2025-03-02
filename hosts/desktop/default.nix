@@ -33,9 +33,13 @@
 
   security.polkit.enable = true;
 
-  services.geoclue2 = {
-    enable = true;
-    geoProviderUrl = "https://beacondb.net/v1/geolocate";
+  services = {
+    geoclue2 = {
+      enable = true;
+      geoProviderUrl = "https://beacondb.net/v1/geolocate";
+    };
+
+    speechd.enable = true;
   };
 
   tetrago = {

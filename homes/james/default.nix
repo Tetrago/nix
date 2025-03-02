@@ -24,11 +24,13 @@ in
 
     ./bash.nix
     ./colors.nix
+    ./discord.nix
     ./firefox.nix
     ./git.nix
     ./ghostty.nix
     ./media.nix
     ./nixvim.nix
+    ./speech.nix
     ./theme.nix
     ./toolbox.nix
   ];
@@ -78,7 +80,6 @@ in
       handbrake
       davinci-resolve
       parabolic # Video downloader
-      vesktop
 
       # System
       bottles
@@ -157,13 +158,15 @@ in
   xdg = {
     enable = true;
 
-    configFile."pwn.conf".text = ''
-      [update]
-      interval=never
+    configFile = {
+      "pwn.conf".text = ''
+        [update]
+        interval=never
 
-      [context]
-      terminal=["ghostty", "-e", "sh", "-c"]
-    '';
+        [context]
+        terminal=["ghostty", "-e", "sh", "-c"]
+      '';
+    };
 
     userDirs = {
       enable = true;
