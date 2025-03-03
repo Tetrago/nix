@@ -54,6 +54,8 @@ in
         };
       };
 
+      dconf.settings."org/gnome/location".enabled = true;
+
       systemd.user = {
         services = {
           gnome-keyring = {

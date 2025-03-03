@@ -5,11 +5,7 @@
 }:
 
 let
-  inherit (lib)
-    mkEnableOption
-    mkDefault
-    mkIf
-    ;
+  inherit (lib) mkEnableOption mkIf;
 in
 {
   imports = [
@@ -31,9 +27,9 @@ in
     mkIf cfg.enable {
       wayland.windowManager.hyprland = {
         enable = true;
-        xwayland.enable = mkDefault true;
+        xwayland.enable = true;
 
-        settings.env = mkDefault [
+        settings.env = [
           "XDG_SESSION_DESKTOP,Hyprland"
           "QT_QPA_PLATFORM,wayland;xcb"
           "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
@@ -44,8 +40,8 @@ in
         ];
 
         systemd = {
-          enable = mkDefault true;
-          variables = mkDefault [ "--all" ];
+          enable = true;
+          variables = [ "--all" ];
         };
       };
     };
