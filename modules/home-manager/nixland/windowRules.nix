@@ -37,7 +37,7 @@ let
 in
 {
   options.nixland = {
-    windowrules = mkOption {
+    windowRules = mkOption {
       type = types.listOf (
         types.submodule {
           inherit options;
@@ -52,6 +52,6 @@ in
       cfg = config.nixland;
     in
     mkIf cfg.enable {
-      wayland.windowManager.hyprland.settings.windowrulev2 = flatten (map mapRule cfg.windowrules);
+      wayland.windowManager.hyprland.settings.windowrulev2 = flatten (map mapRule cfg.windowRules);
     };
 }

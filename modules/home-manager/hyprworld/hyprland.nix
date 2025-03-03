@@ -16,39 +16,6 @@ let
     range
     types
     ;
-  inherit (lib.strings) optionalString;
-  inherit (lib.lists) flatten optional optionals;
-
-  monitorToString =
-    m:
-    if !m.enable then
-      "${m.name},disable"
-    else
-      let
-        refreshRate = optionalString (
-          m.resolution != null && m.resolution.refreshRate != null
-        ) "@${toString m.resolution.refreshRate}";
-        resolution =
-          if m.resolution == null then
-            "preferred"
-          else
-            "${toString m.resolution.width}x${toString m.resolution.height}${refreshRate}";
-        position =
-          if m.position == null then "auto" else "${toString m.position.x}x${toString m.position.y}";
-        scale = if m.scale == null then "auto" else "${toString m.scale}";
-      in
-      "${m.name},${resolution},${position},${scale}";
-
-  monitorToWorkspace =
-    m: optional (m.workspace != null) "${toString m.workspace},monitor:${m.name},default:true";
-
-  monitors = optionals (
-    config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null
-  ) (map monitorToString config.hyprworld.monitors);
-
-  workspaces = optionals (
-    config.hyprworld.monitors != null && config.hyprworld.additionalMonitors == null
-  ) (flatten (map monitorToWorkspace config.hyprworld.monitors));
 in
 {
   imports = [
@@ -81,6 +48,7 @@ in
 
       nixland = {
         enable = true;
+
         binds =
           with pkgs;
           let
@@ -284,9 +252,9 @@ in
                 "down"
               ];
 
-        windowrules = [
+        windowRules = [
           {
-            class = "^(steam_app_\\d+)$";
+            class = "steam_app_\\d+";
             rules = [
               "rounding"
               "noshadow"
@@ -294,7 +262,7 @@ in
             ];
           }
           {
-            title = "^(File Operation Progress)$";
+            title = "File Operation Progress";
             rules = [
               "float"
               "size 400 100"
@@ -302,7 +270,7 @@ in
             ];
           }
           {
-            title = "^(Properties)$";
+            title = "Properties";
             rules = [
               "float"
               "size 400 600"
@@ -310,7 +278,7 @@ in
             ];
           }
           {
-            title = "^(Bulk Rename)$";
+            title = "Bulk Rename";
             rules = [
               "float"
               "size 800 600"
@@ -318,11 +286,18 @@ in
             ];
           }
           {
-            class = "^(xdg-desktop-portal-gtk)$";
+            class = "xdg-desktop-portal-gtk";
             rules = [
               "float"
               "size 70% 70%"
             ];
+          }
+        ];
+
+        workspaceRules = [
+          {
+            workspace = "special:scratchpad";
+            rules = "gapsout:100";
           }
         ];
       };
@@ -389,11 +364,6 @@ in
             disable_splash_rendering = true;
             vfr = true;
           };
-
-          monitor = monitors ++ [ ",preferred,auto,1" ];
-          workspace = workspaces ++ [
-            "special:scratchpad, gapsout:100"
-          ];
 
           layerrule = [
             "noanim,hyprpicker"

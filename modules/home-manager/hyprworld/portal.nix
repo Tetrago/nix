@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -16,6 +17,7 @@ in
     mkIf cfg.enable {
       nixland.portal = {
         enable = true;
+        sources = [ inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system} ];
 
         portals = {
           Settings = {

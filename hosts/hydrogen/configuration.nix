@@ -117,6 +117,28 @@
         "idleinhibit fullscreen,class:^(looking-glass-client)$"
       ];
 
+      nixland = {
+        monitor = {
+          "DP-1" = {
+            size = {
+              width = 2560;
+              height = 1440;
+            };
+            refreshRate = 144;
+            position = "right";
+            workspace = 1;
+          };
+          "HDMI-A-1" = {
+            size = {
+              width = 2560;
+              height = 1440;
+            };
+            refreshRate = 144;
+            workspace = 2;
+          };
+        };
+      };
+
       hyprworld = {
         bluetooth.enable = true;
         extraVolumeKeys = true;
@@ -125,29 +147,6 @@
           screen = null;
           sleep = null;
         };
-
-        monitors = [
-          {
-            name = "DP-1";
-            resolution = {
-              width = 2560;
-              height = 1440;
-              refreshRate = 144;
-            };
-            position.x = 2560;
-            workspace = 1;
-          }
-          {
-            name = "HDMI-A-1";
-            resolution = {
-              width = 2560;
-              height = 1440;
-              refreshRate = 144;
-            };
-            position.x = 0;
-            workspace = 2;
-          }
-        ];
 
         wallpaper.transition = {
           step = 5;

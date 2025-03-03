@@ -1,8 +1,6 @@
 {
   config,
-  inputs,
   lib,
-  pkgs,
   ...
 }:
 
@@ -16,8 +14,10 @@ in
 {
   imports = [
     ./binds.nix
+    ./monitor.nix
     ./portal.nix
-    ./windowrules.nix
+    ./windowRules.nix
+    ./workspaceRules.nix
   ];
 
   options.nixland = {
@@ -31,7 +31,6 @@ in
     mkIf cfg.enable {
       wayland.windowManager.hyprland = {
         enable = true;
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         xwayland.enable = mkDefault true;
 
         settings.env = mkDefault [

@@ -16,12 +16,10 @@ in
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
-    ./monitors.nix
     ./nautilus.nix
     ./portal.nix
     ./rofi.nix
     ./swww.nix
-    ./kanshi.nix
   ];
 
   options.hyprworld = {

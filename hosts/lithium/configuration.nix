@@ -69,12 +69,40 @@
   virtualisation.docker.enable = true;
 
   home-manager.users.james =
-    { outputs, ... }:
+    { config, outputs, ... }:
     {
       imports = [ outputs.homeManagerModules.james ];
 
       tetrago = {
         steam.enable = true;
+      };
+
+      nixland = {
+        binds = [
+          {
+            super = false;
+            flags = "locked";
+            trigger = "switch:on:Lid Switch";
+            action.exec = ''hyprctl keyword monitor "${config.nixland.monitorRules."eDP-1"}"'';
+          }
+          {
+            super = false;
+            flags = "locked";
+            trigger = "switch:off:Lid Switch";
+            action.exec = ''hyprctl keyword monitor "eDP-1, disable"'';
+          }
+        ];
+
+        monitor = {
+          "" = { };
+          "eDP-1" = {
+            size = {
+              width = 2256;
+              height = 1504;
+            };
+            scale = 1.3333;
+          };
+        };
       };
 
       hyprworld = {
@@ -83,54 +111,6 @@
 
         idle = {
           sleep = null;
-        };
-
-        monitors = [
-          {
-            name = "eDP-1";
-            resolution = {
-              width = 2256;
-              height = 1504;
-            };
-            scale = 1.3333;
-          }
-        ];
-
-        additionalMonitors = {
-          home = [
-            {
-              name = "eDP-1";
-              enable = false;
-            }
-            {
-              name = "DP-5";
-              resolution = {
-                width = 1920;
-                height = 1080;
-              };
-              position.x = 0;
-              workspace = 2;
-            }
-            {
-              name = "DP-6";
-              resolution = {
-                width = 1920;
-                height = 1080;
-              };
-              position.x = 2560 + 1920;
-              workspace = 3;
-            }
-            {
-              name = "DP-7";
-              resolution = {
-                width = 2560;
-                height = 1440;
-                refreshRate = 144;
-              };
-              position.x = 1920;
-              workspace = 1;
-            }
-          ];
         };
 
         wallpaper.transition = {

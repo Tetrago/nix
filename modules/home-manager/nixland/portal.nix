@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -8,7 +7,12 @@
 
 let
   inherit (builtins) isString;
-  inherit (lib) mkIf mkOption types;
+  inherit (lib)
+    mkAfter
+    mkIf
+    mkOption
+    types
+    ;
   inherit (lib.attrsets) attrValues mapAttrs mapAttrs';
   inherit (lib.lists) findFirst flatten;
 
@@ -53,10 +57,6 @@ in
 
       sources = mkOption {
         type = types.listOf types.attrs;
-        default = [
-          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}
-          pkgs
-        ];
       };
 
       default = mkOption {
@@ -83,6 +83,8 @@ in
       cfg = config.nixland;
     in
     mkIf (cfg.enable && cfg.portal.enable) {
+      nixland.portal.sources = mkAfter [ pkgs ];
+
       xdg.portal =
         let
           all =
