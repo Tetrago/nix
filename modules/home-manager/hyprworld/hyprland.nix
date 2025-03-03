@@ -2,15 +2,18 @@
   config,
   inputs,
   lib,
+  outputs,
   pkgs,
   ...
 }:
 
 let
+  inherit (builtins) substring;
   inherit (lib)
-    mkIf
     getExe
+    mkIf
     mkOption
+    range
     types
     ;
   inherit (lib.strings) optionalString;
@@ -48,7 +51,10 @@ let
   ) (flatten (map monitorToWorkspace config.hyprworld.monitors));
 in
 {
-  imports = [ inputs.hyprland.homeManagerModules.default ];
+  imports = [
+    inputs.hyprland.homeManagerModules.default
+    outputs.homeManagerModules.nixland
+  ];
 
   options.hyprworld = {
     extraVolumeKeys = mkOption {
@@ -73,11 +79,208 @@ in
         wl-clipboard
       ];
 
-      wayland.windowManager.hyprland = {
+      nixland = {
         enable = true;
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        xwayland.enable = true;
+        binds =
+          with pkgs;
+          let
+            mkExec = trigger: exec: {
+              inherit trigger;
+              action = { inherit exec; };
+            };
+          in
+          [
+            (mkExec "Return" "ghostty")
+            (mkExec "R" "nautilus")
+            (mkExec "L" "loginctl lock-session")
+            (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
+            (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))
+            {
+              shift = true;
+              trigger = "C";
+              action.exec = "pidof hyprpicker || ${getExe hyprpicker} -a";
+            }
+            {
+              trigger = "W";
+              action = "killactive";
+            }
+            {
+              shift = true;
+              trigger = "V";
+              action.exec = "${getExe cliphist} wipe";
+            }
+            {
+              trigger = "V";
+              action.exec =
+                let
+                  cliphist-rofi-img = getExe (
+                    pkgs.symlinkJoin {
+                      name = "cliphist-rofi-img-packaged";
+                      paths = [ pkgs.cliphist ];
+                      buildInputs = [ pkgs.makeWrapper ];
+                      postBuild = ''
+                        wrapProgram $out/bin/cliphist-rofi-img \
+                          --prefix PATH : ${lib.makeBinPath [ pkgs.cliphist ]}
+                      '';
+                      meta.mainProgram = "cliphist-rofi-img";
+                    }
+                  );
+                in
+                "rofi -modi clipboard:${cliphist-rofi-img} -show-icons -sorting-method fzf -scroll-method 1 -show clipboard";
+            }
+            {
+              trigger = "F";
+              action = "togglefloating";
+            }
+            {
+              trigger = "Escape";
+              action = "fullscreen";
+            }
+            {
+              shift = true;
+              trigger = "Escape";
+              action.exec = "darkman toggle";
+            }
+            {
+              super = false;
+              trigger = "Print";
+              action.exec = ''pidof slurp || ${getExe grim} -g "$(${getExe slurp} -o -r)" - | ${getExe swappy} -f -'';
+            }
+            {
+              super = false;
+              alt = true;
+              trigger = "Print";
+              action.exec =
+                let
+                  find = pkgs.writeShellScript "find-windows" ''hyprctl clients -j | ${getExe jq} -r ".[]" | ${getExe jq} -r ".at,.size" | ${getExe jq} -s "add" | ${getExe jq} '_nwise(4)' | ${getExe jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${getExe slurp} -r'';
+                in
+                ''pidof slurp || ${getExe grim} -g "$(${find})" - | ${getExe swappy} -f -'';
+            }
+            {
+              shift = true;
+              trigger = "S";
+              action.exec = ''pidof slurp || ${getExe grim} -g "$(${getExe slurp})" - | ${getExe swappy} -f -'';
+            }
+            {
+              shift = true;
+              trigger = "Z";
+              action.movetoworkspace = "special:scratchpad";
+            }
+            {
+              trigger = "Z";
+              action.togglespecialworkspace = "scratchpad";
+            }
+            {
+              shift = true;
+              trigger = "Space";
+              action.fullscreen = "1";
+            }
+            {
+              trigger = "Tab";
+              action = "overview:toggle";
+            }
+            {
+              trigger = "I";
+              action = "invertactivewindow";
+            }
+            {
+              super = false;
+              alt = true;
+              trigger = "Tab";
+              action.cyclenext = "floating";
+            }
+            {
+              super = false;
+              alt = true;
+              trigger = "Tab";
+              action = "bringactivetotop";
+            }
+            {
+              trigger = "M";
+              action.layoutmsg = "swapwithmaster";
+            }
+            {
+              flags = "mouse";
+              trigger = "mouse:272";
+              action = "movewindow";
+            }
+            {
+              flags = "mouse";
+              trigger = "mouse:273";
+              action = "resizewindow";
+            }
+            {
+              flags = "repeat";
+              super = false;
+              trigger = "XF86AudioMute";
+              action.exec = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            }
+            {
+              flags = "repeat";
+              super = false;
+              trigger = "XF86AudioRaiseVolume";
+              action.exec = "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+";
+            }
+            {
+              flags = "repeat";
+              super = false;
+              trigger = "XF86AudioLowerVolume";
+              action.exec = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+            }
+            {
+              flags = "repeat";
+              super = false;
+              ctrl = true;
+              trigger = "F10";
+              action.exec = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            }
+            {
+              flags = "repeat";
+              super = false;
+              ctrl = true;
+              trigger = "F12";
+              action.exec = "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+";
+            }
+            {
+              flags = "repeat";
+              super = false;
+              ctrl = true;
+              trigger = "F11";
+              action.exec = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+            }
+          ]
+          ++ map (v: v // { super = false; }) [
+            (mkExec "XF86MonBrightnessUp" "${getExe brightnessctl} set +10%")
+            (mkExec "XF86MonBrightnessDown" "${getExe brightnessctl} set 10%-")
+            (mkExec "XF86AudioPlay" "${getExe playerctl} play-pause")
+            (mkExec "XF86AudioStop" "${getExe playerctl} stop")
+            (mkExec "XF86AudioPrev" "${getExe playerctl} previous")
+            (mkExec "XF86AudioNext" "${getExe playerctl} next")
+          ]
+          ++ map (v: {
+            trigger = if v == 10 then 0 else v;
+            action.workspace = v;
+          }) (range 1 10)
+          ++ map (v: {
+            shift = true;
+            trigger = if v == 10 then 0 else v;
+            action.movetoworkspace = v;
+          }) (range 1 10)
+          ++
+            map
+              (dir: {
+                trigger = dir;
+                action.movefocus = substring 0 1 dir;
+              })
+              [
+                "left"
+                "right"
+                "up"
+                "down"
+              ];
+      };
 
+      wayland.windowManager.hyprland = {
         settings = {
           exec-once = [
             "wl-paste --type text --watch ${getExe pkgs.cliphist} store"
@@ -157,113 +360,6 @@ in
           monitor = monitors ++ [ ",preferred,auto,1" ];
           workspace = workspaces ++ [
             "special:scratchpad, gapsout:100"
-          ];
-
-          "$mod" = "SUPER";
-
-          bind =
-            let
-              ags = getExe inputs.ags.packages.${pkgs.stdenv.hostPlatform.system}.ags;
-              hyprpicker = getExe pkgs.hyprpicker;
-              cliphist = getExe pkgs.cliphist;
-              cliphist-rofi-img = getExe (
-                pkgs.symlinkJoin {
-                  name = "cliphist-rofi-img-packaged";
-                  paths = [ pkgs.cliphist ];
-                  buildInputs = [ pkgs.makeWrapper ];
-                  postBuild = ''
-                    wrapProgram $out/bin/cliphist-rofi-img \
-                      --prefix PATH : ${lib.makeBinPath [ pkgs.cliphist ]}
-                  '';
-                  meta.mainProgram = "cliphist-rofi-img";
-                }
-              );
-              jq = getExe pkgs.jq;
-              brightnessctl = getExe pkgs.brightnessctl;
-              playerctl = getExe pkgs.playerctl;
-              slurp = getExe pkgs.slurp;
-              grim = getExe pkgs.grim;
-              swappy = getExe pkgs.swappy;
-              hyprmag = getExe inputs.hyprmag.packages.${pkgs.stdenv.hostPlatform.system}.default;
-              find = pkgs.writeShellScriptBin "findWindows" ''hyprctl clients -j | ${jq} -r ".[]" | ${jq} -r ".at,.size" | ${jq} -s "add" | ${jq} '_nwise(4)' | ${jq} -r '"\(.[0]),\(.[1]) \(.[2])x\(.[3])"' | ${slurp} -r'';
-            in
-            [
-              "$mod, Return, exec, ghostty"
-              "$mod, C, exec, ${ags} -b hypr -t system_center"
-              "$mod SHIFT, C, exec, pidof hyprpicker || ${hyprpicker} -a"
-              "$mod, W, killactive"
-              "$mod, E, exec, nautilus"
-              "$mod, L, exec, loginctl lock-session"
-              "$mod SHIFT, V, exec, ${cliphist} wipe"
-              "$mod, V, exec, rofi -modi clipboard:${cliphist-rofi-img} -show-icons -sorting-method fzf -scroll-method 1 -show clipboard"
-              "$mod, F, togglefloating"
-              "$mod, Escape, fullscreen"
-              "$mod SHIFT, Escape, exec, darkman toggle"
-              "$mod, Space, exec, rofi -show drun -show-icons -sorting-method fzf -scroll-method 1"
-              '', Print, exec, pidof slurp || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
-              ''ALT, Print, exec, pidof slurp || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
-              ''$mod SHIFT, S, exec, pidof slurp || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
-              "$mod SHIFT, Z, movetoworkspace, special:scratchpad"
-              "$mod, Z, togglespecialworkspace,scratchpad"
-              "$mod SHIFT, Space, fullscreen, 1"
-              "$mod, Tab, overview:toggle"
-              "$mod, I, invertactivewindow"
-              "$mod, O, exec, ${hyprmag}"
-              "ALT, Tab, cyclenext, floating"
-              "ALT, Tab, bringactivetotop"
-
-              "$mod, left, movefocus, l"
-              "$mod, right, movefocus, r"
-              "$mod, up, movefocus, u"
-              "$mod, down, movefocus, d"
-              "$mod, M, exec, hyprctl dispatch layoutmsg swapwithmaster"
-
-              "$mod, 1, workspace, 1"
-              "$mod, 2, workspace, 2"
-              "$mod, 3, workspace, 3"
-              "$mod, 4, workspace, 4"
-              "$mod, 5, workspace, 5"
-              "$mod, 6, workspace, 6"
-              "$mod, 7, workspace, 7"
-              "$mod, 8, workspace, 8"
-              "$mod, 9, workspace, 9"
-              "$mod, 0, workspace, 10"
-
-              "$mod SHIFT, 1, movetoworkspace, 1"
-              "$mod SHIFT, 2, movetoworkspace, 2"
-              "$mod SHIFT, 3, movetoworkspace, 3"
-              "$mod SHIFT, 4, movetoworkspace, 4"
-              "$mod SHIFT, 5, movetoworkspace, 5"
-              "$mod SHIFT, 6, movetoworkspace, 6"
-              "$mod SHIFT, 7, movetoworkspace, 7"
-              "$mod SHIFT, 8, movetoworkspace, 8"
-              "$mod SHIFT, 9, movetoworkspace, 9"
-              "$mod SHIFT, 0, movetoworkspace, 10"
-
-              ", XF86MonBrightnessUp, exec, ${brightnessctl} set +10%"
-              ", XF86MonBrightnessDown, exec, ${brightnessctl} set 10%-"
-              ", XF86AudioPlay, exec, ${playerctl} play-pause"
-              ", XF86AudioStop, exec, ${playerctl} stop"
-              ", XF86AudioPrev, exec, ${playerctl} previous"
-              ", XF86AudioNext, exec, ${playerctl} next"
-            ];
-
-          bindm = [
-            "$mod, mouse:272, movewindow"
-            "$mod, mouse:273, resizewindow"
-          ];
-
-          binde = lib.mkMerge [
-            ([
-              ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-              ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-              ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-            ])
-            (lib.mkIf config.hyprworld.extraVolumeKeys [
-              "CTRL, F10, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-              "CTRL, F12, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-              "CTRL, F11, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-            ])
           ];
 
           windowrulev2 = [
