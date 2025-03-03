@@ -134,9 +134,11 @@ in
 
           decoration = {
             rounding = 5;
-            blur.enabled = true;
-            blur.size = 3;
-            blur.passes = 1;
+            blur = {
+              enabled = true;
+              size = 3;
+              passes = 1;
+            };
             shadow = {
               enabled = true;
               range = 4;
@@ -153,7 +155,9 @@ in
           };
 
           monitor = monitors ++ [ ",preferred,auto,1" ];
-          workspace = workspaces;
+          workspace = workspaces ++ [
+            "special:scratchpad, gapsout:100"
+          ];
 
           "$mod" = "SUPER";
 
@@ -199,8 +203,8 @@ in
               '', Print, exec, pidof slurp || ${grim} -g "$(${slurp} -o -r)" - | ${swappy} -f -''
               ''ALT, Print, exec, pidof slurp || ${grim} -g "$(${find}/bin/findWindows)" - | ${swappy} -f -''
               ''$mod SHIFT, S, exec, pidof slurp || ${grim} -g "$(${slurp})" - | ${swappy} -f -''
-              "$mod SHIFT, Z, movetoworkspace, special"
-              "$mod, Z, togglespecialworkspace"
+              "$mod SHIFT, Z, movetoworkspace, special:scratchpad"
+              "$mod, Z, togglespecialworkspace,scratchpad"
               "$mod SHIFT, Space, fullscreen, 1"
               "$mod, Tab, overview:toggle"
               "$mod, I, invertactivewindow"
