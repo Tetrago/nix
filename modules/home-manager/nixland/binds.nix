@@ -6,7 +6,6 @@ let
     filter
     isAttrs
     isList
-    isString
     length
     head
     map
@@ -17,7 +16,7 @@ let
     mkOption
     types
     ;
-  inherit (lib.attrsets) genAttrs mapAttrs;
+  inherit (lib.attrsets) genAttrs;
   inherit (lib.strings)
     concatStrings
     concatStringsSep

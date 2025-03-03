@@ -12,6 +12,7 @@ in
 {
   imports = [
     ./binds.nix
+    ./windowrules.nix
   ];
 
   options.nixland = {

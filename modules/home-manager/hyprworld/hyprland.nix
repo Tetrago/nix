@@ -91,7 +91,7 @@ in
           in
           [
             (mkExec "Return" "ghostty")
-            (mkExec "R" "nautilus")
+            (mkExec "E" "nautilus")
             (mkExec "L" "loginctl lock-session")
             (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
             (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))
@@ -278,6 +278,48 @@ in
                 "up"
                 "down"
               ];
+
+        windowrules = [
+          {
+            class = "^(steam_app_\\d+)$";
+            rules = [
+              "rounding"
+              "noshadow"
+              "noborder"
+            ];
+          }
+          {
+            title = "^(File Operation Progress)$";
+            rules = [
+              "float"
+              "size 400 100"
+              "center"
+            ];
+          }
+          {
+            title = "^(Properties)$";
+            rules = [
+              "float"
+              "size 400 600"
+              "center"
+            ];
+          }
+          {
+            title = "^(Bulk Rename)$";
+            rules = [
+              "float"
+              "size 800 600"
+              "center"
+            ];
+          }
+          {
+            class = "^(xdg-desktop-portal-gtk)$";
+            rules = [
+              "float"
+              "size 70% 70%"
+            ];
+          }
+        ];
       };
 
       wayland.windowManager.hyprland = {
@@ -360,27 +402,6 @@ in
           monitor = monitors ++ [ ",preferred,auto,1" ];
           workspace = workspaces ++ [
             "special:scratchpad, gapsout:100"
-          ];
-
-          windowrulev2 = [
-            "rounding 0,class:^(steam_app_\\d+)$"
-            "noshadow,class:^(steam_app_\\d+)$"
-            "noborder,class:^(steam_app_\\d+)$"
-
-            "float,title:^(File Operation Progress)$"
-            "size 400 100,title:^(File Operation Progress)$"
-            "center,title:^(File Operation Progress)$"
-
-            "float,title:^(Properties)$"
-            "size 400 600,title:^(Properties)$"
-            "center,title:^(Properties)$"
-
-            "float,title:^(Bulk Rename)$"
-            "size 800 600,title:^(Bulk Rename)$"
-            "center,title:^(Bulk Rename)$"
-
-            "float,class:^(xdg-desktop-portal-gtk)$"
-            "size 1280 720,class:^(xdg-desktop-portal-gtk)$"
           ];
 
           layerrule = [
