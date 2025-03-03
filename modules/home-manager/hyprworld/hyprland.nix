@@ -334,23 +334,9 @@ in
             "wl-paste --type image --watch ${getExe pkgs.cliphist} store"
           ];
 
-          env =
-            [
-              "XDG_SESSION_DESKTOP,Hyprland"
-              "QT_QPA_PLATFORM,wayland;xcb"
-              "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
-              "_JAVA_AWT_WM_NONREPARENTING,1"
-              "GTK_BACKEND,wayland"
-              "GTK_USE_PORTAL,1"
-              "NIXOS_OZONE_WL,1"
-            ]
-            ++ optional (
-              config.hyprworld.globalScale != null
-            ) "GDK_SCALE,${toString config.hyprworld.globalScale}";
-
-          debug = {
-            disable_logs = false;
-          };
+          env = mkIf (
+            config.hyprworld.globalScale != null
+          ) "GDK_SCALE,${toString config.hyprworld.globalScale}";
 
           master = {
             new_status = "master";
@@ -428,11 +414,6 @@ in
             hypr-darkwindow.packages.${system}.Hypr-DarkWindow
             hypr-dynamic-cursors.packages.${system}.hypr-dynamic-cursors
           ];
-
-        systemd = {
-          enable = true;
-          variables = [ "--all" ];
-        };
       };
     };
 }
