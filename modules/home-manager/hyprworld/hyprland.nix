@@ -333,35 +333,35 @@ in
             gaps_in = 5;
             gaps_out = 5;
             border_size = 1;
-            "col.active_border" = "rgba(eff1f5ee) rgba(bbbfcbee) 45deg";
-            "col.inactive_border" = "rgba(4b4e69aa)";
             layout = "master";
           };
 
           gestures = {
-            "workspace_swipe" = true;
-            "workspace_swipe_create_new" = false;
+            workspace_swipe = true;
+            workspace_swipe_create_new = false;
           };
 
           decoration = {
             rounding = 5;
+
             blur = {
               enabled = true;
               size = 3;
               passes = 1;
             };
+
             shadow = {
               enabled = true;
+              color = "rgba(1a1a1aee)";
               range = 4;
               render_power = 3;
-              color = "rgba(1a1a1aee)";
             };
           };
 
           misc = {
-            new_window_takes_over_fullscreen = 2;
             disable_hyprland_logo = true;
             disable_splash_rendering = true;
+            new_window_takes_over_fullscreen = 2;
             vfr = true;
           };
 

@@ -5,14 +5,32 @@ let
   inherit (lib) mkMerge;
 in
 {
-  wayland.windowManager.hyprland.settings.windowrulev2 = [
-    "float,class:^(feh)$"
-    "size 75% 75%,class:^(feh)$"
-    "float,class:^(mpv)$"
-    "float,class:^(com.github.neithern.g4music)$"
-    "size 350 500,class:^(com.github.neithern.g4music)$"
-    "float,class:^(org.gnome.Decibels)$"
-    "size 600 400,class:^(org.gnome.Decibels)$"
+  nixland.windowRules = [
+    {
+      class = "feh";
+      rules = [
+        "float"
+        "size 75% 75%"
+      ];
+    }
+    {
+      class = "mpv";
+      rules = "float";
+    }
+    {
+      class = "com.github.neithern.g4music";
+      rules = [
+        "float"
+        "size 350 500"
+      ];
+    }
+    {
+      class = "org.gnome.Decibels";
+      rules = [
+        "float"
+        "size 600 400"
+      ];
+    }
   ];
 
   home.packages = with pkgs; [

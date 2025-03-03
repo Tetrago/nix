@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  wayland.windowManager.hyprland.settings.windowrulev2 =
+  nixland.windowRules =
     let
       mkFloat =
         name:
@@ -10,8 +10,13 @@
           height ? 500,
         }:
         [
-          "float,class:^(${name})$"
-          "size ${toString width} ${toString height},class:^(${name})$"
+          {
+            class = name;
+            rules = [
+              "float"
+              "size ${toString width} ${toString height}"
+            ];
+          }
         ];
     in
     mkFloat "io.github.fizzyizzy05.binary" { height = 350; }

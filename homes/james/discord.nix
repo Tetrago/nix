@@ -101,7 +101,10 @@
     mimeApps.defaultApplications."x-scheme-handler/discord" = "discord.desktop";
   };
 
-  wayland.windowManager.hyprland.settings.windowrulev2 = [
-    "workspace special:hidden silent,title:^(vesktop)$"
+  nixland.windowRules = [
+    {
+      title = "vesktop";
+      rules = "workspace special:hidden silent";
+    }
   ];
 }

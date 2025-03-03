@@ -22,7 +22,7 @@ let
     };
 
     rules = mkOption {
-      type = types.listOf types.str;
+      type = types.coercedTo types.str (x: [ x ]) (types.listOf types.str);
     };
   };
 

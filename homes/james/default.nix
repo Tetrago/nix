@@ -44,13 +44,34 @@ in
     };
   };
 
-  wayland.windowManager.hyprland.settings.windowrulev2 = [
-    "stayfocused,class:^(com.vector35.binaryninja)$,title:^([^B])(.*)$"
-    "size 0 0,class:^(ghidra-Ghidra)$,title:^(Ghidra)$"
-    "tile,class:^(ghidra-Ghidra)$,title:^(Ghidra:)(.*)$"
-    "tile,class:^(ghidra-Ghidra)$,title:^(CodeBrowser)$"
-    "tile,title:^(OpenTTD)(.*)$"
-    "tile,class:^(Aseprite)$"
+  nixland.windowRules = [
+    {
+      class = "com.vector35.binaryninja";
+      rules = "stayfocused";
+    }
+    {
+      class = "ghidra-Ghidra";
+      title = "Ghidra";
+      rules = "size 0 0";
+    }
+    {
+      class = "ghidra-Ghidra";
+      title = "Ghidra:.*";
+      rules = "tile";
+    }
+    {
+      class = "ghidra-Ghidra";
+      title = "CodeBrowser";
+      rules = "tile";
+    }
+    {
+      title = "OpenTTD.*";
+      rules = "tile";
+    }
+    {
+      class = "Aseprite";
+      rules = "tile";
+    }
   ];
 
   home = {

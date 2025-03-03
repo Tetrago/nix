@@ -113,11 +113,14 @@
           openttd.openttd-jgrpp
         ];
 
-      wayland.windowManager.hyprland.settings.windowrulev2 = [
-        "idleinhibit fullscreen,class:^(looking-glass-client)$"
-      ];
-
       nixland = {
+        windowRules = [
+          {
+            class = "looking-glass-client";
+            rules = "idleinhibit fullscreen";
+          }
+        ];
+
         monitor = {
           "DP-1" = {
             size = {
