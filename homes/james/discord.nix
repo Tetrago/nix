@@ -61,13 +61,12 @@
       };
     };
 
-    extraConfig = {
-      minimizeToTray = false;
-      tray = false;
-    };
-
     discord.enable = false;
-    vesktop.enable = true;
+
+    vesktop = {
+      enable = true;
+      settings.tray = false;
+    };
   };
 
   xdg = {
