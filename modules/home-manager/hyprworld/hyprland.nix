@@ -248,6 +248,11 @@ in
               trigger = "F11";
               action.exec = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
             }
+            {
+              super = false;
+              trigger = "XF86PowerOff";
+              action.exec = "hyprworld-shutdown";
+            }
           ]
           ++ map (v: v // { super = false; }) [
             (mkExec "XF86MonBrightnessUp" "${getExe brightnessctl} set +10%")
