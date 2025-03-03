@@ -14,7 +14,9 @@ export default function Workspaces({ monitor }: Props) {
       cssClasses={bind(hyprland, "workspaces").as(
         (workspaces: Hyprland.Workspace[]) => [
           "Workspaces",
-          ...(workspaces.some((workspace) => workspace.get_id() < 0)
+          ...(workspaces.some(
+            (workspace) => workspace.get_name() == "special:scratchpad",
+          )
             ? ["special"]
             : []),
         ],
