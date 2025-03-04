@@ -252,6 +252,10 @@ in
                 "down"
               ];
 
+        environment = mkIf (config.hyprworld.globalScale != null) {
+          GDK_SCALE = config.hyprworld.globalScale;
+        };
+
         windowRules = [
           {
             class = "steam_app_\\d+";
@@ -308,10 +312,6 @@ in
             "wl-paste --type text --watch ${getExe pkgs.cliphist} store"
             "wl-paste --type image --watch ${getExe pkgs.cliphist} store"
           ];
-
-          env = mkIf (
-            config.hyprworld.globalScale != null
-          ) "GDK_SCALE,${toString config.hyprworld.globalScale}";
 
           master = {
             new_status = "master";

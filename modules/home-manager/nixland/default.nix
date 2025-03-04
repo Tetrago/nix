@@ -10,6 +10,7 @@ in
 {
   imports = [
     ./binds.nix
+    ./environment.nix
     ./monitor.nix
     ./portal.nix
     ./windowRules.nix
@@ -28,16 +29,6 @@ in
       wayland.windowManager.hyprland = {
         enable = true;
         xwayland.enable = true;
-
-        settings.env = [
-          "XDG_SESSION_DESKTOP,Hyprland"
-          "QT_QPA_PLATFORM,wayland;xcb"
-          "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
-          "_JAVA_AWT_WM_NONREPARENTING,1"
-          "GTK_BACKEND,wayland"
-          "GTK_USE_PORTAL,1"
-          "NIXOS_OZONE_WL,1"
-        ];
 
         systemd = {
           enable = true;
