@@ -69,10 +69,7 @@ in
           fi
         ''
         (mkBefore ''
-          [[ $- == *i* ]] && source ${pkgs.blesh}/share/blesh/ble.sh --noattach
-        '')
-        (mkAfter ''
-          [[ ! ''${BLE_VERSION-} ]] || ble-attach
+          [[ $- == *i* ]] && source ${pkgs.blesh}/share/blesh/ble.sh
         '')
       ];
     };
