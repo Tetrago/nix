@@ -102,6 +102,8 @@ in
       handbrake
       davinci-resolve
       parabolic # Video downloader
+      reco # Sound recorder
+      mousai # Song identifier
 
       # System
       bottles
