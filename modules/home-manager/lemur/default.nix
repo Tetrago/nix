@@ -119,7 +119,7 @@ in
         default = { };
       };
 
-      apply = mkOption {
+      activate = mkOption {
         type = types.attrsOf types.path;
         internal = true;
       };
@@ -327,7 +327,7 @@ in
 
         Service = {
           Type = "oneshot";
-          ExecStart = "${cfg.apply.${cfg.default.name}}";
+          ExecStart = "${cfg.activate.${cfg.default.name}}";
           RemainAfterExit = "no";
         };
 
@@ -336,7 +336,7 @@ in
         };
       };
 
-      lemur.apply = mapAttrs (_: v: v.activate) variant;
+      lemur.activate = mapAttrs (_: v: v.activate) variant;
 
       services = mkMerge [
         {
@@ -344,8 +344,8 @@ in
         }
         (mkIf cfg.darkman.enable {
           darkman = {
-            darkModeScripts.lemur = cfg.apply.${cfg.darkman.darkVariant};
-            lightModeScripts.lemur = cfg.apply.${cfg.darkman.lightVariant};
+            darkModeScripts.lemur = cfg.activate.${cfg.darkman.darkVariant};
+            lightModeScripts.lemur = cfg.activate.${cfg.darkman.lightVariant};
           };
         })
       ];
