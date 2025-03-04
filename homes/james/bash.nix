@@ -1,7 +1,17 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-  inherit (lib) getExe;
+  inherit (lib)
+    getExe
+    mkAfter
+    mkBefore
+    mkMerge
+    ;
 in
 {
   imports = [ ./starship.nix ];
@@ -20,7 +30,7 @@ in
   programs = {
     atuin = {
       enable = true;
-      enableBashIntegration = true;
+      enableBashIntegration = false; # Uses bash-preexec and not ble.sh
       flags = [ "--disable-up-arrow" ];
     };
 
@@ -51,6 +61,20 @@ in
         md = getExe glow;
         math = getExe numbat;
       };
+
+      initExtra = mkMerge [
+        ''
+          if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+            eval "$(${lib.getExe config.programs.atuin.package} init bash ${lib.escapeShellArgs config.programs.atuin.flags})"
+          fi
+        ''
+        (mkBefore ''
+          [[ $- == *i* ]] && source ${pkgs.blesh}/share/blesh/ble.sh --noattach
+        '')
+        (mkAfter ''
+          [[ ! ''${BLE_VERSION-} ]] || ble-attach
+        '')
+      ];
     };
 
     zoxide = {
