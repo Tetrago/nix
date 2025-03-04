@@ -5,10 +5,13 @@ import "./widget/VolumeIndicator";
 import BrightnessIndicator from "./widget/BrightnessIndicator";
 import VolumeIndicator from "./widget/VolumeIndicator";
 import NotificationPopup from "./widget/NotificationPopup";
+import { connectNotificationLog } from "./lib/SettingsWindow";
 
 App.start({
   css: style,
   main() {
+    connectNotificationLog();
+
     BrightnessIndicator();
     VolumeIndicator();
 

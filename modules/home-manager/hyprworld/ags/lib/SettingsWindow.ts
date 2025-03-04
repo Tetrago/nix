@@ -9,6 +9,14 @@ import NotificationRow from "./NotificationRow";
 const audio = Wp.get_default()!.audio;
 const notifd = Notifd.get_default();
 
+const log = new Set<number>();
+
+export function connectNotificationLog() {
+  notifd.connect("notified", (_, id) => {
+    log.add(id);
+  });
+}
+
 @register({ GTypeName: "SettingsWindow" })
 export default class SettingsWindow extends Adw.Window {
   static instance: SettingsWindow | undefined = undefined;
@@ -267,18 +275,26 @@ export default class SettingsWindow extends Adw.Window {
 
     const notifications = new Map<number, Gtk.Widget>();
 
+    function addNotification(id: number) {
+      const row = new NotificationRow(notifd.get_notification(id));
+
+      notifications.set(id, row);
+      list.prepend(row);
+    }
+
+    log.forEach(addNotification);
+
     clearButton.connect("clicked", () => {
       notifications.forEach((_, id) => notifd.get_notification(id)?.dismiss());
     });
 
     notifd.connect("notified", (_, id) => {
-      const row = new NotificationRow(notifd.get_notification(id));
-
-      notifications.set(id, row);
-      list.prepend(row);
+      addNotification(id);
     });
 
     notifd.connect("resolved", (_, id) => {
+      log.delete(id);
+
       const widget = notifications.get(id);
       if (widget !== undefined) {
         list.remove(widget);
