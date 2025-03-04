@@ -91,6 +91,7 @@ in
       nix-output-monitor
       ctop
       file
+      jq
       store
 
       # Media

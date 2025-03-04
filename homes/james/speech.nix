@@ -1,39 +1,26 @@
 { lib, pkgs, ... }:
 
 let
-  mkVoice =
-    {
-      name,
-      quality ? "medium",
-      onnxHash,
-      jsonHash,
-    }:
-    pkgs.stdenvNoCC.mkDerivation {
-      name = "piper-${name}-${quality}";
+  libritts_r = pkgs.stdenvNoCC.mkDerivation {
+    name = "piper-libritts_r-medium";
 
-      src1 = pkgs.fetchurl {
-        url = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/${name}/${quality}/en_US-${name}-${quality}.onnx";
-        sha256 = onnxHash;
-      };
-
-      src2 = pkgs.fetchurl {
-        url = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/${name}/${quality}/en_US-${name}-${quality}.onnx.json";
-        sha256 = jsonHash;
-      };
-
-      dontUnpack = true;
-
-      installPhase = ''
-        mkdir -p $out
-        cp $src1 $out/en_US-${name}-${quality}.onnx
-        cp $src2 $out/en_US-${name}-${quality}.onnx.json
-      '';
+    src1 = pkgs.fetchurl {
+      url = "https://huggingface.co/rhasspy/piper-voices/raw/293cad0539066f86e6bce3b9780c472cc9157489/en/en_US/libritts_r/medium/en_US-libritts_r-medium.onnx";
+      sha256 = "sha256-ELuF4HHWFvz0Bx82nxeZ0EkUkqs8XVUuwZ+1SPrBMZU=";
     };
 
-  libritts_r = mkVoice {
-    name = "libritts_r";
-    jsonHash = "sha256-tHHcYNLYM16BnDk9GW1vv3koF/QAUSV7Jph4UFvJr7M=";
-    onnxHash = "sha256-ELuF4HHWFvz0Bx82nxeZ0EkUkqs8XVUuwZ+1SPrBMZU=";
+    src2 = pkgs.fetchurl {
+      url = "https://huggingface.co/rhasspy/piper-voices/raw/293cad0539066f86e6bce3b9780c472cc9157489/en/en_US/libritts_r/medium/en_US-libritts_r-medium.onnx.json";
+      sha256 = "sha256-tHHcYNLYM16BnDk9GW1vv3koF/QAUSV7Jph4UFvJr7M=";
+    };
+
+    dontUnpack = true;
+
+    installPhase = ''
+      mkdir -p $out
+      cp $src1 $out/en_US-libritts_r-medium.onnx
+      cp $src2 $out/en_US-libritts_r-medium.onnx.json
+    '';
   };
 in
 {
