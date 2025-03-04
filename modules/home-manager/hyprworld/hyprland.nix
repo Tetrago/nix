@@ -59,7 +59,7 @@ in
           in
           [
             (mkExec "Return" "ghostty")
-            (mkExec "E" "nautilus")
+            (mkExec "E" "nautilus --new-window")
             (mkExec "L" "loginctl lock-session")
             (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
             (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))
@@ -252,8 +252,9 @@ in
                 "down"
               ];
 
-        environment = mkIf (config.hyprworld.globalScale != null) {
-          GDK_SCALE = config.hyprworld.globalScale;
+        environment = {
+          GDK_SCALE = mkIf (cfg.globalScale != null) cfg.globalScale;
+          QT_QPA_PLATFORMTHEME = "xdgdesktopportal";
         };
 
         windowRules = [
