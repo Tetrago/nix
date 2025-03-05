@@ -133,7 +133,6 @@ in
       gnome-calendar
       gnome-clocks
       chromium
-      kiwix
       mousam # Weather
       alpaca # Ollama chat
       gnome-graphs

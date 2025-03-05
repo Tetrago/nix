@@ -21,6 +21,7 @@ in
       core.excludesFile = "${gitignore}";
       credential.helper = "libsecret";
       init.defaultBranch = "develop";
+      diff.tool = "meld";
     };
   };
 }
