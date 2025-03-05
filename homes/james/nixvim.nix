@@ -118,10 +118,14 @@ in
         (mkAction "<C-k>" "Telescope live_grep")
         (mkAction "<C-i>" "Telescope lsp_references")
 
-        (mkAction "<C-t>" "Neotree position=current")
+        (mkAction "<C-t>" "Neotree toggle")
+        (mkAction "<C-S-t>" "Neotree position=current")
 
         (mkAction "-" "Oil")
         (mkAction "=" "ClangdSwitchSourceHeader")
+
+        (mkAction "<C-g>" "tabnew")
+        (mkAction "<C-x>" "tabclose")
       ]
       ++ [
         {
