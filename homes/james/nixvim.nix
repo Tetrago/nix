@@ -284,6 +284,7 @@ in
           taplo.enable = true;
           vhdl_ls.enable = true;
           vtsls.enable = true;
+          zls.enable = true;
 
           hls = {
             enable = true;
@@ -294,11 +295,6 @@ in
             enable = true;
             installCargo = false;
             installRustc = false;
-          };
-
-          zls = {
-            enable = true;
-            onAttach.function = "vim.g.zig_fmt_autosave = 0";
           };
         };
       };
