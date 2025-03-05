@@ -8,7 +8,6 @@
 let
   inherit (lib)
     getExe
-    mkAfter
     mkBefore
     mkMerge
     ;
@@ -51,7 +50,6 @@ in
         grep = "grep --color=auto";
         ip = "ip -color=auto";
         cat = "bat -Pu";
-        cd = "z";
         hx = getExe hexyl;
         cp = "cp -i";
         mv = "mv -i";
@@ -72,11 +70,6 @@ in
           [[ $- == *i* ]] && source ${pkgs.blesh}/share/blesh/ble.sh
         '')
       ];
-    };
-
-    zoxide = {
-      enable = true;
-      enableBashIntegration = true;
     };
 
     bat.enable = true;
