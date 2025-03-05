@@ -4,6 +4,7 @@
   bg-nvim = callPackage ./bg-nvim.nix { };
   binaryninja = callPackage ./binaryninja { };
   darkman-nvim = callPackage ./darkman-nvim.nix { };
+  gowall = callPackage ./gowall.nix { };
   kasasa = callPackage ./kasasa.nix { };
   renderdoc-x11 = callPackage ./renderdoc-x11.nix { };
   ropium = callPackage ./ropium.nix { };
