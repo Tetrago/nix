@@ -15,16 +15,22 @@ in
 {
   imports = [ ./starship.nix ];
 
-  home.packages = with pkgs; [
-    somo
-    scc
-    duf
-    dust
-    pastel
-    choose
-    bandwhich
-    tldr
-  ];
+  home = {
+    file.".blerc".text = ''
+      bleopt history_share=1
+    '';
+
+    packages = with pkgs; [
+      somo
+      scc
+      duf
+      dust
+      pastel
+      choose
+      bandwhich
+      tldr
+    ];
+  };
 
   programs = {
     atuin = {
