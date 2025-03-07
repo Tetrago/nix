@@ -46,10 +46,6 @@ in
 
   nixland.windowRules = [
     {
-      class = "com.vector35.binaryninja";
-      rules = "stayfocused";
-    }
-    {
       class = "ghidra-Ghidra";
       title = "Ghidra";
       rules = "size 0 0";
@@ -104,6 +100,7 @@ in
       parabolic # Video downloader
       reco # Sound recorder
       mousai # Song identifier
+      switcheroo # Image converter
 
       # System
       bottles
@@ -112,6 +109,7 @@ in
       inspector # System info
       resources # Resource viewier
       snoop # File search
+      gnome-system-monitor
 
       # Development
       meld
@@ -138,6 +136,7 @@ in
       gnome-graphs
       key-rack # Secrets tracker
       gnome-characters
+      sysprof
 
       # Games
       gnome-mines
@@ -148,11 +147,6 @@ in
   };
 
   programs = {
-    btop = {
-      enable = true;
-      settings.color_theme = "TTY";
-    };
-
     direnv = {
       enable = true;
       enableBashIntegration = true;

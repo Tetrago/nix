@@ -254,7 +254,7 @@ in
 
         environment = {
           GDK_SCALE = mkIf (cfg.globalScale != null) cfg.globalScale;
-          QT_QPA_PLATFORMTHEME = "xdgdesktopportal";
+          QT_QPA_PLATFORMTHEME = "gtk3";
         };
 
         windowRules = [
