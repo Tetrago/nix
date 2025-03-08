@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   outputs,
@@ -147,12 +148,31 @@ in
   };
 
   programs = {
+    beets = {
+      enable = true;
+      settings = {
+        library = "${config.xdg.userDirs.music}/.library.db";
+
+        paths = {
+          default = "$album/$title";
+          singleton = "$title/$title";
+        };
+
+        plugins = [
+          "fetchart"
+          "thumbnails"
+        ];
+      };
+    };
+
     direnv = {
       enable = true;
       enableBashIntegration = true;
       config.global.warn_timeout = "0";
       nix-direnv.enable = true;
     };
+
+    home-manager.enable = true;
 
     obs-studio = {
       enable = true;
@@ -164,8 +184,6 @@ in
       addKeysToAgent = "yes";
       matchBlocks."*".setEnv.TERM = "xterm-256color";
     };
-
-    home-manager.enable = true;
   };
 
   services = {
