@@ -56,6 +56,7 @@
   virtualisation.docker.enable = true;
 
   tetrago = {
+    audio.samplingRate = 96000;
     bluetooth.enable = true;
 
     boot = {
