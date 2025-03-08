@@ -33,6 +33,8 @@ in
     }
   ];
 
+  dconf.settings."com/github/neithern/g4music".peak-characters = "•";
+
   home.packages = with pkgs; [
     decibels
     exhibit
