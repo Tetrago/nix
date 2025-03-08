@@ -40,6 +40,7 @@ in
     exhibit
     file-roller
     g4music
+    gnome-font-viewer
     typora
   ];
 
@@ -228,6 +229,30 @@ in
               name = "Profile Manager";
             };
           };
+        };
+
+        gnome-fonts = {
+          name = "Fonts";
+          icon = "org.gnome.font-viewer";
+          exec = "gnome-font-viewer %u";
+          terminal = false;
+          type = "Application";
+          startupNotify = true;
+          categories = [
+            "GTK"
+            "GNOME"
+            "Utility"
+            "X-GNOME-Utilities"
+          ];
+          mimeType = [
+            "application/x-font-ttf"
+            "application/x-font-pcf"
+            "application/x-font-type1"
+            "application/x-font-otf"
+            "font/ttf"
+            "font/otf"
+            "font/woff"
+          ];
         };
 
         mpv = {
