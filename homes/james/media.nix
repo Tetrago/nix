@@ -61,6 +61,7 @@ in
 
         paths = {
           default = "$album/$title";
+          comp = "$album/$title";
           singleton = "$title/$title";
         };
 
