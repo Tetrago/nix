@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   outputs,
@@ -148,23 +147,6 @@ in
   };
 
   programs = {
-    beets = {
-      enable = true;
-      settings = {
-        library = "${config.xdg.userDirs.music}/.library.db";
-
-        paths = {
-          default = "$album/$title";
-          singleton = "$title/$title";
-        };
-
-        plugins = [
-          "fetchart"
-          "thumbnails"
-        ];
-      };
-    };
-
     direnv = {
       enable = true;
       enableBashIntegration = true;

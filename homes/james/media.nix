@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib.attrsets) mapAttrsToList genAttrs;
@@ -33,7 +38,11 @@ in
     }
   ];
 
-  dconf.settings."com/github/neithern/g4music".peak-characters = "•";
+  dconf.settings."com/github/neithern/g4music" = {
+    audio-sink = "pulsesink";
+    music-dir = "file://${config.xdg.userDirs.music}";
+    peak-characters = "•";
+  };
 
   home.packages = with pkgs; [
     decibels
@@ -45,6 +54,23 @@ in
   ];
 
   programs = {
+    beets = {
+      enable = true;
+      settings = {
+        library = "${config.xdg.userDirs.music}/.library.db";
+
+        paths = {
+          default = "$album/$title";
+          singleton = "$title/$title";
+        };
+
+        plugins = [
+          "fetchart"
+          "thumbnails"
+        ];
+      };
+    };
+
     feh = {
       enable = true;
 
