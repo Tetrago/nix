@@ -75,6 +75,10 @@ in
     homeDirectory = "/home/james";
 
     file = {
+      ".gdbinit".text = ''
+        alias -a disas = disassemble
+      '';
+
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
     };
@@ -119,6 +123,7 @@ in
       blockbench
       zeal
       ghex
+      inputs.pwndbg.packages.${stdenv.hostPlatform.system}.pwndbg
 
       # Tools
       binaryninja

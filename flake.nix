@@ -55,6 +55,11 @@
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    pwndbg = {
+      url = "github:pwndbg/pwndbg";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -117,6 +122,7 @@
         pkgs.callPackage ./devShells {
           inherit (pkgs) callPackage;
           inherit inputs;
+          inherit system;
         }
       );
 
