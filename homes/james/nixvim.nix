@@ -6,7 +6,6 @@
 }:
 
 let
-  inherit (lib) mapAttrsToList;
   inherit (lib.strings) concatStringsSep;
 in
 {
@@ -71,17 +70,7 @@ in
       require("dap.ext.vscode").load_launchjs()
     '';
 
-    colorschemes.nightfox = {
-      enable = true;
-      flavor = "carbonfox";
-      settings.options = {
-        styles = {
-          comments = "italic";
-          keyword = "bold";
-          types = "italic,bold";
-        };
-      };
-    };
+    colorschemes.catppuccin.enable = true;
 
     globals.mapleader = " ";
 
@@ -510,8 +499,8 @@ in
             require("darkman").setup({
               change_background = false,
               colorscheme = {
-                dark = "carbonfox",
-                light = "dayfox"
+                dark = "catppuccin-frappe",
+                light = "catppuccin-latte"
               }
             })
           '';

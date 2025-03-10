@@ -79,6 +79,15 @@ in
         alias -a disas = disassemble
       '';
 
+      ".binaryninja/themes".source = "${
+        pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "binary-ninja";
+          rev = "0cb1eae43c6cd615eafe74db923259e4f683ac04";
+          hash = "sha256-uFw098Z0D7lZTfl+QolX/JgRGKfE0FCsm6f7vNfzJUo=";
+        }
+      }/themes";
+
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
     };

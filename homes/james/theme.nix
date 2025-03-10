@@ -31,11 +31,12 @@
             tweaks = [
               "normal"
               "rimless"
+              "catppuccin"
             ];
           })
           nerd-fonts.ubuntu
           phinger-cursors
-          whitesur-icon-theme
+          colloid-icon-theme
         ];
       };
 
@@ -45,8 +46,8 @@
           size = 24;
         };
 
-        iconTheme.name = "WhiteSur-dark";
-        theme.name = "Colloid-Dark";
+        iconTheme.name = "Colloid-Dark";
+        theme.name = "Colloid-Dark-Catppuccin";
 
         scripts = ''
           hyprctl setcursor phinger-cursors-dark 24
@@ -59,8 +60,8 @@
           size = 24;
         };
 
-        iconTheme.name = "WhiteSur-light";
-        theme.name = "Colloid-Light";
+        iconTheme.name = "Colloid-Light";
+        theme.name = "Colloid-Light-Catppuccin";
 
         scripts = ''
           hyprctl setcursor phinger-cursors-light 24

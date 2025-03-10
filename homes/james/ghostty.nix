@@ -1,44 +1,9 @@
 {
-  config,
   inputs,
   pkgs,
   ...
 }:
 
-let
-  makeTheme = colors: {
-    background = colors.base00;
-    foreground = colors.base05;
-
-    selection-background = colors.base02;
-    selection-foreground = colors.base00;
-
-    palette = [
-      "0=#${colors.base00}"
-      "1=#${colors.base08}"
-      "2=#${colors.base0B}"
-      "3=#${colors.base0A}"
-      "4=#${colors.base0D}"
-      "5=#${colors.base0E}"
-      "6=#${colors.base0C}"
-      "7=#${colors.base05}"
-      "8=#${colors.base03}"
-      "9=#${colors.base08}"
-      "10=#${colors.base0B}"
-      "11=#${colors.base0A}"
-      "12=#${colors.base0D}"
-      "13=#${colors.base0E}"
-      "14=#${colors.base0C}"
-      "15=#${colors.base07}"
-      "16=#${colors.base09}"
-      "17=#${colors.base0F}"
-      "18=#${colors.base01}"
-      "19=#${colors.base02}"
-      "20=#${colors.base04}"
-      "21=#${colors.base06}"
-    ];
-  };
-in
 {
   programs.ghostty = {
     enable = true;
@@ -46,13 +11,8 @@ in
     clearDefaultKeybinds = true;
     package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-    themes = {
-      base16-dark = makeTheme config.colors.dark;
-      base16-light = makeTheme config.colors.light;
-    };
-
     settings = {
-      theme = "dark:base16-dark,light:base16-light";
+      theme = "dark:catppuccin-frappe,light:catppuccin-latte";
 
       font-family = "Monaspace Neon";
       font-family-italic = "Monaspace Radon";
