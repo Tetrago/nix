@@ -1,5 +1,14 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
+let
+  inherit (builtins) attrValues length;
+  inherit (lib) mkIf;
+in
 {
   imports = [
     inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
@@ -78,21 +87,6 @@
       };
 
       nixland = {
-        binds = [
-          {
-            super = false;
-            flags = "locked";
-            trigger = "switch:on:Lid Switch";
-            action.exec = ''hyprctl keyword monitor "${config.nixland.monitorRules."eDP-1"}"'';
-          }
-          {
-            super = false;
-            flags = "locked";
-            trigger = "switch:off:Lid Switch";
-            action.exec = ''hyprctl keyword monitor "eDP-1, disable"'';
-          }
-        ];
-
         monitor = {
           "" = { };
           "eDP-1" = {
@@ -100,7 +94,9 @@
               width = 2256;
               height = 1504;
             };
+
             scale = 1.3333;
+            switch = "Lid Switch";
           };
         };
       };

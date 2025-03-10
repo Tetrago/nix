@@ -1,8 +1,19 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
-  inherit (builtins) isString;
-  inherit (lib) mkIf mkOption types;
+  inherit (builtins) attrValues isString;
+  inherit (lib)
+    getExe
+    mkIf
+    mkMerge
+    mkOption
+    types
+    ;
   inherit (lib.attrsets) filterAttrs mapAttrs mapAttrsToList;
   inherit (lib.strings) concatStringsSep optionalString;
 
@@ -65,6 +76,31 @@ let
     extra = mkOption {
       type = listOf str;
       default = [ ];
+    };
+
+    switch = mkOption {
+      type =
+        with types;
+        coercedTo str (x: { name = x; }) (submodule {
+          options = {
+            enable = mkOption {
+              type = bool;
+              default = true;
+            };
+
+            name = mkOption {
+              type = str;
+            };
+
+            invert = mkOption {
+              type = bool;
+              default = false;
+            };
+          };
+        });
+      default = {
+        enable = false;
+      };
     };
   };
 
@@ -142,6 +178,23 @@ in
     in
     mkIf cfg.enable {
       nixland = {
+        binds =
+          let
+            monitors = filterAttrs (_: v: v.enable && v.switch.enable) cfg.monitor;
+          in
+          mapAttrsToList (n: v: {
+            super = false;
+            trigger = "switch:${if v.switch.invert then "no" else "yes"}:${v.switch.name}";
+            flags = "locked";
+            action.exec = ''["$(hyprctl monitors -j | ${getExe pkgs.jq} 'length')" -gt 1 ] && hyprctl keyword monitor "${n},disable"'';
+          }) monitors
+          ++ mapAttrsToList (n: v: {
+            super = false;
+            trigger = "switch:${if v.switch.invert then "yes" else "no"}:${v.switch.name}";
+            flags = "locked";
+            action.exec = ''hyprctl keyword monitor "${n},${config.nixland.monitorRules.${n}}"'';
+          }) monitors;
+
         monitorRules = mapAttrs (n: v: "${n},${writeMonitor v}") cfg.monitor;
 
         workspaceRules = mapAttrsToList writeWorkspaceRule (
@@ -149,6 +202,6 @@ in
         );
       };
 
-      wayland.windowManager.hyprland.settings.monitor = mapAttrsToList (_: v: v) cfg.monitorRules;
+      wayland.windowManager.hyprland.settings.monitor = attrValues cfg.monitorRules;
     };
 }
