@@ -98,6 +98,7 @@
         hyprworld = import ./modules/home-manager/hyprworld;
         lemur = import ./modules/home-manager/lemur;
         nixland = import ./modules/home-manager/nixland;
+        polymorph = import ./modules/home-manager/polymorph;
       };
 
       nixosModules = {
