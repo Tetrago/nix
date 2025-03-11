@@ -1040,6 +1040,21 @@
         "type": "github"
       }
     },
+    "polymorph": {
+      "locked": {
+        "lastModified": 1741668341,
+        "narHash": "sha256-byOMbw4LBG1NeP09+a+L/+voHWE4GfuBMr40xvTh6UY=",
+        "owner": "tetrago",
+        "repo": "polymorph",
+        "rev": "fe12824ccf323f207e6488d9041a1ee96b6611c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tetrago",
+        "repo": "polymorph",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -1181,6 +1196,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
         "nixvim": "nixvim",
+        "polymorph": "polymorph",
         "pwndbg": "pwndbg"
       }
     },

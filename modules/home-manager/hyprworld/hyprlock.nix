@@ -1,12 +1,10 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 let
-  inherit (builtins) isString;
   inherit (lib) mkIf mkOption types;
 in
 {
@@ -21,32 +19,10 @@ in
   config =
     let
       cfg = config.hyprworld;
-      imagePath =
-        if (cfg.lockscreen.background != null) then
-          cfg.lockscreen.background
-        else
-          (if isString cfg.wallpaper then cfg.wallpaper else cfg.wallpaper.dark);
-
-      colors = import (
-        pkgs.stdenvNoCC.mkDerivation {
-          name = "hyprlock-colorscheme";
-          nativeBuildInputs = with pkgs; [ flavours ];
-          dontUnpack = true;
-
-          buildPhase = ''
-            echo "{" > ./colors.txt
-            flavours generate dark "${imagePath}" --stdout | tail -n +4 | sed 's/: "\?\(......\)"\?/ = "\1";/' >> ./colors.txt
-            echo "}" >> ./colors.txt
-          '';
-
-          installPhase = ''
-            mkdir -p $out
-            cp ./colors.txt $out/default.nix
-          '';
-        }
-      );
     in
     mkIf cfg.enable {
+      polymorph.file = [ "${config.xdg.configHome}/hypr/hyprlock.conf" ];
+
       programs.hyprlock = {
         enable = true;
         settings = {
@@ -64,7 +40,7 @@ in
           label = [
             {
               text = ''cmd[update:1000] echo "$(date +"%-I:%M %p")"'';
-              color = "rgb(#${colors.base05})";
+              color = "rgb(#{{ .colors.base05 }})";
               font_size = 120;
               position = "0, 100";
               halign = "center";
@@ -80,16 +56,16 @@ in
               dots_spacing = 0.15;
               dots_center = false;
               dots_rounding = -1;
-              outer_color = "rgb(${colors.base05})";
-              inner_color = "rgb(${colors.base00})";
-              font_color = "rgb(${colors.base05})";
+              outer_color = "rgb(#{{ .colors.base05 }})";
+              inner_color = "rgb(#{{ .colors.base00 }})";
+              font_color = "rgb(#{{ .colors.base05 }})";
               fade_on_empty = true;
               fade_timeout = 1000;
               placeholder_text = "";
               hide_input = false;
               rounding = -1;
-              check_color = "rgb(${colors.base07})";
-              fail_color = "rgb(${colors.base06})";
+              check_color = "rgb(#{{ .colors.base07 }})";
+              fail_color = "rgb(#{{ .colors.base06 }})";
               fail_text = "";
               fail_transition = 300;
 

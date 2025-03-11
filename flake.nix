@@ -3,6 +3,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
 
+    polymorph.url = "github:tetrago/polymorph";
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -98,7 +100,6 @@
         hyprworld = import ./modules/home-manager/hyprworld;
         lemur = import ./modules/home-manager/lemur;
         nixland = import ./modules/home-manager/nixland;
-        polymorph = import ./modules/home-manager/polymorph;
       };
 
       nixosModules = {
