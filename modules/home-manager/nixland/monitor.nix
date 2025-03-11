@@ -10,7 +10,6 @@ let
   inherit (lib)
     getExe
     mkIf
-    mkMerge
     mkOption
     types
     ;
@@ -149,21 +148,18 @@ let
 in
 {
   options.nixland = {
+    autoConnect = mkOption {
+      type = types.bool;
+      description = "Whether or not to connect attached monitors";
+      default = false;
+    };
+
     monitor = mkOption {
       type = types.attrsOf (
         types.submodule {
           inherit options;
         }
       );
-      example = {
-        "" = { };
-        "eDP-1" = {
-          size = {
-            width = 1920;
-            height = 1080;
-          };
-        };
-      };
     };
 
     monitorRules = mkOption {
@@ -194,6 +190,10 @@ in
             flags = "locked";
             action.exec = ''hyprctl keyword monitor "${n},${config.nixland.monitorRules.${n}}"'';
           }) monitors;
+
+        monitor = mkIf cfg.autoConnect {
+          "" = { };
+        };
 
         monitorRules = mapAttrs (n: v: "${n},${writeMonitor v}") cfg.monitor;
 

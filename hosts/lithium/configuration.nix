@@ -87,8 +87,9 @@ in
       };
 
       nixland = {
+        autoConnect = true;
+
         monitor = {
-          "" = { };
           "eDP-1" = {
             size = {
               width = 2256;
