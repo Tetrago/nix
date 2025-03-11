@@ -1,11 +1,12 @@
 {
+  config,
+  inputs,
   pkgs,
-  outputs,
   ...
 }:
 
 {
-  imports = [ outputs.homeManagerModules.lemur ];
+  imports = [ inputs.polymorph.homeManagerModules.theme ];
 
   home = {
     packages = with pkgs; [
@@ -13,14 +14,27 @@
     ];
   };
 
-  lemur = {
-    enable = true;
-
+  polymorph = {
     darkman.enable = true;
-    default.name = "dark";
 
-    variant = {
-      default = {
+    morph =
+      let
+        hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+      in
+      {
+        dark = {
+          follows = "common";
+          extraScripts = "${hyprctl} setcursor phinger-cursors-dark 24";
+        };
+
+        light = {
+          follows = "common";
+          extraScripts = "${hyprctl} setcursor phinger-cursors-light 24";
+        };
+      };
+
+    theme = {
+      common = {
         font = {
           name = "Ubuntu Nerd Font";
           size = 11;
@@ -48,10 +62,6 @@
 
         iconTheme.name = "Colloid-Dark";
         theme.name = "Colloid-Dark-Catppuccin";
-
-        scripts = ''
-          hyprctl setcursor phinger-cursors-dark 24
-        '';
       };
 
       light = {
@@ -62,10 +72,6 @@
 
         iconTheme.name = "Colloid-Light";
         theme.name = "Colloid-Light-Catppuccin";
-
-        scripts = ''
-          hyprctl setcursor phinger-cursors-light 24
-        '';
       };
     };
   };

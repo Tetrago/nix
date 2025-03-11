@@ -60,8 +60,8 @@ in
         default = "dark";
 
         morph = {
-          dark.settings.colors = import (mkColors images.dark "dark");
-          light.settings.colors = import (mkColors images.light "light");
+          dark.context.colors = import (mkColors images.dark "dark");
+          light.context.colors = import (mkColors images.light "light");
         };
       };
 
