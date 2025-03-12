@@ -1,4 +1,9 @@
-{ outputs, pkgs, ... }:
+{
+  inputs,
+  outputs,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -24,7 +29,10 @@
   ];
 
   nixpkgs = {
-    overlays = [ outputs.overlays.default ];
+    overlays = [
+      outputs.overlays.default
+      inputs.emacs-overlay.overlays.default
+    ];
     config.allowUnfree = true;
   };
 

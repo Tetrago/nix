@@ -1,0 +1,111 @@
+* Configuration
+
+** Interface
+
+*** Elements
+
+    #+begin_src emacs-lisp :tangle yes
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1)
+
+    (setq mouse-wheel-scroll-amount '(2 ((shift) . 10) ((control) . nil))
+          mouse-wheel-progressive-speed nil)
+    #+end_src
+
+*** Font
+
+    #+begin_src emacs-lisp :tangle yes
+    (set-face-attribute 'default nil :family "Emacs Font" :height 110)
+    (set-face-attribute 'bold nil :family "Emacs Font" :weight 'bold :height 110)
+    (set-face-attribute 'italic nil :family "Emacs Font" :slant 'italic :height 110)
+    (set-face-attribute 'bold-italic nil :family "Emacs Font" :slant 'italic :weight 'bold :height 110)
+    #+end_src
+
+*** Theme
+
+    #+begin_src emacs-lisp :tangle yes
+    (use-package catppuccin-theme
+      :config
+      (load-theme 'catppuccin :no-confirm))
+
+    (use-package auto-dark
+      :after (catppuccin-theme)
+      :hook
+      (auto-dark-dark-mode
+       . (lambda ()
+           (setq catppuccin-flavor 'frappe)
+           (catppuccin-reload)
+           ))
+      (auto-dark-light-mode
+       . (lambda ()
+           (setq catppuccin-flavor 'latte)
+           (catppuccin-reload)
+           ))
+      :config
+      (auto-dark-mode 1))
+    #+end_src
+
+*** Org Mode
+
+    #+begin_src emacs-lisp :tangle yes
+    (setq org-adapt-indentation t
+          org-hide-leading-stars t
+          org-pretty-entities t
+          org-ellipsis "  ·")
+
+    (setq org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 0)
+
+    (use-package org-appear
+      :commands (org-appear-mode)
+      :hook (org-mode . org-appear-mode)
+      :config
+      (setq org-hide-emphasis-markers t
+      	org-appear-autoemphasis t
+      	org-appear-autolinks t
+      	org-appear-autosubmarkers t))
+
+    (use-package org-superstar
+      :config
+      (setq org-superstar-leading-bullet " "
+      	org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇")
+      	org-superstar-special-todo-items t)
+      :hook (org-mode . org-superstar-mode))
+
+    #+end_src
+
+** Plugins
+
+*** Evil Mode
+
+    #+begin_src emacs-lisp :tangle yes
+    (use-package evil
+      :init
+      (setq evil-want-keybinding nil)
+      :config
+      (evil-mode 1))
+
+    (use-package evil-collection
+      :after (evil)
+      :config
+      (evil-collection-init))
+    #+end_src
+
+*** Dirvish
+
+    #+begin_src emacs-lisp :tangle yes
+    (use-package dirvish
+      :config
+      (dirvish-override-dired-mode 1))
+    #+end_src
+
+** Binds
+
+   #+begin_src emacs-lisp :tangle yes
+   (use-package general
+     :config
+     (general-define-key :states 'normal
+   		      "-" 'dirvish))
+   #+end_src

@@ -18,6 +18,7 @@
     nix-colors.url = "github:misterio77/nix-colors";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim.url = "github:nix-community/nixvim";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     hyprland.url = "github:hyprwm/Hyprland";
 

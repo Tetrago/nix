@@ -25,6 +25,7 @@ in
     ./bash.nix
     ./colors.nix
     ./discord.nix
+    ./emacs
     ./firefox.nix
     ./git.nix
     ./ghostty.nix
