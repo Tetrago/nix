@@ -64,10 +64,5 @@ in
           light.context.colors = import (mkColors images.light "light");
         };
       };
-
-      xdg.dataFile = {
-        "dark-mode.d/polymorph".source = config.polymorph.activate.dark;
-        "light-mode.d/polymorph".source = config.polymorph.activate.light;
-      };
     };
 }

@@ -101,9 +101,9 @@ in
       (mkIf (!(isPath cfg.wallpaper)) {
         systemd.user.services.swww.Service.ExecStartPost = "${setWallpaper}";
 
-        services.darkman = {
-          darkModeScripts.wallpaper = setDarkWallpaper;
-          lightModeScripts.wallpaper = setLightWallpaper;
+        polymorph.morph = {
+          dark.extraScripts = setDarkWallpaper;
+          light.extraScripts = setLightWallpaper;
         };
       })
     ]);
