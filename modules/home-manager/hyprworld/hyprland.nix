@@ -309,6 +309,21 @@ in
 
       wayland.windowManager.hyprland = {
         settings = {
+          bezier = [
+            "wkr, 0.4, 0.0, 0.2, 1.0"
+            "wnd, 0.16, 1, 0.3, 1"
+          ];
+
+          animation = [
+            "fade, 1, 4, default"
+            "fadeSwitch, 1, 5, default"
+            "fadeShadow, 1, 5, default"
+            "fadeDim, 1, 5, default"
+            "windows, 1, 6, wnd, slide"
+            "workspaces, 1, 6, wkr, slide"
+            "specialWorkspace, 1, 6, wkr, slidevert"
+          ];
+
           exec-once = [
             "wl-paste --type text --watch ${getExe pkgs.cliphist} store"
             "wl-paste --type image --watch ${getExe pkgs.cliphist} store"
@@ -363,7 +378,13 @@ in
             disable_hyprland_logo = true;
             disable_splash_rendering = true;
             new_window_takes_over_fullscreen = 2;
+            middle_click_paste = false;
             vfr = true;
+          };
+
+          ecosystem = {
+            no_update_news = true;
+            no_donation_nag = true;
           };
 
           layerrule = [
