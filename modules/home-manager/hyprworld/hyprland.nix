@@ -2,7 +2,6 @@
   config,
   inputs,
   lib,
-  outputs,
   pkgs,
   ...
 }:
@@ -20,7 +19,6 @@ in
 {
   imports = [
     inputs.hyprland.homeManagerModules.default
-    outputs.homeManagerModules.nixland
   ];
 
   options.hyprworld = {

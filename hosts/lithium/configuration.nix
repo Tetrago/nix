@@ -6,8 +6,7 @@
 }:
 
 let
-  inherit (builtins) attrValues length;
-  inherit (lib) mkIf;
+  inherit (lib) mkForce;
 in
 {
   imports = [
@@ -117,8 +116,8 @@ in
       };
 
       wayland.windowManager.hyprland.settings.decoration = {
-        blur.enabled = false;
-        shadow.enabled = false;
+        blur.enabled = mkForce false;
+        shadow.enabled = mkForce false;
       };
     };
 

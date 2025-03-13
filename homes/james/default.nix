@@ -1,7 +1,11 @@
-{ ... }:
+{ inputs, outputs, ... }:
 
 {
   imports = [
+    inputs.polymorph.homeManagerModules.default
+    inputs.polymorph.homeManagerModules.theme
+    outputs.homeManagerModules.nixland
+
     ./bash.nix
     ./discord.nix
     ./emacs

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -34,8 +33,6 @@ let
     };
 in
 {
-  imports = [ inputs.polymorph.homeManagerModules.default ];
-
   config =
     let
       cfg = config.hyprworld;

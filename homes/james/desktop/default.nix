@@ -15,6 +15,7 @@ let
 in
 {
   imports = [
+    outputs.homeManagerModules.default
     outputs.homeManagerModules.james
     outputs.homeManagerModules.hyprworld
   ];

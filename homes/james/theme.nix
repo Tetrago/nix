@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -10,8 +9,6 @@ let
   inherit (lib) mkEnableOption mkIf;
 in
 {
-  imports = [ inputs.polymorph.homeManagerModules.theme ];
-
   options.james.theme = {
     enable = mkEnableOption "polymorph theme configuration.";
   };
