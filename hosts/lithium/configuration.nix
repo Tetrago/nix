@@ -115,6 +115,11 @@ in
           fps = 60;
         };
       };
+
+      wayland.windowManager.hyprland.settings.decoration = {
+        blur.enabled = false;
+        shadow.enabled = false;
+      };
     };
 
   system.stateVersion = "23.11";
