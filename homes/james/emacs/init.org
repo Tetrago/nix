@@ -26,11 +26,12 @@
 
     #+begin_src emacs-lisp :tangle yes
     (use-package catppuccin-theme
+      :after (auto-dark)
       :config
+      (setq catppuccin-flavor (if (auto-dark--is-dark-mode-dbus) 'frappe 'latte))
       (load-theme 'catppuccin :no-confirm))
 
     (use-package auto-dark
-      :after (catppuccin-theme)
       :hook
       (auto-dark-dark-mode
        . (lambda ()
