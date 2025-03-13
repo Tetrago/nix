@@ -6,6 +6,7 @@
 }:
 
 let
+  inherit (builtins) isInt;
   inherit (lib)
     mkEnableOption
     mkIf
@@ -14,6 +15,29 @@ let
     ;
   inherit (lib.lists) allUnique optional optionals;
   inherit (lib.strings) concatStringsSep;
+
+  framebufferType =
+    with types;
+    submodule {
+      options = {
+        width = mkOption { type = ints.positive; };
+        height = mkOption { type = ints.positive; };
+
+        depth = mkOption {
+          type = coercedTo (enum [
+            "sdr"
+            "hdr"
+          ]) (x: if x == "sdr" then 4 else 8) ints.positive;
+          default = "sdr";
+        };
+      };
+    };
+
+  findFramebufferSizeMb =
+    let
+      nextPow2 = acc: x: if acc >= x then acc else nextPow2 (acc * 2) x;
+    in
+    fb: nextPow2 1 (fb.width * fb.height * fb.depth * 2 / 1024 / 1024 + 10);
 in
 {
   options.tetrago.virtualization = {
@@ -39,10 +63,9 @@ in
       enable = mkEnableOption "kvmfr.";
 
       sizes = mkOption {
-        type = with types; listOf ints.positive;
+        type = with types; listOf (either framebufferType ints.positive);
+        apply = map (x: if isInt x then x else findFramebufferSizeMb x);
         default = [ ];
-        example = [ 32 ];
-        description = "Next power of 2 from (width * height * depth * 2 / 1024 / 1024 + 10) where depth is 4 for sdr and 8 for HDR.";
       };
     };
 

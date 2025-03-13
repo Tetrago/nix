@@ -91,7 +91,12 @@
 
       kvmfr = {
         enable = true;
-        sizes = [ 32 ];
+        sizes = [
+          {
+            width = 2560;
+            height = 1440;
+          }
+        ];
       };
     };
   };
