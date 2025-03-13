@@ -100,6 +100,7 @@
         default = import ./modules/home-manager;
         hyprworld = import ./modules/home-manager/hyprworld;
         nixland = import ./modules/home-manager/nixland;
+        nixvim = import ./homes/james/nixvim.nix;
       };
 
       nixosModules = {
