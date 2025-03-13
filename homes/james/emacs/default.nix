@@ -1,6 +1,13 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
+  inherit (lib) mkEnableOption mkIf;
+
   font = pkgs.stdenvNoCC.mkDerivation {
     name = "emacs-font";
     dontUnpack = true;
@@ -46,12 +53,22 @@ let
   };
 in
 {
-  home.packages = [
-    font
-    (pkgs.emacsWithPackagesFromUsePackage {
-      config = ./init.org;
-      defaultInitFile = true;
-      alwaysEnsure = true;
-    })
-  ];
+  options.james.emacs = {
+    enable = mkEnableOption "emacs configuration.";
+  };
+
+  config =
+    let
+      cfg = config.james.emacs;
+    in
+    mkIf cfg.enable {
+      home.packages = [
+        font
+        (pkgs.emacsWithPackagesFromUsePackage {
+          config = ./init.org;
+          defaultInitFile = true;
+          alwaysEnsure = true;
+        })
+      ];
+    };
 }

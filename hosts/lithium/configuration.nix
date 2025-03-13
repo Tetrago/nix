@@ -80,7 +80,7 @@ in
   home-manager.users.james =
     { config, outputs, ... }:
     {
-      imports = [ outputs.homeManagerModules.james ];
+      imports = [ (import ../../homes/james/desktop) ];
 
       tetrago = {
         steam.enable = true;

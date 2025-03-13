@@ -104,7 +104,7 @@
   home-manager.users.james =
     { outputs, ... }:
     {
-      imports = [ outputs.homeManagerModules.james ];
+      imports = [ (import ../../homes/james/desktop) ];
 
       home.packages =
         let

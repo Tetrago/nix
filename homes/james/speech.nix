@@ -1,6 +1,13 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
+  inherit (lib) mkEnableOption mkIf;
+
   libritts_r = pkgs.stdenvNoCC.mkDerivation {
     name = "piper-libritts_r-medium";
 
@@ -30,15 +37,25 @@ let
   };
 in
 {
-  xdg.configFile = {
-    "speech-dispatcher/speechd.conf".text = ''
-      AddModule "piper-tts-generic" "sd_generic" "piper-tts-generic.conf"
-    '';
-
-    "speech-dispatcher/modules/piper-tts-generic.conf".text = ''
-      GenericExecuteSynth "export XDATA=\'$DATA\'; echo \"$XDATA\" | sed -z 's/\\n/ /g' | ${lib.getExe pkgs.piper-tts} -q -m ${libritts_r}/en_US-libritts_r-medium.onnx -s 0 -f - | mpv --volume=80 --no-terminal --keep-open=no -"
-
-      AddVoice "en-US" "MALE1"   "en_US-lessac-medium"
-    '';
+  options.james.speech = {
+    enable = mkEnableOption "speech engine configuration";
   };
+
+  config =
+    let
+      cfg = config.james.speech;
+    in
+    mkIf cfg.enable {
+      xdg.configFile = {
+        "speech-dispatcher/speechd.conf".text = ''
+          AddModule "piper-tts-generic" "sd_generic" "piper-tts-generic.conf"
+        '';
+
+        "speech-dispatcher/modules/piper-tts-generic.conf".text = ''
+          GenericExecuteSynth "export XDATA=\'$DATA\'; echo \"$XDATA\" | sed -z 's/\\n/ /g' | ${lib.getExe pkgs.piper-tts} -q -m ${libritts_r}/en_US-libritts_r-medium.onnx -s 0 -f - | mpv --volume=80 --no-terminal --keep-open=no -"
+
+          AddVoice "en-US" "MALE1"   "en_US-lessac-medium"
+        '';
+      };
+    };
 }
