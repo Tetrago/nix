@@ -59,17 +59,62 @@
       theme = {
         name = "sddm-astronaut-theme";
         package = pkgs.sddm-astronaut.override {
-          themeConfig = {
-            Font = "Ubuntu Sans";
-            HourFormat = "hh:mm AP";
-            DateFormat = "dddd, MMMM d";
-            Background = pkgs.fetchurl {
-              url = "https://raw.githubusercontent.com/vinceliuice/WhiteSur-wallpapers/3a24624d04aedc638e042a1de81238b95b46a342/Wallpaper-nord/WhiteSur-nord-light.png";
-              sha256 = "sha256-jcX00tiPje0YGe38y0Vr0FA5Mg21XpHYp4m6ptx2iAw=";
+          themeConfig =
+            let
+              path = ./sddm.jpg;
+              colors = import (
+                outputs.lib.mkColors {
+                  inherit pkgs path;
+                  style = "light";
+                }
+              );
+            in
+            {
+              Font = "Ubuntu Sans";
+              HourFormat = "hh:mm AP";
+              DateFormat = "dddd, MMMM d";
+              Background = "${path}";
+              DimBackground = "0.3";
+              PartialBlur = "false";
+
+              HeaderTextColor = "#${colors.base05}";
+              DateTextColor = "#${colors.base05}";
+              TimeTextColor = "#${colors.base05}";
+
+              FormBackgroundColor = "#${colors.base00}";
+              BackgroundColor = "#${colors.base00}";
+              DimBackgroundColor = "#${colors.base00}";
+
+              LoginFieldBackgroundColor = "#${colors.base01}";
+              PasswordFieldBackgroundColor = "#${colors.base01}";
+              LoginFieldTextColor = "#${colors.base05}";
+              PasswordFieldTextColor = "#${colors.base05}";
+              UserIconColor = "#${colors.base05}";
+              PasswordIconColor = "#${colors.base05}";
+
+              PlaceholderTextColor = "#${colors.base04}";
+              WarningColor = "#${colors.base02}";
+
+              LoginButtonTextColor = "#${colors.base05}";
+              LoginButtonBackgroundColor = "#${colors.base02}";
+              SystemButtonsIconsColor = "#${colors.base06}";
+              SessionButtonTextColor = "#${colors.base06}";
+              VirtualKeyboardButtonTextColor = "#${colors.base06}";
+
+              DropdownTextColor = "#${colors.base05}";
+              DropdownSelectedBackgroundColor = "#${colors.base02}";
+              DropdownBackgroundColor = "#${colors.base00}";
+
+              HighlightTextColor = "#${colors.base04}";
+              HighlightBackgroundColor = "#${colors.base02}";
+              HighlightBorderColor = "#${colors.base02}";
+
+              HoverUserIconColor = "#${colors.base0D}";
+              HoverPasswordIconColor = "#${colors.base0D}";
+              HoverSystemButtonsIconsColor = "#${colors.base0D}";
+              HoverSessionButtonTextColor = "#${colors.base0D}";
+              HoverVirtualKeyboardButtonTextColor = "#${colors.base0D}";
             };
-            DimBackground = "0.3";
-            PartialBlur = "false";
-          };
         };
         extraPackages = with pkgs.kdePackages; [
           qtmultimedia

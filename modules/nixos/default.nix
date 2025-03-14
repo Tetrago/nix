@@ -12,7 +12,6 @@
     ./boot.nix
     ./fonts.nix
     ./graphics.nix
-    ./greetd.nix
     ./hyprland.nix
     ./networking.nix
     ./plymouth.nix

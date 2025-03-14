@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  outputs,
   pkgs,
   ...
 }:
@@ -8,29 +9,6 @@
 let
   inherit (builtins) isString;
   inherit (lib) mkIf;
-
-  mkColors =
-    path: style:
-    pkgs.stdenvNoCC.mkDerivation {
-      name = "hyprworld-colors-${path}-${style}";
-
-      dontUnpack = true;
-
-      nativeBuildInputs = with pkgs; [
-        flavours
-      ];
-
-      buildPhase = ''
-        echo "{" > ./colors.txt
-        flavours generate ${style} "${path}" --stdout | tail -n +4 | sed 's/: "\?\(......\)"\?/ = "\1";/' >> ./colors.txt
-        echo "}" >> ./colors.txt
-      '';
-
-      installPhase = ''
-        mkdir -p $out
-        cp ./colors.txt $out/default.nix
-      '';
-    };
 in
 {
   config =
@@ -57,8 +35,20 @@ in
         default = "dark";
 
         morph = {
-          dark.context.colors = import (mkColors images.dark "dark");
-          light.context.colors = import (mkColors images.light "light");
+          dark.context.colors = import (
+            outputs.lib.mkColors {
+              inherit pkgs;
+              path = images.dark;
+            }
+          );
+
+          light.context.colors = import (
+            outputs.lib.mkColors {
+              inherit pkgs;
+              path = images.light;
+              style = "light";
+            }
+          );
         };
       };
     };
