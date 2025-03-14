@@ -8,7 +8,7 @@
 
     ./bash.nix
     ./discord.nix
-    ./emacs
+    ./emacs.nix
     ./firefox.nix
     ./git.nix
     ./media.nix

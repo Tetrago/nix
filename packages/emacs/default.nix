@@ -1,13 +1,9 @@
 {
-  config,
-  lib,
+  inputs,
   pkgs,
-  ...
 }:
 
 let
-  inherit (lib) mkEnableOption mkIf;
-
   font = pkgs.stdenvNoCC.mkDerivation {
     name = "emacs-font";
     dontUnpack = true;
@@ -51,24 +47,31 @@ let
       cp ./EmacsFont-* $out/share/fonts/opentype
     '';
   };
-in
-{
-  options.james.emacs = {
-    enable = mkEnableOption "emacs configuration.";
-  };
 
-  config =
-    let
-      cfg = config.james.emacs;
-    in
-    mkIf cfg.enable {
-      home.packages = [
-        font
-        (pkgs.emacsWithPackagesFromUsePackage {
-          config = ./init.org;
-          defaultInitFile = true;
-          alwaysEnsure = true;
-        })
-      ];
-    };
+  emacs =
+    inputs.emacs-overlay.lib.${pkgs.stdenv.hostPlatform.system}.emacsWithPackagesFromUsePackage
+      {
+        config = ./init.org;
+        defaultInitFile = true;
+        alwaysEnsure = true;
+
+        extraEmacsPackages =
+          epkgs: with epkgs; [
+            goto-chg
+          ];
+      };
+in
+pkgs.stdenvNoCC.mkDerivation {
+  name = "emacs";
+  dontUnpack = true;
+
+  nativeBuildInputs = with pkgs; [
+    makeWrapper
+  ];
+
+  installPhase = ''
+    mkdir -p $out/bin
+    makeWrapper ${emacs}/bin/emacs $out/bin/emacs \
+      --prefix XDG_DATA_DIRS : "${font}/share"
+  '';
 }

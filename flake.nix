@@ -135,8 +135,19 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          pkgs' = import nixpkgs {
+            inherit system;
+            overlays = [ outputs.overlays.default ];
+          };
         in
         pkgs.callPackage ./packages { inherit (pkgs) callPackage; }
+        // {
+          emacs = import ./packages/emacs { inherit inputs pkgs; };
+          nvim = import ./packages/nvim {
+            inherit inputs;
+            pkgs = pkgs';
+          };
+        }
       );
     };
 }

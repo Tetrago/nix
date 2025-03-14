@@ -155,3 +155,27 @@
       :init
       (marginalia-mode 1))
     #+end_src
+
+*** Corfu
+
+    #+begin_src emacs-lisp :tangle yes
+    (use-package corfu
+      :init
+      (global-corfu-mode 1))
+
+    (use-package emacs
+      :custom
+      (tab-always-indent 'complete)
+      (text-mode-ispell-word-completion nil)
+      (read-extended-command-predicate #'command-completion-default-include-p))
+    #+end_src
+
+*** Cape
+
+    #+begin_src emacs-lisp :tangle yes
+    (use-package cape
+      :init
+      (add-hook 'completion-at-point-functions #'cape-dabbrev)
+      (add-hook 'completion-at-point-functions #'cape-file)
+      (add-hook 'completion-at-point-functions #'cape-elisp-block))
+    #+end_src

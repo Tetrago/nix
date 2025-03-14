@@ -17,4 +17,6 @@ buildPythonPackage rec {
   ];
 
   propagatedBuildInputs = [ pyyaml ];
+
+  meta.mainProgram = "vsg";
 }
