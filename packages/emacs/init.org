@@ -22,10 +22,26 @@
 *** Font
 
     #+begin_src emacs-lisp :tangle yes
-    (set-face-attribute 'default nil :family "Emacs Font" :height 110)
-    (set-face-attribute 'bold nil :family "Emacs Font" :weight 'bold :height 110)
-    (set-face-attribute 'italic nil :family "Emacs Font" :slant 'italic :height 110)
-    (set-face-attribute 'bold-italic nil :family "Emacs Font" :slant 'italic :weight 'bold :height 110)
+    (set-face-attribute 'default nil :family "Monaspace Neon Frozen" :height 110)
+    (set-face-attribute 'bold nil :family "Monaspace Neon Frozen" :weight 'bold :height 110)
+    (set-face-attribute 'italic nil :family "Monaspace Radon Frozen" :slant 'italic :height 110)
+    (set-face-attribute 'bold-italic nil :family "Monaspace Radon Frozen" :slant 'italic :weight 'bold :height 110)
+    #+end_src
+
+*** Ligatures
+
+    #+begin_src emacs-lisp :tangle yes
+    (use-package ligature
+      :config
+      (ligature-set-ligatures 'prog-mode '("===" "!==" "=!=" "=/=" "/==" "/=" "#=" "==" "!=" "~~" "=~" "!~"
+    				       ">=" "<="
+    				       "<-->" "<->" "<!--" "<--" "-->" "<-" "->" "<~>" "<~~" "~~>" "<~" "~>"
+    				       "</" "/>" "</>" "<>"
+    				       "-:-" "=:=" ":>:" ":<:" "::>" "<::" "::" ":::"
+    				       "..=" "..-" "..<" ".=" ".-"
+    				       "<=>" "<<=" "=>>" "=<<" ">>=" "=>" "<<" ">>"
+    				       "..." "///" "//" "!!" "||" ";;"))
+      (global-ligature-mode 1))
     #+end_src
 
 *** Theme
@@ -110,7 +126,7 @@
     #+end_src
 
 ** Completion
-    
+
 *** Vertico
 
     #+begin_src emacs-lisp :tangle yes
