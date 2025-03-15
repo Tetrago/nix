@@ -88,10 +88,5 @@ in
       home.packages = with pkgs; [
         monaspace
       ];
-
-      xdg.mimeApps = {
-        enable = true;
-        defaultApplications."application/x-terminal-emulator" = "ghostty.desktop";
-      };
     };
 }

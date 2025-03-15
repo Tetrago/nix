@@ -86,7 +86,7 @@ in
       };
 
       nixland = {
-        autoConnect = true;
+        #autoConnect = true;
 
         monitor = {
           "eDP-1" = {
@@ -97,6 +97,44 @@ in
 
             scale = 1.3333;
             switch = "Lid Switch";
+          };
+
+          "DP-7" = {
+            size = {
+              width = 2560;
+              height = 1440;
+            };
+
+            refreshRate = 120;
+
+            position = {
+              x = 0;
+              y = 0;
+            };
+          };
+
+          "DP-6" = {
+            size = {
+              width = 1920;
+              height = 1080;
+            };
+
+            position = {
+              x = 2560;
+              y = 0;
+            };
+          };
+
+          "DP-5" = {
+            size = {
+              width = 1920;
+              height = 1080;
+            };
+
+            position = {
+              x = -1920;
+              y = 0;
+            };
           };
         };
       };

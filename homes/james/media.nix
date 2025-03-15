@@ -91,13 +91,6 @@ in
               type = "Application";
               exec = "org.gnome.Decibels %U";
               icon = "org.gnome.Decibels";
-              categories = [
-                "GNOME"
-                "GTK"
-                "Music"
-                "Audio"
-                "AudioVideo"
-              ];
               startupNotify = true;
               terminal = false;
               noDisplay = true;
@@ -147,14 +140,6 @@ in
               type = "Application";
               exec = "exhibit %U";
               icon = "io.github.nokse22.Exhibit";
-              categories = [
-                "GTK"
-                "Graphics"
-                "Science"
-                "3DGraphics"
-                "Viewer"
-                "GNOME"
-              ];
               startupNotify = true;
               terminal = false;
               noDisplay = true;
@@ -247,12 +232,7 @@ in
               terminal = false;
               type = "Application";
               startupNotify = true;
-              categories = [
-                "GTK"
-                "GNOME"
-                "Utility"
-                "X-GNOME-Utilities"
-              ];
+              noDisplay = true;
               mimeType = [
                 "application/x-font-ttf"
                 "application/x-font-pcf"
@@ -379,18 +359,28 @@ in
 
             neovim = {
               name = "Neovim";
-              exec = "ghostty -e nvim %f";
-              terminal = false;
+              exec = "nvim %F";
+              terminal = true;
               icon = "nvim";
               noDisplay = true;
               mimeType = [
+                "text/english"
                 "text/plain"
-                "text/html"
-                "text/css"
-                "application/xml"
-                "application/json"
+                "text/x-makefile"
+                "text/x-c++hdr"
+                "text/x-c++src"
+                "text/x-chdr"
+                "text/x-csrc"
+                "text/x-java"
+                "text/x-moc"
+                "text/x-pascal"
+                "text/x-tcl"
+                "text/x-tex"
+                "application/x-shellscript"
+                "text/x-c"
+                "text/x-c++"
               ];
-              startupNotify = true;
+              startupNotify = false;
             };
           };
         in

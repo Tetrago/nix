@@ -175,6 +175,10 @@ in
       aisleriot
     ];
 
+    sessionVariables = {
+      TERMINAL = "ghostty";
+    };
+
     stateVersion = "23.11";
   };
 
