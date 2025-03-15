@@ -84,9 +84,10 @@ in
     homeDirectory = "/home/james";
 
     file = {
-      ".gdbinit".text = ''
-        alias -a disas = disassemble
-      '';
+      ".gdbinit".source = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/616ed5100d3588bb70e3b86737ac0609ce0635cc/.gdbinit";
+        hash = "sha256-cLpH7t/oK8iFOfDnfnWw3oLGegYnNEb5vI8M7FGI7ic=";
+      };
 
       ".binaryninja/themes".source = "${
         pkgs.fetchFromGitHub {

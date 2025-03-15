@@ -2,6 +2,8 @@
   lib,
   mkShell,
   stdenv,
+  stdenvNoCC,
+  makeWrapper,
   burpsuite,
   binaryninja,
   binutils,
@@ -62,6 +64,22 @@ let
       chmod +x $NAME.py
     '')
   ];
+
+  debugger = stdenvNoCC.mkDerivation {
+    name = "debugger";
+    dontUnpack = true;
+
+    nativeBuildInputs = [
+      makeWrapper
+    ];
+
+    installPhase = ''
+      mkdir -p $out/bin
+      makeWrapper ${pwndbg}/bin/pwndbg $out/bin/debugger \
+        --add-flags "--nh" \
+        --add-flags "-ex 'alias -a disas = disassemble'"
+    '';
+  };
 in
 mkShell {
   name = "cyber";
@@ -75,7 +93,7 @@ mkShell {
       p: with p; [
         numpy
         pillow
-        (pwntools.override { debugger = pwndbg; })
+        (pwntools.override { inherit debugger; })
         pycryptodome
         impacket
       ]
@@ -85,7 +103,7 @@ mkShell {
     binwalk
     strace
     ltrace
-    pwndbg
+    debugger
     rp
     radare2
     ghidra-bin
