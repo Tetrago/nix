@@ -34,8 +34,7 @@ in
 
               wondervim = {
                 enable = true;
-                transparent = true;
-                enableDarkmanIntegration = true;
+                inherit (cfg) transparent enableDarkmanIntegration;
               };
             };
         })
