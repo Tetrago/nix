@@ -15,9 +15,9 @@ App.start({
     BrightnessIndicator();
     VolumeIndicator();
 
-    Array.from({ length: App.get_monitors().length }, (_, i) => i).map((id) => {
-      Bar(id);
-      NotificationPopup(id);
+    App.get_monitors().map((monitor) => {
+      Bar(monitor);
+      NotificationPopup(monitor);
     });
   },
 });

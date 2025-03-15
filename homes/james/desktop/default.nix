@@ -171,6 +171,7 @@ in
       # Games
       gnome-mines
       gnome-sudoku
+      aisleriot
     ];
 
     stateVersion = "23.11";

@@ -1,17 +1,20 @@
 import { timeout } from "astal";
-import { App, Astal, Gtk, hook } from "astal/gtk4";
+import { App, Astal, Gdk, Gtk, hook } from "astal/gtk4";
 import Hyprland from "gi://AstalHyprland";
 import Notifd from "gi://AstalNotifd";
 import Notification from "./Notification";
+import { getHyprlandID } from "../lib/lib";
 
 const hyprland = Hyprland.get_default();
 const notifd = Notifd.get_default();
 
-export default function NotificationPopup(monitor: number) {
+export default function NotificationPopup(monitor: Gdk.Monitor) {
+  const id = getHyprlandID(monitor);
+
   return (
     <window
       namespace={"notification-popup"}
-      monitor={monitor}
+      gdkmonitor={monitor}
       anchor={Astal.WindowAnchor.TOP}
       application={App}
       cssClasses={["Notification"]}
@@ -56,7 +59,7 @@ export default function NotificationPopup(monitor: number) {
         }
 
         hook(self, notifd, "notified", (_, id: number) => {
-          if (hyprland.get_focused_monitor().get_id() === monitor) {
+          if (hyprland.get_focused_monitor().get_id() === id) {
             queue.push(id);
 
             if (queue.length === 1) {

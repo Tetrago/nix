@@ -322,10 +322,29 @@ in
             "specialWorkspace, 1, 6, wkr, slidevert"
           ];
 
-          exec-once = [
-            "wl-paste --type text --watch ${getExe pkgs.cliphist} store"
-            "wl-paste --type image --watch ${getExe pkgs.cliphist} store"
-          ];
+          exec-once =
+            let
+              socat = getExe pkgs.socat;
+              swww = getExe cfg.swww.package;
+            in
+            [
+              (pkgs.writeShellScript "hyprworld-swww-watch" ''
+                ${socat} -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | grep --line-buffered -Po 'monitoradded>>\K.*' | while read -r monitor; do
+                    until ${swww} query | grep -q "$monitor"; do
+                        sleep 0.1
+                    done
+
+                    ${swww} img -o "$monitor" --transition-type none "$(${swww} query | head -1 | cut -d' ' -f8)"
+                done
+              '')
+              (pkgs.writeShellScript "hyprworld-ags-watch" ''
+                ${socat} -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | grep --line-buffered -E 'monitor(added|removed)' | while read -r _; do
+                  systemctl --user restart ags.service
+                done
+              '')
+              "wl-paste --type text --watch ${getExe pkgs.cliphist} store"
+              "wl-paste --type image --watch ${getExe pkgs.cliphist} store"
+            ];
 
           master = {
             new_status = "master";

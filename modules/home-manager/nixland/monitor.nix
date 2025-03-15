@@ -180,15 +180,15 @@ in
           in
           mapAttrsToList (n: v: {
             super = false;
-            trigger = "switch:${if v.switch.invert then "no" else "yes"}:${v.switch.name}";
+            trigger = "switch:${if v.switch.invert then "off" else "on"}:${v.switch.name}";
             flags = "locked";
-            action.exec = ''["$(hyprctl monitors -j | ${getExe pkgs.jq} 'length')" -gt 1 ] && hyprctl keyword monitor "${n},disable"'';
+            action.exec = ''sh -c '[ "$(hyprctl monitors -j | ${getExe pkgs.jq} length)" -gt 1 ] && hyprctl keyword monitor "${n},disable"' '';
           }) monitors
           ++ mapAttrsToList (n: v: {
             super = false;
-            trigger = "switch:${if v.switch.invert then "yes" else "no"}:${v.switch.name}";
+            trigger = "switch:${if v.switch.invert then "on" else "off"}:${v.switch.name}";
             flags = "locked";
-            action.exec = ''hyprctl keyword monitor "${n},${config.nixland.monitorRules.${n}}"'';
+            action.exec = "hyprctl keyword monitor ${config.nixland.monitorRules.${n}}";
           }) monitors;
 
         monitor = mkIf cfg.autoConnect {
@@ -202,6 +202,18 @@ in
         );
       };
 
-      wayland.windowManager.hyprland.settings.monitor = attrValues cfg.monitorRules;
+      wayland.windowManager.hyprland.settings = {
+        exec =
+          let
+            script = pkgs.writeShellScript "nixland-lid-switch" ''
+              if grep -q closed /proc/acpi/button/lid/*/state ; then
+                hyprctl keyword monitor "$1,disable"
+              fi
+            '';
+          in
+          mapAttrsToList (n: _: "${script} ${n}") (filterAttrs (_: v: v.switch.enable) cfg.monitor);
+
+        monitor = attrValues cfg.monitorRules;
+      };
     };
 }
