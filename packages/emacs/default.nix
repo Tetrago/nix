@@ -14,8 +14,10 @@ let
     inputs.emacs-overlay.lib.${pkgs.stdenv.hostPlatform.system}.emacsWithPackagesFromUsePackage
       {
         config = ./init.org;
-        defaultInitFile = true;
+
         alwaysEnsure = true;
+        alwaysTangle = true;
+        defaultInitFile = true;
 
         extraEmacsPackages =
           epkgs: with epkgs; [

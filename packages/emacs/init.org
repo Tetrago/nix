@@ -1,8 +1,10 @@
 * Configuration
 
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
 ** Essential
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package general)
 #+end_src
 
@@ -10,7 +12,7 @@
 
 *** Elements
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -21,7 +23,7 @@
 
 *** Font
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (set-face-attribute 'default nil :family "Monaspace Neon Frozen" :height 110)
 (set-face-attribute 'bold nil :family "Monaspace Neon Frozen" :weight 'bold :height 110)
 (set-face-attribute 'italic nil :family "Monaspace Radon Frozen" :slant 'italic :height 110)
@@ -30,7 +32,7 @@
 
 *** Ligatures
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (require 'calt)
 
 (use-package ligature
@@ -49,7 +51,7 @@
 
 *** Theme
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package catppuccin-theme
   :after (auto-dark)
   :init
@@ -74,7 +76,7 @@
 
 *** Org Mode
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package org
   :custom
   (org-src-preserve-indentation nil)
@@ -90,12 +92,11 @@
 
 *** Evil Mode
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package evil
-  :custom
-  (evil-undo-system 'undo-redo)
   :init
-  (setq evil-want-keybinding nil)
+  (setq evil-want-keybinding nil
+	evil-undo-system 'undo-redo)
   (evil-mode 1))
 
 (use-package evil-collection
@@ -106,7 +107,7 @@
 
 *** Dirvish
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package dirvish
   :general
   (:states 'normal "-" 'dirvish)
@@ -116,7 +117,7 @@
 
 *** Which Key
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package which-key
   :config
   (which-key-mode 1))
@@ -126,7 +127,7 @@
 
 *** Vertico
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package vertico
   :init
   (vertico-mode 1))
@@ -141,7 +142,7 @@
 
 *** Orderless
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
@@ -151,7 +152,7 @@
 
 *** Consult
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package consult
   :init
   (advice-add #'register-preview :override #'consult-register-window)
@@ -163,7 +164,7 @@
 
 *** Marginalia
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package marginalia
   :init
   (marginalia-mode 1))
@@ -171,7 +172,7 @@
 
 *** Corfu
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package corfu
   :custom
   (corfu-cycle t)
@@ -192,14 +193,14 @@
   (read-extended-command-predicate #'command-completion-default-include-p))
 #+end_src
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package corfu-candidate-overlay
   :after (corfu)
   :config
   (corfu-candidate-overlay-mode 1))
 #+end_src
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package kind-icon
   :after (corfu)
   :config
@@ -208,7 +209,7 @@
 
 *** Cape
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package cape
   :init
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
@@ -218,9 +219,26 @@
 
 ** Languages
 
+#+begin_src emacs-lisp
+(defvar lsp-hooks '(c-mode
+		    c++-mode))
+#+end_src
+
+*** Rust
+
+#+begin_src emacs-lisp
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t)
+  :hook ((rust-mode . (lambda () (setq indent-tabs-mode nil)))
+	 (rust-mode . prettify-symbols-mode)))
+
+(add-to-list 'lsp-hooks 'rust-mode)
+#+end_src
+
 *** LSP
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (require 'lsp)
 
 (use-package lsp-mode
@@ -228,14 +246,13 @@
   (load-lsp)
   :custom
   (lsp-keymap-prefix "C-c l")
-  :hook ((c-mode . lsp)
-	 (c++-mode . lsp)
-	 (lsp-mode . lsp-enable-which-key-integration)))
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
+	 ,@(mapcar (lambda (mode) (cons mode 'lsp)) lsp-hooks))
+  :commands lsp)
 
 (use-package lsp-ui
-  :custom
-  (lsp-ui-sideline-show-diagnostics t)
-  (lsp-ui-sideline-show-hover t)
-  :commands
-  lsp-ui-mode)
+  :init
+  (setq lsp-ui-sideline-show-diagnostics t
+	lsp-ui-sideline-show-hover t)
+  :commands lsp-ui-mode)
 #+end_src
