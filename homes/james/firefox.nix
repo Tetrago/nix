@@ -7,11 +7,6 @@
 
 let
   inherit (lib) mkIf mkEnableOption;
-
-  theme = pkgs.whitesur-firefox-theme.override {
-    themeName = "Monterey";
-    variant = "adaptive";
-  };
 in
 {
   options.james.firefox = {
@@ -68,11 +63,20 @@ in
           };
         };
 
-        profiles.default = {
-          inherit (theme) settings;
+        profiles.default.settings = {
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          "svg.context-properties.content.enabled" = true;
+          "browser.uidensity" = 0;
+          "browser.theme.dark-private-windows" = false;
+          "widget.gtk.rounded-bottom-corners.enabled" = true;
         };
       };
 
-      home.file.".mozilla/firefox/default/chrome".source = theme.package;
+      home.file.".mozilla/firefox/default/chrome".source = pkgs.fetchFromGitHub {
+        owner = "rafaelmardojai";
+        repo = "firefox-gnome-theme";
+        rev = "v136";
+        hash = "sha256-1+NdJ67l7M/LG91Tn7ebInBS/HwOpjty+LQJK99PoH0=";
+      };
     };
 }

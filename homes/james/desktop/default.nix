@@ -128,7 +128,7 @@ in
       # System
       bottles
       qemu
-      remmina
+      gnome-connections
       inspector # System info
       resources # Resource viewier
       snoop # File search

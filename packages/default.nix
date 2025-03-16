@@ -12,5 +12,4 @@
   sliver = callPackage ./sliver.nix { };
   somo = callPackage ./somo.nix { };
   vsg = callPackage ./vsg.nix { };
-  whitesur-firefox-theme = callPackage ./whitesur-firefox-theme.nix { };
 }
