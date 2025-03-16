@@ -27,9 +27,7 @@ export default function Tray() {
                 }
               }}
             >
-              <image
-                iconName={bind(item, "gicon").as((value) => value.to_string()!)}
-              />
+              {bind(item, "gicon").as((icon) => Gtk.Image.new_from_gicon(icon))}
             </menubutton>
           </Gtk.AspectFrame>
         )),
