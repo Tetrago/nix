@@ -4,6 +4,10 @@
 }:
 
 let
+  calt = pkgs.callPackage ./calt.nix {
+    font = "${pkgs.monaspace}/share/fonts/opentype/MonaspaceArgon-Regular.otf";
+  };
+
   emacs =
     inputs.emacs-overlay.lib.${pkgs.stdenv.hostPlatform.system}.emacsWithPackagesFromUsePackage
       {
@@ -13,6 +17,7 @@ let
 
         extraEmacsPackages =
           epkgs: with epkgs; [
+            calt
             goto-chg
           ];
       };
