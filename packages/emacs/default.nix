@@ -8,6 +8,8 @@ let
     font = "${pkgs.monaspace}/share/fonts/opentype/MonaspaceArgon-Regular.otf";
   };
 
+  lsp = pkgs.callPackage ./lsp.nix { };
+
   emacs =
     inputs.emacs-overlay.lib.${pkgs.stdenv.hostPlatform.system}.emacsWithPackagesFromUsePackage
       {
@@ -18,7 +20,14 @@ let
         extraEmacsPackages =
           epkgs: with epkgs; [
             calt
+            f
             goto-chg
+            ht
+            lsp
+            lv
+            markdown-mode
+            s
+            spinner
           ];
       };
 in

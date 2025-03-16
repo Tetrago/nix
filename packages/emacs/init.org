@@ -2,199 +2,240 @@
 
 ** Essential
 
-   #+begin_src emacs-lisp :tangle yes
-   (use-package general)
-   #+end_src
+#+begin_src emacs-lisp :tangle yes
+(use-package general)
+#+end_src
 
 ** Interface
 
 *** Elements
 
-    #+begin_src emacs-lisp :tangle yes
-    (tool-bar-mode -1)
-    (menu-bar-mode -1)
-    (scroll-bar-mode -1)
+#+begin_src emacs-lisp :tangle yes
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
 
-    (setq mouse-wheel-scroll-amount '(2 ((shift) . 10) ((control) . nil))
-          mouse-wheel-progressive-speed nil)
-    #+end_src
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 10) ((control) . nil))
+      mouse-wheel-progressive-speed nil)
+#+end_src
 
 *** Font
 
-    #+begin_src emacs-lisp :tangle yes
-    (set-face-attribute 'default nil :family "Monaspace Neon Frozen" :height 110)
-    (set-face-attribute 'bold nil :family "Monaspace Neon Frozen" :weight 'bold :height 110)
-    (set-face-attribute 'italic nil :family "Monaspace Radon Frozen" :slant 'italic :height 110)
-    (set-face-attribute 'bold-italic nil :family "Monaspace Radon Frozen" :slant 'italic :weight 'bold :height 110)
-    #+end_src
+#+begin_src emacs-lisp :tangle yes
+(set-face-attribute 'default nil :family "Monaspace Neon Frozen" :height 110)
+(set-face-attribute 'bold nil :family "Monaspace Neon Frozen" :weight 'bold :height 110)
+(set-face-attribute 'italic nil :family "Monaspace Radon Frozen" :slant 'italic :height 110)
+(set-face-attribute 'bold-italic nil :family "Monaspace Radon Frozen" :slant 'italic :weight 'bold :height 110)
+#+end_src
 
 *** Ligatures
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package calt)
+#+begin_src emacs-lisp :tangle yes
+(require 'calt)
 
-    (use-package ligature
-      :config
-      (ligature-set-ligatures 'prog-mode (append '("===" "!==" "=!=" "=/=" "/==" "/=" "#=" "==" "!=" "~~" "=~" "!~"
-    					       ">=" "<="
-    					       "<-->" "<->" "<!--" "<--" "-->" "<-" "->" "<~>" "<~~" "~~>" "<~" "~>"
-    					       "</" "/>" "</>" "<>"
-    					       "-:-" "=:=" ":>:" ":<:" "::>" "<::" "::" ":::"
-    					       "..=" "..-" "..<" ".=" ".-"
-    					       "<=>" "<<=" "=>>" "=<<" ">>=" "=>" "<<" ">>"
-    					       "..." "///" "//" "!!" "||" ";;")
-    					     (calt-ligatures)))
-      (global-ligature-mode 1))
-    #+end_src
+(use-package ligature
+  :config
+  (ligature-set-ligatures 't (calt-ligatures))
+  (ligature-set-ligatures 'prog-mode '("===" "!==" "=!=" "=/=" "/==" "/=" "#=" "==" "!=" "~~" "=~" "!~"
+					       ">=" "<="
+					       "<-->" "<->" "<!--" "<--" "-->" "<-" "->" "<~>" "<~~" "~~>" "<~" "~>"
+					       "</" "/>" "</>" "<>"
+					       "-:-" "=:=" ":>:" ":<:" "::>" "<::" "::" ":::"
+					       "..=" "..-" "..<" ".=" ".-"
+					       "<=>" "<<=" "=>>" "=<<" ">>=" "=>" "<<" ">>"
+					       "..." "///" "//" "!!" "||" ";;"))
+  (global-ligature-mode 1))
+#+end_src
 
 *** Theme
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package catppuccin-theme
-      :after (auto-dark)
-      :init
-      (setq catppuccin-flavor (if (auto-dark--is-dark-mode-dbus) 'frappe 'latte))
-      (load-theme 'catppuccin :no-confirm))
+#+begin_src emacs-lisp :tangle yes
+(use-package catppuccin-theme
+  :after (auto-dark)
+  :init
+  (setq catppuccin-flavor (if (auto-dark--is-dark-mode-dbus) 'frappe 'latte))
+  (load-theme 'catppuccin :no-confirm))
 
-    (use-package auto-dark
-      :hook
-      (auto-dark-dark-mode
-       . (lambda ()
-           (setq catppuccin-flavor 'frappe)
-           (catppuccin-reload)
-           ))
-      (auto-dark-light-mode
-       . (lambda ()
-           (setq catppuccin-flavor 'latte)
-           (catppuccin-reload)
-           ))
-      :init
-      (auto-dark-mode 1))
-    #+end_src
+(use-package auto-dark
+  :hook
+  (auto-dark-dark-mode
+   . (lambda ()
+       (setq catppuccin-flavor 'frappe)
+       (catppuccin-reload)
+       ))
+  (auto-dark-light-mode
+   . (lambda ()
+       (setq catppuccin-flavor 'latte)
+       (catppuccin-reload)
+       ))
+  :init
+  (auto-dark-mode 1))
+#+end_src
 
 *** Org Mode
 
-    #+begin_src emacs-lisp :tangle yes
-    (setq org-adapt-indentation t
-          org-hide-leading-stars t
-          org-pretty-entities t
-          org-ellipsis "  ·")
+#+begin_src emacs-lisp :tangle yes
+(use-package org
+  :custom
+  (org-src-preserve-indentation nil)
+  (org-edit-src-content-indentation 0))
 
-    (setq org-src-fontify-natively t
-          org-src-tab-acts-natively t
-          org-edit-src-content-indentation 0)
-
-    (use-package org-appear
-      :commands (org-appear-mode)
-      :hook (org-mode . org-appear-mode)
-      :config
-      (setq org-hide-emphasis-markers t
-      	org-appear-autoemphasis t
-      	org-appear-autolinks t
-      	org-appear-autosubmarkers t))
-
-    (use-package org-superstar
-      :config
-      (setq org-superstar-leading-bullet " "
-      	org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇")
-      	org-superstar-special-todo-items t)
-      :hook (org-mode . org-superstar-mode))
-
-    #+end_src
+(use-package org-modern
+  :custom
+  (org-modern-star 'replace)
+  :hook (org-mode . org-modern-mode))
+#+end_src
 
 ** Workflow
 
 *** Evil Mode
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package evil
-      :init
-      (setq evil-want-keybinding nil)
-      (evil-mode 1))
+#+begin_src emacs-lisp :tangle yes
+(use-package evil
+  :custom
+  (evil-undo-system 'undo-redo)
+  :init
+  (setq evil-want-keybinding nil)
+  (evil-mode 1))
 
-    (use-package evil-collection
-      :after (evil)
-      :init
-      (evil-collection-init))
-    #+end_src
+(use-package evil-collection
+  :after (evil)
+  :init
+  (evil-collection-init))
+#+end_src
 
 *** Dirvish
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package dirvish
-      :general
-      (:states 'normal "-" 'dirvish)
-      :init
-      (dirvish-override-dired-mode 1))
-    #+end_src
+#+begin_src emacs-lisp :tangle yes
+(use-package dirvish
+  :general
+  (:states 'normal "-" 'dirvish)
+  :init
+  (dirvish-override-dired-mode 1))
+#+end_src
+
+*** Which Key
+
+#+begin_src emacs-lisp :tangle yes
+(use-package which-key
+  :config
+  (which-key-mode 1))
+#+end_src
 
 ** Completion
 
 *** Vertico
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package vertico
-      :init
-      (vertico-mode 1))
+#+begin_src emacs-lisp :tangle yes
+(use-package vertico
+  :init
+  (vertico-mode 1))
 
-    (use-package emacs
-      :custom
-      (enable-recursive-minibuffers t)
-      (read-extended-command-predicate #'command-completion-default-include-p)
-      (minibuffer-prompt-properties
-       '(read-only t cursor-intangible t face minibuffer-prompt)))
-    #+end_src
+(use-package emacs
+  :custom
+  (enable-recursive-minibuffers t)
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt)))
+#+end_src
 
 *** Orderless
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package orderless
-      :custom
-      (completion-styles '(orderless basic))
-      (completion-category-defaults nil)
-      (completion-category-overrides '((file (styles partial-completion)))))
-    #+end_src
+#+begin_src emacs-lisp :tangle yes
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
 
 *** Consult
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package consult
-      :init
-      (advice-add #'register-preview :override #'consult-register-window)
-      (setq register-preview-delay 0.5)
+#+begin_src emacs-lisp :tangle yes
+(use-package consult
+  :init
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq register-preview-delay 0.5)
 
-      (setq xref-show-xrefs-function #'consult-xref
-            xref-show-definitions-function #'consult-xref))
-    #+end_src
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
+#+end_src
 
 *** Marginalia
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package marginalia
-      :init
-      (marginalia-mode 1))
-    #+end_src
+#+begin_src emacs-lisp :tangle yes
+(use-package marginalia
+  :init
+  (marginalia-mode 1))
+#+end_src
 
 *** Corfu
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package corfu
-      :init
-      (global-corfu-mode 1))
+#+begin_src emacs-lisp :tangle yes
+(use-package corfu
+  :custom
+  (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  :bind
+  (:map corfu-map
+	("TAB" . corfu-next)
+	([tab] . corfu-next)
+	("S-TAB" . corfu-previous)
+	([backtab] . corfu-previous))
+  :init
+  (global-corfu-mode 1))
 
-    (use-package emacs
-      :custom
-      (tab-always-indent 'complete)
-      (text-mode-ispell-word-completion nil)
-      (read-extended-command-predicate #'command-completion-default-include-p))
-    #+end_src
+(use-package emacs
+  :custom
+  (tab-always-indent 'complete)
+  (text-mode-ispell-word-completion nil)
+  (read-extended-command-predicate #'command-completion-default-include-p))
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+(use-package corfu-candidate-overlay
+  :after (corfu)
+  :config
+  (corfu-candidate-overlay-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+(use-package kind-icon
+  :after (corfu)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
 
 *** Cape
 
-    #+begin_src emacs-lisp :tangle yes
-    (use-package cape
-      :init
-      (add-hook 'completion-at-point-functions #'cape-dabbrev)
-      (add-hook 'completion-at-point-functions #'cape-file)
-      (add-hook 'completion-at-point-functions #'cape-elisp-block))
-    #+end_src
+#+begin_src emacs-lisp :tangle yes
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
+#+end_src
+
+** Languages
+
+*** LSP
+
+#+begin_src emacs-lisp :tangle yes
+(require 'lsp)
+
+(use-package lsp-mode
+  :config
+  (load-lsp)
+  :custom
+  (lsp-keymap-prefix "C-c l")
+  :hook ((c-mode . lsp)
+	 (c++-mode . lsp)
+	 (lsp-mode . lsp-enable-which-key-integration)))
+
+(use-package lsp-ui
+  :custom
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-hover t)
+  :commands
+  lsp-ui-mode)
+#+end_src
