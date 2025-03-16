@@ -77,7 +77,13 @@ in
         require("dap.ext.vscode").load_launchjs()
       '';
 
-      colorschemes.catppuccin.enable = true;
+      colorschemes.catppuccin = {
+        enable = true;
+        settings.background = {
+          dark = "frappe";
+          light = "latte";
+        };
+      };
 
       globals.mapleader = " ";
 
@@ -498,17 +504,7 @@ in
         (mkIf cfg.transparent pkgs.bg-nvim)
         (mkIf cfg.enableDarkmanIntegration {
           plugin = pkgs.darkman-nvim;
-          config = ''
-            lua<<EOF
-            require("darkman").setup({
-              change_background = false,
-              colorscheme = {
-                dark = "catppuccin-frappe",
-                light = "catppuccin-latte"
-              }
-            })
-            EOF
-          '';
+          config = "lua require('darkman').setup({ change_background = true })";
         })
       ];
     };
