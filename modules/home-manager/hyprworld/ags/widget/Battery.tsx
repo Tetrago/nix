@@ -6,7 +6,16 @@ const battery = AstalBattery.get_default();
 export default function Battery() {
   return (
     <box
-      visible={bind(battery, "isBattery")}
+      visible={bind(
+        Variable.derive(
+          [
+            bind(battery, "isBattery"),
+            bind(battery, "energy"),
+            bind(battery, "energyFull"),
+          ],
+          (isBattery, energy, full) => isBattery && energy < full,
+        ),
+      )}
       tooltipMarkup={bind(battery, "percentage").as(
         (value: number) => `${Math.floor(value * 100)}%`,
       )}
