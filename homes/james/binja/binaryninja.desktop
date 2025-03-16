@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Binary Ninja
+Exec=binaryninja %u
+Terminal=false
+Type=Application
+MimeType=application/x-binaryninja;x-scheme-handler/binaryninja
+Categories=Utility
+Comment=Binary Ninja: A Reverse Engineering Platform
+Icon=binaryninja

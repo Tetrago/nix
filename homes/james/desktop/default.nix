@@ -89,15 +89,6 @@ in
         hash = "sha256-cLpH7t/oK8iFOfDnfnWw3oLGegYnNEb5vI8M7FGI7ic=";
       };
 
-      ".binaryninja/themes".source = "${
-        pkgs.fetchFromGitHub {
-          owner = "catppuccin";
-          repo = "binary-ninja";
-          rev = "0cb1eae43c6cd615eafe74db923259e4f683ac04";
-          hash = "sha256-uFw098Z0D7lZTfl+QolX/JgRGKfE0FCsm6f7vNfzJUo=";
-        }
-      }/themes";
-
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./files/clang-format;
     };
@@ -145,7 +136,6 @@ in
       inputs.pwndbg.packages.${stdenv.hostPlatform.system}.pwndbg
 
       # Tools
-      binaryninja
       cartero # HTTP toolkit
       drawio
       bustle # DBus log
@@ -237,6 +227,19 @@ in
     speech.enable = true;
     terminal.enable = true;
     theme.enable = true;
+
+    binja = {
+      enable = true;
+
+      themes = "${
+        pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "binary-ninja";
+          rev = "0cb1eae43c6cd615eafe74db923259e4f683ac04";
+          hash = "sha256-uFw098Z0D7lZTfl+QolX/JgRGKfE0FCsm6f7vNfzJUo=";
+        }
+      }/themes";
+    };
 
     discord = {
       enable = true;

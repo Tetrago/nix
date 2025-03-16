@@ -7,6 +7,7 @@
     outputs.homeManagerModules.nixland
 
     ./bash.nix
+    ./binja
     ./discord.nix
     ./emacs.nix
     ./firefox.nix
