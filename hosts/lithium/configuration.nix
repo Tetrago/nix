@@ -81,10 +81,6 @@ in
     {
       imports = [ (import ../../homes/james/desktop) ];
 
-      tetrago = {
-        steam.enable = true;
-      };
-
       nixland = {
         #autoConnect = true;
 
