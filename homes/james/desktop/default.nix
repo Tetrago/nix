@@ -223,7 +223,6 @@ in
   james = {
     bash.enable = true;
     emacs.enable = true;
-    firefox.enable = true;
     speech.enable = true;
     terminal.enable = true;
     theme.enable = true;
@@ -244,6 +243,11 @@ in
     discord = {
       enable = true;
       enableNixlandIntegration = true;
+    };
+
+    firefox = {
+      enable = true;
+      theme.enable = true;
     };
 
     git = {

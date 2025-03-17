@@ -11,6 +11,7 @@ in
 {
   options.james.firefox = {
     enable = mkEnableOption "Firefox configuration.";
+    theme.enable = mkEnableOption "GNOME theme.";
   };
 
   config =
@@ -63,7 +64,7 @@ in
           };
         };
 
-        profiles.default.settings = {
+        profiles.default.settings = mkIf cfg.theme.enable {
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           "svg.context-properties.content.enabled" = true;
           "browser.uidensity" = 0;
@@ -72,11 +73,13 @@ in
         };
       };
 
-      home.file.".mozilla/firefox/default/chrome".source = pkgs.fetchFromGitHub {
-        owner = "rafaelmardojai";
-        repo = "firefox-gnome-theme";
-        rev = "v136";
-        hash = "sha256-1+NdJ67l7M/LG91Tn7ebInBS/HwOpjty+LQJK99PoH0=";
+      home.file.".mozilla/firefox/default/chrome" = mkIf cfg.theme.enable {
+        source = pkgs.fetchFromGitHub {
+          owner = "rafaelmardojai";
+          repo = "firefox-gnome-theme";
+          rev = "v136";
+          hash = "sha256-1+NdJ67l7M/LG91Tn7ebInBS/HwOpjty+LQJK99PoH0=";
+        };
       };
     };
 }
