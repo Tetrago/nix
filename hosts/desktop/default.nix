@@ -133,6 +133,7 @@
         "libvirtd"
         "kvm"
         "networkmanager"
+        "lpadmin"
       ];
     };
   };

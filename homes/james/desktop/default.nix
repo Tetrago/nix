@@ -114,6 +114,7 @@ in
       reco # Sound recorder
       mousai # Song identifier
       switcheroo # Image converter
+      xournalpp # PDF editor
 
       # System
       bottles
