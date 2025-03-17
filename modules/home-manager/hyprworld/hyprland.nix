@@ -143,7 +143,7 @@ in
             }
             {
               trigger = "Tab";
-              action = "overview:toggle";
+              action = "overview:toggle, all";
             }
             {
               trigger = "I";
