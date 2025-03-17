@@ -213,5 +213,13 @@ in
         ripgrep.enable = true;
         xplr.enable = true;
       };
+
+      xdg = {
+        enable = true;
+        desktopEntries.xplr = {
+          name = "xplr";
+          noDisplay = true;
+        };
+      };
     };
 }
