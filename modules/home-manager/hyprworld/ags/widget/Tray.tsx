@@ -1,5 +1,4 @@
 import AstalTray from "gi://AstalTray";
-import Gio from "gi://Gio";
 import { Gdk, Gtk } from "astal/gtk4";
 import { bind } from "astal";
 import SettingsMenu from "./SettingsMenu";
@@ -28,9 +27,7 @@ export default function Tray() {
                 }
               }}
             >
-              {bind(item, "gicon").as((icon) =>
-                Gtk.Image.new_from_gicon(Gio.ThemedIcon.new(icon)),
-              )}
+              {bind(item, "gicon").as((icon) => Gtk.Image.new_from_gicon(icon))}
             </menubutton>
           </Gtk.AspectFrame>
         )),
