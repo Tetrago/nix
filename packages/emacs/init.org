@@ -25,9 +25,9 @@
 
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil :family "Monaspace Neon Frozen" :height 110)
-(set-face-attribute 'bold nil :family "Monaspace Neon Frozen" :weight 'bold :height 110)
-(set-face-attribute 'italic nil :family "Monaspace Radon Frozen" :slant 'italic :height 110)
-(set-face-attribute 'bold-italic nil :family "Monaspace Radon Frozen" :slant 'italic :weight 'bold :height 110)
+(set-face-attribute 'bold nil :family "Monaspace Neon Frozen" :weight 'bold)
+(set-face-attribute 'italic nil :family "Monaspace Radon Frozen" :slant 'italic)
+(set-face-attribute 'bold-italic nil :family "Monaspace Radon Frozen" :slant 'italic :weight 'bold)
 #+end_src
 
 *** Ligatures
@@ -88,6 +88,31 @@
   :hook (org-mode . org-modern-mode))
 #+end_src
 
+*** Maple
+
+#+begin_src emacs-lisp
+(use-package maple-minibuffer
+  :ensure nil
+  :hook (after-init . maple-minibuffer-mode)
+  :config
+  (setq maple-minibuffer:position-type 'window-center
+	maple-minibuffer:height nil
+	maple-minibuffer:width 0.7
+	maple-minibuffer:cache t
+	maple-minibuffer:action '(read-from-minibuffer read-string)))
+#+end_src
+
+*** Olivetti
+
+#+begin_src emacs-lisp
+(use-package olivetti
+  :init
+  (setq olivetti-body-width 120)
+  :config
+  (define-globalized-minor-mode global-olivetti-mode olivetti-mode (lambda () (olivetti-mode 1)))
+  (global-olivetti-mode 1))
+#+end_src
+
 ** Workflow
 
 *** Evil Mode
@@ -121,6 +146,21 @@
 (use-package which-key
   :config
   (which-key-mode 1))
+#+end_src
+
+*** Projectile
+
+#+begin_src emacs-lisp
+(use-package rg)
+
+(use-package projectile
+  :general
+  (:states 'normal "C-p" 'projectile-find-file)
+  (:states 'normal :keymaps 'override "C-k" 'projectile-ripgrep)
+  :init
+  (setq projectile-cleanup-known-projects t)
+  :config
+  (projectile-mode 1))
 #+end_src
 
 ** Completion
@@ -222,6 +262,7 @@
 #+begin_src emacs-lisp
 (defvar lsp-hooks '(c-mode
 		    c++-mode))
+(defvar format-hooks '(("C" (clang-format))))
 #+end_src
 
 *** Rust
@@ -234,6 +275,17 @@
 	 (rust-mode . prettify-symbols-mode)))
 
 (add-to-list 'lsp-hooks 'rust-mode)
+(add-to-list 'format-hooks ("Rust" (rustfmt)))
+#+end_src
+
+*** Nix
+
+#+begin_src emacs-lisp
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
+(add-to-list 'lsp-hooks 'nix-mode)
+(add-to-list 'format-hooks ("Nix" (nixfmt)))
 #+end_src
 
 *** LSP
@@ -255,4 +307,14 @@
   (setq lsp-ui-sideline-show-diagnostics t
 	lsp-ui-sideline-show-hover t)
   :commands lsp-ui-mode)
+#+end_src
+
+*** Formatting
+
+#+begin_src emacs-lisp
+(use-package format-all
+  :commands format-all-mode
+  :hook (prog-mode . format-all-mode)
+  :config
+  (setq format-all-formatters format-hooks))
 #+end_src
