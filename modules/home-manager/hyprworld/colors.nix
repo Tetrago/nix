@@ -32,7 +32,6 @@ in
     mkIf cfg.enable {
       polymorph = {
         enable = true;
-        default = "dark";
 
         morph = {
           dark.context.colors = import (
