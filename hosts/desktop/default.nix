@@ -15,6 +15,10 @@
     outputs.nixosModules.hyprworld
   ];
 
+  environment.systemPackages = with pkgs; [
+    system-config-printer
+  ];
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -40,6 +44,11 @@
     geoclue2 = {
       enable = true;
       geoProviderUrl = "https://beacondb.net/v1/geolocate";
+    };
+
+    printing = {
+      drivers = with pkgs; [ epson-escpr ];
+      webInterface = false;
     };
   };
 

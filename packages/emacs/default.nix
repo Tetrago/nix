@@ -29,8 +29,11 @@ let
             llama
             lsp
             lv
+            mathjax
             markdown-mode
+            nerd-icons
             s
+            shrink-path
             spinner
             wgrep
             pkgs.clang-tools

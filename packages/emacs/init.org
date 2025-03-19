@@ -5,7 +5,12 @@
 ** Essential
 
 #+begin_src emacs-lisp
-(setq ring-bell-function 'ignore)
+(setq ring-bell-function 'ignore
+      inhibit-splash-screen t
+      inhibit-startup-message t)
+(fset 'display-startup-echo-area-message 'ignore)
+(global-set-key (kbd "C-l") nil)
+
 (use-package general)
 #+end_src
 
@@ -32,14 +37,11 @@
 
 #+begin_src emacs-lisp
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 10) ((control) . nil))
-      mouse-wheel-progressive-speed nil)
+      mouse-wheel-progressive-speed nil
+      scroll-conservatively 101
+      scroll-margin 0)
 
-(use-package ultra-scroll
-  :init
-  (setq scroll-conservatively 101
-	scroll-margin 0)
-  :config
-  (ultra-scroll-mode 1))
+(pixel-scroll-precision-mode 1)
 #+end_src
 
 *** Line Numbers
@@ -135,13 +137,36 @@
 *** Indent Guide
 
 #+begin_src emacs-lisp
-(use-package highlight-indent-guides
+(use-package indent-bars
   :init
-  (setq highlight-indent-guides-method 'bitmap
-	highlight-indent-guides-responsive 'top
-	highlight-indent-guides-auto-character-face-perc 30
-	highlight-indent-guides-auto-top-character-face-perc 90)
-  :hook (prog-mode . highlight-indent-guides-mode))
+  (setq indent-bars-treesit-support t
+	indent-bars-color '(highlight :face-bg t :blend 0.3)
+	indent-bars-pattern " . ."
+	indent-bars-width-frac 0.25
+	indent-bars-pad-frac 0.1)
+  :hook (prog-mode . indent-bars-mode))
+#+end_src
+
+*** Color Guides
+
+#+begin_src emacs-lisp
+(use-package colorful-mode
+  :custom
+  (colorful-use-prefix t)
+  (colorful-only-strings 'only-prog)
+  :config
+  (global-colorful-mode 1))
+#+end_src
+
+*** Modeline
+
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :init
+  (setq doom-modeline-percent-position nil
+	doom-modeline-position-line-format '("%l")
+	doom-modeline-buffer-file-name-style 'relative-from-project)
+  (doom-modeline-mode 1))
 #+end_src
 
 ** Workflow
@@ -159,16 +184,6 @@
   :after (evil)
   :init
   (evil-collection-init))
-#+end_src
-
-*** Dirvish
-
-#+begin_src emacs-lisp
-(use-package dirvish
-  :general
-  (:states 'normal "-" 'dirvish)
-  :init
-  (dirvish-override-dired-mode 1))
 #+end_src
 
 *** Which Key
@@ -189,9 +204,33 @@
   (:states 'normal "C-p" 'projectile-find-file)
   (:states 'normal :keymaps 'override "C-k" 'projectile-ripgrep)
   :init
-  (setq projectile-cleanup-known-projects t)
+  (setq projectile-cleanup-known-projects t
+	projectile-switch-project-action #'projectile-dired)
   :config
   (projectile-mode 1))
+#+end_src
+
+*** Dired
+
+#+begin_src emacs-lisp
+(setq dired-omit-files "^\\.$\\|^\\.\\.$"
+      dired-free-space nil)
+
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(add-hook 'dired-mode-hook 'dired-omit-mode)
+(add-hook 'dired-mode-hook 'hl-line-mode)
+
+(general-define-key :states 'normal "-" 'dired-jump)
+(general-define-key :keymaps 'dired-mode-map "-" 'dired-up-directory)
+
+(use-package nerd-icons-dired
+  :hook (dired-mode . nerd-icons-dired-mode))
+#+end_src
+
+*** DevDocs
+
+#+begin_src emacs-lisp
+(use-package devdocs)
 #+end_src
 
 ** Completion
@@ -213,6 +252,14 @@
 (use-package vertico-posframe
   :config
   (vertico-posframe-mode 1))
+#+end_src
+
+*** Terminal
+
+#+begin_src emacs-lisp
+(use-package vterm
+  :general
+  (:states 'normal "C-\\" 'vterm))
 #+end_src
 
 *** Orderless
