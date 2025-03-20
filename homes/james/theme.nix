@@ -54,7 +54,6 @@ in
               (colloid-gtk-theme.override {
                 tweaks = [
                   "normal"
-                  "rimless"
                   "catppuccin"
                 ];
               })

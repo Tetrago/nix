@@ -220,6 +220,7 @@
 (use-package projectile
   :general
   (:states 'normal "C-p" 'projectile-find-file)
+  (:states 'normal "C-S-p" 'propjectile-switch-project)
   (:states 'normal :keymaps 'override "C-k" 'projectile-ripgrep)
   :init
   (setq projectile-cleanup-known-projects t

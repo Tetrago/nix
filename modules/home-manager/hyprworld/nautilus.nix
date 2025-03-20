@@ -27,6 +27,7 @@ in
       cfg = config.hyprworld;
 
       hasCollision = any (x: x == pkgs.collision) config.home.packages;
+      hasSnoop = any (x: x == pkgs.snoop) config.home.packages;
       hasTurtle = any (x: x == pkgs.turtle) config.home.packages;
     in
     mkIf cfg.enable {
@@ -61,9 +62,17 @@ in
         };
 
         dataFile = mkMerge [
+          {
+            "nautilus-python/extensions/ghostty.py".source =
+              "${config.programs.ghostty.package}/share/nautilus-python/extensions/ghostty.py";
+          }
           (mkIf hasCollision {
             "nautilus-python/extensions/collision-extension.py".source =
               "${pkgs.collision}/share/nautilus-python/extensions/collision-extension.py";
+          })
+          (mkIf hasSnoop {
+            "nautilus-python/extensions/snoop.py".source =
+              "${pkgs.snoop}/share/nautilus-python/extensions/snoop.py";
           })
           (mkIf hasTurtle {
             "nautilus-python/extensions/turtle_nautilus.py".source =

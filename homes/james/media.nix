@@ -6,7 +6,12 @@
 }:
 
 let
-  inherit (lib) mkIf mkEnableOption mkMerge;
+  inherit (lib)
+    getExe
+    mkIf
+    mkEnableOption
+    mkMerge
+    ;
   inherit (lib.attrsets) mapAttrsToList genAttrs;
 in
 {
@@ -27,7 +32,6 @@ in
       };
 
       home.packages = with pkgs; [
-        decibels
         exhibit
         file-roller
         g4music
@@ -89,7 +93,7 @@ in
             decibels = {
               name = "Decibels";
               type = "Application";
-              exec = "org.gnome.Decibels %U";
+              exec = "${getExe pkgs.decibels} %U";
               icon = "org.gnome.Decibels";
               startupNotify = true;
               terminal = false;
@@ -357,30 +361,42 @@ in
               noDisplay = true;
             };
 
-            neovim = {
-              name = "Neovim";
-              exec = "nvim %F";
-              terminal = true;
-              icon = "nvim";
+            gnome-text-editor = {
+              type = "Application";
+              name = "Text Editor";
+              exec = "${lib.getExe pkgs.gnome-text-editor} --new-window --standalone %U";
+              terminal = false;
               noDisplay = true;
               mimeType = [
-                "text/english"
                 "text/plain"
-                "text/x-makefile"
-                "text/x-c++hdr"
-                "text/x-c++src"
-                "text/x-chdr"
-                "text/x-csrc"
-                "text/x-java"
-                "text/x-moc"
-                "text/x-pascal"
-                "text/x-tcl"
-                "text/x-tex"
-                "application/x-shellscript"
                 "text/x-c"
                 "text/x-c++"
+                "text/x-java"
+                "text/x-python"
+                "text/x-shellscript"
+                "text/x-asm"
+                "text/x-verilog"
+                "text/x-vhdl"
+                "text/x-markdown"
+                "text/html"
+                "application/xml"
+                "text/xml"
+                "application/json"
+                "text/x-yaml"
+                "application/x-toml"
+                "text/x-ini"
+                "text/csv"
+                "text/x-makefile"
+                "text/x-cmake"
+                "application/javascript"
+                "application/x-shader"
+                "application/x-perl"
+                "application/x-ruby"
+                "text/x-lua"
+                "text/x-readme"
+                "text/x-log"
               ];
-              startupNotify = false;
+              startupNotify = true;
             };
           };
         in

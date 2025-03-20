@@ -39,18 +39,18 @@
 
   services = {
     logind.powerKey = "ignore";
+    printing.drivers = with pkgs; [ epson-escpr ];
     speechd.enable = true;
 
     geoclue2 = {
       enable = true;
       geoProviderUrl = "https://beacondb.net/v1/geolocate";
     };
-
-    printing = {
-      drivers = with pkgs; [ epson-escpr ];
-      webInterface = false;
-    };
   };
+
+  fonts.packages = with pkgs; [
+    ubuntu-sans
+  ];
 
   tetrago = {
     audio.enable = true;
