@@ -10,11 +10,14 @@ let
 
   lsp = pkgs.callPackage ./lsp.nix { };
 
+  tree-sitter-lib = pkgs.callPackage ./tree-sitter-lib.nix { };
+
   emacs =
     inputs.emacs-overlay.lib.${pkgs.stdenv.hostPlatform.system}.emacsWithPackagesFromUsePackage
       {
         config = ./init.org;
 
+        package = pkgs.emacs-pgtk;
         alwaysEnsure = true;
         alwaysTangle = true;
         defaultInitFile = true;
@@ -23,6 +26,7 @@ let
           epkgs: with epkgs; [
             calt
             f
+            fringe-helper
             goto-chg
             ht
             language-id
@@ -35,11 +39,16 @@ let
             s
             shrink-path
             spinner
+            tree-sitter-lib
             wgrep
             pkgs.clang-tools
+            pkgs.nil
             pkgs.nixfmt-rfc-style
             pkgs.ripgrep
             pkgs.rustfmt
+            pkgs.rust-analyzer
+            pkgs.tree-sitter
+            pkgs.tree-sitter-grammars.tree-sitter-rust
           ];
 
         override = final: prev: {
@@ -58,7 +67,7 @@ pkgs.stdenvNoCC.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     makeWrapper ${emacs}/bin/emacs $out/bin/emacs \
-      --prefix XDG_DATA_DIRS : "${pkgs.monaspace}/share"
+      --prefix XDG_DATA_DIRS : "${pkgs.monaspace}/share:${pkgs.nerd-fonts.symbols-only}/share"
 
     cp -r ${emacs}/share $out/share
   '';

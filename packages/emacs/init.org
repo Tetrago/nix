@@ -2,17 +2,19 @@
 
 #+PROPERTY: header-args:emacs-lisp :tangle yes
 
-** Essential
+** Initial
 
 #+begin_src emacs-lisp
 (setq ring-bell-function 'ignore
       inhibit-splash-screen t
-      inhibit-startup-message t)
+      inhibit-startup-message t
+      auto-save-defaults nil)
 (fset 'display-startup-echo-area-message 'ignore)
 (global-set-key (kbd "C-l") nil)
 
 (use-package general)
 #+end_src
+
 
 ** Interface
 
@@ -169,6 +171,22 @@
   (doom-modeline-mode 1))
 #+end_src
 
+*** Git Gutter
+
+#+begin_src emacs-lisp
+(use-package git-gutter
+  :hook (prog-mode . git-gutter-mode)
+  :config
+  (setq git-gutter:update-interval 0.02))
+
+(use-package git-gutter-fringe
+  :config
+  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-ft:deleted [128 192 224 240] nil nil 'bottom))
+#+end_src
+
+
 ** Workflow
 
 *** Evil Mode
@@ -227,11 +245,19 @@
   :hook (dired-mode . nerd-icons-dired-mode))
 #+end_src
 
+*** Direnv
+
+#+begin_src emacs-lisp
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+#+end_src
+
 *** DevDocs
 
 #+begin_src emacs-lisp
 (use-package devdocs)
 #+end_src
+
 
 ** Completion
 
@@ -339,35 +365,20 @@
   (add-hook 'completion-at-point-functions #'cape-elisp-block))
 #+end_src
 
-** Languages
+
+** Features
+
+*** Tree-sitter
 
 #+begin_src emacs-lisp
-(defvar lsp-hooks '(c-mode
-		    c++-mode))
-(defvar format-hooks '(("C" (clang-format))))
-#+end_src
+(use-package tree-sitter-lib
+  :ensure nil
+  :config
+  (set-tree-sitter-lib-path))
 
-*** Rust
-
-#+begin_src emacs-lisp
-(use-package rust-mode
-  :init
-  (setq rust-mode-treesitter-derive t)
-  :hook ((rust-mode . (lambda () (setq indent-tabs-mode nil)))
-	 (rust-mode . prettify-symbols-mode)))
-
-(add-to-list 'lsp-hooks 'rust-mode)
-(add-to-list 'format-hooks ("Rust" (rustfmt)))
-#+end_src
-
-*** Nix
-
-#+begin_src emacs-lisp
-(use-package nix-mode
-  :mode "\\.nix\\'")
-
-(add-to-list 'lsp-hooks 'nix-mode)
-(add-to-list 'format-hooks ("Nix" (nixfmt)))
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))
 #+end_src
 
 *** LSP
@@ -376,27 +387,67 @@
 (require 'lsp)
 
 (use-package lsp-mode
-  :config
-  (load-lsp)
-  :custom
-  (lsp-keymap-prefix "C-c l")
-  :hook ((lsp-mode . lsp-enable-which-key-integration)
-	 ,@(mapcar (lambda (mode) (cons mode 'lsp)) lsp-hooks))
-  :commands lsp)
+  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
   :init
   (setq lsp-ui-sideline-show-diagnostics t
-	lsp-ui-sideline-show-hover t)
+	lsp-ui-sideline-show-hover t
+	lsp-ui-doc-enable t)
   :commands lsp-ui-mode)
 #+end_src
 
 *** Formatting
 
 #+begin_src emacs-lisp
+(defvar formatters '())
+
 (use-package format-all
+  :init
   :commands format-all-mode
-  :hook (prog-mode . format-all-mode)
-  :config
-  (setq format-all-formatters format-hooks))
+  :hook ((prog-mode . format-all-mode)
+	 (after-init . (lambda ()
+			 (setq format-all-formatters formatters)))))
+#+end_src
+
+
+** Languages
+
+*** C
+
+#+begin_src emacs-lisp
+(add-hook 'c-ts-mode-hook #'lsp-deferred)
+(add-to-list 'formatters '("C" clang-format))
+#+end_src
+
+*** C++
+
+#+begin_src emacs-lisp
+(add-hook 'c++-ts-mode-hook #'lsp-deferred)
+(add-to-list 'formatters '("C++" clang-format))
+#+end_src
+
+*** Rust
+
+#+begin_src emacs-lisp
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t)
+  (add-to-list 'formatters '("Rust" rustfmt))
+  :hook ((rust-mode . (lambda () (setq indent-tabs-mode nil)))
+	 (rust-mode . prettify-symbols-mode)
+	 (rust-mode . lsp-deferred)))
+#+end_src
+
+*** Nix
+
+#+begin_src emacs-lisp
+(use-package nix-ts-mode
+  :init
+  (add-to-list 'formatters '("Nix" nixfmt))
+  :hook (nix-ts-mode . lsp-deferred)
+  :mode "\\.nix\\'")
 #+end_src

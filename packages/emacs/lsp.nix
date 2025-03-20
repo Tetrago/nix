@@ -7,7 +7,8 @@
 emacsPackages.trivialBuild {
   name = "emacs-lsp";
 
-  src = writeText "lsp.el" ''
+  src =
+    writeText "lsp.el" ''
     (defun load-lsp ()
       (setq lsp-clangd-binary-path "${clang-tools}/bin/clangd"))
 
