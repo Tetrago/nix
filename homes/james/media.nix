@@ -25,10 +25,14 @@ in
       cfg = config.james.media;
     in
     mkIf cfg.enable {
-      dconf.settings."com/github/neithern/g4music" = {
-        audio-sink = "pulsesink";
-        music-dir = "file://${config.xdg.userDirs.music}";
-        peak-characters = "•";
+      dconf.settings = {
+        "com/github/neithern/g4music" = {
+          audio-sink = "pulsesink";
+          music-dir = "file://${config.xdg.userDirs.music}";
+          peak-characters = "•";
+        };
+
+        "org/gnome/TextEditor".highlight-current-line = true;
       };
 
       home.packages = with pkgs; [

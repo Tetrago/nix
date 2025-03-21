@@ -16,9 +16,7 @@ in
     ../desktop
   ];
 
-  boot = {
-    kernelPackages = pkgs.linuxPackages_6_12;
-  };
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   tetrago = {
     bluetooth.enable = true;

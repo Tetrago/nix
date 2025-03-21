@@ -1,6 +1,7 @@
 { callPackage }:
 
 {
+  adwaita-nerdfont = callPackage ./adwaita-nerdfont.nix { };
   bg-nvim = callPackage ./bg-nvim.nix { };
   darkman-nvim = callPackage ./darkman-nvim.nix { };
   kasasa = callPackage ./kasasa.nix { };

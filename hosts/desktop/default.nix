@@ -49,7 +49,7 @@
   };
 
   fonts.packages = with pkgs; [
-    ubuntu-sans
+    adwaita-fonts
   ];
 
   tetrago = {
@@ -79,7 +79,7 @@
               );
             in
             {
-              Font = "Ubuntu Sans";
+              Font = "Adwaita Sans";
               HourFormat = "hh:mm AP";
               DateFormat = "dddd, MMMM d";
               Background = "${path}";

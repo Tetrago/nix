@@ -46,7 +46,7 @@ in
         theme = {
           common = {
             font = {
-              name = "Ubuntu Nerd Font";
+              name = "AdwaitaSans Nerd Font";
               size = 11;
             };
 
@@ -57,7 +57,7 @@ in
                   "catppuccin"
                 ];
               })
-              nerd-fonts.ubuntu
+              adwaita-nerdfont
               phinger-cursors
               colloid-icon-theme
             ];

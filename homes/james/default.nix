@@ -11,6 +11,7 @@
     ./discord.nix
     ./emacs.nix
     ./firefox.nix
+    ./fonts.nix
     ./git.nix
     ./media.nix
     ./neovim.nix

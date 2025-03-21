@@ -223,6 +223,7 @@ in
   james = {
     bash.enable = true;
     emacs.enable = true;
+    fonts.enable = true;
     speech.enable = true;
     terminal.enable = true;
     theme.enable = true;
