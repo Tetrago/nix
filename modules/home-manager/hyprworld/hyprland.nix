@@ -71,6 +71,12 @@ in
               action = "killactive";
             }
             {
+              ctrl = true;
+              shift = true;
+              trigger = "W";
+              action = "forcekillactive";
+            }
+            {
               shift = true;
               trigger = "V";
               action.exec = "${getExe cliphist} wipe";

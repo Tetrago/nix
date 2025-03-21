@@ -5,7 +5,6 @@
   stdenvNoCC,
   makeWrapper,
   burpsuite,
-  binaryninja,
   binutils,
   binwalk,
   strace,
@@ -40,10 +39,6 @@ let
   scripts = [
     (writeShellScriptBin ".q" ''
       "$@" & disown
-    '')
-
-    (writeShellScriptBin ".bn" ''
-      binaryninja "$@" & disown
     '')
 
     (writeShellScriptBin ".bs" ''
@@ -107,7 +102,6 @@ mkShell {
     rp
     radare2
     ghidra-bin
-    binaryninja
     burpsuite
     openvpn
     ropium

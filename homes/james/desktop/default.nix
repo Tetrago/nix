@@ -78,6 +78,8 @@ in
     ++ mkFloat "io.gitlab.adhami3310.Impression" { }
     ++ mkFloat "io.github.zefr0x.hashes" { };
 
+  dconf.settings."io/missioncenter/MissionCenter".performance-page-cpu-graph = 2;
+
   home = {
     username = "james";
     homeDirectory = "/home/james";
@@ -115,13 +117,14 @@ in
       mousai # Song identifier
       switcheroo # Image converter
       xournalpp # PDF editor
+      pinta # Minimal image editor
 
       # System
       bottles
       qemu
       gnome-connections
       inspector # System info
-      resources # Resource viewier
+      mission-center # Resource viewier
       snoop # File search
       gnome-system-monitor
 

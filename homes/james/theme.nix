@@ -54,12 +54,13 @@ in
               (colloid-gtk-theme.override {
                 tweaks = [
                   "normal"
+                  "rimless"
                   "catppuccin"
                 ];
               })
               adwaita-nerdfont
               phinger-cursors
-              colloid-icon-theme
+              tela-icon-theme
             ];
           };
 
@@ -69,7 +70,7 @@ in
               size = 24;
             };
 
-            iconTheme.name = "Colloid-Dark";
+            iconTheme.name = "Tela-dark";
             theme.name = "Colloid-Dark-Catppuccin";
           };
 
@@ -79,7 +80,7 @@ in
               size = 24;
             };
 
-            iconTheme.name = "Colloid-Light";
+            iconTheme.name = "Tela";
             theme.name = "Colloid-Light-Catppuccin";
           };
         };

@@ -40,6 +40,8 @@ in
         file-roller
         g4music
         gnome-font-viewer
+        loupe
+        papers
         typora
       ];
 
@@ -62,17 +64,6 @@ in
           };
         };
 
-        feh = {
-          enable = true;
-
-          buttons = {
-            prev_img = "";
-            next_img = "";
-            zoom_in = 4;
-            zoom_out = 5;
-          };
-        };
-
         mpv = {
           enable = true;
 
@@ -87,8 +78,6 @@ in
             thumbfast
           ];
         };
-
-        zathura.enable = true;
       };
 
       xdg =
@@ -171,28 +160,33 @@ in
               ];
             };
 
-            feh = {
-              name = "Feh";
-              exec = "feh --scale-down --start-at %U";
+            "org.gnome.Loupe" = {
+              name = "Image Viewer";
+              exec = "loupe %U";
               terminal = false;
               mimeType = [
-                "image/bmp"
-                "image/gif"
                 "image/jpeg"
-                "image/jpg"
-                "image/pjpeg"
                 "image/png"
+                "image/gif"
+                "image/webp"
                 "image/tiff"
-                "image/x-bmp"
-                "image/x-pcx"
-                "image/x-png"
-                "image/x-portable-anymap"
+                "image/x-tga"
+                "image/vnd-ms.dds"
+                "image/x-dds"
+                "image/bmp"
+                "image/vnd.microsoft.icon"
+                "image/vnd.radiance"
+                "image/x-exr"
                 "image/x-portable-bitmap"
                 "image/x-portable-graymap"
                 "image/x-portable-pixmap"
-                "image/x-tga"
-                "image/x-xbitmap"
-                "image/webp"
+                "image/x-portable-anymap"
+                "image/x-qoi"
+                "image/svg+xml"
+                "image/svg+xml-compressed"
+                "image/avif"
+                "image/heic"
+                "image/jxl"
               ];
               noDisplay = true;
             };
@@ -357,11 +351,43 @@ in
               icon = "typora";
             };
 
-            zathura = {
-              name = "Zathura";
-              exec = "zathura %f";
+            "org.gnome.Papers" = {
+              name = "Papers";
+              exec = "papers %U";
               terminal = false;
-              mimeType = [ "application/pdf" ];
+              startupNotify = true;
+              mimeType = [
+                "application/vnd.comicbook-rar"
+                "application/vnd.comicbook+zip"
+                "application/x-cb7"
+                "application/x-cbr"
+                "application/x-cbt"
+                "application/x-cbz"
+                "application/x-ext-cb7"
+                "application/x-ext-cbr"
+                "application/x-ext-cbt"
+                "application/x-ext-cbz"
+                "application/x-ext-djv"
+                "application/x-ext-djvu"
+                "image/vnd.djvu"
+                "application/pdf"
+                "application/x-bzpdf"
+                "application/x-ext-pdf"
+                "application/x-gzpdf"
+                "application/x-xzpdf"
+                "application/postscript"
+                "application/x-bzpostscript"
+                "application/x-gzpostscript"
+                "application/x-ext-eps"
+                "application/x-ext-ps"
+                "image/x-bzeps"
+                "image/x-eps"
+                "image/x-gzeps"
+                "image/tiff"
+                "application/oxps"
+                "application/vnd.ms-xpsdocument"
+                "application/illustrator"
+              ];
               noDisplay = true;
             };
 
@@ -418,13 +444,6 @@ in
         };
 
       nixland.windowRules = mkIf cfg.enableNixlandIntegration [
-        {
-          class = "feh";
-          rules = [
-            "float"
-            "size 75% 75%"
-          ];
-        }
         {
           class = "mpv";
           rules = "float";

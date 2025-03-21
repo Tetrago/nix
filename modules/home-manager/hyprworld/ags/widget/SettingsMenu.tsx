@@ -118,7 +118,7 @@ export default function SettingsMenu() {
           }
           menuModel={createMenuModelFromItems(items)}
         >
-          <image iconName={"preferences-system"} />
+          <image iconName={"preferences-system-symbolic"} />
         </menubutton>
       </Gtk.AspectFrame>
     </box>
