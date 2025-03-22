@@ -17,9 +17,9 @@ in
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
+    ./launcher.nix
     ./nautilus.nix
     ./portal.nix
-    ./rofi.nix
     ./swww.nix
   ];
 

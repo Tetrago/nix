@@ -60,6 +60,7 @@ in
             (mkExec "E" "nautilus --new-window")
             (mkExec "L" "loginctl lock-session")
             (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
+            (mkExec "D" "${getExe pkgs.nwg-drawer} -ovl -term ghostty -fm nautilus")
             (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))
             {
               shift = true;

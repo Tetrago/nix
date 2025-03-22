@@ -126,7 +126,6 @@ in
       inspector # System info
       mission-center # Resource viewier
       snoop # File search
-      gnome-system-monitor
 
       # Development
       meld
