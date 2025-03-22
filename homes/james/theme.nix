@@ -24,6 +24,18 @@ in
         ];
       };
 
+      home.activation.theme =
+        let
+          script = pkgs.writeShellScript "apply-theme" ''
+            if [ "$(${lib.getExe config.services.darkman.package} get)" = "light" ]; then
+              ${config.polymorph.activate.light}
+            else
+              ${config.polymorph.activate.dark}
+            fi
+          '';
+        in
+        lib.hm.dag.entryAfter [ "writeBoundary" ] "run ${script} > /dev/null";
+
       polymorph = {
         darkman.enable = true;
 
