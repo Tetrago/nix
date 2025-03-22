@@ -4,6 +4,7 @@
   jq,
   mkShell,
   writeShellScriptBin,
+  vulkan-loader,
 }:
 
 let
@@ -37,4 +38,8 @@ mkShell {
     gowall
     wrap
   ];
+
+  shellHook = ''
+    export LD_LIBRARY_PATH=${vulkan-loader}/lib:$LD_LIBRARY_PATH
+  '';
 }
