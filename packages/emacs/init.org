@@ -56,7 +56,7 @@
 *** Ligatures
 
 #+begin_src emacs-lisp
-(require 'calt)
+(use-package calt)
 
 (use-package ligature
   :config
@@ -373,7 +373,6 @@
 
 #+begin_src emacs-lisp
 (use-package tree-sitter-lib
-  :ensure nil
   :config
   (set-tree-sitter-lib-path))
 
@@ -385,7 +384,7 @@
 *** LSP
 
 #+begin_src emacs-lisp
-(require 'lsp)
+(use-package lsp)
 
 (use-package lsp-mode
   :hook (lsp-mode . lsp-enable-which-key-integration)

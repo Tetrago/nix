@@ -4,13 +4,7 @@
 }:
 
 let
-  calt = pkgs.callPackage ./calt.nix {
-    font = "${pkgs.monaspace}/share/fonts/opentype/MonaspaceArgon-Regular.otf";
-  };
-
-  lsp = pkgs.callPackage ./lsp.nix { };
-
-  tree-sitter-lib = pkgs.callPackage ./tree-sitter-lib.nix { };
+  inherit (pkgs) callPackage;
 
   emacs =
     inputs.emacs-overlay.lib.${pkgs.stdenv.hostPlatform.system}.emacsWithPackagesFromUsePackage
@@ -24,14 +18,12 @@ let
 
         extraEmacsPackages =
           epkgs: with epkgs; [
-            calt
             f
             fringe-helper
             goto-chg
             ht
             language-id
             llama
-            lsp
             lv
             mathjax
             markdown-mode
@@ -39,7 +31,6 @@ let
             s
             shrink-path
             spinner
-            tree-sitter-lib
             wgrep
             pkgs.clang-tools
             pkgs.nil
@@ -52,7 +43,11 @@ let
           ];
 
         override = final: prev: {
-          ultra-scroll = pkgs.callPackage ./ultra-scroll.nix { };
+          calt = callPackage ./calt.nix {
+            font = "${pkgs.monaspace}/share/fonts/opentype/MonaspaceArgon-Regular.otf";
+          };
+          lsp = callPackage ./lsp.nix { };
+          tree-sitter-lib = callPackage ./tree-sitter-lib.nix { };
         };
       };
 in
