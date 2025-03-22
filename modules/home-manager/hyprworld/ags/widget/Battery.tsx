@@ -8,16 +8,16 @@ export default function Battery() {
     <box
       visible={bind(
         Variable.derive(
-          [
-            bind(battery, "isBattery"),
-            bind(battery, "energy"),
-            bind(battery, "energyFull"),
-          ],
-          (isBattery, energy, full) => isBattery && energy < full,
+          [bind(battery, "isBattery"), bind(battery, "energy")],
+          (isBattery, energy) => isBattery && energy < 0.95,
         ),
       )}
-      tooltipMarkup={bind(battery, "percentage").as(
-        (value: number) => `${Math.floor(value * 100)}%`,
+      tooltipMarkup={bind(
+        Variable.derive(
+          [bind(battery, "percentage"), bind(battery, "charging")],
+          (value, charging) =>
+            `${charging ? "" : ""}${Math.floor(value * 100)}%`,
+        ),
       )}
       cssClasses={bind(
         Variable.derive(
