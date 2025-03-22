@@ -382,7 +382,7 @@ in
           };
 
           decoration = {
-            rounding = 5;
+            rounding = 12;
 
             blur = {
               enabled = true;
@@ -393,7 +393,7 @@ in
             shadow = {
               enabled = true;
               color = "rgba(1a1a1aee)";
-              range = 4;
+              range = 12;
               render_power = 3;
             };
           };
@@ -414,6 +414,7 @@ in
           layerrule = [
             "noanim,hyprpicker"
             "noanim,selection"
+            "blur,nwg-drawer"
           ];
 
           "plugin:overview:showNewWorkspace" = false;
