@@ -112,12 +112,12 @@ in
       gimp
       handbrake
       davinci-resolve
-      parabolic # Video downloader
-      reco # Sound recorder
+      gnome-sound-recorder
       mousai # Song identifier
       switcheroo # Image converter
       xournalpp # PDF editor
       pinta # Minimal image editor
+      pdfarranger
 
       # System
       bottles
@@ -159,7 +159,6 @@ in
       curtail # Image compressor
       impression # Removable media writer
       gnome-frog # OCR
-      hashes # Hash identifier
 
       # Games
       gnome-mines
