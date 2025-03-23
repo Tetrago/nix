@@ -211,14 +211,14 @@ in
         bat.enable = true;
         eza.enable = true;
         ripgrep.enable = true;
-        xplr.enable = true;
-      };
 
-      xdg = {
-        enable = true;
-        desktopEntries.xplr = {
-          name = "xplr";
-          noDisplay = true;
+        xplr = {
+          enable = true;
+          package = pkgs.symlinkJoin {
+            inherit (pkgs.xplr) pname version;
+            paths = [ pkgs.xplr ];
+            postBuild = "rm $out/share/applications/xplr.desktop";
+          };
         };
       };
     };

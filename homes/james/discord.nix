@@ -8,6 +8,7 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
+  inherit (lib.lists) filter;
 in
 {
   imports = [
@@ -116,40 +117,24 @@ in
         vesktop = {
           enable = true;
           settings.tray = false;
+
+          package = pkgs.vesktop.overrideAttrs (
+            final: prev: {
+              nativeBuildInputs = filter (x: x != pkgs.copyDesktopItems) prev.nativeBuildInputs;
+
+              postInstall =
+                prev.postInstall or ""
+                + ''
+                  mkdir -p $out/share/applications
+                  substitute ${pkgs.discord}/share/applications/discord.desktop $out/share/applications/discord.desktop \
+                    --replace-fail "Exec=Discord" "Exec=vesktop %U"
+                '';
+            }
+          );
         };
       };
 
-      xdg = {
-        desktopEntries = {
-          discord = {
-            name = "Discord";
-            type = "Application";
-            exec = "vesktop %U";
-            icon = "discord";
-            categories = [
-              "Network"
-              "InstantMessaging"
-            ];
-            mimeType = [
-              "x-scheme-handler/discord"
-            ];
-          };
-
-          vesktop = {
-            name = "Vesktop";
-            type = "Application";
-            exec = "vesktop %U";
-            icon = "vesktop";
-            categories = [
-              "Network"
-              "InstantMessaging"
-            ];
-            noDisplay = true;
-          };
-        };
-
-        mimeApps.defaultApplications."x-scheme-handler/discord" = "discord.desktop";
-      };
+      xdg.mimeApps.defaultApplications."x-scheme-handler/discord" = "discord.desktop";
 
       nixland.windowRules = mkIf cfg.enableNixlandIntegration [
         {

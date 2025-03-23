@@ -19,6 +19,12 @@ in
       cfg = config.james.emacs;
     in
     mkIf cfg.enable {
-      home.packages = [ outputs.packages.${pkgs.stdenv.hostPlatform.system}.emacs ];
+      home.packages = [
+        (pkgs.runCommand "emacs" { } ''
+          mkdir -p $out
+          cp --no-preserve=mode -rL ${outputs.packages.${pkgs.stdenv.hostPlatform.system}.emacs}/* $out/
+          rm $out/share/applications/emacsclient*
+        '')
+      ];
     };
 }

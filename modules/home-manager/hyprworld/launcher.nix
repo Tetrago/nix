@@ -23,6 +23,9 @@ let
       nativeBuildInputs = [ makeWrapper ];
 
       postBuild = ''
+        rm $out/share/applications/rofi.desktop
+        rm $out/share/applications/rofi-theme-selector.desktop
+
         wrapProgram $out/bin/rofi \
           --add-flags '-theme $XDG_DATA_HOME/rofi/themes/$(darkman get).rasi'
       '';
@@ -159,18 +162,6 @@ in
         dataFile = {
           "rofi/themes/dark.rasi".source = "${themes}/themes/spotlight-dark.rasi";
           "rofi/themes/light.rasi".source = "${themes}/themes/spotlight.rasi";
-        };
-
-        desktopEntries = {
-          rofi = {
-            name = "Rofi";
-            noDisplay = true;
-          };
-
-          rofi-theme-selector = {
-            name = "Rofi Theme Selector";
-            noDisplay = true;
-          };
         };
       };
     };

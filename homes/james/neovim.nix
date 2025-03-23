@@ -39,13 +39,5 @@ in
             };
         })
       ];
-
-      xdg = {
-        enable = true;
-        desktopEntries.nvim = {
-          name = "Neovim wrapper";
-          noDisplay = true;
-        };
-      };
     };
 }

@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib) mkIf;
@@ -9,16 +14,16 @@ in
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
-      services.darkman.enable = true;
-
-      xdg = {
-        configFile."darkman/config.yaml".text = "usegeoclue: true";
-
-        desktopEntries.darkman = {
-          name = "Toggle darkman";
-          noDisplay = true;
+      services.darkman = {
+        enable = true;
+        package = pkgs.symlinkJoin {
+          inherit (pkgs.darkman) pname version meta;
+          paths = [ pkgs.darkman ];
+          postBuild = "rm $out/share/applications/darkman.desktop";
         };
       };
+
+      xdg.configFile."darkman/config.yaml".text = "usegeoclue: true";
 
       systemd.user.services.darkman = {
         # If these changes are not made, darkman firing updateWallpaper on startup

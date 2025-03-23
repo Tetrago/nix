@@ -52,15 +52,6 @@ in
       };
 
       xdg = {
-        desktopEntries.nautilus = {
-          name = "Files";
-          exec = "nautilus --new-window %U";
-          terminal = false;
-          noDisplay = true;
-          startupNotify = true;
-          mimeType = [ "inode/directory" ];
-        };
-
         dataFile = mkMerge [
           {
             "nautilus-python/extensions/ghostty.py".source =
@@ -88,7 +79,7 @@ in
 
         mimeApps = {
           enable = true;
-          defaultApplications."inode/directory" = "nautilus.desktop";
+          defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
         };
       };
     };
