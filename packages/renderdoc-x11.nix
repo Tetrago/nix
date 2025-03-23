@@ -18,6 +18,7 @@ stdenvNoCC.mkDerivation {
     ''
       mkdir -p $out/share/applications
       cp ${renderdoc}/share/applications/renderdoc.desktop $out/share/applications/renderdoc-x11.desktop
+      cp --no-preserve=mode -rL ${renderdoc}/share/icons $out/share/icons
 
       substituteInPlace $out/share/applications/renderdoc-x11.desktop \
         --replace-fail "Exec=qrenderdoc" "Exec=sh -c '${cmd}'"
