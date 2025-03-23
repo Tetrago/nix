@@ -11,7 +11,14 @@ in
     mkIf cfg.enable {
       services.darkman.enable = true;
 
-      xdg.configFile."darkman/config.yaml".text = "usegeoclue: true";
+      xdg = {
+        configFile."darkman/config.yaml".text = "usegeoclue: true";
+
+        desktopEntries.darkman = {
+          name = "Toggle darkman";
+          noDisplay = true;
+        };
+      };
 
       systemd.user.services.darkman = {
         # If these changes are not made, darkman firing updateWallpaper on startup

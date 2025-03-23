@@ -34,7 +34,8 @@ in
             fi
           '';
         in
-        lib.hm.dag.entryAfter [ "writeBoundary" ] "run ${script} > /dev/null";
+        # Sometimes prints a blank line on activation and I'm not sure why
+        lib.hm.dag.entryAfter [ "writeBoundary" ] "run ${script}";
 
       polymorph = {
         darkman.enable = true;
