@@ -18,20 +18,25 @@ let
 
         extraEmacsPackages =
           epkgs: with epkgs; [
+            cfrs
             f
             fringe-helper
             goto-chg
             ht
+            hydra
             language-id
             llama
             lv
-            mathjax
+            magit-section
             markdown-mode
+            mathjax
             nerd-icons
+            pfuture
             s
             shrink-path
             spinner
             wgrep
+            with-editor
             pkgs.clang-tools
             pkgs.nil
             pkgs.nixfmt-rfc-style

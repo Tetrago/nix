@@ -11,6 +11,7 @@
       auto-save-defaults nil)
 (fset 'display-startup-echo-area-message 'ignore)
 (global-set-key (kbd "C-l") nil)
+(add-hook 'emacs-startup-hook (lambda () (message "")))
 
 (use-package general)
 #+end_src
@@ -24,6 +25,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+(electric-pair-mode 1)
 #+end_src
 
 *** Font
@@ -186,6 +188,34 @@
   (define-fringe-bitmap 'git-gutter-ft:deleted [128 192 224 240] nil nil 'bottom))
 #+end_src
 
+*** Dashboard
+
+#+begin_src emacs-lisp
+(use-package dashboard
+  :init
+  (setq dashboard-items '((projects . 10)
+			  (recents . 10))
+	dashboard-startupify-list '(dashboard-insert-banner
+				    dashboard-insert-newline
+				    dashboard-insert-init-info
+				    dashboard-insert-newline
+				    dashboard-insert-items)
+	dashboard-display-icons-p t
+	dashboard-icon-type 'nerd-icons
+	dashboard-set-heading-icons t
+	dashboard-set-file-icons t)
+  :config
+  (dashboard-setup-startup-hook))
+#+end_src
+
+*** Treemacs
+
+#+begin_src emacs-lisp
+(use-package treemacs
+  :general
+  (:states 'normal "C-t" 'treemacs))
+#+end_src
+
 
 ** Workflow
 
@@ -220,11 +250,12 @@
 (use-package projectile
   :general
   (:states 'normal "C-p" 'projectile-find-file)
-  (:states 'normal "C-S-p" 'propjectile-switch-project)
+  (:states 'normal "C-S-p" 'projectile-switch-project)
   (:states 'normal :keymaps 'override "C-k" 'projectile-ripgrep)
   :init
   (setq projectile-cleanup-known-projects t
-	projectile-switch-project-action #'projectile-dired)
+	projectile-switch-project-action #'projectile-dired
+	projectile-enable-caching t)
   :config
   (projectile-mode 1))
 #+end_src
@@ -256,7 +287,17 @@
 *** DevDocs
 
 #+begin_src emacs-lisp
-(use-package devdocs)
+(use-package devdocs
+  :general
+  (:states 'normal "?" 'devdocs-lookup))
+#+end_src
+
+*** Magit
+
+#+begin_src emacs-lisp
+(use-package magit
+  :general
+  (:states 'normal "C-g" 'magit))
 #+end_src
 
 
