@@ -27,6 +27,7 @@ in
     mkIf cfg.enable {
       programs = {
         gamemode.enable = true;
+        gamescope.enable = true;
         steam.enable = true;
       };
 
