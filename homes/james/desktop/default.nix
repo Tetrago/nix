@@ -152,7 +152,6 @@ in
       gnome-graphs
       key-rack # Secrets tracker
       gnome-characters
-      sysprof
       binary # Base converter
       buffer # Volatile scratchpad
       collision # Hash calculator
