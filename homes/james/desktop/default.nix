@@ -7,6 +7,9 @@
 }:
 
 let
+  inherit (lib.attrsets) mapAttrsToList;
+  inherit (lib.strings) concatLines;
+
   store = pkgs.writeShellScriptBin "store" ''
     if dir=$(ls -d /nix/store/*/ | sed 's|^/nix/store/||' | ${lib.getExe pkgs.fzf} --height 40% --layout=reverse); then
       ${lib.getExe pkgs.xplr} "/nix/store/$dir"
@@ -217,7 +220,15 @@ in
       createDirectories = false;
       desktop = null;
       publicShare = null;
-      templates = null;
+      templates = pkgs.runCommand "templates" { } ''
+        mkdir -p $out
+        ${concatLines (
+          mapAttrsToList (n: v: ''touch "$out/New ${n} File.${v}"'') {
+            Text = "txt";
+            Markdown = "md";
+          }
+        )}
+      '';
     };
   };
 
