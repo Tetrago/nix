@@ -40,12 +40,12 @@
 *** Scrolling
 
 #+begin_src emacs-lisp
-(setq mouse-wheel-scroll-amount '(2 ((shift) . 10) ((control) . nil))
-      mouse-wheel-progressive-speed nil
-      scroll-conservatively 101
-      scroll-margin 0)
-
-(pixel-scroll-precision-mode 1)
+(use-package ultra-scroll
+  :init
+  (setq scroll-conservatively 101
+	scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
 #+end_src
 
 *** Line Numbers

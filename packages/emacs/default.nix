@@ -11,7 +11,7 @@ let
       {
         config = ./init.org;
 
-        package = pkgs.emacs-pgtk;
+        package = pkgs.emacs-gtk;
         alwaysEnsure = true;
         alwaysTangle = true;
         defaultInitFile = true;
@@ -53,6 +53,7 @@ let
           };
           lsp = callPackage ./lsp.nix { };
           tree-sitter-lib = callPackage ./tree-sitter-lib.nix { };
+          ultra-scroll = callPackage ./ultra-scroll.nix { };
         };
       };
 in
