@@ -11,6 +11,10 @@ let
 
   package = pkgs.nautilus.overrideAttrs (
     final: prev: {
+      nativeBuildInputs = prev.nativeBuildInputs or [ ] ++ [
+        pkgs.makeWrapper
+      ];
+
       buildInputs =
         prev.buildInputs
         ++ (with pkgs.gst_all_1; [
@@ -18,6 +22,14 @@ let
           gst-plugins-ugly
           gst-plugins-bad
         ]);
+
+      preFixup =
+        prev.preFixup or ""
+        + ''
+          gappsWrapperArgs+=(
+            --prefix XDG_DATA_DIRS : "${pkgs.ffmpegthumbnailer}/share"
+          )
+        '';
     }
   );
 in
