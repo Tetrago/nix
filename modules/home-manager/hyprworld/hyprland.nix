@@ -382,7 +382,7 @@ in
           };
 
           decoration = {
-            rounding = 12;
+            rounding = 20;
 
             blur = {
               enabled = true;
@@ -392,9 +392,10 @@ in
 
             shadow = {
               enabled = true;
-              color = "rgba(1a1a1aee)";
+              color = "rgba(00000030)";
               range = 12;
               render_power = 3;
+              offset = "2 2";
             };
           };
 
