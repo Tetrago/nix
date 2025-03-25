@@ -16,7 +16,7 @@ let
     import (
       pkgs.runCommand "${p.name}-desktop.nix" { } ''
         path="$(find "${p}/share/applications" -name '*.desktop' | sort -r | head -n 1)"
-        mime="$(cat "$path" | grep -oP '(?<=^MimeType=).*' | tr ';' '\n' | head -n -1)"
+        mime="$(cat "$path" | grep -oP '(?<=^MimeType=).*' | sed 's/;$//' | tr ';' '\n')"
         values="$(echo "$mime" | sed "s/.*/\"&\" = \"$(basename "$path")\";/")"
 
         echo "{$values}" > $out

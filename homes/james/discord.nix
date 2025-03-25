@@ -8,6 +8,7 @@
 
 let
   inherit (lib) mkEnableOption mkIf;
+  inherit (lib.attrsets) mapAttrs';
   inherit (lib.lists) filter;
 in
 {
@@ -26,31 +27,26 @@ in
     in
     mkIf cfg.enable {
       home.file =
-        let
-          inherit (config.programs.nixcord.vesktop) configDir;
-          inherit (pkgs) fetchurl;
-        in
-        {
-          "${configDir}/themes/SettingsModal.theme.css".source = fetchurl {
-            url = "https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/78a664992c9dc21dcd7b49c7602f32814b488632/Themes/SettingsModal/SettingsModal.theme.css";
-            sha256 = "sha256-ib6y+L5uD+y27THA4OwrIKulgC3otrwZidGRtFdIHWc=";
+        mapAttrs'
+          (n: v: {
+            name = "${config.programs.nixcord.vesktop.configDir}/themes/${builtins.baseNameOf n}";
+            value = {
+              source = pkgs.fetchurl {
+                url = n;
+                hash = v;
+              };
+            };
+          })
+          {
+            "https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/78a664992c9dc21dcd7b49c7602f32814b488632/Themes/SettingsModal/SettingsModal.theme.css" =
+              "sha256-ib6y+L5uD+y27THA4OwrIKulgC3otrwZidGRtFdIHWc=";
+            "https://raw.githubusercontent.com/DiscordStyles/RadialStatus/8444d415c44d7019708eb0a577b085141725a2df/RadialStatus.theme.css" =
+              "sha256-R8dxgZovZe92n5lNNyxBTOxhuQduyszj+nrx3kafAJ4=";
+            "https://raw.githubusercontent.com/DiscordStyles/HorizontalServerList/d54f035f594394b05505de70ddaa699989ca7273/HorizontalServerList.theme.css" =
+              "sha256-OEw+YP/XXssjJEfYgnFglpeM4AwqDETrQgYgFdVNTYE=";
+            "https://raw.githubusercontent.com/DiscordStyles/MinimalCord/2b7c6a57e49fe997d4c938c1ed28134e6192b3db/MinimalCord.theme.css" =
+              "sha256-idXEKZhm0ZzZBYt/6Ts/LP2xNKJde0dYy+FDB2qSNxU=";
           };
-
-          "${configDir}/themes/RadialStatus.theme.css".source = fetchurl {
-            url = "https://raw.githubusercontent.com/DiscordStyles/RadialStatus/8444d415c44d7019708eb0a577b085141725a2df/RadialStatus.theme.css";
-            sha256 = "sha256-R8dxgZovZe92n5lNNyxBTOxhuQduyszj+nrx3kafAJ4=";
-          };
-
-          "${configDir}/themes/HorizontalServerList.theme.css".source = fetchurl {
-            url = "https://raw.githubusercontent.com/DiscordStyles/HorizontalServerList/d54f035f594394b05505de70ddaa699989ca7273/HorizontalServerList.theme.css";
-            sha256 = "sha256-OEw+YP/XXssjJEfYgnFglpeM4AwqDETrQgYgFdVNTYE=";
-          };
-
-          "${configDir}/themes/MinimalCord.theme.css".source = fetchurl {
-            url = "https://raw.githubusercontent.com/DiscordStyles/MinimalCord/2b7c6a57e49fe997d4c938c1ed28134e6192b3db/MinimalCord.theme.css";
-            sha256 = "sha256-idXEKZhm0ZzZBYt/6Ts/LP2xNKJde0dYy+FDB2qSNxU=";
-          };
-        };
 
       programs.nixcord = {
         enable = true;

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -23,6 +24,10 @@ in
     mkIf cfg.enable {
       polymorph.file = [ "${config.xdg.configHome}/hypr/hyprlock.conf" ];
 
+      home.packages = with pkgs; [
+        adwaita-fonts
+      ];
+
       programs.hyprlock = {
         enable = true;
         settings = {
@@ -42,6 +47,7 @@ in
               text = ''cmd[update:1000] echo "$(date +"%-I:%M %p")"'';
               color = "rgb(#{{ .colors.base05 }})";
               font_size = 120;
+              font_family = "Adwaita Sans";
               position = "0, 100";
               halign = "center";
               valign = "center";
