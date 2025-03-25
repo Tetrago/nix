@@ -23,6 +23,7 @@ in
         (pkgs.runCommand "emacs" { } ''
           mkdir -p $out
           cp --no-preserve=mode -rL ${outputs.packages.${pkgs.stdenv.hostPlatform.system}.emacs}/* $out/
+          chmod +x $out/bin/emacs
           rm $out/share/applications/emacsclient*
         '')
       ];
