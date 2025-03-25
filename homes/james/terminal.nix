@@ -47,8 +47,8 @@ in
           cursor-style = "bar";
           linux-cgroup = "always";
 
-          window-padding-x = 2;
-          window-padding-y = 2;
+          window-padding-x = 4;
+          window-padding-y = 4;
           window-padding-balance = true;
           window-new-tab-position = "end";
           window-theme = "system";
