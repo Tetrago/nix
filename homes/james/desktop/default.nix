@@ -23,8 +23,8 @@ in
     enable = true;
 
     wallpaper = {
-      dark = "${./files/dark.png}";
-      light = "${./files/light.png}";
+      dark = "${./dark.png}";
+      light = "${./light.png}";
     };
   };
 
@@ -91,7 +91,7 @@ in
       };
 
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
-      ".clang-format".source = ./files/clang-format;
+      ".clang-format".source = ./clang-format;
     };
 
     packages = with pkgs; [
@@ -158,6 +158,7 @@ in
       curtail # Image compressor
       impression # Removable media writer
       gnome-frog # OCR
+      warp # Easy file transfer
 
       # Games
       gnome-mines
