@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }:
 
@@ -17,7 +18,6 @@ in
 {
   imports = [
     inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.grub2-themes.nixosModules.default
   ];
 
   options.tetrago.boot = {
@@ -66,17 +66,18 @@ in
             configurationLimit = 15;
           };
 
-          grub = {
-            enable = mkForce (cfg.loader == "grub");
-            configurationLimit = 15;
-            efiSupport = true;
-            device = "nodev";
-          };
-
-          grub2-theme = mkIf (cfg.loader == "grub") {
-            enable = true;
-            screen = "2k";
-          };
+          grub =
+            let
+              theme = inputs.distro-grub-themes.packages.${pkgs.stdenv.hostPlatform.system}.nixos-grub-theme;
+            in
+            {
+              enable = mkForce (cfg.loader == "grub");
+              configurationLimit = 15;
+              efiSupport = true;
+              device = "nodev";
+              theme = mkIf (cfg.loader == "grub") theme;
+              splashImage = mkIf (cfg.loader == "grub") "${theme}/splash_image.jpg";
+            };
 
           timeout = mkIf cfg.skipBootMenu 0;
         };

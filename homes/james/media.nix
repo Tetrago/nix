@@ -14,29 +14,13 @@ let
   mkDefault =
     p:
     import (
-      pkgs.stdenvNoCC.mkDerivation {
-        name = "${p.name}-desktop.nix";
-        src = p;
+      pkgs.runCommand "${p.name}-desktop.nix" { } ''
+        path="$(find "${p}/share/applications" -name '*.desktop' | sort -r | head -n 1)"
+        mime="$(cat "$path" | grep -oP '(?<=^MimeType=).*' | tr ';' '\n' | head -n -1)"
+        values="$(echo "$mime" | sed "s/.*/\"&\" = \"$(basename "$path")\";/")"
 
-        phases = [
-          "buildPhase"
-          "installPhase"
-        ];
-
-        buildPhase = ''
-          path="$(find "$src/share/applications" -name '*.desktop' | sort -r | head -n 1)"
-          mime="$(cat "$path" | grep -oP '(?<=^MimeType=).*' | tr ';' '\n' | head -n -1)"
-          values="$(echo "$mime" | sed "s/.*/\"&\" = \"$(basename "$path")\";/")"
-
-          echo "{" > ./default.nix
-          echo "$values" >> ./default.nix
-          echo "}" >> ./default.nix
-        '';
-
-        installPhase = ''
-          cp ./default.nix $out
-        '';
-      }
+        echo "{$values}" > $out
+      ''
     );
 in
 {

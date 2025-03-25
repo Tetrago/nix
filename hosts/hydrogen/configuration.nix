@@ -11,7 +11,7 @@
 
   boot = {
     blacklistedKernelModules = [ "mt76x2u" ];
-    kernelPackages = pkgs.linuxPackages_6_12;
+    kernelPackages = pkgs.linuxPackages_zen;
   };
 
   hardware = {

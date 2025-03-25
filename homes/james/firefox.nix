@@ -46,6 +46,7 @@ in
               "uBlock0@raymondhill.net" = plug "ublock-origin";
               "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" = plug "video-downloadhelper";
               "addon@darkreader.org" = plug "darkreader";
+              "Google_AI_Overviews_Blocker@zachbarnes.dev" = plug "hide-google-ai-overviews";
             };
 
           Preferences = {
