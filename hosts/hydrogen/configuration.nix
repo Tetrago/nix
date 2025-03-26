@@ -4,7 +4,6 @@
   imports = [
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-ssd
-    inputs.solaar.nixosModules.default
 
     ./hardware-configuration.nix
     ../desktop
@@ -29,7 +28,6 @@
 
   services = {
     ollama.enable = true;
-    solaar.enable = true;
     upower.enable = true;
   };
 
