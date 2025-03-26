@@ -11,7 +11,7 @@ let
       {
         config = ./init.org;
 
-        package = pkgs.emacs-gtk;
+        package = pkgs.emacs-pgtk;
         alwaysEnsure = true;
         alwaysTangle = true;
         defaultInitFile = true;
