@@ -101,10 +101,10 @@ in
 
         extraConfig = {
           enabledThemes = [
-            "HorizontalServerList.theme.css"
-            "MinimalCord.theme.css"
-            "RadialStatus.theme.css"
-            "SettingsModal.theme.css"
+            #"HorizontalServerList.theme.css"
+            #"MinimalCord.theme.css"
+            #"RadialStatus.theme.css"
+            #"SettingsModal.theme.css"
           ];
         };
 
