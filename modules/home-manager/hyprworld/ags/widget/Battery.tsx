@@ -8,8 +8,8 @@ export default function Battery() {
     <box
       visible={bind(
         Variable.derive(
-          [bind(battery, "isBattery"), bind(battery, "energy")],
-          (isBattery, energy) => isBattery && energy < 0.95,
+          [bind(battery, "isBattery"), bind(battery, "percentage")],
+          (isBattery, value) => isBattery && value < 0.95,
         ),
       )}
       tooltipMarkup={bind(
