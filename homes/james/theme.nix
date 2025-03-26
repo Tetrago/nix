@@ -27,10 +27,12 @@ in
       home.activation.theme =
         let
           script = pkgs.writeShellScript "apply-theme" ''
-            if [ "$(${lib.getExe config.services.darkman.package} get)" = "light" ]; then
-              ${config.polymorph.activate.light}
-            else
-              ${config.polymorph.activate.dark}
+            if [ -n "DISPLAY" ] || [ -n "WAYLAND_DISPLAY" ]; then
+              if [ "$(${lib.getExe config.services.darkman.package} get)" = "light" ]; then
+                ${config.polymorph.activate.light}
+              else
+                ${config.polymorph.activate.dark}
+              fi
             fi
           '';
         in
