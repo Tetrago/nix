@@ -45,6 +45,11 @@ in
           highlight-current-line = true;
           restore-session = false;
         };
+
+        "org/gnome/papers/default" = {
+          show-sidebar = false;
+          window-maximized = false;
+        };
       };
 
       home.packages = with pkgs; [
