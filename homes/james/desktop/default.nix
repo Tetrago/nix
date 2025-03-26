@@ -88,10 +88,16 @@ in
     homeDirectory = "/home/james";
 
     file = {
-      ".gdbinit".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/616ed5100d3588bb70e3b86737ac0609ce0635cc/.gdbinit";
-        hash = "sha256-cLpH7t/oK8iFOfDnfnWw3oLGegYnNEb5vI8M7FGI7ic=";
-      };
+      ".gdbinit".source = pkgs.runCommand "gdbinit" { } ''
+        echo "set disassembly-flavor intel" > $out
+
+        cat "${
+          pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/616ed5100d3588bb70e3b86737ac0609ce0635cc/.gdbinit";
+            hash = "sha256-cLpH7t/oK8iFOfDnfnWw3oLGegYnNEb5vI8M7FGI7ic=";
+          }
+        }" >> $out
+      '';
 
       ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
       ".clang-format".source = ./clang-format;
