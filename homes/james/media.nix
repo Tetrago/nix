@@ -50,6 +50,10 @@ in
           show-sidebar = false;
           window-maximized = false;
         };
+
+        "com/github/rafostar/Clapper" = {
+          fullscreened = false;
+        };
       };
 
       home.packages = with pkgs; [
