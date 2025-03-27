@@ -42,13 +42,13 @@
   };
 
   fileSystems."/data" = {
-    device = "/dev/disk/by-uuid/62714a4f-952c-4384-a8e0-12f8e5ca4f1a";
+    device = "/dev/disk/by-uuid/9237a30d-b988-4ba1-97cf-38868546174a";
     fsType = "btrfs";
     options = [ "subvol=@data" ];
   };
 
   fileSystems."/pool" = {
-    device = "/dev/disk/by-uuid/62714a4f-952c-4384-a8e0-12f8e5ca4f1a";
+    device = "/dev/disk/by-uuid/9237a30d-b988-4ba1-97cf-38868546174a";
     fsType = "btrfs";
     options = [ "subvol=@pool" ];
   };
