@@ -59,6 +59,14 @@ in
           [aria-label="Direct Messages"] > li:nth-child(4) {
             display: none !important;
           }
+
+          [data-list-id="guildsnav"] > div > [data-direction="vertical"] > div:nth-last-child(-n+4) {
+            display: none !important;
+          }
+
+          a:has(> [aria-label="Help"]) {
+            display: none !important;
+          }
         '';
 
         config = {
