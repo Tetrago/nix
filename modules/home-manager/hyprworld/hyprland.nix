@@ -302,6 +302,12 @@ in
               "size 70% 70%"
             ];
           }
+          {
+            class = "gjs";
+            rules = [
+              "rounding 20"
+            ];
+          }
         ];
 
         workspaceRules = [
@@ -382,7 +388,7 @@ in
           };
 
           decoration = {
-            rounding = 20;
+            rounding = 5;
 
             blur = {
               enabled = true;
