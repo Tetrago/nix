@@ -13,10 +13,6 @@ export default function Tray() {
           <Gtk.AspectFrame ratio={1}>
             <menubutton
               setup={(self) => {
-                bind(item, "actionGroup").subscribe((value) =>
-                  self.insert_action_group("dbusmenu", value),
-                );
-
                 self.insert_action_group("dbusmenu", item.actionGroup);
               }}
               menuModel={bind(item, "menuModel")}
