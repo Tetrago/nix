@@ -112,7 +112,7 @@ in
             #"HorizontalServerList.theme.css"
             #"MinimalCord.theme.css"
             #"RadialStatus.theme.css"
-            #"SettingsModal.theme.css"
+            "SettingsModal.theme.css"
           ];
         };
 
