@@ -44,6 +44,7 @@ in
         "org/gnome/TextEditor" = {
           highlight-current-line = true;
           restore-session = false;
+          keybindings = "vim";
         };
 
         "org/gnome/papers/default" = {
