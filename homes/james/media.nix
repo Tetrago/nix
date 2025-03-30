@@ -51,14 +51,9 @@ in
           show-sidebar = false;
           window-maximized = false;
         };
-
-        "com/github/rafostar/Clapper" = {
-          fullscreened = false;
-        };
       };
 
       home.packages = with pkgs; [
-        clapper
         decibels
         exhibit
         file-roller
@@ -97,6 +92,21 @@ in
             ];
           };
         };
+
+        mpv = {
+          enable = true;
+
+          config = {
+            osd-bar = "no";
+            border = "no";
+          };
+
+          scripts = with pkgs.mpvScripts; [
+            mpris
+            uosc
+            thumbfast
+          ];
+        };
       };
 
       xdg.mimeApps = {
@@ -105,7 +115,7 @@ in
           with pkgs;
           let
             audio = mkDefault decibels;
-            video = mkDefault clapper;
+            video = mkDefault config.programs.mpv.package;
 
             additional =
               let

@@ -15,14 +15,6 @@ let
         pkgs.makeWrapper
       ];
 
-      buildInputs =
-        prev.buildInputs
-        ++ (with pkgs.gst_all_1; [
-          gst-plugins-good
-          gst-plugins-ugly
-          gst-plugins-bad
-        ]);
-
       preFixup =
         prev.preFixup or ""
         + ''
