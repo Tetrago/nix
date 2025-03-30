@@ -70,7 +70,6 @@ in
                 tweaks = [
                   "normal"
                   "rimless"
-                  "catppuccin"
                 ];
               })
               adwaita-nerdfont
