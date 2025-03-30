@@ -153,7 +153,6 @@ in
         lspkind.enable = true;
         neoscroll.enable = true;
         neo-tree.enable = true;
-        nix.enable = true;
         colorizer.enable = true;
         oil.enable = true;
         sleuth.enable = true;
@@ -482,6 +481,7 @@ in
               "make"
               "markdown"
               "markdown_inline"
+              "nix"
               "haskell"
               "c_sharp"
               "regex"
