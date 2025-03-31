@@ -67,6 +67,10 @@ in
           a:has(> [aria-label="Help"]) {
             display: none !important;
           }
+
+          [aria-label="Send a gift"] {
+            display: none !important;
+          }
         '';
 
         config = {
