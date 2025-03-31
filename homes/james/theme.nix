@@ -85,7 +85,7 @@ in
             };
 
             iconTheme.name = "Tela-dark";
-            theme.name = "Colloid-Dark-Catppuccin";
+            theme.name = "Colloid-Dark";
           };
 
           light = {
@@ -95,7 +95,7 @@ in
             };
 
             iconTheme.name = "Tela";
-            theme.name = "Colloid-Light-Catppuccin";
+            theme.name = "Colloid-Light";
           };
         };
       };
