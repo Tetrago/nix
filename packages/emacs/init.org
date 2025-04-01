@@ -40,7 +40,13 @@
 *** Scrolling
 
 #+begin_src emacs-lisp
-(pixel-scroll-precision-mode 1)
+(use-package ultra-scroll
+  :init
+  (setq scroll-conservatively 101
+	scoll-margin 0)
+  (add-hook 'ultra-scroll-hide-functions 'beacon-mode)
+  :config
+  (ultra-scroll-mode 1))
 #+end_src
 
 *** Line Numbers

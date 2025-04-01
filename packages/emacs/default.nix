@@ -53,6 +53,7 @@ let
           };
           lsp = callPackage ./lsp.nix { };
           tree-sitter-lib = callPackage ./tree-sitter-lib.nix { };
+          ultra-scroll = callPackage ./ultra-scroll.nix { };
         };
       };
 in
