@@ -54,6 +54,7 @@ in
       };
 
       home.packages = with pkgs; [
+        apostrophe
         decibels
         exhibit
         file-roller
@@ -61,7 +62,6 @@ in
         loupe
         gnome-font-viewer
         papers
-        typora
         (gnome-text-editor.overrideAttrs (
           final: prev: {
             postInstall =
@@ -132,7 +132,7 @@ in
           // mkDefault papers
           // mkDefault gnome-text-editor
           // mkDefault firefox
-          // mkDefault typora
+          // mkDefault apostrophe
           // additional;
       };
 
