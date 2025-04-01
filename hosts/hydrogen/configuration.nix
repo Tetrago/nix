@@ -108,7 +108,7 @@
   };
 
   home-manager.users.james =
-    { outputs, ... }:
+    { config, outputs, ... }:
     {
       imports = [ (import ../../homes/james/desktop) ];
 
@@ -124,6 +124,20 @@
         [
           openttd.openttd-jgrpp
         ];
+
+      xdg.configFile."solaar/rules.yaml".text = ''
+        %YAML 1.3
+        ---
+        - Rule:
+          - Setting: [9DBC514C, scroll-ratchet, 1]
+          - Execute: ['${config.wayland.windowManager.hyprland.package}/bin/hyprctl', keyword, 'input:scroll_factor', '0.1']
+          - Set: [9DBC514C, hires-smooth-resolution, true]
+        - Rule:
+          - Setting: [9DBC514C, scroll-ratchet, 2]
+          - Execute: ['${config.wayland.windowManager.hyprland.package}/bin/hyprctl', keyword, 'input:scroll_factor', '1.0']
+          - Set: [9DBC514C, hires-smooth-resolution, false]
+        ...
+      '';
 
       nixland = {
         windowRules = [
