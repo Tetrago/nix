@@ -67,6 +67,11 @@
       url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    commander = {
+      url = "github:tetrago/commander";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

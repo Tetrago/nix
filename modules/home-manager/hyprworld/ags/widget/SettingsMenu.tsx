@@ -2,39 +2,30 @@ import { Gtk } from "astal/gtk4";
 import Adw from "gi://Adw";
 import Gio from "gi://Gio";
 import { exec } from "astal/process";
-import SettingsWindow from "../lib/SettingsWindow";
 
 interface Item {
   name: string;
-  icon: string;
   callback: (parent: Gtk.Widget) => void;
 }
 
-function createMenuModelFromItems(items: Item[][]) {
+function createMenuModelFromItems(items: Item[]) {
   const menu = new Gio.Menu();
 
-  items.forEach((list) => {
-    const section = new Gio.Menu();
-
-    list.forEach((value) => {
-      const item = Gio.MenuItem.new(
-        value.name,
-        `settingsmenu.${value.name.toLowerCase().replaceAll(" ", "_")}`,
-      );
-      item.set_icon(Gio.ThemedIcon.new(value.icon));
-      section.append_item(item);
-    });
-
-    menu.append_section(null, section);
+  items.forEach((value) => {
+    const item = Gio.MenuItem.new(
+      value.name,
+      `settingsmenu.${value.name.toLowerCase().replaceAll(" ", "_")}`,
+    );
+    menu.append_item(item);
   });
 
   return menu;
 }
 
-function createActionGroupFromItems(parent: Gtk.Widget, items: Item[][]) {
+function createActionGroupFromItems(parent: Gtk.Widget, items: Item[]) {
   const group = new Gio.SimpleActionGroup();
 
-  items.flat().forEach((item) => {
+  items.forEach((item) => {
     const action = new Gio.SimpleAction({
       name: item.name.toLowerCase().replaceAll(" ", "_"),
     });
@@ -68,42 +59,29 @@ export default function SettingsMenu() {
     dialog.present(parent.get_root());
   };
 
-  const items: Item[][] = [
-    [
-      {
-        name: "Settings",
-        icon: "preferences-system",
-        callback: () => SettingsWindow.show(),
-      },
-    ],
-    [
-      {
-        name: "Log out",
-        icon: "system-log-out",
-        callback: (parent) =>
-          prompt(parent, "log out", () =>
-            exec(["bash", "-c", "loginctl kill-user $USER --signal=SIGINT"]),
-          ),
-      },
-      {
-        name: "Sleep",
-        icon: "system-suspend",
-        callback: (parent) =>
-          prompt(parent, "sleep", () => exec("systemctl suspend")),
-      },
-      {
-        name: "Reboot",
-        icon: "system-reboot",
-        callback: (parent) =>
-          prompt(parent, "reboot", () => exec("hyprworld-reboot")),
-      },
-      {
-        name: "Shutdown",
-        icon: "system-shutdown",
-        callback: (parent) =>
-          prompt(parent, "shutdown", () => exec("hyprworld-shutdown")),
-      },
-    ],
+  const items: Item[] = [
+    {
+      name: "Log out",
+      callback: (parent) =>
+        prompt(parent, "log out", () =>
+          exec(["bash", "-c", "loginctl kill-user $USER --signal=SIGINT"]),
+        ),
+    },
+    {
+      name: "Sleep",
+      callback: (parent) =>
+        prompt(parent, "sleep", () => exec("systemctl suspend")),
+    },
+    {
+      name: "Reboot",
+      callback: (parent) =>
+        prompt(parent, "reboot", () => exec("hyprworld-reboot")),
+    },
+    {
+      name: "Shutdown",
+      callback: (parent) =>
+        prompt(parent, "shutdown", () => exec("hyprworld-shutdown")),
+    },
   ];
 
   return (

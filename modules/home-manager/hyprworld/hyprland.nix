@@ -153,8 +153,13 @@ in
               action = "overview:toggle, all";
             }
             {
+              shift = true;
               trigger = "I";
               action = "invertactivewindow";
+            }
+            {
+              trigger = "I";
+              action.exec = "${getExe inputs.commander.packages.${pkgs.stdenv.hostPlatform.system}.default}";
             }
             {
               super = false;

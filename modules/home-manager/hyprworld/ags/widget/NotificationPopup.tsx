@@ -9,7 +9,7 @@ const hyprland = Hyprland.get_default();
 const notifd = Notifd.get_default();
 
 export default function NotificationPopup(monitor: Gdk.Monitor) {
-  const id = getHyprlandID(monitor);
+  const monitorId = getHyprlandID(monitor);
 
   return (
     <window
@@ -59,7 +59,7 @@ export default function NotificationPopup(monitor: Gdk.Monitor) {
         }
 
         hook(self, notifd, "notified", (_, id: number) => {
-          if (hyprland.get_focused_monitor().get_id() === id) {
+          if (hyprland.get_focused_monitor().get_id() === monitorId) {
             queue.push(id);
 
             if (queue.length === 1) {
