@@ -24,21 +24,6 @@ in
         ];
       };
 
-      home.activation.theme =
-        let
-          script = pkgs.writeShellScript "apply-theme" ''
-            if [ -n "DISPLAY" ] || [ -n "WAYLAND_DISPLAY" ]; then
-              if [ "$(${lib.getExe config.services.darkman.package} get)" = "light" ]; then
-                ${config.polymorph.activate.light}
-              else
-                ${config.polymorph.activate.dark}
-              fi
-            fi
-          '';
-        in
-        # Sometimes prints a blank line on activation and I'm not sure why
-        lib.hm.dag.entryAfter [ "writeBoundary" ] "run ${script}";
-
       polymorph = {
         darkman.enable = true;
 
