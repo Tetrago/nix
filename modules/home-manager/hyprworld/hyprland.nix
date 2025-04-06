@@ -427,6 +427,8 @@ in
             "noanim,hyprpicker"
             "noanim,selection"
             "blur,nwg-drawer"
+            "animation fade,rofi"
+            "dimaround,rofi"
           ];
 
           "plugin:overview:showNewWorkspace" = false;
