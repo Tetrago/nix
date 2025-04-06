@@ -12,6 +12,14 @@ export default function VolumeIndicator() {
 
   return (
     <window
+      namespace={"volume-indicator"}
+      setup={(self) => {
+        hyprland.message(
+          `keyword layerrule animation slide right, ${self.namespace}`,
+        );
+
+        hyprland.message(`keyword layerrule dimaround, ${self.namespace}`);
+      }}
       visible={bind(visible)}
       monitor={bind(hyprland, "focusedMonitor").as(
         (monitor: Hyprland.Monitor) => monitor.get_id(),
@@ -19,7 +27,7 @@ export default function VolumeIndicator() {
       cssClasses={["Indicator"]}
       layer={Astal.Layer.OVERLAY}
       anchor={Astal.WindowAnchor.RIGHT}
-      marginRight={5}
+      marginRight={10}
       application={App}
     >
       {bind(audio, "defaultSpeaker").as((endpoint: Wp.Endpoint) => {
@@ -38,43 +46,35 @@ export default function VolumeIndicator() {
         return (
           <box
             onDestroy={() => variable.drop()}
-            cssClasses={["panel"]}
-            marginTop={10}
-            marginEnd={10}
-            marginBottom={10}
-            marginStart={10}
+            cssClasses={bind(endpoint, "mute").as((muted: boolean) =>
+              muted ? ["muted"] : [],
+            )}
+            orientation={Gtk.Orientation.VERTICAL}
+            spacing={5}
           >
-            <box
-              cssClasses={bind(endpoint, "mute").as((muted: boolean) =>
-                muted ? ["muted"] : [],
+            <image
+              marginTop={3}
+              iconName={bind(
+                Variable.derive(
+                  [bind(endpoint, "volume"), bind(endpoint, "mute")],
+                  (volume: number, muted: boolean) =>
+                    muted
+                      ? "audio-volume-muted"
+                      : volume > 0.66
+                        ? "audio-volume-high"
+                        : volume > 0.33
+                          ? "audio-volume-medium"
+                          : "audio-volume-low",
+                ),
               )}
+            />
+            <levelbar
               orientation={Gtk.Orientation.VERTICAL}
-              spacing={5}
-            >
-              <image
-                marginTop={3}
-                iconName={bind(
-                  Variable.derive(
-                    [bind(endpoint, "volume"), bind(endpoint, "mute")],
-                    (volume: number, muted: boolean) =>
-                      muted
-                        ? "audio-volume-muted"
-                        : volume > 0.66
-                          ? "audio-volume-high"
-                          : volume > 0.33
-                            ? "audio-volume-medium"
-                            : "audio-volume-low",
-                  ),
-                )}
-              />
-              <levelbar
-                orientation={Gtk.Orientation.VERTICAL}
-                inverted={true}
-                widthRequest={20}
-                heightRequest={400}
-                value={bind(endpoint, "volume")}
-              />
-            </box>
+              inverted={true}
+              widthRequest={20}
+              heightRequest={400}
+              value={bind(endpoint, "volume")}
+            />
           </box>
         );
       })}

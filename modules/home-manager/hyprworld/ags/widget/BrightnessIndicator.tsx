@@ -13,7 +13,14 @@ export default function BrightnessIndicator() {
 
   return (
     <window
-      setup={() => {
+      namespace={"brightness-indicator"}
+      setup={(self) => {
+        hyprland.message(
+          `keyword layerrule animation slide left, ${self.namespace}`,
+        );
+
+        hyprland.message(`keyword layerrule dimaround, ${self.namespace}`);
+
         bind(brightness, "brightness").subscribe(() => {
           visible.set(true);
           ++count;
@@ -28,26 +35,18 @@ export default function BrightnessIndicator() {
       cssClasses={["Indicator", "Brightness"]}
       layer={Astal.Layer.OVERLAY}
       anchor={Astal.WindowAnchor.LEFT}
-      marginLeft={5}
+      marginLeft={10}
       application={App}
     >
-      <box
-        cssClasses={["panel"]}
-        marginTop={10}
-        marginEnd={10}
-        marginBottom={10}
-        marginStart={10}
-      >
-        <box orientation={Gtk.Orientation.VERTICAL} spacing={5}>
-          <image marginTop={3} iconName={"display-brightness"} />
-          <levelbar
-            orientation={Gtk.Orientation.VERTICAL}
-            inverted={true}
-            widthRequest={20}
-            heightRequest={400}
-            value={bind(brightness, "brightness")}
-          />
-        </box>
+      <box orientation={Gtk.Orientation.VERTICAL} spacing={5}>
+        <image marginTop={3} iconName={"weather-clear"} />
+        <levelbar
+          orientation={Gtk.Orientation.VERTICAL}
+          inverted={true}
+          widthRequest={20}
+          heightRequest={400}
+          value={bind(brightness, "brightness")}
+        />
       </box>
     </window>
   );

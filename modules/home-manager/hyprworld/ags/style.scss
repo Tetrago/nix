@@ -6,6 +6,7 @@ $selected-bg-color: #{"@theme_selected_bg_color"};
 $success-color: #{"@success_color"};
 $warning-color: #{"@warning_color"};
 $error-color: #{"@error_color"};
+$accent-color: #{"@accent_color"};
 $insensitive-fg-color: #{"@insensitive_fg_color"};
 
 $border-radius: 10px;
@@ -117,24 +118,21 @@ window.Bar {
 }
 
 window.Indicator {
-  .panel {
-    padding: $spacing;
-    background-color: $bg-color;
-    @include shadow($bg-color);
+  padding: $spacing;
+  background-color: $bg-color;
+  @include border-full;
+
+  trough {
     @include border-full;
+    @include inset-shadow($bg-color);
+  }
 
-    trough {
-      @include border-full;
-      @include inset-shadow($bg-color);
-    }
-
-    .muted .filled {
-      background-color: $error-color;
-    }
+  .muted .filled {
+    background-color: $error-color;
   }
 
   &.Brightness .filled {
-    background-color: $fg-color;
+    background-color: $accent-color;
   }
 }
 
