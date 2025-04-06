@@ -318,7 +318,7 @@ in
             rules = [
               "dimaround"
               "center"
-              "animation gnomed"
+              "animation popin 80%"
               "stayfocused"
             ];
           }
@@ -436,7 +436,7 @@ in
             "noanim,hyprpicker"
             "noanim,selection"
             "blur,nwg-drawer"
-            "animation fade,rofi"
+            "animation popin 80%,rofi"
             "dimaround,rofi"
           ];
 
