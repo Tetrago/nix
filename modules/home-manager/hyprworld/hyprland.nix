@@ -313,6 +313,15 @@ in
               "rounding 20"
             ];
           }
+          {
+            class = "gcr-prompter";
+            rules = [
+              "dimaround"
+              "center"
+              "animation gnomed"
+              "stayfocused"
+            ];
+          }
         ];
 
         workspaceRules = [
