@@ -58,7 +58,7 @@ in
           [
             (mkExec "Return" "ghostty")
             (mkExec "E" "nautilus --new-window")
-            (mkExec "L" "loginctl lock-session")
+            (mkExec "L" "hyprworld-lock")
             (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
             (mkExec "D" "${getExe pkgs.nwg-drawer} -ovl -term ghostty -fm nautilus")
             (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))
@@ -225,11 +225,6 @@ in
               ctrl = true;
               trigger = "F11";
               action.exec = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
-            }
-            {
-              super = false;
-              trigger = "XF86PowerOff";
-              action.exec = "hyprworld-shutdown";
             }
           ]
           ++ map (v: v // { super = false; }) [

@@ -64,7 +64,6 @@ in
 
   security = {
     pam.services = {
-      hyprlock.fprintAuth = false;
       su.fprintAuth = false;
       sudo.fprintAuth = false;
     };

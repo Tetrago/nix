@@ -38,7 +38,6 @@
   security.polkit.enable = true;
 
   services = {
-    logind.powerKey = "ignore";
     printing.drivers = with pkgs; [ epson-escpr ];
     speechd.enable = true;
     sysprof.enable = true;

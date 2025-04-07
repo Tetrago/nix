@@ -1169,11 +1169,11 @@
     },
     "polymorph": {
       "locked": {
-        "lastModified": 1741755334,
-        "narHash": "sha256-BaYcEgthW7i9BrCqhKwcZijlRaSYsNcQIQrxKMpzRRU=",
+        "lastModified": 1744055477,
+        "narHash": "sha256-ugUCzlpEvlrXTGQ0/PV00YzBdG8DgY+JeUTeL3Efq0A=",
         "owner": "tetrago",
         "repo": "polymorph",
-        "rev": "71ff184def90e457652a3b7b2228fa357ce293cd",
+        "rev": "4d2ed4289203212f767cee5e94532b130ebf9b71",
         "type": "github"
       },
       "original": {

@@ -26,6 +26,22 @@ in
 
       home.packages = with pkgs; [
         adwaita-fonts
+        (pkgs.writeShellScriptBin "hyprworld-lock" ''
+          if ! pidof hyprlock > /dev/null; then
+            hyprlock &
+            PID=$!
+
+            sleep 1
+
+            if kill -0 "$PID" 2>/dev/null; then
+              dbus-send --session --dest=org.freedesktop.secrets \
+                --type=method_call  \
+                /org/freedesktop/secrets \
+                org.freedesktop.Secret.Service.Lock \
+                array:objpath:/org/freedesktop/secrets/collection/login
+            fi
+          fi
+        '')
       ];
 
       programs.hyprlock = {
@@ -44,11 +60,20 @@ in
 
           label = [
             {
+              text = ''cmd[update:1000] echo "$(date +"%A, %B, %d")"'';
+              color = "rgb(#{{ .colors.base05 }})";
+              font_size = 20;
+              font_family = "Adwaita Sans";
+              position = "0, 405";
+              halign = "center";
+              valign = "center";
+            }
+            {
               text = ''cmd[update:1000] echo "$(date +"%-I:%M %p")"'';
               color = "rgb(#{{ .colors.base05 }})";
-              font_size = 120;
+              font_size = 93;
               font_family = "Adwaita Sans";
-              position = "0, 100";
+              position = "0, 310";
               halign = "center";
               valign = "center";
             }
@@ -57,25 +82,27 @@ in
           input-field = [
             {
               size = "300, 50";
-              outline_thickness = 3;
-              dots_size = 0.33;
-              dots_spacing = 0.15;
-              dots_center = false;
+              outline_thickness = 0;
+              dots_size = 0.25;
+              dots_spacing = 0.55;
+              dots_center = true;
               dots_rounding = -1;
               outer_color = "rgb(#{{ .colors.base05 }})";
               inner_color = "rgb(#{{ .colors.base00 }})";
               font_color = "rgb(#{{ .colors.base05 }})";
               fade_on_empty = true;
-              fade_timeout = 1000;
               placeholder_text = "";
               hide_input = false;
-              rounding = -1;
               check_color = "rgb(#{{ .colors.base07 }})";
               fail_color = "rgb(#{{ .colors.base06 }})";
-              fail_text = "";
+              fail_text = "$FAIL <b>($ATTEMPTS)</b>";
               fail_transition = 300;
-
-              position = "0, -50";
+              capslock_color = -1;
+              numlock_color = -1;
+              bothlock_color = -1;
+              invert_numlock = false;
+              swap_font_color = false;
+              position = "0, -468";
               halign = "center";
               valign = "center";
             }

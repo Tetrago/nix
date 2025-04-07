@@ -75,12 +75,12 @@ export default function SettingsMenu() {
     {
       name: "Reboot",
       callback: (parent) =>
-        prompt(parent, "reboot", () => exec("hyprworld-reboot")),
+        prompt(parent, "reboot", () => exec("systemctl -i reboot")),
     },
     {
       name: "Shutdown",
       callback: (parent) =>
-        prompt(parent, "shutdown", () => exec("hyprworld-shutdown")),
+        prompt(parent, "shutdown", () => exec("systemctl -i poweroff")),
     },
   ];
 
