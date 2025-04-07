@@ -8,13 +8,6 @@
 let
   inherit (lib) mkIf;
 
-  themes = pkgs.fetchFromGitHub {
-    owner = "newmanls";
-    repo = "rofi-themes-collection";
-    rev = "c2be059e9507785d42fc2077a4c3bc2533760939";
-    sha256 = "sha256-pHPhqbRFNhs1Se2x/EhVe8Ggegt7/r9UZRocHlIUZKY=";
-  };
-
   package =
     with pkgs;
     symlinkJoin {
@@ -25,9 +18,6 @@ let
       postBuild = ''
         rm $out/share/applications/rofi.desktop
         rm $out/share/applications/rofi-theme-selector.desktop
-
-        wrapProgram $out/bin/rofi \
-          --add-flags '-theme $XDG_DATA_HOME/rofi/themes/$(darkman get).rasi'
       '';
     };
 in
@@ -42,7 +32,10 @@ in
         inherit package;
       };
 
-      polymorph.file = [ "${config.xdg.configHome}/nwg-drawer/drawer.css" ];
+      polymorph.file = [
+        "${config.xdg.configHome}/nwg-drawer/drawer.css"
+        "${config.xdg.configHome}/rofi/config.rasi"
+      ];
 
       xdg = {
         configFile."nwg-drawer/drawer.css".text = ''
@@ -159,10 +152,92 @@ in
           {{- end -}}
         '';
 
-        dataFile = {
-          "rofi/themes/dark.rasi".source = "${themes}/themes/spotlight-dark.rasi";
-          "rofi/themes/light.rasi".source = "${themes}/themes/spotlight.rasi";
-        };
+        configFile."rofi/config.rasi".text = ''
+          configuration {
+            display-drun: "";
+            drun-display-format: "{icon} {name}";
+            font: "{{ .font.name }} Regular 10";
+            modi: "window,run,drun";
+            show-icons: true;
+          }
+
+          @theme "/dev/null"
+
+          * {
+            bg: #{{ .colors.base07 }};
+            bg-alt: #{{ .colors.base0D }};
+            bg-selected: #{{ .colors.base0D }};
+            fg: #{{ .colors.base07 }};
+            fg-alt: #{{ .colors.base00 }};
+            
+            border: 0;
+            margin: 0;
+            padding: 0;
+            spacing: 0;
+          }
+
+          window {
+            width: 27%;
+            background-color: @bg;
+            location: north;
+            anchor: center;
+            y-offset: 13px;
+            border-radius: 15px;
+            opacity: 1;
+          }
+
+          element {
+            padding: 8 12;
+            background-color: transparent;
+            text-color: @fg-alt;
+          }
+
+          element selected {
+            text-color: @fg;
+            background-color: @bg-selected;
+          }
+
+          element-text {
+            background-color: transparent;
+            text-color: inherit;
+            vertical-align: 0.5;
+          }
+
+          element-icon {
+            size: 14;
+            padding: 0 10 0 0;
+            background-color: transparent;
+          }
+
+          entry {
+            padding: 12;
+            background-color: @bg-alt;
+            text-color: @fg;
+          }
+
+          inputbar {
+            children: [prompt, entry];
+            background-color: @bg;
+          }
+
+          listview {
+            background-color: @bg;
+            columns: 1;
+            lines: 8;
+          }
+
+          mainbox {
+            children: [inputbar, listview];
+            background-color: @bg;
+          }
+
+          prompt {
+            enabled: true;
+            padding: 12 0 0 12;
+            background-color: @bg-alt;
+            text-color: @fg;
+          }
+        '';
       };
     };
 }

@@ -89,8 +89,8 @@ in
         enable = true;
 
         morph = {
-          dark.context.colors = mkColors images.dark "dark";
-          light.context.colors = mkColors images.light "light";
+          dark.context.colors = mkColors images.dark "light";
+          light.context.colors = mkColors images.light "dark";
         };
       };
     };

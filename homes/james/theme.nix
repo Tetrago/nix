@@ -18,11 +18,9 @@ in
       cfg = config.james.theme;
     in
     mkIf cfg.enable {
-      home = {
-        packages = with pkgs; [
-          gnome-themes-extra
-        ];
-      };
+      home.packages = with pkgs; [
+        gnome-themes-extra
+      ];
 
       polymorph = {
         darkman.enable = true;
