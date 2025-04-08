@@ -40,6 +40,9 @@ in
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
+      xdg.dataFile."commander/monitor.d/restart-services".source =
+        pkgs.writeShellScript "restart-services" "systemctl --user restart ags.service swww.service";
+
       home.packages = with pkgs; [
         wl-clipboard
       ];

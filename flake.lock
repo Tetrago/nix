@@ -84,11 +84,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1743996901,
-        "narHash": "sha256-EitfF5nfDDYjPV9hpRqAKShxXn6eRfSr9e5PHs5a7rY=",
+        "lastModified": 1744139773,
+        "narHash": "sha256-x79oE2cch773JMtXkEDUzIOSc/74Rj7cVZ3BST5sBb8=",
         "owner": "tetrago",
         "repo": "commander",
-        "rev": "2d0e2ca55cb863568ebc8daad982b3375da94e54",
+        "rev": "6b7aa0b748e3bd8265eea072dfc65f234fa7128c",
         "type": "github"
       },
       "original": {
