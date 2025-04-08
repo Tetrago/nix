@@ -197,6 +197,7 @@ in
               cmake = [ "gersemi" ];
               cpp = [ "clang-format" ];
               css = [ "prettierd" ];
+              elixir = [ "mix" ];
               javascript = [ "prettierd" ];
               javascriptreact = [ "prettierd" ];
               json = [ "prettierd" ];
@@ -214,11 +215,12 @@ in
             };
 
             formatters = with pkgs; {
-              nixfmt.command = getExe nixfmt-rfc-style;
               "clang-format".command = "${clang-tools}/bin/clang-format";
-              rustfmt.command = getExe rustfmt;
               gersemi.command = getExe gersemi;
+              mix.command = "${elixir}/bin/mix";
+              nixfmt.command = getExe nixfmt-rfc-style;
               prettierd.command = getExe prettierd;
+              rustfmt.command = getExe rustfmt;
               yapf.command = getExe yapf;
               verible.command = "${verible}/bin/verible-verilog-format";
               vsg.command = getExe vsg;
@@ -275,6 +277,7 @@ in
             cmake.enable = true;
             docker_compose_language_service.enable = true;
             dockerls.enable = true;
+            elixirls.enable = true;
             gopls.enable = true;
             html.enable = true;
             java_language_server.enable = true;
@@ -490,6 +493,7 @@ in
               "rust"
               "typescript"
               "zig"
+              "elixir"
             ];
 
             highlight = {
