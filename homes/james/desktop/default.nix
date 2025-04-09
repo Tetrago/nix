@@ -103,77 +103,84 @@ in
       ".clang-format".source = ./clang-format;
     };
 
-    packages = with pkgs; [
-      # CLI
-      p7zip
-      fzf
-      fd
-      nix-output-monitor
-      ctop
-      file
-      jq
-      store
+    packages =
+      with pkgs;
+      let
+        inherit (inputs.pwndbg.packages.${stdenv.hostPlatform.system})
+          pwndbg
+          ;
+      in
+      [
+        # CLI
+        p7zip
+        fzf
+        fd
+        nix-output-monitor
+        ctop
+        file
+        jq
+        store
 
-      # Media
-      aseprite
-      inkscape
-      blender
-      gimp
-      handbrake
-      davinci-resolve
-      gnome-sound-recorder
-      mousai # Song identifier
-      switcheroo # Image converter
-      xournalpp # PDF editor
-      pinta # Minimal image editor
-      pdfarranger
+        # Media
+        aseprite
+        inkscape
+        blender
+        gimp
+        handbrake
+        davinci-resolve
+        gnome-sound-recorder
+        mousai # Song identifier
+        switcheroo # Image converter
+        xournalpp # PDF editor
+        pinta # Minimal image editor
+        pdfarranger
 
-      # System
-      bottles
-      qemu
-      gnome-connections
-      inspector # System info
-      mission-center # Resource viewier
-      snoop # File search
+        # System
+        bottles
+        qemu
+        gnome-connections
+        inspector # System info
+        mission-center # Resource viewier
+        snoop # File search
 
-      # Development
-      meld
-      turtle
-      renderdoc-x11
-      jetbrains.idea-community
-      blockbench
-      zeal
-      ghex
-      inputs.pwndbg.packages.${stdenv.hostPlatform.system}.pwndbg
+        # Development
+        meld
+        turtle
+        jetbrains.idea-community
+        blockbench
+        zeal
+        ghex
+        renderdoc
+        pwndbg
 
-      # Tools
-      cartero # HTTP toolkit
-      drawio
-      bustle # DBus log
+        # Tools
+        cartero # HTTP toolkit
+        drawio
+        bustle # DBus log
 
-      # Utility
-      obsidian
-      gnome-calendar
-      gnome-clocks
-      chromium
-      mousam # Weather
-      alpaca # Ollama chat
-      gnome-graphs
-      key-rack # Secrets tracker
-      gnome-characters
-      binary # Base converter
-      buffer # Volatile scratchpad
-      collision # Hash calculator
-      curtail # Image compressor
-      impression # Removable media writer
-      gnome-frog # OCR
-      warp # Easy file transfer
+        # Utility
+        obsidian
+        gnome-calendar
+        gnome-clocks
+        chromium
+        mousam # Weather
+        alpaca # Ollama chat
+        gnome-graphs
+        key-rack # Secrets tracker
+        gnome-characters
+        binary # Base converter
+        buffer # Volatile scratchpad
+        collision # Hash calculator
+        curtail # Image compressor
+        impression # Removable media writer
+        gnome-frog # OCR
+        warp # Easy file transfer
 
-      # Games
-      gnome-mines
-      gnome-sudoku
-      aisleriot
-    ];
+        # Games
+        gnome-mines
+        gnome-sudoku
+        aisleriot
+      ];
 
     sessionVariables = {
       TERMINAL = "ghostty";
