@@ -137,15 +137,11 @@ window.Indicator {
 }
 
 window.Notification {
-  background-color: transparent;
-  padding: $spacing * 4;
-
   box.notification {
     min-width: 400px;
     min-height: 100px;
     border-radius: $border-radius;
     background-color: $bg-color;
-    @include shadow($bg-color);
 
     &.critical {
       $notif-color: $error-color;

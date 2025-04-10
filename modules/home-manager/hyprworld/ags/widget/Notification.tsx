@@ -21,7 +21,11 @@ type Props = {
 
 export default function Notification({ notification }: Props) {
   return (
-    <box name={notification.id.toString()} cssClasses={["notification"]}>
+    <box
+      name={notification.id.toString()}
+      cssClasses={["notification"]}
+      marginTop={10}
+    >
       <box
         cssClasses={["content"]}
         orientation={Gtk.Orientation.VERTICAL}
