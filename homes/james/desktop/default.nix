@@ -152,6 +152,7 @@ in
         ghex
         renderdoc
         pwndbg
+        wildcard # Regex helper
 
         # Tools
         cartero # HTTP toolkit
@@ -175,6 +176,8 @@ in
         impression # Removable media writer
         gnome-frog # OCR
         warp # Easy file transfer
+        gnome-firmware
+        celeste # Cloud file manager
 
         # Games
         gnome-mines

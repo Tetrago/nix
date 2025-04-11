@@ -38,6 +38,7 @@
   security.polkit.enable = true;
 
   services = {
+    fwupd.enable = true;
     printing.drivers = with pkgs; [ epson-escpr ];
     speechd.enable = true;
     sysprof.enable = true;
