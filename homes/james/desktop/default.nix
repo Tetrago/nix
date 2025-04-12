@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   outputs,
@@ -153,6 +154,7 @@ in
         renderdoc
         pwndbg
         wildcard # Regex helper
+        pods
 
         # Tools
         cartero # HTTP toolkit
@@ -252,6 +254,7 @@ in
     bash.enable = true;
     emacs.enable = true;
     fonts.enable = true;
+    podman.enable = true;
     speech.enable = true;
     terminal.enable = true;
     theme.enable = true;

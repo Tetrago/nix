@@ -15,6 +15,7 @@
     ./git.nix
     ./media.nix
     ./neovim.nix
+    ./podman.nix
     ./speech.nix
     ./terminal.nix
     ./theme.nix
