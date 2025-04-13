@@ -87,6 +87,7 @@ in
             };
 
             plugins = [
+              "duplicates"
               "fetchart"
               "thumbnails"
             ];
