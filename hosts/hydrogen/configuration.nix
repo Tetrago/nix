@@ -130,7 +130,7 @@
         ---
         - Rule:
           - Setting: [9DBC514C, scroll-ratchet, 1]
-          - Execute: ['${config.wayland.windowManager.hyprland.package}/bin/hyprctl', keyword, 'input:scroll_factor', '0.1']
+          - Execute: ['${config.wayland.windowManager.hyprland.package}/bin/hyprctl', keyword, 'input:scroll_factor', '0.05']
           - Execute: ['${config.wayland.windowManager.hyprland.package}/bin/hyprctl', keyword, 'input:emulate_discrete_scroll', '0']
           - Set: [9DBC514C, hires-smooth-resolution, true]
         - Rule:
