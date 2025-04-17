@@ -180,6 +180,7 @@ in
         warp # Easy file transfer
         gnome-firmware
         celeste # Cloud file manager
+        gnome-calculator
 
         # Games
         gnome-mines
