@@ -181,6 +181,7 @@ in
         gnome-firmware
         celeste # Cloud file manager
         gnome-calculator
+        kooha
 
         # Games
         gnome-mines
