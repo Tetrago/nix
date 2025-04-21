@@ -206,6 +206,7 @@ in
               python = [ "yapf" ];
               rust = [ "rustfmt" ];
               scss = [ "prettierd" ];
+              sql = [ "sqlfluff" ];
               systemverilog = [ "verible" ];
               typescript = [ "prettierd" ];
               typescriptreact = [ "prettierd" ];
@@ -221,6 +222,7 @@ in
               nixfmt.command = getExe nixfmt-rfc-style;
               prettierd.command = getExe prettierd;
               rustfmt.command = getExe rustfmt;
+              sqlfluff.command = getExe sqlfluff;
               yapf.command = getExe yapf;
               verible.command = "${verible}/bin/verible-verilog-format";
               vsg.command = getExe vsg;

@@ -135,7 +135,7 @@ in
         xournalpp # PDF editor
         pinta # Minimal image editor
         pdfarranger
-        video-downlaoder
+        video-downloader
 
         # System
         bottles
