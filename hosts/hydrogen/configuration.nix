@@ -37,6 +37,8 @@
     upower.enable = true;
   };
 
+  systemd.network.wait-online.enable = false;
+
   networking = {
     nftables.enable = false; # libvirt issue with nftables
     firewall.extraCommands = ''
@@ -59,7 +61,10 @@
     upsmon.monitor.cp1500pfclcd.user = "upsmon";
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = false;
+  };
 
   tetrago = {
     audio.samplingRate = 96000;
