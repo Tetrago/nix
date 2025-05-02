@@ -229,6 +229,19 @@ in
               trigger = "F11";
               action.exec = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
             }
+            {
+              super = false;
+              alt = true;
+              trigger = "minus";
+              action.exec = "${getExe wtype} –";
+            }
+            {
+              super = false;
+              shift = true;
+              alt = true;
+              trigger = "minus";
+              action.exec = "${getExe wtype} —";
+            }
           ]
           ++ map (v: v // { super = false; }) [
             (mkExec "XF86MonBrightnessUp" "${getExe brightnessctl} set +10%")
