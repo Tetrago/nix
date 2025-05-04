@@ -38,28 +38,7 @@
   };
 
   systemd.network.wait-online.enable = false;
-
-  networking = {
-    nftables.enable = false; # libvirt issue with nftables
-    firewall.extraCommands = ''
-      iptables -A OUTPUT -d 10.136.0.1 -j ACCEPT
-      iptables -A OUTPUT -d 10.136.0.0/16 -j REJECT --reject-with icmp-net-prohibited
-    '';
-  };
-
-  power.ups = {
-    enable = true;
-    ups."cp1500pfclcd" = {
-      driver = "usbhid-ups";
-      port = "auto";
-    };
-
-    users.upsmon = {
-      passwordFile = "${pkgs.writeText "upsmon-pw.txt" "upsmon"}";
-    };
-
-    upsmon.monitor.cp1500pfclcd.user = "upsmon";
-  };
+  networking.nftables.enable = false; # libvirt issue with nftables
 
   virtualisation.docker = {
     enable = true;
@@ -154,22 +133,42 @@
           }
         ];
 
+        autoConnect = true;
         monitor = {
-          "DP-1" = {
+          "DP-4" = {
             size = {
               width = 2560;
               height = 1440;
             };
-            refreshRate = 144;
-            position = "right";
-            workspace = 1;
+            refreshRate = 60;
+            position = {
+              x = -2560;
+              y = 200;
+            };
+            workspace = 3;
           };
           "HDMI-A-1" = {
             size = {
               width = 2560;
               height = 1440;
             };
+            position = {
+              x = 0;
+              y = 0;
+            };
             refreshRate = 144;
+            workspace = 1;
+          };
+          "DP-3" = {
+            size = {
+              width = 2560;
+              height = 1440;
+            };
+            refreshRate = 60;
+            position = {
+              x = 2560;
+              y = 0;
+            };
             workspace = 2;
           };
         };
