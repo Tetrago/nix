@@ -135,7 +135,7 @@
 
         autoConnect = true;
         monitor = {
-          "DP-4" = {
+          "DP-3" = {
             size = {
               width = 2560;
               height = 1440;
@@ -159,7 +159,7 @@
             refreshRate = 144;
             workspace = 1;
           };
-          "DP-3" = {
+          "DP-4" = {
             size = {
               width = 2560;
               height = 1440;
