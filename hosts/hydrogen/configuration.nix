@@ -135,17 +135,17 @@
 
         autoConnect = true;
         monitor = {
-          "DP-3" = {
+          "DP-4" = {
             size = {
               width = 2560;
               height = 1440;
             };
-            refreshRate = 60;
+            refreshRate = 144;
             position = {
               x = -2560;
               y = 200;
             };
-            workspace = 3;
+            workspace = 2;
           };
           "HDMI-A-1" = {
             size = {
@@ -159,17 +159,17 @@
             refreshRate = 144;
             workspace = 1;
           };
-          "DP-4" = {
+          "DP-3" = {
             size = {
               width = 2560;
               height = 1440;
             };
-            refreshRate = 60;
+            refreshRate = 144;
             position = {
               x = 2560;
               y = 0;
             };
-            workspace = 2;
+            workspace = 3;
           };
         };
       };
