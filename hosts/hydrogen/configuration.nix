@@ -17,6 +17,11 @@
   boot = {
     blacklistedKernelModules = [ "mt76x2u" ];
     kernelPackages = pkgs.linuxPackages_zen;
+
+    tmp = {
+      useTmpfs = true;
+      tmpfsSize = "5%";
+    };
   };
 
   hardware = {
@@ -44,6 +49,35 @@
     enable = true;
     enableOnBoot = false;
   };
+
+  systemd.services.nvme-rebind =
+    let
+      script = pkgs.writeShellScript "nvme-rebind" ''
+        set -euxo pipefail
+
+        DISK="/dev/disk/by-label/Games"
+        DEV="$(readlink -f "$DISK")"
+        ADDR="$(udevadm info --query=path "$DEV" | grep -oP '\d{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-9a-f]' | tail -n 1)"
+
+        if [ -z "$ADDR" ]; then
+          echo "Failed to find PCI address for disk"
+          exit 1
+        fi
+
+        echo "$ADDR" > "/sys/bus/pci/devices/$ADDR/driver/unbind" || true
+        echo "vfio-pci" > "/sys/bus/pci/devices/$ADDR/driver_override"
+        echo "$ADDR" > "/sys/bus/pci/drivers_probe"
+      '';
+    in
+    {
+      after = [ "systemd-udevd.service" ];
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = script;
+      };
+    };
 
   tetrago = {
     audio.samplingRate = 96000;
@@ -73,9 +107,12 @@
       devices.enable = true;
 
       passthrough = [
+        # GPU
         "10de:2705"
         "10de:22bb"
-        "144d:a80c"
+
+        # USB
+        "1b21:0612"
         "1b21:2142"
       ];
 

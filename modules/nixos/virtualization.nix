@@ -101,6 +101,13 @@ in
 
         kernelModules = mkIf cfg.kvmfr.enable [ "kvmfr" ];
 
+        extraModprobeConfig = ''
+          softdep xhci_pci pre: vfio-pci
+          softdep nvme pre: vfio-pci
+
+          options vfio-pci ids=${concatStringsSep "," cfg.passthrough}
+        '';
+
         initrd.kernelModules = [
           "vfio"
           "vfio_pci"
@@ -111,7 +118,6 @@ in
           [
             "${toString cfg.cpu}_iommu=on"
             "iommu=pt"
-            "vfio-pci.ids=${concatStringsSep "," cfg.passthrough}"
           ]
           ++ optional cfg.kvmfr.enable "kvmfr.static_size_mb=${concatStringsSep "," (map toString cfg.kvmfr.sizes)}";
       };

@@ -57,7 +57,7 @@ in
               })
               adwaita-nerdfont
               phinger-cursors
-              colloid-icon-theme
+              papirus-icon-theme
             ];
           };
 
@@ -67,7 +67,7 @@ in
               size = 24;
             };
 
-            iconTheme.name = "Colloid-Dark";
+            iconTheme.name = "Papirus-Dark";
             theme.name = "Colloid-Dark";
           };
 
@@ -77,7 +77,7 @@ in
               size = 24;
             };
 
-            iconTheme.name = "Colloid-Light";
+            iconTheme.name = "Papirus-Light";
             theme.name = "Colloid-Light";
           };
         };
