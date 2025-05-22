@@ -32,13 +32,16 @@ in
 
         packages = with pkgs; [
           somo
-          scc
+          mprocs
+          tokei
           duf
           dust
           pastel
           choose
           bandwhich
           tldr
+          xh # CLI HTTP toolkit
+          fselect # SQL based find
         ];
       };
 

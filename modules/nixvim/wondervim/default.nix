@@ -149,6 +149,7 @@ in
         fugitive.enable = true;
         gitsigns.enable = true;
         illuminate.enable = true;
+        image.enable = true;
         indent-blankline.enable = true;
         lspkind.enable = true;
         neoscroll.enable = true;

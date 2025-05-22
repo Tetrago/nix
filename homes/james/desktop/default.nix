@@ -156,6 +156,8 @@ in
         pwndbg
         wildcard # Regex helper
         pods
+        gitui
+        rusty-man
 
         # Tools
         cartero # HTTP toolkit

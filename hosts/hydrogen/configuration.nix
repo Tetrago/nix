@@ -55,18 +55,24 @@
       script = pkgs.writeShellScript "nvme-rebind" ''
         set -euxo pipefail
 
-        DISK="/dev/disk/by-label/Games"
-        DEV="$(readlink -f "$DISK")"
-        ADDR="$(udevadm info --query=path "$DEV" | grep -oP '\d{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-9a-f]' | tail -n 1)"
+        disk="/dev/disk/by-label/Games"
 
-        if [ -z "$ADDR" ]; then
+        if [ ! -b "$disk" ]; then
+          echo "Storage device not mounted"
+          exit 0
+        fi
+
+        dev="$(readlink -f "$disk")"
+        addr="$(udevadm info --query=path "$dev" | grep -oP '\d{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-9a-f]' | tail -n 1)"
+
+        if [ -z "$addr" ]; then
           echo "Failed to find PCI address for disk"
           exit 1
         fi
 
-        echo "$ADDR" > "/sys/bus/pci/devices/$ADDR/driver/unbind" || true
-        echo "vfio-pci" > "/sys/bus/pci/devices/$ADDR/driver_override"
-        echo "$ADDR" > "/sys/bus/pci/drivers_probe"
+        echo "$addr" > "/sys/bus/pci/devices/$addr/driver/unbind" || true
+        echo "vfio-pci" > "/sys/bus/pci/devices/$addr/driver_override"
+        echo "$addr" > "/sys/bus/pci/drivers_probe"
       '';
     in
     {
