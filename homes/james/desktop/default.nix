@@ -113,13 +113,11 @@ in
       in
       [
         # CLI
-        p7zip
-        fzf
-        fd
         nix-output-monitor
         ctop
-        file
-        jq
+        bandwhich
+        dust
+        duf
         store
 
         # Media
@@ -158,6 +156,8 @@ in
         pods
         gitui
         rusty-man
+        pastel # Color mixing tool
+        tokei # Line counter
 
         # Tools
         cartero # HTTP toolkit

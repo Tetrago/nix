@@ -31,17 +31,13 @@ in
         '';
 
         packages = with pkgs; [
-          somo
           mprocs
-          tokei
-          duf
-          dust
-          pastel
-          choose
-          bandwhich
           tldr
           xh # CLI HTTP toolkit
           fselect # SQL based find
+          p7zip
+          jq
+          file
         ];
       };
 
@@ -180,7 +176,6 @@ in
 
         bat.enable = true;
         eza.enable = true;
-        ripgrep.enable = true;
 
         xplr = {
           enable = true;
