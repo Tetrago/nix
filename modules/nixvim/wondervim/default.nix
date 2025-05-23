@@ -195,6 +195,7 @@ in
 
           settings = {
             formatters_by_ft = {
+              bash = [ "shfmt" ];
               cmake = [ "gersemi" ];
               cpp = [ "clang-format" ];
               css = [ "prettierd" ];
@@ -207,6 +208,7 @@ in
               python = [ "yapf" ];
               rust = [ "rustfmt" ];
               scss = [ "prettierd" ];
+              sh = [ "shfmt" ];
               sql = [ "sqlfluff" ];
               systemverilog = [ "verible" ];
               typescript = [ "prettierd" ];
@@ -217,6 +219,7 @@ in
             };
 
             formatters = with pkgs; {
+              shfmt.command = getExe shfmt;
               "clang-format".command = "${clang-tools}/bin/clang-format";
               gersemi.command = getExe gersemi;
               mix.command = "${elixir}/bin/mix";
@@ -513,6 +516,11 @@ in
           plugin = pkgs.darkman-nvim;
           config = "lua require('darkman').setup({ change_background = true })";
         })
+      ];
+
+      extraPackages = with pkgs; [
+        fd
+        ripgrep
       ];
     };
 }
