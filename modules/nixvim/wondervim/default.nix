@@ -225,7 +225,7 @@ in
               mix.command = "${elixir}/bin/mix";
               nixfmt.command = getExe nixfmt-rfc-style;
               prettierd.command = getExe prettierd;
-              rustfmt.command = getExe rustfmt;
+              rustfmt.command = getExe (rustfmt.override { asNightly = true; });
               sqlfluff.command = getExe sqlfluff;
               yapf.command = getExe yapf;
               verible.command = "${verible}/bin/verible-verilog-format";

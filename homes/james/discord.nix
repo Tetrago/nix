@@ -13,7 +13,7 @@ let
 in
 {
   imports = [
-    inputs.nixcord.homeManagerModules.nixcord
+    inputs.nixcord.homeModules.nixcord
   ];
 
   options.james.discord = {
