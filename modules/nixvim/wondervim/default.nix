@@ -342,6 +342,7 @@ in
               enable = true;
               installCargo = false;
               installRustc = false;
+              settings.cargo.loadOutDirsFromCheck = true;
             };
           };
         };
