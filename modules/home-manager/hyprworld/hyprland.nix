@@ -105,15 +105,22 @@ in
                 "rofi -modi clipboard:${cliphist-rofi-img} -show-icons -sorting-method fzf -scroll-method 1 -show clipboard";
             }
             {
+              super = false;
+              ctrl = true;
+              shift = true;
+              trigger = "Escape";
+              action.exec = "${getExe mission-center}";
+            }
+            {
               trigger = "F";
               action = "togglefloating";
             }
             {
-              trigger = "Escape";
+              shift = true;
+              trigger = "F";
               action = "fullscreen";
             }
             {
-              shift = true;
               trigger = "Escape";
               action.exec = "darkman toggle";
             }
