@@ -116,6 +116,10 @@ in
               action = "togglefloating";
             }
             {
+              trigger = "N";
+              action.exec = "firefox";
+            }
+            {
               shift = true;
               trigger = "F";
               action = "fullscreen";
