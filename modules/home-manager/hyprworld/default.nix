@@ -19,6 +19,7 @@ in
     ./launcher.nix
     ./nautilus.nix
     ./portal.nix
+    ./swaync.nix
     ./swww.nix
   ];
 

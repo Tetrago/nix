@@ -4,17 +4,12 @@ import Bar from "./widget/Bar";
 import "./widget/VolumeIndicator";
 import BrightnessIndicator from "./widget/BrightnessIndicator";
 import VolumeIndicator from "./widget/VolumeIndicator";
-import NotificationPopup from "./widget/NotificationPopup";
 
 App.start({
   css: style,
   main() {
     BrightnessIndicator();
     VolumeIndicator();
-
-    App.get_monitors().map((monitor) => {
-      Bar(monitor);
-      NotificationPopup(monitor);
-    });
+    App.get_monitors().map(Bar);
   },
 });

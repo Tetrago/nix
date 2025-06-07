@@ -172,6 +172,10 @@ in
               action = "invertactivewindow";
             }
             {
+              trigger = "C";
+              action.exec = "swaync-client --toggle-panel";
+            }
+            {
               trigger = "I";
               action.exec = "${getExe inputs.commander.packages.${pkgs.stdenv.hostPlatform.system}.default}";
             }

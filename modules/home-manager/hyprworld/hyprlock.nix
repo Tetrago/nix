@@ -22,7 +22,10 @@ in
       cfg = config.hyprworld;
     in
     mkIf cfg.enable {
-      polymorph.file = [ "${config.xdg.configHome}/hypr/hyprlock.conf" ];
+      polymorph = {
+        file = [ "${config.xdg.configHome}/hypr/hyprlock.conf" ];
+        morph.common.extraScripts = "swaync-client --reload-css";
+      };
 
       home.packages = with pkgs; [
         adwaita-fonts
@@ -61,7 +64,7 @@ in
           label = [
             {
               text = ''cmd[update:1000] echo "$(date +"%A, %B, %d")"'';
-              color = "rgb(#{{ .colors.base05 }})";
+              color = "rgb({{ .colors.base04 }})";
               font_size = 20;
               font_family = "Adwaita Sans";
               position = "0, 405";
@@ -70,7 +73,7 @@ in
             }
             {
               text = ''cmd[update:1000] echo "$(date +"%-I:%M %p")"'';
-              color = "rgb(#{{ .colors.base05 }})";
+              color = "rgb({{ .colors.base06 }})";
               font_size = 93;
               font_family = "Adwaita Sans";
               position = "0, 310";
@@ -87,14 +90,14 @@ in
               dots_spacing = 0.55;
               dots_center = true;
               dots_rounding = -1;
-              outer_color = "rgb(#{{ .colors.base05 }})";
-              inner_color = "rgb(#{{ .colors.base00 }})";
-              font_color = "rgb(#{{ .colors.base05 }})";
+              outer_color = "rgb({{ .colors.base03 }})";
+              inner_color = "rgb({{ .colors.base00 }})";
+              font_color = "rgb({{ .colors.base07 }})";
               fade_on_empty = true;
               placeholder_text = "";
               hide_input = false;
-              check_color = "rgb(#{{ .colors.base07 }})";
-              fail_color = "rgb(#{{ .colors.base06 }})";
+              check_color = "rgb({{ .colors.base0B }})";
+              fail_color = "rgb({{ .colors.base08 }})";
               fail_text = "$FAIL <b>($ATTEMPTS)</b>";
               fail_transition = 300;
               capslock_color = -1;
