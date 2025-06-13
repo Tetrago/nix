@@ -110,6 +110,13 @@ in
         inherit (inputs.pwndbg.packages.${stdenv.hostPlatform.system})
           pwndbg
           ;
+
+        flakey = runCommand "flakey" { nativeBuildInputs = [ makeWrapper ]; } ''
+          mkdir -p $out/bin/
+          cp ${./flakey.sh} $out/bin/flakey
+          wrapProgram $out/bin/flakey \
+            --set TEMPLATE_DIR ${./templates}
+        '';
       in
       [
         # CLI
@@ -118,7 +125,9 @@ in
         bandwhich
         dust
         duf
+        hyperfine # Benchmarking tool
         store
+        flakey
 
         # Media
         aseprite
@@ -140,7 +149,7 @@ in
         qemu
         gnome-connections
         inspector # System info
-        mission-center # Resource viewier
+        mission-center # Resource viewer
         snoop # File search
 
         # Development
@@ -158,6 +167,7 @@ in
         rusty-man
         pastel # Color mixing tool
         tokei # Line counter
+        gql # SQL for Git
 
         # Tools
         cartero # HTTP toolkit
@@ -185,6 +195,7 @@ in
         celeste # Cloud file manager
         gnome-calculator
         kooha
+        baobab # Disk usage
 
         # Games
         gnome-mines
