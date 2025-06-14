@@ -28,6 +28,7 @@ in
     mkIf cfg.enable {
       wayland.windowManager.hyprland = {
         enable = true;
+        portalPackage = null; # We're managing this manually
         xwayland.enable = true;
 
         systemd = {

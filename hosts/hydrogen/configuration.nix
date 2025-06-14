@@ -17,11 +17,6 @@
   boot = {
     blacklistedKernelModules = [ "mt76x2u" ];
     kernelPackages = pkgs.linuxPackages_zen;
-
-    tmp = {
-      useTmpfs = true;
-      tmpfsSize = "5%";
-    };
   };
 
   hardware = {

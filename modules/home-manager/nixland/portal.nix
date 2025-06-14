@@ -9,6 +9,7 @@ let
   inherit (builtins) isString;
   inherit (lib)
     mkAfter
+    mkForce
     mkIf
     mkOption
     types
@@ -98,7 +99,7 @@ in
             };
         in
         {
-          enable = true;
+          enable = mkForce true;
           config.hyprland = mapAttrs (_: collectPortalNames) all;
           extraPortals = flatten (map (collectPortalPackages cfg.portal.sources) (attrValues all));
         };
