@@ -7,8 +7,8 @@
 
 let
   inherit (lib) getExe mkEnableOption mkIf;
-  inherit (lib.attrsets) mapAttrs recursiveUpdate;
-  inherit (lib.strings) concatLines;
+  inherit (lib.attrsets) mapAttrs mapAttrsToList recursiveUpdate;
+  inherit (lib.strings) concatLines concatStringsSep;
 
   package =
     let
@@ -117,12 +117,6 @@ in
                     version = "0.2.14";
                     hash = "sha256-mPPNM8QnmZfmC3lKT8Gy4J4Old0Fpu/5TU8KKmAUiYg=";
                   }
-                  {
-                    name = "vsnetrw";
-                    publisher = "danprince";
-                    version = "0.3.1";
-                    hash = "sha256-rxbpxRv6h8LIrLlpusSvBbeaAP4AwRkZTTcFeVukKLc=";
-                  }
                 ];
 
               userSettings = {
@@ -148,7 +142,8 @@ in
                 #   {
                 #     name = "rust-mod";
                 #     base = "rust";
-                #     color = "blue-400";
+                #     color = "light-blue-300";
+                #     lightColor = "light-blue-600";
                 #     fileNames = [ "mod.rs" ];
                 #   }
                 #   {
@@ -158,18 +153,30 @@ in
                 #     lightColor = "light-green-600";
                 #     fileNames = [ "lib.rs" ];
                 #   }
+                #   {
+                #     name = "rust-bin";
+                #     base = "rust";
+                #     color = "light-red-300";
+                #     lightColor = "light-red-600";
+                #     fileNames = [ "bin.rs" ];
+                #   }
+                #   {
+                #     name = "nix-default";
+                #     base = "nix";
+                #     color = "light-blue-300";
+                #     lightColor = "light-blue-600";
+                #     fileNames = [ "default.nix" ];
+                #   }
+                #   {
+                #     name = "nix-flake";
+                #     base = "nix";
+                #     color = "light-green-300";
+                #     lightColor = "light-green-600";
+                #     fileNames = [ "flake.nix" ];
+                #   }
                 # ];
 
-                "nix.formatterPath" = getExe pkgs.nixfmt-rfc-style;
-
                 "vim.easymotion" = true;
-                "vim.normalModeKeyBindings" = [
-                  {
-                    "before" = [ "-" ];
-                    "commands" = [ "vsnetrw.open" ];
-                    "when" = "editorLangId != vsnetrw";
-                  }
-                ];
                 # "vim.statusBarColorControl" = true;
                 # "vim.statusBarColors.normal" = [
                 #   "#8FBCBB"
@@ -189,6 +196,7 @@ in
                 "window.autoDetectColorScheme" = true;
                 "window.commandCenter" = false;
 
+                "workbench.editor.editorActionsLocation" = "hidden";
                 "workbench.editor.showTabs" = "none";
                 "workbench.iconTheme" = "material-icon-theme";
                 "workbench.layoutControl.enabled" = false;
@@ -231,40 +239,73 @@ in
           };
       };
 
-      home.activation.vscode = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-        concatLines (
-          map
-            (
-              n:
-              let
-                path = "$XDG_CONFIG_HOME/${n}";
-              in
-              with pkgs.vscode-extensions;
-              ''
-                run rm -f "${path}"
-                run mkdir -p "$(dirname "${path}")"
+      home.activation.vscode =
+        let
+          values = with pkgs.vscode-extensions; {
+            "alefragnani.project-manager"."project-manager.version" = alefragnani.project-manager.version;
 
-                run ${getExe pkgs.sqlite} "${path}" <<EOF
-                CREATE TABLE ItemTable (key TEXT UNIQUE ON CONFLICT REPLACE, value BLOB);
+            "extensionKeys/alefragnani.project-manager@${alefragnani.project-manager.version}" = [
+              "project-manager.version"
+            ];
 
-                INSERT OR REPLACE INTO ItemTable (key, value)
-                VALUES
-                  ('extensionKeys/alefragnani.project-manager@${alefragnani.project-manager.version}','["project-manager.version"]'),
-                  ('alefragnani.project-manager','{"project-manager.version":"${alefragnani.project-manager.version}"}'),
-                  ('extensionKeys/fill-labs.dependi@${fill-labs.dependi.version}','["dependi.shownVersion"]'),
-                  ('fill-labs.dependi','{"dependi.shownVersion":"${fill-labs.dependi.version}"}'),
-                  ('workbench.explorer.views.state.hidden','[{"id":"outline","isHidden":true},{"id":"timeline","isHidden":true},{"id":"workbench.explorer.openEditorsView","isHidden":true},{"id":"workbench.explorer.fileView","isHidden":false},{"id":"npm","isHidden":true},{"id":"rustDependencies","isHidden":true}]'),
-                  ('workbench.activity.pinnedViewlets2','[{"id":"workbench.view.search","visible":false},{"id":"workbench.view.extensions","visible":false},{"id":"workbench.view.extension.project-manager","visible":false}]'),
-                  ('workbench.scm.views.state.hidden','[{"id":"workbench.scm.repositories","isHidden":true},{"id":"workbench.scm","isHidden":false},{"id":"workbench.scm.history","isHidden":true}]'),
-                  ('workbench.activity.showAccounts', 'false');
-                EOF
-              ''
-            )
-            [
-              "VSCodium/User/globalStorage/state.vscdb"
-              "VSCodium/User/profiles/Rust/globalStorage/state.vscdb"
-            ]
-        )
-      );
+            "extensionKeys/fill-labs.dependi@${fill-labs.dependi.version}" = [ "dependi.shownVersion" ];
+            "fill-labs.dependi"."dependi.shownVersion" = fill-labs.dependi.version;
+
+            "workbench.explorer.views.state.hidden" =
+              map
+                (id: {
+                  inherit id;
+                  isHidden = true;
+                })
+                [
+                  "outline"
+                  "timeline"
+                  "workbench.openEditorsView"
+                  "rustDependencies"
+                ];
+
+            "workbench.pinnedViewlets2" =
+              map
+                (id: {
+                  inherit id;
+                  visible = false;
+                })
+                [
+                  "workbench.view.search"
+                  "workbench.view.extensions"
+                  "workbench.view.extension.project-manager"
+                ];
+
+            "workbench.scm.views.state.hidden" =
+              map
+                (id: {
+                  inherit id;
+                  isHidden = true;
+                })
+                [
+                  "workbench.scm.repositories"
+                  "workbench.scm.history"
+                ];
+
+            "workbench.activity.showAccounts" = false;
+          };
+
+          state = pkgs.runCommand "state.vscdb" { } ''
+            ${getExe pkgs.sqlite} "$out" <<EOF
+            CREATE TABLE ItemTable (key TEXT UNIQUE ON CONFLICT REPLACE, value BLOB);
+            INSERT OR REPLACE INTO ItemTable (key, value)
+            VALUES ${concatStringsSep "," (mapAttrsToList (n: v: "('${n}', '${builtins.toJSON v}')") values)};
+          '';
+        in
+        lib.hm.dag.entryAfter [ "writeBoundary" ] (
+          concatLines (
+            map (n: ''
+              run rm -f "$XDG_CONFIG_HOME/${n}"
+              run mkdir -p "$(dirname "$XDG_CONFIG_HOME/${n}")"
+              run cp "${state}" "$XDG_CONFIG_HOME/${n}"
+            '') [ "VSCodium/User/globalStorage/state.vscdb" ]
+            ++ map (n: "VSCodium/User/profiles/${n}/globalStorage/state.vscdb") [ "Rust" ]
+          )
+        );
     };
 }
