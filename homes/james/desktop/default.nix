@@ -274,6 +274,7 @@ in
     speech.enable = true;
     terminal.enable = true;
     theme.enable = true;
+    vscode.enable = true;
 
     binja = {
       enable = true;
