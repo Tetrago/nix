@@ -52,6 +52,11 @@ in
         ];
       };
 
+      diagnostic.settings = {
+        virtual_lines = true;
+        virtual_text = false;
+      };
+
       extraConfigLua = ''
         vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
           pattern = "*",
@@ -109,6 +114,11 @@ in
           (mkCommand "X" "Trouble diagnostics toggle")
           (mkCommand "x" "Trouble diagnostics toggle filter.buf=0")
 
+          (mkAction "gD" "Glance definitions")
+          (mkAction "gR" "Glance references")
+          (mkAction "gY" "Glance type_definitions")
+          (mkAction "gM" "Glance implementations")
+
           (mkAction "<F6>" "make")
 
           (mkAction "<F5>" "DapContinue")
@@ -123,6 +133,8 @@ in
 
           (mkAction "<C-t>" "Neotree toggle")
           (mkAction "<C-S-t>" "Neotree position=current")
+
+          (mkAction "<C-S-p>" "Telescope session-lens")
 
           (mkAction "-" "Oil")
           (mkAction "=" "ClangdSwitchSourceHeader")
@@ -175,24 +187,30 @@ in
 
       plugins = {
         autoclose.enable = true;
-        auto-session.enable = true;
         clangd-extensions.enable = true;
+        dap-ui.enable = true;
+        dap-virtual-text.enable = true;
         dressing.enable = true;
-        fugitive.enable = true;
-        gitsigns.enable = true;
         illuminate.enable = true;
         image.enable = true;
         indent-blankline.enable = true;
         lspkind.enable = true;
+        lsp-lines.enable = true;
+        neogit.enable = true;
         neoscroll.enable = true;
         neo-tree.enable = true;
         colorizer.enable = true;
-        oil.enable = true;
         sleuth.enable = true;
+        treesitter-context.enable = true;
         trouble.enable = true;
         vimtex.enable = true;
         vim-surround.enable = true;
         web-devicons.enable = true;
+
+        auto-session = {
+          enable = true;
+          settings.cwd_change_handling = true;
+        };
 
         cmp = {
           enable = true;
@@ -207,7 +225,6 @@ in
             };
 
             sources = [
-              { name = "nvim_lsp_signature_help"; }
               { name = "nvim_lsp"; }
               { name = "treesitter"; }
               { name = "buffer"; }
@@ -303,8 +320,17 @@ in
           };
         };
 
-        dap-ui.enable = true;
-        dap-virtual-text.enable = true;
+        gitsigns = {
+          enable = true;
+          settings = {
+            signs.changedelete.text = "󰍷";
+            signs_staged.changedelete.text = "󰍷";
+          };
+        };
+
+        glance = {
+          enable = true;
+        };
 
         leap = {
           enable = true;
@@ -380,7 +406,6 @@ in
             };
 
             extensions = [
-              "fugitive"
               "neo-tree"
               "nvim-dap-ui"
               "oil"
@@ -469,6 +494,34 @@ in
           settings.stages = "static";
         };
 
+        oil = {
+          enable = true;
+          settings.win_options.signcolumn = "yes:2"; # For oil-git-status
+        };
+
+        oil-git-status = {
+          enable = true;
+          settings.symbols =
+            let
+              symbols = {
+                "!" = "";
+                "?" = "";
+                "A" = "";
+                "C" = "";
+                "D" = "";
+                "M" = "";
+                "R" = "";
+                "T" = "󰑖";
+                "U" = "";
+                " " = " ";
+              };
+            in
+            {
+              index = symbols;
+              working_tree = symbols;
+            };
+        };
+
         telescope = {
           enable = true;
 
@@ -543,11 +596,15 @@ in
               "zig"
               "elixir"
             ];
+          };
+        };
 
-            highlight = {
-              enable = true;
-              additional_vim_regex_highlighting = true;
-            };
+        treesitter-refactor = {
+          enable = true;
+          highlightDefinitions.enable = true;
+          smartRename = {
+            enable = true;
+            keymaps.smartRename = "grr";
           };
         };
       };

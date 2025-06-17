@@ -270,6 +270,7 @@ in
     bash.enable = true;
     emacs.enable = true;
     fonts.enable = true;
+    neovide.enable = true;
     podman.enable = true;
     speech.enable = true;
     terminal.enable = true;

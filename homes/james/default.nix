@@ -14,6 +14,7 @@
     ./fonts.nix
     ./git.nix
     ./media.nix
+    ./neovide.nix
     ./neovim.nix
     ./podman.nix
     ./speech.nix
