@@ -342,7 +342,11 @@ in
               enable = true;
               installCargo = false;
               installRustc = false;
-              settings.cargo.loadOutDirsFromCheck = true;
+
+              settings = {
+                cargo.loadOutDirsFromCheck = true;
+                check.command = "clippy";
+              };
             };
           };
         };
