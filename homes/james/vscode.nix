@@ -6,6 +6,7 @@
 }:
 
 let
+  inherit (builtins) hashString toJSON;
   inherit (lib) getExe mkEnableOption mkIf;
   inherit (lib.attrsets) mapAttrs mapAttrsToList recursiveUpdate;
   inherit (lib.strings) concatLines concatStringsSep;
@@ -14,17 +15,22 @@ let
     let
       product = "$out/lib/vscode/resources/app/product.json";
       workbench = "$out/lib/vscode/resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
+
+      calculateHash = pkgs.writeShellScriptBin "calculateHash" ''
+        sha256sum "$1" | awk '{ print $1 }' | ${getExe pkgs.xxd} -r -p | base64 | sed 's/=*$//'
+      '';
     in
     pkgs.vscodium.overrideAttrs (
       final: prev: {
+        nativeBuildInputs = prev.nativeBuildInputs or [ ] ++ [
+          calculateHash
+          pkgs.makeWrapper
+        ];
+
         postInstall = ''
           ${prev.postInstall or ""}
 
-          calculate_hash() {
-            sha256sum "$1" | awk '{ print $1 }' | ${getExe pkgs.xxd} -r -p | base64 | sed 's/=*$//'
-          }
-
-          original_checksum=$(calculate_hash "${workbench}")
+          original_checksum=$(calculateHash "${workbench}")
 
           substituteInPlace "${workbench}" \
             --replace-fail "http-equiv=\"Content-Security-Policy\"" "" \
@@ -63,10 +69,21 @@ let
           </html>
           EOF
 
-          modified_checksum=$(calculate_hash "${workbench}")
+          modified_checksum=$(calculateHash "${workbench}")
 
           substituteInPlace "${product}" \
             --replace-fail "$original_checksum" "$modified_checksum"
+
+          wrapProgram $out/bin/codium \
+            --prefix PATH : ${
+              lib.makeBinPath (
+                with pkgs;
+                [
+                  nil
+                  nixfmt-rfc-style
+                ]
+              )
+            }
         '';
       }
     );
@@ -90,7 +107,7 @@ in
               extensions =
                 with pkgs.vscode-extensions;
                 [
-                  alefragnani.project-manager # Needs keybinds
+                  alefragnani.project-manager
                   bierner.markdown-checkbox
                   bierner.markdown-mermaid
                   editorconfig.editorconfig
@@ -117,6 +134,12 @@ in
                     version = "0.2.14";
                     hash = "sha256-mPPNM8QnmZfmC3lKT8Gy4J4Old0Fpu/5TU8KKmAUiYg=";
                   }
+                  {
+                    name = "oil-code";
+                    publisher = "haphazarddev";
+                    version = "0.0.21";
+                    hash = "sha256-Kcb9k3RmkDErBPTijcbCGij+ly3bQ5DDUnXEt/kHqU0=";
+                  }
                 ];
 
               userSettings = {
@@ -129,6 +152,7 @@ in
                 "editor.minimap.enabled" = false;
 
                 "explorer.excludeGitIgnore" = true;
+                "extensions.experimental.affinity"."vscodevim.vim" = 1;
 
                 "files.exclude" = {
                   "**/.direnv" = true;
@@ -136,68 +160,47 @@ in
                 };
 
                 "security.workspace.trust.enabled" = false;
-
                 "material-icon-theme.activeIconPack" = "none";
-                # "material-icon-theme.files.customClones" = [
-                #   {
-                #     name = "rust-mod";
-                #     base = "rust";
-                #     color = "light-blue-300";
-                #     lightColor = "light-blue-600";
-                #     fileNames = [ "mod.rs" ];
-                #   }
-                #   {
-                #     name = "rust-lib";
-                #     base = "rust";
-                #     color = "light-green-300";
-                #     lightColor = "light-green-600";
-                #     fileNames = [ "lib.rs" ];
-                #   }
-                #   {
-                #     name = "rust-bin";
-                #     base = "rust";
-                #     color = "light-red-300";
-                #     lightColor = "light-red-600";
-                #     fileNames = [ "bin.rs" ];
-                #   }
-                #   {
-                #     name = "nix-default";
-                #     base = "nix";
-                #     color = "light-blue-300";
-                #     lightColor = "light-blue-600";
-                #     fileNames = [ "default.nix" ];
-                #   }
-                #   {
-                #     name = "nix-flake";
-                #     base = "nix";
-                #     color = "light-green-300";
-                #     lightColor = "light-green-600";
-                #     fileNames = [ "flake.nix" ];
-                #   }
-                # ];
+
+                "nix.enableLanguageServer" = true;
+                "nix.serverPath" = "nil";
+                "nix.serverSettings".nil.formatting.command = [ "nixfmt" ];
+
+                "oil-code.disableDefaultKeymaps" = true; # Don't work
+                "oil-code.hasNerdFont" = true;
+
+                "projectManager.git.baseFolders" = [ "~/Projects" ];
 
                 "vim.easymotion" = true;
-                # "vim.statusBarColorControl" = true;
-                # "vim.statusBarColors.normal" = [
-                #   "#8FBCBB"
-                #   "#434C5E"
-                # ];
-                # "vim.statusBarColors.insert" = "#BF616A";
-                # "vim.statusBarColors.visual" = "#B48EAD";
-                # "vim.statusBarColors.visualline" = "#B48EAD";
-                # "vim.statusBarColors.visualblock" = "#A3BE8C";
-                # "vim.statusBarColors.replace" = "#D08770";
-                # "vim.statusBarColors.commandlineinprogress" = "#007ACC";
-                # "vim.statusBarColors.searchinprogressmode" = "#007ACC";
-                # "vim.statusBarColors.easymotionmode" = "#007ACC";
-                # "vim.statusBarColors.easymotioninputmode" = "#007ACC";
-                # "vim.statusBarColors.surroundinputmode" = "#007ACC";
+                "vim.handleKeys" = {
+                  "<C-p>" = false;
+                };
+                "vim.normalModeKeyBindings" = [
+                  {
+                    before = [ "-" ];
+                    commands = [ { command = "oil-code.open"; } ];
+                  }
+                  {
+                    before = [ "<CR>" ];
+                    commands = [ { command = "oil-code.select"; } ];
+                  }
+                ];
 
                 "window.autoDetectColorScheme" = true;
                 "window.commandCenter" = false;
 
                 "workbench.editor.editorActionsLocation" = "hidden";
-                "workbench.editor.showTabs" = "none";
+                "workbench.editor.enablePreview" = false;
+                "workbench.editor.limit.enabled" = true;
+                "workbench.editor.limit.perEditorGroup" = true;
+                "workbench.editor.limit.value" = 1;
+                "workbench.editor.showTabs" = "single";
+                "workbench.editor.customLabels.enabled" = true;
+                "workbench.editor.customLabels.patterns" = {
+                  "**/mod.rs" = "\${dirname}";
+                  "**/default.nix" = "\${dirname}";
+                };
+
                 "workbench.iconTheme" = "material-icon-theme";
                 "workbench.layoutControl.enabled" = false;
                 "workbench.preferredDarkColorTheme" = "GitHub Dark";
@@ -212,25 +215,88 @@ in
                 "[typescript]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
                 "[yaml]"."editor.defaultFormatter" = "esbenp.prettier-vscode";
               };
+
+              keybindings = [
+                {
+                  key = "ctrl+shift+b";
+                  command = "-workbench.action.tasks.build";
+                  when = "taskCommandsRegistered";
+                }
+                {
+                  key = "f6";
+                  command = "-workbench.action.debug.pause";
+                  when = "debugState == 'running'";
+                }
+                {
+                  key = "f6";
+                  command = "-workbench.action.focusNextPart";
+                }
+                {
+                  key = "f6";
+                  command = "workbench.action.tasks.build";
+                  when = "taskCommandsRegistered";
+                }
+                {
+                  key = "ctrl+shift+`";
+                  command = "-workbench.action.terminal.new";
+                  when = "terminalProcessSupported || terminalWebExtensionContributedProfile";
+                }
+                {
+                  key = "ctrl+`";
+                  command = "-workbench.action.terminal.toggleTerminal";
+                  when = "terminal.active";
+                }
+                {
+                  key = "ctrl+\\";
+                  command = "-workbench.action.splitEditor";
+                }
+                {
+                  key = "ctrl+\\";
+                  command = "workbench.action.terminal.toggleTerminal";
+                  when = "terminal.active";
+                }
+                {
+                  key = "ctrl+j";
+                  command = "-extension.vim_ctrl+j";
+                  when = "editorTextFocus && vim.active && vim.use<C-j> && !inDebugRepl";
+                }
+                {
+                  key = "ctrl+j";
+                  command = "-workbench.action.togglePanel";
+                }
+                {
+                  key = "ctrl+j";
+                  command = "projectManager.listProjects";
+                }
+              ];
             };
           in
-          mapAttrs (_: v: recursiveUpdate common (v // { extensions = v.extensions ++ common.extensions; })) {
-            Rust = {
-              extensions = with pkgs.vscode-extensions; [
-                fill-labs.dependi
-                rust-lang.rust-analyzer
-                vadimcn.vscode-lldb
-              ];
+          mapAttrs
+            (
+              _: v:
+              recursiveUpdate common (
+                v
+                // {
+                  extensions = v.extensions or [ ] ++ common.extensions;
+                  keybindings = v.keybindings or [ ] ++ common.keybindings;
+                }
+              )
+            )
+            {
+              Rust = {
+                extensions = with pkgs.vscode-extensions; [
+                  fill-labs.dependi
+                  rust-lang.rust-analyzer
+                  vadimcn.vscode-lldb
+                ];
 
-              userSettings = {
-                "editor.semanticTokenColorCustomizations".rules."*.mutable".fontStyle = "italic";
-
-                "[rust]" = {
-                  "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+                userSettings = {
+                  "editor.semanticTokenColorCustomizations".rules."*.mutable".fontStyle = "italic";
+                  "rust-analyzer.check.command" = "clippy";
+                  "[rust]"."editor.defaultFormatter" = "rust-lang.rust-analyzer";
                 };
               };
-            };
-          }
+            }
           // {
             default = common // {
               enableExtensionUpdateCheck = false;
@@ -287,24 +353,42 @@ in
                   "workbench.scm.history"
                 ];
 
+            "workbench.statusbar.hidden" = [
+              "status.notifications"
+              "esbenp.prettier-vscode.prettier.status"
+              "kamikillerto.vscode-colorize"
+              "status.editor.eol"
+              "status.editor.encoding"
+              "status.editor.indentation"
+              "mhutchie.git-graph"
+            ];
+
             "workbench.activity.showAccounts" = false;
           };
 
-          state = pkgs.runCommand "state.vscdb" { } ''
-            ${getExe pkgs.sqlite} "$out" <<EOF
-            CREATE TABLE ItemTable (key TEXT UNIQUE ON CONFLICT REPLACE, value BLOB);
-            INSERT OR REPLACE INTO ItemTable (key, value)
-            VALUES ${concatStringsSep "," (mapAttrsToList (n: v: "('${n}', '${builtins.toJSON v}')") values)};
-          '';
+          mkState =
+            values:
+            pkgs.runCommand "state-${hashString "sha256" (toJSON values)}.vscdb" { } ''
+              ${getExe pkgs.sqlite} "$out" <<EOF
+              CREATE TABLE ItemTable (key TEXT UNIQUE ON CONFLICT REPLACE, value BLOB);
+              INSERT OR REPLACE INTO ItemTable (key, value)
+              VALUES ${concatStringsSep "," (mapAttrsToList (n: v: "('${n}', '${toJSON v}')") values)};
+              EOF
+            '';
         in
         lib.hm.dag.entryAfter [ "writeBoundary" ] (
           concatLines (
-            map (n: ''
-              run rm -f "$XDG_CONFIG_HOME/${n}"
-              run mkdir -p "$(dirname "$XDG_CONFIG_HOME/${n}")"
-              run cp "${state}" "$XDG_CONFIG_HOME/${n}"
-            '') [ "VSCodium/User/globalStorage/state.vscdb" ]
-            ++ map (n: "VSCodium/User/profiles/${n}/globalStorage/state.vscdb") [ "Rust" ]
+            map
+              (n: ''
+                run mkdir -p "$(dirname "$XDG_CONFIG_HOME/${n}")"
+                run rm -f "$XDG_CONFIG_HOME/${n}"
+                run touch "$(dirname "$XDG_CONFIG_HOME/${n}")/storage.json"
+                run cp "${mkState values}" "$XDG_CONFIG_HOME/${n}"
+              '')
+              (
+                [ "VSCodium/User/globalStorage/state.vscdb" ]
+                ++ map (n: "VSCodium/User/profiles/${n}/globalStorage/state.vscdb") [ "Rust" ]
+              )
           )
         );
     };
