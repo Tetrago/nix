@@ -48,6 +48,7 @@ in
 
                   wondervim = {
                     enable = true;
+                    debugging = true;
                     enableDarkmanIntegration = true;
                   };
                 };
