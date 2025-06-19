@@ -74,20 +74,24 @@ in
       };
 
       extraConfigLua = ''
-        local signs = { Error = "󰅚 ", Warning = " ", Hint = "󰌶 ", Information = " " }
-        for type, icon in pairs(signs) do
-          local hl = "DiagnosticSign" .. type
-          vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+        do
+          local signs = { Error = "󰅚 ", Warning = " ", Hint = "󰌶 ", Information = " " }
+          for type, icon in pairs(signs) do
+            local hl = "DiagnosticSign" .. type
+            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+          end
         end
       '';
 
       extraConfigLuaPost = mkIf cfg.debugging ''
-        local dap, dapui = require("dap"), require("dapui")
-        dap.listeners.before.attach.dapui_config = dapui.open
-        dap.listeners.before.launch.dapui_config = dapui.open
-        dap.listeners.before.event_terminated.dapui_config = dapui.close
-        dap.listeners.before.event_exited.dapui_config = dapui.close
-        require("dap.ext.vscode").load_launchjs()
+        do
+          local dap, dapui = require("dap"), require("dapui")
+          dap.listeners.before.attach.dapui_config = dapui.open
+          dap.listeners.before.launch.dapui_config = dapui.open
+          dap.listeners.before.event_terminated.dapui_config = dapui.close
+          dap.listeners.before.event_exited.dapui_config = dapui.close
+          require("dap.ext.vscode").load_launchjs()
+        end
       '';
 
       colorschemes.catppuccin = {
@@ -105,7 +109,7 @@ in
               "<Leader>X" = "Trouble diagnostics toggle";
               "<Leader>x" = "Trouble diagnostics toggle filter.buf=0";
 
-              "go" = "sort";
+              "<Leader>g".lua = "Snacks.lazygit.open()";
 
               "gD" = "Glance definitions";
               "gR" = "Glance references";
@@ -124,14 +128,12 @@ in
               "<C-S-p>" = "Telescope session-lens";
 
               "-" = "Oil";
-              "=" = "ClangdSwitchSourceHeader";
 
               "<C-g>" = "tabnew";
               "<C-x>" = "tabclose";
 
-              "<Leader>s".plug = "leap-forward";
-              "<Leader>S".plug = "leap-backward";
-              "<Leader>gs".plug = "leap-from-window";
+              "gs".plug = "leap-forward";
+              "gS".plug = "leap-backward";
             }
             // optionalAttrs cfg.debugging {
               "<Leader>d".lua = "require('dapui').toggle()";
@@ -154,21 +156,29 @@ in
             { inherit key; } // v
         ) binds;
 
+      autoCmd = [
+        {
+          event = [ "User" ];
+          pattern = "OilActionsPost";
+          callback.__raw = ''
+            function(event)
+              if event.data.actions.type == "move" then
+                Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+              end
+            end
+          '';
+        }
+      ];
+
       plugins = mkMerge [
         {
-          autoclose.enable = true; # Maybe use blink?
-          clangd-extensions.enable = true;
+          autoclose.enable = true;
           colorizer.enable = true;
-          dressing.enable = true; # Deprecated
           gitblame.enable = true;
           glance.enable = true;
-          illuminate.enable = true;
           image.enable = true;
-          indent-blankline.enable = true;
           lsp-lines.enable = true;
           lspkind.enable = true;
-          neo-tree.enable = true;
-          neogit.enable = true;
           neoscroll.enable = true;
           nvim-surround.enable = true;
           sleuth.enable = true;
@@ -245,7 +255,6 @@ in
                 ];
 
                 "<C-Space>" = [ "show" ];
-                "<CR>" = [ "accept" ];
                 "<C-e>" = [ "cancel" ];
               };
             };
@@ -468,6 +477,19 @@ in
             };
           };
 
+          neo-tree = {
+            enable = true;
+
+            eventHandlers =
+              let
+                snacks = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
+              in
+              {
+                file_moved = snacks;
+                file_renamed = snacks;
+              };
+          };
+
           noice = {
             enable = true;
             settings = {
@@ -532,6 +554,33 @@ in
           render-markdown = {
             enable = true;
             settings.completions.lsp.enabled = true;
+          };
+
+          snacks = {
+            enable = true;
+            settings = {
+              bigfile.enabled = true;
+              input.enabled = true;
+              lazygit.enabled = true;
+              quickfile.enabled = true;
+              words.enabled = true;
+
+              indent = {
+                enabled = true;
+                animate.enabled = false;
+                indent.char = "▏";
+                scope.enabled = true;
+
+                chunk = {
+                  enabled = true;
+                  char = {
+                    arrow = "─";
+                    corner_top = "╭";
+                    corner_bottom = "╰";
+                  };
+                };
+              };
+            };
           };
 
           telescope = {
@@ -668,6 +717,7 @@ in
 
       dependencies = {
         fzf.enable = true;
+        lazygit.enable = true;
         ripgrep.enable = true;
       };
 
