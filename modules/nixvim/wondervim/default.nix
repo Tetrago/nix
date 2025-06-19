@@ -170,9 +170,9 @@ in
           neo-tree.enable = true;
           neogit.enable = true;
           neoscroll.enable = true;
+          nvim-surround.enable = true;
           sleuth.enable = true;
           trouble.enable = true;
-          vim-surround.enable = true;
           vimtex.enable = true;
           web-devicons.enable = true;
 

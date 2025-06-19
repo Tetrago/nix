@@ -14,7 +14,6 @@ mkShell {
         wireplumber
         hyprland
         battery
-        notifd
       ];
     })
   ];
