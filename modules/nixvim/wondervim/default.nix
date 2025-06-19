@@ -307,6 +307,18 @@ in
 
           lualine = {
             enable = true;
+
+            luaConfig.pre = ''
+              local trouble_statusline = require("trouble").statusline({
+                mode = "lsp_document_symbols",
+                groups = {},
+                title = false,
+                filter = { range = true },
+                format = "{kind_icon}{symbol.name:Normal}",
+                hl_group = "lualine_c_normal"
+              })
+            '';
+
             settings = {
               options = {
                 component_separators = {
@@ -357,7 +369,10 @@ in
                   "branch"
                 ];
                 lualine_c = [
-                  "diagnostics"
+                  {
+                    __unkeyed-1.__raw = "trouble_statusline.get";
+                    cond.__raw = "trouble_statusline.has";
+                  }
                   "%="
                 ];
 
