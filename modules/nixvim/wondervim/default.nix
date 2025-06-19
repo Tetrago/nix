@@ -112,9 +112,9 @@ in
               "<C-g>" = "tabnew";
               "<C-x>" = "tabclose";
 
-              "s".plug = "leap-forward";
-              "S".plug = "leap-backward";
-              "gs".plug = "leap-from-window";
+              "<Leader>s".plug = "leap-forward";
+              "<Leader>S".plug = "leap-backward";
+              "<Leader>gs".plug = "leap-from-window";
             }
             // optionalAttrs cfg.debugging {
               "<Leader>d".lua = "require('dapui').toggle()";

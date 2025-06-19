@@ -39,10 +39,21 @@ in
                     neovide_padding_left = 5;
                   };
 
+                  opts.hidden = true; # For toggleterm
+
                   plugins = {
                     direnv.enable = true;
                     image.enable = mkForce false;
                     neoscroll.enable = mkForce false;
+
+                    toggleterm = {
+                      enable = true;
+                      settings = {
+                        direction = "float";
+                        float_opts.border = "curved";
+                        open_mapping = "[[<C-\\>]]";
+                      };
+                    };
                   };
 
                   wondervim = {
@@ -56,10 +67,18 @@ in
 
           font = {
             size = 12;
-            normal = "Monaspace Neon";
-            italic = "Monaspace Radon";
-            bold_italic = "Monaspace Radon";
             edging = "subpixelantialias";
+            normal = "Monaspace Neon";
+
+            italic = {
+              family = "Monaspace Radon";
+              style = "Italic";
+            };
+
+            bold_italic = {
+              family = "Monaspace Radon";
+              style = "BoldItalic";
+            };
 
             features =
               let
