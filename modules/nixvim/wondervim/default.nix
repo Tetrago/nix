@@ -63,7 +63,10 @@ in
       };
 
       diagnostic.settings = {
-        virtual_lines = true;
+        virtual_lines = {
+          only_current_line = true;
+          highlight_whole_line = true;
+        };
         virtual_text = false;
       };
 
@@ -73,6 +76,15 @@ in
           local hl = "DiagnosticSign" .. type
           vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
         end
+      '';
+
+      extraConfigLuaPost = mkIf cfg.debugging ''
+        local dap, dapui = require("dap"), require("dapui")
+        dap.listeners.before.attach.dapui_config = dapui.open
+        dap.listeners.before.launch.dapui_config = dapui.open
+        dap.listeners.before.event_terminated.dapui_config = dapui.close
+        dap.listeners.before.event_exited.dapui_config = dapui.close
+        require("dap.ext.vscode").load_launchjs()
       '';
 
       colorschemes.catppuccin = {
@@ -259,13 +271,11 @@ in
           lsp = {
             enable = true;
             inlayHints = true;
-
             servers = {
               clangd.enable = true;
               cmake.enable = true;
               docker_compose_language_service.enable = true;
               dockerls.enable = true;
-              elixirls.enable = true;
               gopls.enable = true;
               html.enable = true;
               java_language_server.enable = true;
@@ -278,16 +288,10 @@ in
               vtsls.enable = true;
               zls.enable = true;
 
-              hls = {
-                enable = true;
-                installGhc = true;
-              };
-
               rust_analyzer = {
                 enable = true;
                 installCargo = false;
                 installRustc = false;
-
                 settings = {
                   cargo.loadOutDirsFromCheck = true;
                   check.command = "clippy";
@@ -296,9 +300,13 @@ in
             };
           };
 
+          lsp-status = {
+            enable = true;
+            settings.status_symbol = " ";
+          };
+
           lualine = {
             enable = true;
-
             settings = {
               options = {
                 component_separators = {
@@ -316,11 +324,11 @@ in
                     local theme = require("lualine.themes.auto")
 
                     theme.normal.c.bg = nil
+                    theme.normal.c.fg = theme.normal.a.fg
                     theme.inactive.c.bg = nil
 
                     return theme
-                    end
-                  )()
+                  end)()
                 '';
               };
 
@@ -353,7 +361,12 @@ in
                   "%="
                 ];
 
-                lualine_x = [ "fileformat" ];
+                lualine_x = [
+                  {
+                    __unkeyed-1.__raw = ''function() return require("lsp-status").status() end'';
+                    cond.__raw = ''function() return require("lsp-status").status() ~= "" end'';
+                  }
+                ];
                 lualine_y = [ "filetype" ];
 
                 lualine_z = [
@@ -550,15 +563,6 @@ in
 
           dap = {
             enable = true;
-
-            luaConfig.post = ''
-              local dap, dapui = require("dap"), require("dapui")
-              dap.listeners.before.attach.dapui_config = dapui.open
-              dap.listeners.before.launch.dapui_config = dapui.open
-              dap.listeners.before.event_terminated.dapui_config = dapui.close
-              dap.listeners.before.event_exited.dapui_config = dapui.close
-              require("dap.ext.vscode").load_launchjs()
-            '';
 
             adapters.executables =
               let

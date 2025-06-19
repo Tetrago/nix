@@ -72,12 +72,12 @@ in
 
             italic = {
               family = "Monaspace Radon";
-              style = "Italic";
+              style = "Regular";
             };
 
             bold_italic = {
               family = "Monaspace Radon";
-              style = "BoldItalic";
+              style = "Bold";
             };
 
             features =
