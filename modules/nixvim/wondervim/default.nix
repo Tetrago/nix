@@ -16,7 +16,10 @@ let
   inherit (lib.lists) optional;
 in
 {
-  imports = [ ./keymaps.nix ];
+  imports = [
+    ./keymaps.nix
+    ./plugins.nix
+  ];
 
   options.wondervim = {
     enable = mkEnableOption "wondervim neovim configuration.";
@@ -102,6 +105,8 @@ in
               "<Leader>X" = "Trouble diagnostics toggle";
               "<Leader>x" = "Trouble diagnostics toggle filter.buf=0";
 
+              "go" = "sort";
+
               "gD" = "Glance definitions";
               "gR" = "Glance references";
               "gY" = "Glance type_definitions";
@@ -153,21 +158,22 @@ in
         {
           autoclose.enable = true;
           clangd-extensions.enable = true;
+          colorizer.enable = true;
           dressing.enable = true; # Deprecated
+          gitblame.enable = true;
           glance.enable = true;
           illuminate.enable = true;
           image.enable = true;
           indent-blankline.enable = true;
-          lspkind.enable = true;
           lsp-lines.enable = true;
+          lspkind.enable = true;
+          neo-tree.enable = true;
           neogit.enable = true;
           neoscroll.enable = true;
-          neo-tree.enable = true;
-          colorizer.enable = true;
           sleuth.enable = true;
           trouble.enable = true;
-          vimtex.enable = true;
           vim-surround.enable = true;
+          vimtex.enable = true;
           web-devicons.enable = true;
 
           auto-session = {
@@ -481,6 +487,11 @@ in
               };
           };
 
+          render-markdown = {
+            enable = true;
+            settings.completions.lsp.enabled = true;
+          };
+
           telescope = {
             enable = true;
 
@@ -558,11 +569,6 @@ in
             };
           };
 
-          treesitter-context = {
-            enable = true;
-            settings.max_lines = 5;
-          };
-
           treesitter-refactor = {
             enable = true;
             highlightDefinitions.enable = true;
@@ -606,12 +612,13 @@ in
         })
       ];
 
+      wondervim.plugins.darkman = mkIf cfg.enableDarkmanIntegration {
+        package = pkgs.darkman-nvim;
+        settings.change_background = true;
+      };
+
       extraPlugins =
         optional cfg.transparent pkgs.bg-nvim
-        ++ optional cfg.enableDarkmanIntegration {
-          plugin = pkgs.darkman-nvim;
-          config = "lua require('darkman').setup({ change_background = true })";
-        }
         ++ (with pkgs.vimPlugins; [
           vim-indent-object
           vim-textobj-entire
