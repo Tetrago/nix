@@ -12,10 +12,12 @@ let
     mkIf
     mkMerge
     ;
-  inherit (lib.attrsets) mapAttrsToList;
-  inherit (lib.lists) optionals;
+  inherit (lib.attrsets) mapAttrsToList optionalAttrs;
+  inherit (lib.lists) optional;
 in
 {
+  imports = [ ./keymaps.nix ];
+
   options.wondervim = {
     enable = mkEnableOption "wondervim neovim configuration.";
     transparent = mkEnableOption "transparency support.";
@@ -32,6 +34,7 @@ in
 
       globals = {
         c_syntax_for_h = 1;
+        mapleader = "\\";
       };
 
       opts = {
@@ -65,29 +68,11 @@ in
       };
 
       extraConfigLua = ''
-        vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
-          pattern = "*",
-          callback = function()
-            while vim.api.nvim_buf_get_option(0, "filetype") == "notify" do
-              vim.cmd("wincmd w")
-            end
-          end
-        })
-
         local signs = { Error = "󰅚 ", Warning = " ", Hint = "󰌶 ", Information = " " }
         for type, icon in pairs(signs) do
           local hl = "DiagnosticSign" .. type
           vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
         end
-      '';
-
-      extraConfigLuaPost = mkIf cfg.debugging ''
-        local dap, dapui = require("dap"), require("dapui")
-        dap.listeners.before.attach.dapui_config = dapui.open
-        dap.listeners.before.launch.dapui_config = dapui.open
-        dap.listeners.before.event_terminated.dapui_config = dapui.close
-        dap.listeners.before.event_exited.dapui_config = dapui.close
-        require("dap.ext.vscode").load_launchjs()
       '';
 
       colorschemes.catppuccin = {
@@ -98,100 +83,59 @@ in
         };
       };
 
-      globals.mapleader = "\\";
-
-      keymaps =
+      wondervim.keymaps =
         let
-          mkCommand = key: command: {
-            mode = "n";
-            key = "<Leader>${key}";
-            options.silent = true;
-            action = "<Cmd>${command}<CR>";
-          };
-          mkAction = key: command: {
-            mode = "n";
-            inherit key;
-            options.silent = true;
-            action = "<Cmd>${command}<CR>";
-          };
+          binds =
+            {
+              "<Leader>X" = "Trouble diagnostics toggle";
+              "<Leader>x" = "Trouble diagnostics toggle filter.buf=0";
+
+              "gD" = "Glance definitions";
+              "gR" = "Glance references";
+              "gY" = "Glance type_definitions";
+              "gM" = "Glance implementations";
+
+              "<F6>" = "make";
+
+              "<C-f>" = "Telescope current_buffer_fuzzy_find";
+              "<C-k>" = "Telescope live_grep";
+              "<C-i>" = "Telescope lsp_references";
+
+              "<C-t>" = "Neotree toggle";
+              "<C-S-t>" = "Neotree position=current";
+
+              "<C-S-p>" = "Telescope session-lens";
+
+              "-" = "Oil";
+              "=" = "ClangdSwitchSourceHeader";
+
+              "<C-g>" = "tabnew";
+              "<C-x>" = "tabclose";
+
+              "s".plug = "leap-forward";
+              "S".plug = "leap-backward";
+              "gs".plug = "leap-from-window";
+            }
+            // optionalAttrs cfg.debugging {
+              "<Leader>d".lua = "require('dapui').toggle()";
+
+              "<F5>" = "DapContinue";
+              "<F9>" = "DapToggleBreakpoint";
+              "<F10>" = "DapStepOver";
+              "<F11>" = "DapStepInto";
+              "<F12>" = "DapStepOut";
+            };
         in
-        [
-          (mkCommand "X" "Trouble diagnostics toggle")
-          (mkCommand "x" "Trouble diagnostics toggle filter.buf=0")
-
-          (mkAction "gD" "Glance definitions")
-          (mkAction "gR" "Glance references")
-          (mkAction "gY" "Glance type_definitions")
-          (mkAction "gM" "Glance implementations")
-
-          (mkAction "<F6>" "make")
-
-          (mkAction "<C-f>" "Telescope current_buffer_fuzzy_find")
-          (mkAction "<C-k>" "Telescope live_grep")
-          (mkAction "<C-i>" "Telescope lsp_references")
-
-          (mkAction "<C-t>" "Neotree toggle")
-          (mkAction "<C-S-t>" "Neotree position=current")
-
-          (mkAction "<C-S-p>" "Telescope session-lens")
-
-          (mkAction "-" "Oil")
-          (mkAction "=" "ClangdSwitchSourceHeader")
-
-          (mkAction "<C-g>" "tabnew")
-          (mkAction "<C-x>" "tabclose")
-        ]
-        ++ optionals cfg.debugging [
-          (mkCommand "d" "lua require('dapui').toggle()")
-
-          (mkAction "<F5>" "DapContinue")
-          (mkAction "<F9>" "DapToggleBreakpoint")
-          (mkAction "<F10>" "DapStepOver")
-          (mkAction "<F11>" "DapStepInto")
-          (mkAction "<F12>" "DapStepOut")
-        ]
-        ++ [
-          {
-            mode = [
-              "n"
-              "i"
-            ];
-            options.silent = true;
-            key = "<F1>";
-            action = "<Nop>";
-          }
-        ]
-        ++ (
-          mapAttrsToList
-            (key: action: {
-              mode = [
-                "n"
-                "x"
-                "o"
-              ];
-
-              options.silent = true;
-              inherit action;
-              key = "\\${key}";
-            })
+        mapAttrsToList (
+          key: v:
+          if builtins.isString v then
             {
-              s = "<Plug>(leap-forward)";
-              S = "<Plug>(leap-backward)";
-              gs = "<Plug>(leap-from-window)";
+              inherit key;
+              command = v;
             }
-          ++ [
-            {
-              mode = [
-                "n"
-                "i"
-              ];
-
-              options.silent = true;
-              key = "<F1>";
-              action = "<Nop>";
-            }
-          ]
-        );
+          else
+            { inherit key; } // v
+        ) binds;
 
       plugins = mkMerge [
         {
@@ -466,6 +410,18 @@ in
 
           notify = {
             enable = true;
+
+            luaConfig.post = ''
+              vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
+                pattern = "*",
+                callback = function()
+                  while vim.api.nvim_buf_get_option(0, "filetype") == "notify" do
+                    vim.cmd("wincmd w")
+                  end
+                end
+              })
+            '';
+
             settings.stages = "static";
           };
 
@@ -595,6 +551,15 @@ in
           dap = {
             enable = true;
 
+            luaConfig.post = ''
+              local dap, dapui = require("dap"), require("dapui")
+              dap.listeners.before.attach.dapui_config = dapui.open
+              dap.listeners.before.launch.dapui_config = dapui.open
+              dap.listeners.before.event_terminated.dapui_config = dapui.close
+              dap.listeners.before.event_exited.dapui_config = dapui.close
+              require("dap.ext.vscode").load_launchjs()
+            '';
+
             adapters.executables =
               let
                 gdb = {
@@ -622,17 +587,24 @@ in
         })
       ];
 
-      extraPlugins = [
-        (mkIf cfg.transparent pkgs.bg-nvim)
-        (mkIf cfg.enableDarkmanIntegration {
+      extraPlugins =
+        optional cfg.transparent pkgs.bg-nvim
+        ++ optional cfg.enableDarkmanIntegration {
           plugin = pkgs.darkman-nvim;
           config = "lua require('darkman').setup({ change_background = true })";
-        })
-      ];
+        }
+        ++ (with pkgs.vimPlugins; [
+          vim-indent-object
+          vim-textobj-entire
+        ]);
+
+      dependencies = {
+        fzf.enable = true;
+        ripgrep.enable = true;
+      };
 
       extraPackages = with pkgs; [
         fd
-        ripgrep
       ];
     };
 }

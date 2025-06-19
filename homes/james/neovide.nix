@@ -37,7 +37,6 @@ in
                     neovide_padding_bottom = 5;
                     neovide_padding_right = 5;
                     neovide_padding_left = 5;
-                    neovide_floating_corner_radius = 0.5;
                   };
 
                   plugins = {
