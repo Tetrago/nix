@@ -156,7 +156,7 @@ in
 
       plugins = mkMerge [
         {
-          autoclose.enable = true;
+          autoclose.enable = true; # Maybe use blink?
           clangd-extensions.enable = true;
           colorizer.enable = true;
           dressing.enable = true; # Deprecated
@@ -181,29 +181,72 @@ in
             settings.cwd_change_handling = true;
           };
 
-          cmp = {
+          blink-cmp = {
             enable = true;
             settings = {
-              mapping = {
-                "<C-space>" = "cmp.mapping.complete()";
-                "<C-e>" = "cmp.mapping.close()";
-                "<C-a>" = "cmp.mapping.abort()";
-                "<CR>" = "cmp.mapping.confirm({ select = false })";
-                "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-                "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+              completion = {
+                documentation = {
+                  auto_show = true;
+                  auto_show_delay_ms = 500;
+                };
+
+                ghost_text.enabled = true;
+
+                list.selection = {
+                  preselect = false;
+                  auto_insert = true;
+                };
+
+                menu.draw.components.kind_icon = {
+                  text.__raw = ''
+                    function(ctx)
+                      local icon = ctx.kind_icon
+                      if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                        local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                        if dev_icon then
+                          icon = dev-icon
+                        end
+                      else
+                        icon = require("lspkind").symbolic(ctx.kind, {
+                          mode = "symbol"
+                        })
+                      end
+
+                      return icon .. ctx.icon_gap
+                    end
+                  '';
+
+                  highlight.__raw = ''
+                    function(ctx)
+                      local hl = ctx.kind_hl
+                      if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                        local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                        if dev_icon then
+                          hl = dev_hl
+                        end
+                      end
+                      return hl
+                    end
+                  '';
+                };
               };
 
-              sources = [
-                { name = "nvim_lsp"; }
-                { name = "treesitter"; }
-                { name = "buffer"; }
-                { name = "dap"; }
-                { name = "path"; }
-              ];
+              keymap = {
+                preset = "none";
 
-              window = {
-                completion.border = "rounded";
-                documentation.border = "rounded";
+                "<Tab>" = [
+                  "select_next"
+                  "fallback"
+                ];
+
+                "<S-Tab>" = [
+                  "select_prev"
+                  "fallback"
+                ];
+
+                "<C-Space>" = [ "show" ];
+                "<CR>" = [ "accept" ];
+                "<C-e>" = [ "cancel" ];
               };
             };
           };
@@ -435,7 +478,6 @@ in
               };
 
               lsp.override = {
-                "cmp.entry.get_documentation" = true;
                 "vim.lsp.util.convert_input_to_markdown_lines" = true;
                 "vim.lsp.util.stylize_markdown" = true;
               };
