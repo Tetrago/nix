@@ -41,9 +41,6 @@ in
       };
 
       opts = {
-        number = true;
-        relativenumber = true;
-
         expandtab = true;
         tabstop = 4;
         shiftwidth = 4;
@@ -703,9 +700,21 @@ in
         })
       ];
 
-      wondervim.plugins.darkman = mkIf cfg.enableDarkmanIntegration {
-        package = pkgs.darkman-nvim;
-        settings.change_background = true;
+      wondervim.plugins = {
+        comfy-line-numbers.package = pkgs.comfy-line-numbers-nvim;
+
+        darkman = mkIf cfg.enableDarkmanIntegration {
+          package = pkgs.darkman-nvim;
+          settings.change_background = true;
+        };
+
+        eyeliner = {
+          package = pkgs.vimPlugins.eyeliner-nvim;
+          settings = {
+            highlight_on_key = true;
+            dim = true;
+          };
+        };
       };
 
       extraPlugins =

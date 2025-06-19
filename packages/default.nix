@@ -3,6 +3,7 @@
 {
   adwaita-nerdfont = callPackage ./adwaita-nerdfont.nix { };
   bg-nvim = callPackage ./bg-nvim.nix { };
+  comfy-line-numbers-nvim = callPackage ./comfy-line-numbers-nvim.nix { };
   darkman-nvim = callPackage ./darkman-nvim.nix { };
   kasasa = callPackage ./kasasa.nix { };
   ropium = callPackage ./ropium.nix { };
