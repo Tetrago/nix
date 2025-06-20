@@ -39,9 +39,13 @@ in
                     neovide_padding_left = 5;
                   };
 
-                  opts.hidden = true; # For toggleterm
+                  opts = {
+                    laststatus = 3; # For incline
+                    hidden = true; # For toggleterm
+                  };
 
                   plugins = {
+                    auto-session.settings.supressed_dirs = [ config.home.homeDirectory ];
                     direnv.enable = true;
                     image.enable = mkForce false;
                     neoscroll.enable = mkForce false;
@@ -60,6 +64,41 @@ in
                     enable = true;
                     debugging = true;
                     enableDarkmanIntegration = true;
+
+                    plugins = {
+                      incline = {
+                        package = pkgs.vimPlugins.incline-nvim;
+
+                        luaConfig = {
+                          pre = ''
+                            do
+                            local helpers = require("incline.helpers")
+                            local devicons = require("nvim-web-devicons")
+                          '';
+                          post = "end";
+                        };
+
+                        settings = {
+                          render.__raw = ''
+                            function(props)
+                              local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+                              if filename == "" then
+                                return {}
+                              end
+
+                              local ft_icon, ft_color = devicons.get_icon_color(filename)
+                              local modified = vim.bo[props.buf].modified
+                              return {
+                                ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
+                                " ",
+                                { filename, gui = modified and "bold,italic" or "bold" },
+                                " "
+                              }
+                            end
+                          '';
+                        };
+                      };
+                    };
                   };
                 };
             }

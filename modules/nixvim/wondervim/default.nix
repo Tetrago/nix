@@ -99,19 +99,26 @@ in
         let
           binds =
             {
-              "<Leader>X" = "Trouble diagnostics toggle";
-              "<Leader>x" = "Trouble diagnostics toggle filter.buf=0";
-
+              "<Leader>x" = "Telescope diagnostics";
               "<Leader>g".lua = "Snacks.lazygit.open()";
-
               "<Leader>o" = "OverseerToggle";
+
+              "ds" = "TSJSplit";
+              "dj" = "TSJJoin";
 
               "gD" = "Glance definitions";
               "gR" = "Glance references";
               "gY" = "Glance type_definitions";
               "gM" = "Glance implementations";
 
+              "?" = "view ${./keymaps.md}";
+
               "<F6>" = "make";
+
+              "<M-j>" = "cnext";
+              "<M-k>" = "cprev";
+              "<M-o>" = "copen";
+              "<M-q>" = "cclose";
 
               "<C-f>" = "Telescope current_buffer_fuzzy_find";
               "<C-k>" = "Telescope live_grep";
@@ -167,8 +174,10 @@ in
 
       plugins = mkMerge [
         {
+          arrow.enable = true;
           autoclose.enable = true;
           colorizer.enable = true;
+          fugitive.enable = true;
           gitblame.enable = true;
           glance.enable = true;
           image.enable = true;
@@ -178,7 +187,6 @@ in
           nvim-surround.enable = true;
           overseer.enable = true;
           sleuth.enable = true;
-          trouble.enable = true;
           vimtex.enable = true;
           web-devicons.enable = true;
 
@@ -444,7 +452,6 @@ in
                 "neo-tree"
                 "nvim-dap-ui"
                 "oil"
-                "trouble"
               ];
 
               sections = {
@@ -466,7 +473,10 @@ in
                 ];
 
                 lualine_c = [
-                  "diagnostics"
+                  {
+                    __unkeyed-1 = "diagnostics";
+                    sources = [ "nvim_workspace_diagnostic" ];
+                  }
                   "overseer"
                   "%="
                 ];
@@ -706,13 +716,9 @@ in
             };
           };
 
-          treesitter-refactor = {
+          treesj = {
             enable = true;
-            highlightDefinitions.enable = true;
-            smartRename = {
-              enable = true;
-              keymaps.smartRename = "grr";
-            };
+            settings.use_default_keymaps = false;
           };
         }
         (mkIf cfg.debugging {
