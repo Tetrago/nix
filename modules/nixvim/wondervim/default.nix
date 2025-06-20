@@ -102,6 +102,7 @@ in
               "<Leader>x" = "Telescope diagnostics";
               "<Leader>g".lua = "Snacks.lazygit.open()";
               "<Leader>o" = "OverseerToggle";
+              "<Leader>t" = "TodoTelescope";
 
               "ds" = "TSJSplit";
               "dj" = "TSJJoin";
@@ -177,7 +178,6 @@ in
         {
           arrow.enable = true;
           autoclose.enable = true;
-          colorizer.enable = true;
           fugitive.enable = true;
           gitblame.enable = true;
           glance.enable = true;
@@ -188,6 +188,7 @@ in
           nvim-surround.enable = true;
           overseer.enable = true;
           sleuth.enable = true;
+          todo-comments.enable = true;
           vimtex.enable = true;
           web-devicons.enable = true;
 
@@ -316,6 +317,11 @@ in
                 ];
               };
             };
+          };
+
+          colorizer = {
+            enable = true;
+            settings.user_default_options.names = false;
           };
 
           conform-nvim = {

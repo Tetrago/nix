@@ -22,4 +22,5 @@
 | <C-f> | Telescope find in buffer   |
 | <C-i> | Telescope lsp references   |
 | <C-n> | Telescope notifications    |
+| \t    | Todo telescope             |
 
