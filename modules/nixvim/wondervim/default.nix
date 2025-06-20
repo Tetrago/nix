@@ -38,9 +38,13 @@ in
       globals = {
         c_syntax_for_h = 1;
         mapleader = "\\";
+        material_style = "darker";
+        edge_better_performance = 1;
+        edge_enable_italic = true;
       };
 
       opts = {
+        cursorline = true;
         expandtab = true;
         tabstop = 4;
         shiftwidth = 4;
@@ -90,14 +94,6 @@ in
           require("dap.ext.vscode").load_launchjs()
         end
       '';
-
-      colorschemes.catppuccin = {
-        enable = true;
-        settings.background = {
-          dark = "frappe";
-          light = "latte";
-        };
-      };
 
       wondervim.keymaps =
         let
@@ -390,9 +386,9 @@ in
                   (function()
                     local theme = require("lualine.themes.auto")
 
-                    theme.normal.c.bg = nil
-                    theme.normal.c.fg = theme.normal.a.fg
-                    theme.inactive.c.bg = nil
+                    for _, mode in pairs(theme) do
+                      mode.c.bg = nil
+                    end
 
                     return theme
                   end)()
@@ -576,6 +572,10 @@ in
                     corner_bottom = "╰";
                   };
                 };
+
+                terminal = {
+
+                };
               };
             };
           };
@@ -705,7 +705,13 @@ in
 
         darkman = mkIf cfg.enableDarkmanIntegration {
           package = pkgs.darkman-nvim;
-          settings.change_background = true;
+          settings = {
+            change_background = true;
+            colorscheme = {
+              dark = "midnight";
+              light = "mellifluous";
+            };
+          };
         };
 
         eyeliner = {
@@ -715,6 +721,9 @@ in
             dim = true;
           };
         };
+
+        mellifluous.package = pkgs.mellifluous-nvim;
+        midnight.package = pkgs.vimPlugins.midnight-nvim;
       };
 
       extraPlugins =
