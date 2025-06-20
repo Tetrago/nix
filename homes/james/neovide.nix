@@ -50,6 +50,63 @@ in
                     image.enable = mkForce false;
                     neoscroll.enable = mkForce false;
 
+                    snacks.settings.dashboard = {
+                      enabled = true;
+                      preset.header = ''
+                                                                                                         ':!<_???_>^     
+                                                                                                    `!-1/jrxxjt|||((?    
+                                                                                                ^<{tjjt|){}}1rUUnjt1/,   
+                                                                                             !}tjt|((/jnvvvr{:,r0vrt|:   
+                                                                                         '~)ff//rcCmpkhhhhaaoh_ YLxt|    
+                                                                                      `_|jffxX0qddpwmZZZmwqpqaw nLrj<    
+                                                                                   .+|jjrvLwdpwZ0QLLCJL0ZZmpphQ`LXr1     
+                                                                                 i(rrxz0pdqOCXnf|)1|nYYJQZmpp#[[Ont      
+                                                                              :{jxnz0pdmCu|?!,'     ^]YYLZmqoC!0cf'      
+                                                                            +fnncQqpmYf?;'         . `uJQZwhp>UYf'       
+                                                                ',l>~-?_~?/vzXCwpmUt<`               :XCZZkd-zC/         
+                                                            ^!+?}{1))[]1rcYCZpwCn1+!l:'              )L0Zkp?cL1          
+                                                         ,>?}{)(||(}}/uXCOqpOzt}?]{(()}_;           +CQZhO[XJ-           
+                                                      .!-}{)(|/t|{1jcULmpwCn({)jvXYXvxf|1?l        >JQmaU{CzI            
+                                                    .i?{1(|/tf|1(xXC0qpZYr||nCmqwZLUXcnj/)}-:     ~JQqkx|Qt              
+                                                   !?})(/tff|1|uYLZpp0cftuQk#*hwO0QLCYzvxj|1[i   [L0bm|uC_               
+                                                 "_[1(/tff|)/vULmpqLufnLhW8MhpwwmZO0LCYznf|)[-i^t0mkY|Uu^                
+                                                I?}1|/ff|)/vJQmpwCnjXpW%8MobbbbpmmZ0CXvxj/|){[_!XkwjxJ]                  
+                                               !?})|/t|1/cJQwpmJxfXk8%&W#ahhhbdpqZLYvnxrjft|(1}<]CtXx`                   
+                                              I?[)|/|{|vULmpmUr/cd8%WMM*oahkkbpZLXcvuunxrjft|){]l/U+                     
+                                             '_])|(}(vULmdwJr|uq&%W##M*oahhkpOCXzzcvuunnxrjt|){?>+.                      
+                                             i?1)[1uUJZpwCx|rZW8M**MM#*oakqQJYXzzcccvvuuxrjt/({?~                        
+                                             -[?[xYU0pqLn|tL*8Moa*MM#*ohqQJYXXzzzzzzcvuunxjf/)}->                        
+                                            ^+_tXYLqp0v||zb&Mah*#MMM*hqQJYYXXXXXXXXzcvcvurf/({]+!                        
+                                            '1zXUmpZX/1r0*&oho###**aqQJYYXXXXXXXXXzzXzvnjf/(1[-<"                        
+                                           ;uXc0pmJj{(Xq#*kkaahhkkqQUYXXXXXXXYXXXXYXcuxjft|)}?+!                         
+                                          |YrYpqQu{[fJpabqdddpdbqQUXXXzXXXXYYXXYUYcunxjf/({[-<!                          
+                                        <XujOdZY(-[jJmpmZmwqqqwQYXXzzzXXXXXXXYUYzunxrf/({[?~il'                          
+                                       fJtzdq0x_<[tvC0LL0OZOZ0YzzzzzzzzXXXXXUYcuunxj/|1}?~iI,                            
+                                     <Uv/ObZC?`!-1jvXXYJCLLQJcvvvvvvczzzzzXXcunnrjt(1}?~>l;"                             
+                                    |L/nbq0X!   <}|jruvzXYUvnnnnnuuuvvvvzzcnxxrjt(1}?~>!I:'                              
+                                  ;cU1JhZ0v,     ;?1(tjnuvrfjjrrxxnnnnuvuxrjjf/(1{?~>!l:`                                
+                                 -Cv{mkO0v"        !]1(/ft|//tfjjjjjjrxrfft/|({[?~i!I,'                                  
+                                (Qj)bdOQz:           I_}1}1)(||/t///tt/||()1}]?+iI:`                                     
+                              ^j0/(apZLJ+              ';!<~-]{111111{{{}]]?+<i:'                                        
+                             Ir0|)opZ0Cx'.              :]f/|{<+-____~~<iI:^.                                            
+                            !xLj?opmZCJ/  .         ">1uLqdqCurx?'                                                       
+                           !xYX!bbqmOCYz_^.   '^I~{jX0pdmJurrt_                                                          
+                          :ruZlv*pwZZLUYYnt|/fxcUQmpdmJurrf[,                                                            
+                          trLn"bddpmZZ0LCCLLQOmpdpOYnjjj{I                                                               
+                         }jnO{^akppqwmmmmwpdbdmCvjfjf{l                                                                  
+                        "/fnQx {hoaaaahkdwQYnf/fjt[I                                                                     
+                        ~|frz0t,I}trxrj/(((tjj(_"                                                                        
+                        >|)tjnYYx(11)|tjrj|?I                                                                            
+                         [)(|||/jrrjt([<,                                                                                
+                          ^i~__+<!:`                                                                                     
+                      '';
+                      sections = [
+                        {
+                          section = "header";
+                        }
+                      ];
+                    };
+
                     toggleterm = {
                       enable = true;
                       settings = {
