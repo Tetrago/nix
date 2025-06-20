@@ -45,7 +45,7 @@ in
                   };
 
                   plugins = {
-                    auto-session.settings.supressed_dirs = [ config.home.homeDirectory ];
+                    auto-session.settings.suppressed_dirs = [ config.home.homeDirectory ];
                     direnv.enable = true;
                     image.enable = mkForce false;
                     neoscroll.enable = mkForce false;

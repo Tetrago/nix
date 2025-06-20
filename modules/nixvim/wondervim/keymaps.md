@@ -23,4 +23,9 @@
 | <C-i> | Telescope lsp references   |
 | <C-n> | Telescope notifications    |
 | \t    | Todo telescope             |
+| gxx   | Buffer diagnostics         |
+| gxe   | Buffer errors              |
+| gXx   | Global diagnostics         |
+| gXe   | Global errors              |
+| <C-=> | Show error info            |
 

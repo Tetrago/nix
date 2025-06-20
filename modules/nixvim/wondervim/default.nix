@@ -12,7 +12,7 @@ let
     mkIf
     mkMerge
     ;
-  inherit (lib.attrsets) mapAttrsToList optionalAttrs;
+  inherit (lib.attrsets) mapAttrs' mapAttrsToList optionalAttrs;
   inherit (lib.lists) optional;
 in
 {
@@ -44,7 +44,10 @@ in
       };
 
       opts = {
+        number = true;
+        relativenumber = true;
         cursorline = true;
+
         expandtab = true;
         tabstop = 4;
         shiftwidth = 4;
@@ -67,39 +70,48 @@ in
       };
 
       diagnostic.settings = {
+        severity_sort = true;
+
+        signs = {
+          text =
+            mapAttrs'
+              (n: v: {
+                name = "__rawKey__vim.diagnostic.severity.${n}";
+                value = v;
+              })
+              {
+                ERROR = "";
+                WARN = "";
+                INFO = "";
+                HINT = "";
+              };
+
+          numhl =
+            mapAttrs'
+              (n: v: {
+                name = "__rawKey__vim.diagnostic.severity.${n}";
+                value = v;
+              })
+              {
+                ERROR = "DiagnosticSignError";
+                WARN = "DiagnosticSignWarn";
+                INFO = "DiagnosticSignInfo";
+                HINT = "DiagnosticSignHint";
+              };
+        };
+
         virtual_lines = {
-          only_current_line = true;
+          current_line = true;
           highlight_whole_line = true;
         };
+
         virtual_text = false;
       };
-
-      extraConfigLua = ''
-        do
-          local signs = { Error = "󰅚 ", Warning = " ", Hint = "󰌶 ", Information = " " }
-          for type, icon in pairs(signs) do
-            local hl = "DiagnosticSign" .. type
-            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-          end
-        end
-      '';
-
-      extraConfigLuaPost = mkIf cfg.debugging ''
-        do
-          local dap, dapui = require("dap"), require("dapui")
-          dap.listeners.before.attach.dapui_config = dapui.open
-          dap.listeners.before.launch.dapui_config = dapui.open
-          dap.listeners.before.event_terminated.dapui_config = dapui.close
-          dap.listeners.before.event_exited.dapui_config = dapui.close
-          require("dap.ext.vscode").load_launchjs()
-        end
-      '';
 
       wondervim.keymaps =
         let
           binds =
             {
-              "<Leader>x" = "Telescope diagnostics";
               "<Leader>g".lua = "Snacks.lazygit.open()";
               "<Leader>o" = "OverseerToggle";
               "<Leader>t" = "TodoTelescope";
@@ -112,14 +124,25 @@ in
               "gY" = "Glance type_definitions";
               "gM" = "Glance implementations";
 
+              "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
+              "gxe".lua =
+                "vim.diagnostic.setqflist({ scope = 'buffer', severity = vim.diagnostic.severity.ERROR })";
+              "gXx".lua = "vim.diagnostic.setqflist()";
+              "gXe".lua = "vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })";
+
               "?" = "view ${./keymaps.md}";
 
               "<F6>" = "make";
 
               "<M-j>" = "cnext";
               "<M-k>" = "cprev";
-              "<M-o>" = "copen";
+              "<M-o>" = "botright copen";
               "<M-q>" = "cclose";
+
+              "<C-w><C-s>" = "botright split";
+              "<C-w><C-v>" = "botright vsplit";
+
+              "<C-=>".lua = "vim.diagnostic.open_float()";
 
               "<C-f>" = "Telescope current_buffer_fuzzy_find";
               "<C-k>" = "Telescope live_grep";
@@ -176,13 +199,11 @@ in
 
       plugins = mkMerge [
         {
-          arrow.enable = true;
           autoclose.enable = true;
           fugitive.enable = true;
           gitblame.enable = true;
           glance.enable = true;
           image.enable = true;
-          lsp-lines.enable = true;
           lspkind.enable = true;
           neoscroll.enable = true;
           nvim-surround.enable = true;
@@ -191,6 +212,14 @@ in
           todo-comments.enable = true;
           vimtex.enable = true;
           web-devicons.enable = true;
+
+          arrow = {
+            enable = true;
+            settings = {
+              leader_key = "m";
+              show_icons = true;
+            };
+          };
 
           auto-session = {
             enable = true;
@@ -316,6 +345,8 @@ in
                   "fallback"
                 ];
               };
+
+              signature.enabled = true;
             };
           };
 
@@ -554,9 +585,15 @@ in
                 long_message_to_split = true;
               };
 
-              lsp.override = {
-                "vim.lsp.util.convert_input_to_markdown_lines" = true;
-                "vim.lsp.util.stylize_markdown" = true;
+              lsp = {
+                override = {
+                  "vim.lsp.util.convert_input_to_markdown_lines" = true;
+                  "vim.lsp.util.stylize_markdown" = true;
+                };
+
+                hover.enabled = false;
+                progress.enabled = false;
+                signature.enabled = false;
               };
             };
           };
@@ -763,8 +800,6 @@ in
       ];
 
       wondervim.plugins = {
-        comfy-line-numbers.package = pkgs.comfy-line-numbers-nvim;
-
         darkman = mkIf cfg.enableDarkmanIntegration {
           package = pkgs.darkman-nvim;
           settings.change_background = true;
