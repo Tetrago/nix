@@ -104,6 +104,8 @@ in
 
               "<Leader>g".lua = "Snacks.lazygit.open()";
 
+              "<Leader>o" = "OverseerToggle";
+
               "gD" = "Glance definitions";
               "gR" = "Glance references";
               "gY" = "Glance type_definitions";
@@ -174,6 +176,7 @@ in
           lspkind.enable = true;
           neoscroll.enable = true;
           nvim-surround.enable = true;
+          overseer.enable = true;
           sleuth.enable = true;
           trouble.enable = true;
           vimtex.enable = true;
@@ -705,13 +708,7 @@ in
 
         darkman = mkIf cfg.enableDarkmanIntegration {
           package = pkgs.darkman-nvim;
-          settings = {
-            change_background = true;
-            colorscheme = {
-              dark = "midnight";
-              light = "mellifluous";
-            };
-          };
+          settings.change_background = true;
         };
 
         eyeliner = {
@@ -722,8 +719,10 @@ in
           };
         };
 
-        mellifluous.package = pkgs.mellifluous-nvim;
-        midnight.package = pkgs.vimPlugins.midnight-nvim;
+        mellifluous = {
+          package = pkgs.mellifluous-nvim;
+          luaConfig.post = "vim.cmd [[colorscheme mellifluous]]";
+        };
       };
 
       extraPlugins =
