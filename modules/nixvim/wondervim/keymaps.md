@@ -20,4 +20,6 @@
 | <M-j> | Next quickfix              |
 | <M-k> | Previous quickfix          |
 | <C-f> | Telescope find in buffer   |
+| <C-i> | Telescope lsp references   |
+| <C-n> | Telescope notifications    |
 
