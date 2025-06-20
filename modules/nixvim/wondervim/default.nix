@@ -120,7 +120,7 @@ in
               "<C-t>" = "Neotree toggle";
               "<C-S-t>" = "Neotree position=current";
 
-              "<C-S-p>" = "Telescope session-lens";
+              "<C-S-p>" = "SessionSearch";
 
               "-" = "Oil";
 
@@ -184,7 +184,48 @@ in
 
           auto-session = {
             enable = true;
-            settings.cwd_change_handling = true;
+            settings = {
+              cwd_change_handling = true;
+
+              post_restore_cmds = [
+                {
+                  __raw = ''
+                    function()
+                      require("overseer").load_task_bundle(
+                        vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                        { ignore_missing = true }
+                      )
+                    end
+                  '';
+                }
+              ];
+
+              pre_restore_cmds = [
+                {
+                  __raw = ''
+                    function()
+                      for _, task in ipairs(require("overseer").list_tasks({})) do
+                        task:dispose(true)
+                      end
+                    end
+                  '';
+                }
+              ];
+
+              pre_save_cmds = [
+                {
+                  __raw = ''
+                    function()
+                      require("overseer").save_task_bundle(
+                        vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                        nil,
+                        { on_conflict = "overwrite" }
+                      )
+                    end
+                  '';
+                }
+              ];
+            };
           };
 
           blink-cmp = {
@@ -250,8 +291,20 @@ in
                   "fallback"
                 ];
 
-                "<C-Space>" = [ "show" ];
-                "<C-e>" = [ "cancel" ];
+                "<C-Space>" = [
+                  "show"
+                  "fallback"
+                ];
+
+                "<CR>" = [
+                  "accept"
+                  "fallback"
+                ];
+
+                "<C-e>" = [
+                  "cancel"
+                  "fallback"
+                ];
               };
             };
           };
@@ -362,17 +415,6 @@ in
           lualine = {
             enable = true;
 
-            luaConfig.pre = ''
-              local trouble_statusline = require("trouble").statusline({
-                mode = "lsp_document_symbols",
-                groups = {},
-                title = false,
-                filter = { range = true },
-                format = "{kind_icon}{symbol.name:Normal}",
-                hl_group = "lualine_c_normal"
-              })
-            '';
-
             settings = {
               options = {
                 component_separators = {
@@ -422,11 +464,10 @@ in
                   "filename"
                   "branch"
                 ];
+
                 lualine_c = [
-                  {
-                    __unkeyed-1.__raw = "trouble_statusline.get";
-                    cond.__raw = "trouble_statusline.has";
-                  }
+                  "diagnostics"
+                  "overseer"
                   "%="
                 ];
 
@@ -436,6 +477,7 @@ in
                     cond.__raw = ''function() return require("lsp-status").status() ~= "" end'';
                   }
                 ];
+
                 lualine_y = [ "filetype" ];
 
                 lualine_z = [
@@ -565,7 +607,11 @@ in
                 enabled = true;
                 animate.enabled = false;
                 indent.char = "▏";
-                scope.enabled = true;
+
+                scope = {
+                  enabled = true;
+                  char = "▏";
+                };
 
                 chunk = {
                   enabled = true;
@@ -728,7 +774,7 @@ in
       extraPlugins =
         optional cfg.transparent pkgs.bg-nvim
         ++ (with pkgs.vimPlugins; [
-          vim-indent-object
+          vim-expand-region
           vim-textobj-entire
         ]);
 
