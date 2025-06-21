@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  outputs,
   pkgs,
   ...
 }:
@@ -30,7 +31,7 @@ in
           module =
             { ... }:
             {
-              imports = [ (import ../../modules/nixvim/wondervim) ];
+              imports = [ outputs.nixvimModules.wondervim ];
 
               wondervim = {
                 enable = true;

@@ -113,6 +113,8 @@
         home-manager = import ./modules/nixos/home-manager;
       };
 
+      nixvimModules.wondervim = import ./modules/nixvim/wondervim;
+
       devShells = eachSystem (
         system:
         let
@@ -148,10 +150,7 @@
         pkgs.callPackage ./packages { inherit (pkgs) callPackage; }
         // {
           emacs = import ./packages/emacs { inherit inputs pkgs; };
-          nvim = import ./packages/nvim {
-            inherit inputs;
-            pkgs = pkgs';
-          };
+          nvim = import ./packages/nvim { inherit inputs outputs pkgs; };
         }
       );
     };

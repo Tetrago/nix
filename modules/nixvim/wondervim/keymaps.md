@@ -14,17 +14,18 @@
 | grr   | LSP references             |
 | grn   | LSP rename                 |
 | ae    | Entire buffer              |
-| ds    | treesj split               |
-| dj    | treesj join                |
+| <C-s> | treesj split               |
+| <C-j> | treesj join                |
 | <C-q> | Telescope open in quickfix |
 | <M-j> | Next quickfix              |
 | <M-k> | Previous quickfix          |
 | <C-f> | Telescope find in buffer   |
 | <C-i> | Telescope lsp references   |
 | <C-n> | Telescope notifications    |
-| \t    | Todo telescope             |
+| <M-t> | Todo telescope             |
 | gxx   | Buffer diagnostics         |
 | gxe   | Buffer errors              |
 | gXx   | Global diagnostics         |
 | gXe   | Global errors              |
+| S*    | Surround with *            |
 

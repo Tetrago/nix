@@ -1,4 +1,8 @@
-{ inputs, pkgs }:
+{
+  inputs,
+  outputs,
+  pkgs,
+}:
 
 inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
   inherit pkgs;
@@ -6,8 +10,7 @@ inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithMo
   module =
     { ... }:
     {
-      imports = [ (import ../../modules/nixvim/wondervim) ];
-
+      imports = [ outputs.nixvimModules.wondervim ];
       wondervim.enable = true;
     };
 }

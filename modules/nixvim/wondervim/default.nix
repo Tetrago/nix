@@ -37,7 +37,6 @@ in
 
       globals = {
         c_syntax_for_h = 1;
-        mapleader = "\\";
         material_style = "darker";
         edge_better_performance = 1;
         edge_enable_italic = true;
@@ -112,17 +111,19 @@ in
         let
           binds =
             {
-              "<Leader>g".lua = "Snacks.lazygit.open()";
-              "<Leader>o" = "OverseerToggle";
-              "<Leader>t" = "TodoTelescope";
+              "<M-g>".lua = "Snacks.lazygit.open()";
+              "<M-o>" = "OverseerToggle";
+              "<M-t>" = "TodoTelescope";
 
-              "ds" = "TSJSplit";
-              "dj" = "TSJJoin";
+              "<C-s>" = "TSJSplit";
+              "<C-j>" = "TSJJoin";
 
               "gD" = "Glance definitions";
               "gR" = "Glance references";
               "gY" = "Glance type_definitions";
               "gM" = "Glance implementations";
+
+              "gd".lua = "vim.lsp.buf.definition()";
 
               "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
               "gxe".lua =
@@ -134,8 +135,7 @@ in
 
               "<M-j>" = "cnext";
               "<M-k>" = "cprev";
-              "<M-o>" = "botright copen";
-              "<M-q>" = "cclose";
+              "<M-q>" = "ToggleQuickfix";
 
               "<C-w><C-s>" = "botright split";
               "<C-w><C-v>" = "botright vsplit";
@@ -158,7 +158,7 @@ in
               "gS".plug = "leap-backward";
             }
             // optionalAttrs cfg.debugging {
-              "<Leader>d".lua = "require('dapui').toggle()";
+              "<M-d>".lua = "require('dapui').toggle()";
 
               "<F5>" = "DapContinue";
               "<F9>" = "DapToggleBreakpoint";
@@ -207,13 +207,29 @@ in
         }
       ];
 
+      userCommands = {
+        ToggleQuickfix = {
+          desc = "Toggle quickfix window";
+          command.__raw = ''
+            function()
+              for _, win in ipairs(vim.fn.getwininfo()) do
+                if win.quickfix == 1then
+                  vim.cmd("cclose")
+                  return
+                end
+              end
+              vim.cmd("copen")
+            end
+          '';
+        };
+      };
+
       plugins = mkMerge [
         {
           autoclose.enable = true;
           fugitive.enable = true;
           gitblame.enable = true;
           glance.enable = true;
-          image.enable = true;
           lspkind.enable = true;
           neoscroll.enable = true;
           nvim-surround.enable = true;
@@ -690,7 +706,7 @@ in
 
             extensions = {
               fzf-native.enable = true;
-              media-files.enable = true;
+              ui-select.enable = true;
             };
 
             keymaps = {
