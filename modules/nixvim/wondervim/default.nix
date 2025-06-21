@@ -132,8 +132,6 @@ in
 
               "?" = "view ${./keymaps.md}";
 
-              "<F6>" = "make";
-
               "<M-j>" = "cnext";
               "<M-k>" = "cprev";
               "<M-o>" = "botright copen";
@@ -142,15 +140,12 @@ in
               "<C-w><C-s>" = "botright split";
               "<C-w><C-v>" = "botright vsplit";
 
-              "<C-=>".lua = "vim.diagnostic.open_float()";
-
               "<C-f>" = "Telescope current_buffer_fuzzy_find";
               "<C-k>" = "Telescope live_grep";
               "<C-i>" = "Telescope lsp_references";
               "<C-n>" = "Telescope notify";
 
-              "<C-t>" = "Neotree toggle";
-              "<C-S-t>" = "Neotree position=current";
+              "<C-e>" = "Neotree position=float";
 
               "<C-S-p>" = "SessionSearch";
 
@@ -191,6 +186,21 @@ in
             function(event)
               if event.data.actions.type == "move" then
                 Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+              end
+            end
+          '';
+        }
+        {
+          # To handle nvim-notify notifications inhibiting window switching
+          event = [
+            "WinEnter"
+            "BufLeave"
+          ];
+          pattern = "*";
+          callback.__raw = ''
+            function()
+              while vim.api.nvim_buf_get_option(0, "filetype") == "notify" do
+                vim.cmd("wincmd w")
               end
             end
           '';
@@ -487,9 +497,13 @@ in
               };
 
               extensions = [
+                "fugitive"
                 "neo-tree"
                 "nvim-dap-ui"
                 "oil"
+                "overseer"
+                "quickfix"
+                "toggleterm"
               ];
 
               sections = {
@@ -566,14 +580,14 @@ in
           neo-tree = {
             enable = true;
 
-            eventHandlers =
-              let
-                snacks = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
-              in
-              {
-                file_moved = snacks;
-                file_renamed = snacks;
-              };
+            hideRootNode = true;
+            retainHiddenRootIndent = true;
+            nestingRules.__raw = "require('neotree-file-nesting-config').nesting_rules";
+
+            eventHandlers = {
+              file_moved = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
+              file_renamed = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
+            };
           };
 
           noice = {
@@ -600,18 +614,6 @@ in
 
           notify = {
             enable = true;
-
-            luaConfig.post = ''
-              vim.api.nvim_create_autocmd({ "WinEnter", "BufLeave" }, {
-                pattern = "*",
-                callback = function()
-                  while vim.api.nvim_buf_get_option(0, "filetype") == "notify" do
-                    vim.cmd("wincmd w")
-                  end
-                end
-              })
-            '';
-
             settings.stages = "static";
           };
 
@@ -821,6 +823,7 @@ in
 
       extraPlugins =
         optional cfg.transparent pkgs.bg-nvim
+        ++ [ pkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
           vim-expand-region
           vim-textobj-entire

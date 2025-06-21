@@ -27,5 +27,4 @@
 | gxe   | Buffer errors              |
 | gXx   | Global diagnostics         |
 | gXe   | Global errors              |
-| <C-=> | Show error info            |
 

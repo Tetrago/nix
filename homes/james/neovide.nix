@@ -44,6 +44,20 @@ in
                     hidden = true; # For toggleterm
                   };
 
+                  autoCmd = [
+                    {
+                      event = [ "TermOpen" ];
+                      pattern = "term://*";
+                      callback.__raw = ''
+                        function()
+                          local opts = {buffer = 0}
+                          vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+                          vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+                        end
+                      '';
+                    }
+                  ];
+
                   plugins = {
                     auto-session.settings.suppressed_dirs = [ config.home.homeDirectory ];
                     direnv.enable = true;
@@ -122,39 +136,41 @@ in
                     debugging = true;
                     enableDarkmanIntegration = true;
 
-                    plugins = {
-                      incline = {
-                        package = pkgs.vimPlugins.incline-nvim;
+                    keymaps = [
+                      {
+                        key = "<C-=>";
+                        lua = "vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1";
+                      }
+                      {
+                        key = "<C-->";
+                        lua = "vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1";
+                      }
+                    ];
 
-                        luaConfig = {
-                          pre = ''
-                            do
-                            local helpers = require("incline.helpers")
-                            local devicons = require("nvim-web-devicons")
-                          '';
-                          post = "end";
-                        };
+                    plugins.incline = {
+                      package = pkgs.vimPlugins.incline-nvim;
+                      settings.render.__raw = ''
+                        (function()
+                          local helpers = require("incline.helpers")
+                          local devicons = require("nvim-web-devicons")
 
-                        settings = {
-                          render.__raw = ''
-                            function(props)
-                              local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-                              if filename == "" then
-                                return {}
-                              end
-
-                              local ft_icon, ft_color = devicons.get_icon_color(filename)
-                              local modified = vim.bo[props.buf].modified
-                              return {
-                                ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
-                                " ",
-                                { filename, gui = modified and "bold,italic" or "bold" },
-                                " "
-                              }
+                          return function(props)
+                            local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+                            if filename == "" then
+                              return {}
                             end
-                          '';
-                        };
-                      };
+
+                            local ft_icon, ft_color = devicons.get_icon_color(filename)
+                            local modified = vim.bo[props.buf].modified
+                            return {
+                              ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
+                              " ",
+                              { filename, gui = modified and "bold,italic" or "bold" },
+                              " "
+                            }
+                          end
+                        end)()
+                      '';
                     };
                   };
                 };
