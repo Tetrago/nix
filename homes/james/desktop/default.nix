@@ -117,6 +117,11 @@ in
           wrapProgram $out/bin/flakey \
             --set TEMPLATE_DIR ${./templates}
         '';
+
+        renderdoc-cl = writeShellScriptBin "renderdoc-cl" ''
+          unset WAYLAND_DISPLAY
+          nohup ${renderdoc}/bin/qrenderdoc >/dev/null 2>&1 &
+        '';
       in
       [
         # CLI
@@ -159,7 +164,7 @@ in
         blockbench
         zeal
         ghex
-        renderdoc
+        renderdoc-cl
         pwndbg
         wildcard # Regex helper
         pods
