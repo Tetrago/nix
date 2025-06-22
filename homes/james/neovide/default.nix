@@ -15,7 +15,17 @@ let
     stringLength
     ;
   inherit (lib) mkEnableOption mkForce mkIf;
-  inherit (lib.strings) concatLines concatStrings splitString;
+  inherit (lib.strings)
+    concatLines
+    concatStrings
+    concatStringsSep
+    splitString
+    ;
+
+  stubNames = [
+    "default.nix"
+    "mod.rs"
+  ];
 
   header =
     let
@@ -127,33 +137,91 @@ in
                         key = "<C-->";
                         lua = "vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1";
                       }
+                      {
+                        key = "<C-+>";
+                        command = "NoNeckPainWidthUp";
+                      }
+                      {
+                        key = "<C-_>";
+                        command = "NoNeckPainWidthDown";
+                      }
                     ];
 
-                    plugins.incline = {
-                      package = pkgs.vimPlugins.incline-nvim;
-                      settings.render.__raw = ''
-                        (function()
-                          local helpers = require("incline.helpers")
-                          local devicons = require("nvim-web-devicons")
+                    plugins = {
+                      incline = {
+                        package = pkgs.vimPlugins.incline-nvim;
+                        settings.render.__raw = ''
+                          (function()
+                            local helpers = require("incline.helpers")
+                            local devicons = require("nvim-web-devicons")
 
-                          return function(props)
-                            local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-                            if filename == "" then
-                              return {}
+                            return function(props)
+                              local path = vim.api.nvim_buf_get_name(props.buf)
+                              if path == "" then return {} end
+
+                              local filename = vim.fn.fnamemodify(path, ":t")
+                              
+                              local name
+                              if ${concatStringsSep " or " (map (x: ''filename == "${x}"'') stubNames)} then
+                                name = vim.fn.fnamemodify(path, ":h:t")
+                              else
+                                name = filename
+                              end
+
+                              local ft_icon, ft_color = devicons.get_icon_color(filename)
+                              local modified = vim.bo[props.buf].modified
+                              return {
+                                ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
+                                " ",
+                                { name, gui = modified and "bold,italic" or "bold" },
+                                " "
+                              }
                             end
+                          end)()
+                        '';
+                      };
 
-                            local ft_icon, ft_color = devicons.get_icon_color(filename)
-                            local modified = vim.bo[props.buf].modified
-                            return {
-                              ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or "",
-                              " ",
-                              { filename, gui = modified and "bold,italic" or "bold" },
-                              " "
-                            }
-                          end
-                        end)()
+                      no-neck-pain = {
+                        package = pkgs.vimPlugins.no-neck-pain-nvim;
+                        settings = {
+                          autocmds = {
+                            enableOnTabEnter = true;
+                            enableOnVimEnter = true;
+                          };
+
+                          fallbackOnBufferDelete = false;
+                          integrations.dashboard.enabled = true;
+                        };
+                      };
+                    };
+
+                    sessionHooks = {
+                      preSave = ''
+                        function()
+                          require("no-neck-pain").disable()
+                        end
+                      '';
+                      postRestore = ''
+                        function()
+                          require("no-neck-pain").enable()
+                        end
                       '';
                     };
+
+                    treats.bufferSkipPredicates = [
+                      ''
+                        function(win_id)
+                          if _G.NoNeckPain == nil or _G.NoNeckPain.state == nil then
+                            return false
+                          end
+
+                          local left = _G.NoNeckPain.state:get_side_id("left")
+                          local right = _G.NoNeckPain.state:get_side_id("right")
+
+                          return win_id == left or win_id == right
+                        end
+                      ''
+                    ];
                   };
                 };
             }

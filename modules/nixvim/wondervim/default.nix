@@ -11,19 +11,24 @@ let
     mkEnableOption
     mkIf
     mkMerge
+    mkOption
+    types
     ;
   inherit (lib.attrsets)
+    filterAttrs
     genAttrs
     mapAttrs'
     mapAttrsToList
     optionalAttrs
     ;
   inherit (lib.lists) optional;
+  inherit (lib.strings) concatStrings stringToCharacters toLower;
 in
 {
   imports = [
     ./keymaps.nix
     ./plugins.nix
+    ./treats.nix
   ];
 
   options.wondervim = {
@@ -31,6 +36,28 @@ in
     transparent = mkEnableOption "transparency support.";
     debugging = mkEnableOption "debug support.";
     enableDarkmanIntegration = mkEnableOption "darkman theme integration.";
+
+    sessionHooks =
+      genAttrs
+        [
+          "preSave"
+          "saveExtra"
+          "postSave"
+          "preRestore"
+          "postRestore"
+          "preDelete"
+          "postDelete"
+          "noRestore"
+          "preCwdChanged"
+          "postCwdChanged"
+        ]
+        (
+          _:
+          mkOption {
+            type = with types; nullOr (coercedTo str (x: [ x ]) (listOf str));
+            default = null;
+          }
+        );
   };
 
   config =
@@ -112,77 +139,139 @@ in
         virtual_text = false;
       };
 
-      wondervim.keymaps =
-        let
-          binds =
-            {
-              "<M-g>".lua = "Snacks.lazygit.open()";
-              "<M-o>" = "OverseerToggle";
-              "<M-t>" = "TodoTelescope";
+      wondervim = {
+        keymaps =
+          let
+            binds =
+              {
+                "<M-g>".lua = "Snacks.lazygit.open()";
+                "<M-o>" = "OverseerToggle";
+                "<M-t>" = "TodoTelescope";
 
-              "<C-s>" = "TSJSplit";
-              "<C-j>" = "TSJJoin";
+                "<C-s>" = "TSJSplit";
+                "<C-j>" = "TSJJoin";
 
-              "gD" = "Glance definitions";
-              "gR" = "Glance references";
-              "gY" = "Glance type_definitions";
-              "gM" = "Glance implementations";
+                "gD" = "Glance definitions";
+                "gR" = "Glance references";
+                "gY" = "Glance type_definitions";
+                "gM" = "Glance implementations";
 
-              "gd".lua = "vim.lsp.buf.definition()";
+                "gd".lua = "vim.lsp.buf.definition()";
 
-              "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
-              "gxe".lua =
-                "vim.diagnostic.setqflist({ scope = 'buffer', severity = vim.diagnostic.severity.ERROR })";
-              "gXx".lua = "vim.diagnostic.setqflist()";
-              "gXe".lua = "vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })";
+                "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
+                "gxe".lua =
+                  "vim.diagnostic.setqflist({ scope = 'buffer', severity = vim.diagnostic.severity.ERROR })";
+                "gXx".lua = "vim.diagnostic.setqflist()";
+                "gXe".lua = "vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })";
 
-              "?" = "view ${./keymaps.md}";
+                "?" = "view ${./keymaps.md}";
 
-              "<M-j>" = "cnext";
-              "<M-k>" = "cprev";
-              "<M-q>" = "ToggleQuickfix";
+                "<M-j>" = "cnext";
+                "<M-k>" = "cprev";
+                "<M-q>" = "ToggleQuickfix";
 
-              "<C-w><C-s>" = "botright split";
-              "<C-w><C-v>" = "botright vsplit";
+                "<C-w><C-s>" = "botright split";
+                "<C-w><C-v>" = "botright vsplit";
 
-              "<C-f>" = "Telescope current_buffer_fuzzy_find";
-              "<C-k>" = "Telescope live_grep";
-              "<C-i>" = "Telescope lsp_references";
-              "<C-n>" = "Telescope notify";
-              "<C-q>" = "Telescope quickfix";
+                "<C-f>" = "Telescope current_buffer_fuzzy_find";
+                "<C-k>" = "Telescope live_grep";
+                "<C-i>" = "Telescope lsp_references";
+                "<C-n>" = "Telescope notify";
+                "<C-q>" = "Telescope quickfix";
 
-              "<C-e>" = "Neotree position=float";
+                "<C-e>" = "Neotree position=float";
 
-              "<C-S-p>" = "SessionSearch";
+                "<C-S-p>" = "SessionSearch";
 
-              "-" = "Oil";
+                "-" = "Oil";
 
-              "<C-g>" = "tabnew";
-              "<C-x>" = "tabclose";
+                "<C-g>" = "tabnew";
+                "<C-x>" = "tabclose";
 
-              "gs".plug = "leap-forward";
-              "gS".plug = "leap-backward";
-            }
-            // optionalAttrs cfg.debugging {
-              "<M-d>".lua = "require('dapui').toggle()";
+                "gs".plug = "leap-forward";
+                "gS".plug = "leap-backward";
+              }
+              // optionalAttrs cfg.debugging {
+                "<M-d>".lua = "require('dapui').toggle()";
 
-              "<F5>" = "DapContinue";
-              "<F9>" = "DapToggleBreakpoint";
-              "<F10>" = "DapStepOver";
-              "<F11>" = "DapStepInto";
-              "<F12>" = "DapStepOut";
+                "<F5>" = "DapContinue";
+                "<F9>" = "DapToggleBreakpoint";
+                "<F10>" = "DapStepOver";
+                "<F11>" = "DapStepInto";
+                "<F12>" = "DapStepOut";
+              };
+          in
+          mapAttrsToList (
+            key: v:
+            if builtins.isString v then
+              {
+                inherit key;
+                command = v;
+              }
+            else
+              { inherit key; } // v
+          ) binds;
+
+        plugins = {
+          darkman = mkIf cfg.enableDarkmanIntegration {
+            package = pkgs.darkman-nvim;
+            settings.change_background = true;
+          };
+
+          eyeliner = {
+            package = pkgs.vimPlugins.eyeliner-nvim;
+            settings = {
+              highlight_on_key = true;
+              dim = true;
             };
-        in
-        mapAttrsToList (
-          key: v:
-          if builtins.isString v then
-            {
-              inherit key;
-              command = v;
-            }
-          else
-            { inherit key; } // v
-        ) binds;
+          };
+
+          mellifluous = {
+            package = pkgs.mellifluous-nvim;
+            luaConfig.post = "vim.cmd [[colorscheme mellifluous]]";
+          };
+        };
+
+        sessionHooks = {
+          postRestore = ''
+            function()
+              require("overseer").load_task_bundle(
+                vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                { ignore_missing = true }
+              )
+            end
+          '';
+
+          preRestore = ''
+            function()
+              for _, task in ipairs(require("overseer").list_tasks({})) do
+                task:dispose(true)
+              end
+            end
+          '';
+
+          preSave = ''
+            function()
+              require("overseer").save_task_bundle(
+                vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
+                nil,
+                { on_conflict = "overwrite" }
+              )
+            end
+          '';
+        };
+
+        treats.bufferSkipPredicates = [
+          ''
+            function(win_id)
+              local bufnr = vim.api.nvim_win_get_buf(win_id)
+              local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+
+              return filetype == "notify"
+            end
+          ''
+        ];
+      };
 
       autoCmd = [
         {
@@ -192,19 +281,6 @@ in
             function(event)
               if event.data.actions.type == "move" then
                 Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
-              end
-            end
-          '';
-        }
-        {
-          event = [
-            "BufEnter"
-          ];
-          pattern = "*";
-          callback.__raw = ''
-            function()
-              while vim.api.nvim_buf_get_option(0, "filetype") == "notify" do
-                vim.cmd("wincmd w")
               end
             end
           '';
@@ -253,48 +329,24 @@ in
 
           auto-session = {
             enable = true;
-            settings = {
-              cwd_change_handling = true;
-
-              post_restore_cmds = [
-                {
-                  __raw = ''
-                    function()
-                      require("overseer").load_task_bundle(
-                        vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                        { ignore_missing = true }
-                      )
-                    end
-                  '';
-                }
-              ];
-
-              pre_restore_cmds = [
-                {
-                  __raw = ''
-                    function()
-                      for _, task in ipairs(require("overseer").list_tasks({})) do
-                        task:dispose(true)
-                      end
-                    end
-                  '';
-                }
-              ];
-
-              pre_save_cmds = [
-                {
-                  __raw = ''
-                    function()
-                      require("overseer").save_task_bundle(
-                        vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                        nil,
-                        { on_conflict = "overwrite" }
-                      )
-                    end
-                  '';
-                }
-              ];
-            };
+            settings =
+              {
+                cwd_change_handling = true;
+              }
+              // mapAttrs' (n: v: {
+                name =
+                  concatStrings (
+                    map (
+                      c:
+                      let
+                        c' = toLower c;
+                      in
+                      if c' != c then "_${c'}" else c
+                    ) (stringToCharacters n)
+                  )
+                  + "_cmds";
+                value = map (x: { __raw = x; }) v;
+              }) (filterAttrs (_: v: v != null) cfg.sessionHooks);
           };
 
           blink-cmp = {
@@ -822,26 +874,6 @@ in
           };
         })
       ];
-
-      wondervim.plugins = {
-        darkman = mkIf cfg.enableDarkmanIntegration {
-          package = pkgs.darkman-nvim;
-          settings.change_background = true;
-        };
-
-        eyeliner = {
-          package = pkgs.vimPlugins.eyeliner-nvim;
-          settings = {
-            highlight_on_key = true;
-            dim = true;
-          };
-        };
-
-        mellifluous = {
-          package = pkgs.mellifluous-nvim;
-          luaConfig.post = "vim.cmd [[colorscheme mellifluous]]";
-        };
-      };
 
       extraPlugins =
         optional cfg.transparent pkgs.bg-nvim
