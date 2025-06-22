@@ -9,6 +9,7 @@
 | gR    | Glance references          |
 | gY    | Glance type definitions    |
 | gM    | Glance implementations     |
+| \l    | Glance preview             |
 | gri   | LSP implementations        |
 | gra   | LSP action                 |
 | grr   | LSP references             |

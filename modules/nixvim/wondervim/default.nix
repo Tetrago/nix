@@ -12,7 +12,12 @@ let
     mkIf
     mkMerge
     ;
-  inherit (lib.attrsets) mapAttrs' mapAttrsToList optionalAttrs;
+  inherit (lib.attrsets)
+    genAttrs
+    mapAttrs'
+    mapAttrsToList
+    optionalAttrs
+    ;
   inherit (lib.lists) optional;
 in
 {
@@ -144,6 +149,7 @@ in
               "<C-k>" = "Telescope live_grep";
               "<C-i>" = "Telescope lsp_references";
               "<C-n>" = "Telescope notify";
+              "<C-q>" = "Telescope quickfix";
 
               "<C-e>" = "Neotree position=float";
 
@@ -191,10 +197,8 @@ in
           '';
         }
         {
-          # To handle nvim-notify notifications inhibiting window switching
           event = [
-            "WinEnter"
-            "BufLeave"
+            "BufEnter"
           ];
           pattern = "*";
           callback.__raw = ''
@@ -213,7 +217,7 @@ in
           command.__raw = ''
             function()
               for _, win in ipairs(vim.fn.getwininfo()) do
-                if win.quickfix == 1then
+                if win.quickfix == 1 then
                   vim.cmd("cclose")
                   return
                 end
@@ -791,20 +795,22 @@ in
             enable = true;
 
             adapters.executables =
-              let
-                gdb = {
+              {
+                lldb.command = "${pkgs.lldb}/bin/lldb-dap";
+              }
+              // genAttrs
+                [
+                  "c"
+                  "cpp"
+                  "zig"
+                ]
+                (_: {
                   command = getExe pkgs.gdb;
                   args = [
                     "-i"
                     "dap"
                   ];
-                };
-              in
-              {
-                c = gdb;
-                cpp = gdb;
-                zig = gdb;
-              };
+                });
 
             signs = {
               dapBreakpoint.text = "•";
