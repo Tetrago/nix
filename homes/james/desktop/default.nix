@@ -1,212 +1,34 @@
 {
-  config,
-  inputs,
-  lib,
   outputs,
   pkgs,
   ...
 }:
 
-let
-  inherit (lib.attrsets) mapAttrsToList;
-  inherit (lib.strings) concatLines;
-
-  store = pkgs.writeShellScriptBin "store" ''
-    if dir=$(ls -d /nix/store/*/ | sed 's|^/nix/store/||' | ${lib.getExe pkgs.fzf} --height 40% --layout=reverse); then
-      ${lib.getExe pkgs.xplr} "/nix/store/$dir"
-    fi
-  '';
-in
 {
   imports = [
+    outputs.homeManagerModules.default
     outputs.homeManagerModules.james
     outputs.homeManagerModules.hyprworld
+
+    ./rules.nix
   ];
 
   hyprworld = {
     enable = true;
-
     wallpaper = {
       dark = "${./dark.png}";
       light = "${./light.png}";
     };
   };
 
-  nixland.windowRules =
-    let
-      mkFloat =
-        name:
-        {
-          width ? 350,
-          height ? 500,
-        }:
-        [
-          {
-            class = name;
-            rules = [
-              "float"
-              "size ${toString width} ${toString height}"
-            ];
-          }
-        ];
-    in
-    [
-      {
-        class = "ghidra-Ghidra";
-        title = "Ghidra";
-        rules = "size 0 0";
-      }
-      {
-        class = "ghidra-Ghidra";
-        title = "Ghidra:.*";
-        rules = "tile";
-      }
-      {
-        class = "ghidra-Ghidra";
-        title = "CodeBrowser";
-        rules = "tile";
-      }
-      {
-        title = "OpenTTD.*";
-        rules = "tile";
-      }
-      {
-        class = "Aseprite";
-        rules = "tile";
-      }
-    ]
-    ++ mkFloat "io.github.fizzyizzy05.binary" { height = 350; }
-    ++ mkFloat "org.gnome.gitlab.cheywood.Buffer" { width = 600; }
-    ++ mkFloat "dev.geopjr.Collision" { }
-    ++ mkFloat "com.github.huluti.Curtail" { }
-    ++ mkFloat "io.gitlab.adhami3310.Impression" { }
-    ++ mkFloat "io.github.zefr0x.hashes" { };
-
-  dconf.settings."io/missioncenter/MissionCenter".performance-page-cpu-graph = 2;
-
   home = {
     username = "james";
-    homeDirectory = "/home/james";
 
-    file = {
-      ".gdbinit".source = pkgs.runCommand "gdbinit" { } ''
-        echo "set disassembly-flavor intel" > $out
-
-        cat "${
-          pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/616ed5100d3588bb70e3b86737ac0609ce0635cc/.gdbinit";
-            hash = "sha256-cLpH7t/oK8iFOfDnfnWw3oLGegYnNEb5vI8M7FGI7ic=";
-          }
-        }" >> $out
-      '';
-
-      ".sdk/jdk-21".source = "${pkgs.jdk21_headless.home}";
-      ".clang-format".source = ./clang-format;
-    };
-
-    packages =
-      with pkgs;
-      let
-        inherit (inputs.pwndbg.packages.${stdenv.hostPlatform.system})
-          pwndbg
-          ;
-
-        flakey = runCommand "flakey" { nativeBuildInputs = [ makeWrapper ]; } ''
-          mkdir -p $out/bin/
-          cp ${./flakey.sh} $out/bin/flakey
-          wrapProgram $out/bin/flakey \
-            --set TEMPLATE_DIR ${./templates}
-        '';
-
-        renderdoc-cl = writeShellScriptBin "renderdoc-cl" ''
-          unset WAYLAND_DISPLAY
-          nohup ${renderdoc}/bin/qrenderdoc >/dev/null 2>&1 &
-        '';
-      in
-      [
-        # CLI
-        nix-output-monitor
-        ctop
-        bandwhich
-        dust
-        duf
-        hyperfine # Benchmarking tool
-        store
-        flakey
-
-        # Media
-        aseprite
-        inkscape
-        blender
-        gimp
-        handbrake
-        davinci-resolve
-        gnome-sound-recorder
-        mousai # Song identifier
-        switcheroo # Image converter
-        xournalpp # PDF editor
-        pinta # Minimal image editor
-        pdfarranger
-        video-downloader
-
-        # System
-        bottles
-        qemu
-        gnome-connections
-        inspector # System info
-        mission-center # Resource viewer
-        snoop # File search
-
-        # Development
-        meld
-        turtle
-        jetbrains.idea-community
-        blockbench
-        zeal
-        ghex
-        renderdoc-cl
-        pwndbg
-        wildcard # Regex helper
-        pods
-        gitui
-        rusty-man
-        pastel # Color mixing tool
-        tokei # Line counter
-        gql # SQL for Git
-
-        # Tools
-        cartero # HTTP toolkit
-        drawio
-        bustle # DBus log
-
-        # Utility
-        obsidian
-        gnome-calendar
-        gnome-clocks
-        chromium
-        mousam # Weather
-        alpaca # Ollama chat
-        gnome-graphs
-        key-rack # Secrets tracker
-        gnome-characters
-        binary # Base converter
-        buffer # Volatile scratchpad
-        collision # Hash calculator
-        curtail # Image compressor
-        impression # Removable media writer
-        gnome-frog # OCR
-        warp # Easy file transfer
-        gnome-firmware
-        celeste # Cloud file manager
-        gnome-calculator
-        kooha
-        baobab # Disk usage
-
-        # Games
-        gnome-mines
-        gnome-sudoku
-        aisleriot
-      ];
+    packages = with pkgs; [
+      bottles
+      qemu
+      turtle
+    ];
 
     sessionVariables = {
       TERMINAL = "ghostty";
@@ -215,35 +37,11 @@ in
     stateVersion = "23.11";
   };
 
-  programs = {
-    home-manager.enable = true;
-
-    direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      config.global.warn_timeout = "0";
-      nix-direnv.enable = true;
-    };
-
-    obs-studio = {
-      enable = true;
-      plugins = [ pkgs.obs-studio-plugins.looking-glass-obs ];
-    };
-
-    ssh = {
-      enable = true;
-      addKeysToAgent = "yes";
-      matchBlocks."*".setEnv.TERM = "xterm-256color";
-    };
-  };
-
-  services = {
-    easyeffects.enable = true;
-  };
+  programs.obs-studio.enable = true;
+  services.easyeffects.enable = true;
 
   xdg = {
     enable = true;
-
     configFile = {
       "pwn.conf".text = ''
         [update]
@@ -253,37 +51,19 @@ in
         terminal=["ghostty", "-e", "sh", "-c"]
       '';
     };
-
-    userDirs = {
-      enable = true;
-      createDirectories = false;
-      desktop = null;
-      publicShare = null;
-      templates = pkgs.runCommand "templates" { } ''
-        mkdir -p $out
-        ${concatLines (
-          mapAttrsToList (n: v: ''touch "$out/New ${n} File.${v}"'') {
-            Text = "txt";
-            Markdown = "md";
-          }
-        )}
-      '';
-    };
   };
 
   james = {
     bash.enable = true;
-    emacs.enable = true;
+    directories.enable = true;
     fonts.enable = true;
     neovide.enable = true;
-    podman.enable = true;
     speech.enable = true;
     terminal.enable = true;
     theme.enable = true;
 
     binja = {
       enable = true;
-
       themes = "${
         pkgs.fetchFromGitHub {
           owner = "catppuccin";
@@ -318,6 +98,24 @@ in
       enable = true;
       transparent = true;
       enableDarkmanIntegration = true;
+    };
+
+    podman = {
+      enable = true;
+      enableGui = true;
+    };
+
+    programs = {
+      enable = true;
+      cli.enable = true;
+      direnv.enable = true;
+      development.enable = true;
+      games.enable = true;
+      media.enable = true;
+      renderdoc.enable = true;
+      ssh.enable = true;
+      system.enable = true;
+      utility.enable = true;
     };
   };
 }

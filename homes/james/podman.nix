@@ -11,6 +11,7 @@ in
 {
   options.james.podman = {
     enable = mkEnableOption "podman configuration.";
+    enableGui = mkEnableOption "podman GUI.";
   };
 
   config =
@@ -21,6 +22,7 @@ in
       home = {
         packages = with pkgs; [
           dive
+          (mkIf cfg.enableGui pods)
         ];
 
         sessionVariables = {

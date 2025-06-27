@@ -74,9 +74,18 @@ in
   virtualisation.docker.enable = true;
 
   home-manager.users.james =
-    { config, outputs, ... }:
+    {
+      config,
+      outputs,
+      pkgs,
+      ...
+    }:
     {
       imports = [ (import ../../homes/james/desktop) ];
+
+      home.packages = with pkgs; [
+        alpaca
+      ];
 
       nixland = {
         #autoConnect = true;
