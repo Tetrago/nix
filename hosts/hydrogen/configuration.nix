@@ -90,6 +90,7 @@
     };
 
     graphics = {
+      enable = true;
       intel.enable = true;
       nvidia.blacklist = true;
     };

@@ -16,6 +16,7 @@ let
 in
 {
   options.tetrago.graphics = {
+    enable = mkEnableOption "graphics configuration.";
     nvidia = {
       enable = mkEnableOption "NVIDIA graphics support.";
 
@@ -40,7 +41,7 @@ in
     let
       cfg = config.tetrago.graphics;
     in
-    mkMerge [
+    mkIf cfg.enable (mkMerge [
       {
         assertions = [
           {
@@ -53,7 +54,6 @@ in
           }
         ];
       }
-
       (mkIf cfg.nvidia.enable {
         hardware.nvidia = {
           nvidiaSettings = true;
@@ -78,5 +78,5 @@ in
           enable32Bit = true;
         };
       })
-    ];
+    ]);
 }

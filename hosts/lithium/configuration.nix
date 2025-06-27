@@ -20,7 +20,6 @@ in
 
   tetrago = {
     bluetooth.enable = true;
-    graphics.intel.enable = true;
     virtualization.enable = true;
 
     boot = {
@@ -28,6 +27,11 @@ in
         enable = true;
         tpm2.enable = true;
       };
+    };
+
+    graphics = {
+      enable = true;
+      intel.enable = true;
     };
 
     networking = {
@@ -56,7 +60,6 @@ in
 
   services = {
     fprintd.enable = true;
-    fwupd.enable = true;
     hardware.bolt.enable = true;
     thermald.enable = true;
     upower.enable = true;

@@ -68,6 +68,11 @@
       url = "github:tetrago/commander";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-apple-silicon = {
+      url = "github:nix-community/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -82,7 +87,10 @@
       inherit (lib) nixosSystem;
       inherit (lib.attrsets) filterAttrs genAttrs;
 
-      systems = [ "x86_64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
       eachDir =
         path: fn:
@@ -96,7 +104,7 @@
           specialArgs = {
             inherit inputs outputs;
           };
-          system = "x86_64-linux";
+          system = if host == "polonium" then "aarch64-linux" else "x86_64-linux";
           modules = [ ./hosts/${host}/configuration.nix ];
         }
       );

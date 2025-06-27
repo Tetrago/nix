@@ -16,7 +16,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    system-config-printer
+    system-config-printer # Printer gui
   ];
 
   nix.gc = {
