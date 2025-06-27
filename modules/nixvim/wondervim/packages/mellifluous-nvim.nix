@@ -1,4 +1,7 @@
-{ fetchFromGitHub, vimUtils }:
+{
+  fetchFromGitHub,
+  vimUtils,
+}:
 
 vimUtils.buildVimPlugin rec {
   pname = "mellifluous.nvim";
@@ -10,6 +13,4 @@ vimUtils.buildVimPlugin rec {
     rev = "v${version}";
     hash = "sha256-H4JsnwCr7mRN22yVfKFvO3Fh0QMjDCzzOhBu1Pn1knU=";
   };
-
-  meta.homepage = "https://github.com/ramojus/mellifluous.nvim";
 }

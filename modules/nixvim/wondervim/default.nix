@@ -23,6 +23,8 @@ let
     ;
   inherit (lib.lists) optional;
   inherit (lib.strings) concatStrings stringToCharacters toLower;
+
+  localPkgs = import ./packages pkgs;
 in
 {
   imports = [
@@ -214,7 +216,7 @@ in
 
         plugins = {
           darkman = mkIf cfg.enableDarkmanIntegration {
-            package = pkgs.darkman-nvim;
+            package = localPkgs.darkman-nvim;
             settings.change_background = true;
           };
 
@@ -227,7 +229,7 @@ in
           };
 
           mellifluous = {
-            package = pkgs.mellifluous-nvim;
+            package = localPkgs.mellifluous-nvim;
             luaConfig.post = "vim.cmd [[colorscheme mellifluous]]";
           };
         };
@@ -876,8 +878,8 @@ in
       ];
 
       extraPlugins =
-        optional cfg.transparent pkgs.bg-nvim
-        ++ [ pkgs.neotree-file-nesting-config ]
+        optional cfg.transparent localPkgs.bg-nvim
+        ++ [ localPkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
           vim-expand-region
           vim-textobj-entire
