@@ -38,7 +38,10 @@
   };
 
   systemd.network.wait-online.enable = false;
-  networking.nftables.enable = false; # libvirt issue with nftables
+  networking = {
+    hostName = "hydrogen";
+    nftables.enable = false; # libvirt issue with nftables
+  };
 
   virtualisation.docker = {
     enable = true;
@@ -93,10 +96,6 @@
       enable = true;
       intel.enable = true;
       nvidia.blacklist = true;
-    };
-
-    networking = {
-      hostname = "hydrogen";
     };
 
     plymouth = {

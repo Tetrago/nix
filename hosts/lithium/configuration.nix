@@ -34,10 +34,6 @@ in
       intel.enable = true;
     };
 
-    networking = {
-      hostname = "lithium";
-    };
-
     plymouth = {
       scale = 1.3;
     };
@@ -49,6 +45,7 @@ in
   };
 
   networking = {
+    hostName = "lithium";
     nftables.enable = false; # libvirt issue with nftables
   };
 

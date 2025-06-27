@@ -1,7 +1,5 @@
 {
-  config,
   inputs,
-  lib,
   outputs,
   pkgs,
   ...
@@ -19,9 +17,18 @@
     outputs.nixosModules.home-manager
   ];
 
-  boot.extraModprobeConfig = ''
-    options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1
-  '';
+  boot = {
+    extraModprobeConfig = ''
+      options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1
+    '';
+
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = false;
+      systemd-boot.configurationLimit = 15;
+      timeout = 0;
+    };
+  };
 
   nix.gc = {
     automatic = true;
@@ -42,6 +49,7 @@
   security.polkit.enable = true;
 
   services = {
+    automatic-timezoned.enable = true;
     speechd.enable = true;
     sysprof.enable = true;
     upower.enable = true;
@@ -62,57 +70,57 @@
     printing.enable = true;
 
     users.james = {
-      username = "james";
       name = "James";
       groups = [ "wheel" ];
     };
   };
 
-  services.automatic-timezoned.enable = true;
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.loader.systemd-boot.configurationLimit = 15;
-  boot.loader.timeout = 0;
-
-  networking.hostName = "polonium";
-  networking.firewall.enable = true;
-  networking.nftables.enable = true;
-  networking.wireless.iwd = {
-    enable = true;
-    settings.General.EnableNetworkConfiguration = true;
+  networking = {
+    hostName = "polonium";
+    firewall.enable = true;
+    nftables.enable = true;
+    wireless.iwd = {
+      enable = true;
+      settings.General.EnableNetworkConfiguration = true;
+    };
   };
 
   virtualisation.docker.enable = true;
 
-  hardware.asahi.peripheralFirmwareDirectory =
-    let
-      firmware = pkgs.requireFile {
-        name = "mac14g-firmware.tar.gz";
-        hash = "sha256-ARVPjv62wUGPQSdSA/cdLHeErVLm/PGO8xw3MCfOisU=";
-        message = "This firmware is redistributable only by Apple. Run the fetch-apple-firmware.sh script.";
-      };
-    in
-    pkgs.runCommand "firmware" { inherit firmware; } ''
-      mkdir -p $out
-      tar -xzf $firmware -C $out
-    '';
+  hardware.asahi = {
+    peripheralFirmwareDirectory =
+      let
+        firmware = pkgs.requireFile {
+          name = "mac14g-firmware.tar.gz";
+          hash = "sha256-ARVPjv62wUGPQSdSA/cdLHeErVLm/PGO8xw3MCfOisU=";
+          message = "This firmware is redistributable only by Apple. Run the fetch-apple-firmware.sh script.";
+        };
+      in
+      pkgs.runCommand "firmware" { inherit firmware; } ''
+        mkdir -p $out
+        tar -xzf $firmware -C $out
+      '';
 
-  hardware.asahi.useExperimentalGPUDriver = true;
+    useExperimentalGPUDriver = true;
+  };
 
   home-manager.users.james =
     { outputs, ... }:
     {
       imports = [ outputs.homeManagerModules.james ];
 
-      home.username = "james";
-      home.homeDirectory = "/home/james";
-      home.stateVersion = "25.11";
+      home = {
+        username = "james";
+        homeDirectory = "/home/james";
+        stateVersion = "25.11";
+      };
+
+      james = {
+        git.enable = true;
+        neovim.enable = true;
+      };
 
       programs.home-manager.enable = true;
-
-      james.git.enable = true;
-      james.neovim.enable = true;
     };
 
   system.stateVersion = "25.11";

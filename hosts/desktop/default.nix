@@ -42,6 +42,7 @@
     printing.drivers = with pkgs; [ epson-escpr ];
     speechd.enable = true;
     sysprof.enable = true;
+    automatic-timezoned.enable = true;
 
     geoclue2 = {
       enable = true;
@@ -53,12 +54,16 @@
     adwaita-fonts
   ];
 
+  networking = {
+    networkmanager.enable = true;
+    firewall.enable = true;
+  };
+
   tetrago = {
     audio.enable = true;
     boot.enable = true;
     fonts.enable = true;
     hyprland.enable = true;
-    networking.enable = true;
     plymouth.enable = true;
     printing.enable = true;
 
@@ -135,7 +140,6 @@
     };
 
     users.james = {
-      username = "james";
       name = "James";
       groups = [
         "wheel"

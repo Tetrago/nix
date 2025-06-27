@@ -16,8 +16,9 @@ in
       attrsOf (submodule {
         options = {
           username = mkOption {
-            type = types.str;
+            type = with types; nullOr str;
             example = "james";
+            default = null;
           };
 
           name = mkOption {
@@ -49,7 +50,7 @@ in
       description = mkIf (value.name != null) value.name;
 
       createHome = true;
-      home = "/home/${value.username}";
+      home = "/home/${if value.username != null then value.username else name}";
 
       shell = value.shell;
       extraGroups = value.groups;

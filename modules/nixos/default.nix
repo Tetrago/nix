@@ -12,7 +12,6 @@
     ./fonts.nix
     ./graphics.nix
     ./hyprland.nix
-    ./networking.nix
     ./plymouth.nix
     ./printing.nix
     ./sddm.nix
