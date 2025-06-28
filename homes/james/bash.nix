@@ -53,7 +53,6 @@ in
           enableCompletion = true;
 
           sessionVariables = {
-            EDITOR = "nvim";
             MANPAGER = "sh -c 'col -bx | ${getExe pkgs.bat} -l man -p'";
             MANROFFOPT = "-c";
           };
@@ -176,15 +175,6 @@ in
 
         bat.enable = true;
         eza.enable = true;
-
-        xplr = {
-          enable = true;
-          package = pkgs.symlinkJoin {
-            inherit (pkgs.xplr) pname version;
-            paths = [ pkgs.xplr ];
-            postBuild = "rm $out/share/applications/xplr.desktop";
-          };
-        };
       };
     };
 }

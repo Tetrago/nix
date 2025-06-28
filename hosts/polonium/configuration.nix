@@ -20,13 +20,18 @@
   boot = {
     extraModprobeConfig = ''
       options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1
+      options apple_dcp show_notch=1
     '';
 
     loader = {
       systemd-boot.enable = true;
-      efi.canTouchEfiVariables = false;
       systemd-boot.configurationLimit = 15;
       timeout = 0;
+    };
+
+    initrd = {
+      enable = true;
+      systemd.enable = true; # Needed for plymouth to start quicker
     };
   };
 
@@ -54,8 +59,8 @@
     sysprof.enable = true;
     upower.enable = true;
 
-    xserver.displayManager.gdm.enable = true;
-    xserver.desktopManager.gnome.enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
 
     geoclue2 = {
       enable = true;
@@ -64,10 +69,35 @@
   };
 
   tetrago = {
-    audio.enable = true;
     bluetooth.enable = true;
     fonts.enable = true;
     printing.enable = true;
+
+    plymouth = {
+      enable = true;
+      theme = {
+        name = "asahi";
+        package = pkgs.stdenvNoCC.mkDerivation rec {
+          pname = "asahi-plymouth";
+          version = "0.1";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "AsahiLinux";
+            repo = pname;
+            rev = version;
+            hash = "sha256-JgsTiS9Qv+Ct7jRmJMCxbqVNkPahZpX4hFc9RE9aONY=";
+          };
+
+          dontBuild = true;
+
+          installPhase = ''
+            mkdir -p $out/share/plymouth/themes
+            cp -r asahi $out/share/plymouth/themes/asahi
+            sed -i "s|/usr|$out|" $out/share/plymouth/themes/asahi/asahi.plymouth
+          '';
+        };
+      };
+    };
 
     users.james = {
       name = "James";
@@ -93,7 +123,7 @@
         firmware = pkgs.requireFile {
           name = "mac14g-firmware.tar.gz";
           hash = "sha256-ARVPjv62wUGPQSdSA/cdLHeErVLm/PGO8xw3MCfOisU=";
-          message = "This firmware is redistributable only by Apple. Run the fetch-apple-firmware.sh script.";
+          message = "This firmware is redistributable only by Apple. Run the store-apple-firmware.sh script.";
         };
       in
       pkgs.runCommand "firmware" { inherit firmware; } ''
@@ -104,24 +134,9 @@
     useExperimentalGPUDriver = true;
   };
 
-  home-manager.users.james =
-    { outputs, ... }:
-    {
-      imports = [ outputs.homeManagerModules.james ];
+  home-manager.users.james = import ./home.nix;
 
-      home = {
-        username = "james";
-        homeDirectory = "/home/james";
-        stateVersion = "25.11";
-      };
-
-      james = {
-        git.enable = true;
-        neovim.enable = true;
-      };
-
-      programs.home-manager.enable = true;
-    };
+  systemd.user.services.niri-flake-polkit.enable = false;
 
   system.stateVersion = "25.11";
 }

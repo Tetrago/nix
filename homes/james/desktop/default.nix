@@ -32,6 +32,7 @@
 
     sessionVariables = {
       TERMINAL = "ghostty";
+      EDITOR = "nvim";
     };
 
     stateVersion = "23.11";
