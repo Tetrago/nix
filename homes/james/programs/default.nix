@@ -69,6 +69,7 @@ in
         file = mkIf cfg.development.enable {
           ".gdbinit".source = gdbinit;
           ".clang-format".source = ./clang-format;
+          ".rustfmt".source = ./rustfmt.toml;
         };
 
         packages =
