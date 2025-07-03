@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation {
 
   buildPhase = ''
     find $src -type f -name "*.ttf" -exec sh -c '
-      ${lib.getExe nerd-font-patcher} --codicons -q -o "$(dirname $(realpath --relative-to=$src $1))" "$1"
+      ${lib.getExe nerd-font-patcher} --codicons --fontawesome -q -o "$(dirname $(realpath --relative-to=$src $1))" "$1"
     ' sh {} \;
   '';
 

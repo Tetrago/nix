@@ -17,7 +17,6 @@ in
     ./hyprland.nix
     ./hyprlock.nix
     ./launcher.nix
-    ./nautilus.nix
     ./portal.nix
     ./swaync.nix
     ./swww.nix

@@ -73,6 +73,11 @@
       url = "github:nix-community/nixos-apple-silicon";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sherlock = {
+      url = "github:Skxxtz/sherlock";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -112,6 +117,7 @@
       homeManagerModules = eachDir ./homes (home: import ./homes/${home}) // {
         default = import ./modules/home-manager;
         flume = import ./modules/home-manager/flume;
+        fragile = import ./modules/home-manager/fragile;
         hyprworld = import ./modules/home-manager/hyprworld;
         nixland = import ./modules/home-manager/nixland;
         nixvim = import ./homes/james/nixvim.nix;
@@ -119,6 +125,7 @@
 
       nixosModules = {
         default = import ./modules/nixos;
+        flume = import ./modules/nixos/flume;
         hyprworld = import ./modules/nixos/hyprworld;
         home-manager = import ./modules/nixos/home-manager;
       };

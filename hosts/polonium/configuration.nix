@@ -1,5 +1,7 @@
 {
+  config,
   inputs,
+  lib,
   outputs,
   pkgs,
   ...
@@ -14,12 +16,19 @@
     inputs.nix-index-database.nixosModules.nix-index
 
     outputs.nixosModules.default
+    outputs.nixosModules.flume
     outputs.nixosModules.home-manager
   ];
 
+  systemd.network.wait-online.enable = false;
+
   boot = {
+    kernelParams = [
+      "plymouth.use-simpledrm"
+    ];
+
     extraModprobeConfig = ''
-      options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1
+      options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1 fnmode=1
       options apple_dcp show_notch=1
     '';
 
@@ -51,16 +60,29 @@
     };
   };
 
-  security.polkit.enable = true;
+  security = {
+    pam.services.greetd.enableGnomeKeyring = true;
+    polkit.enable = true;
+  };
 
   services = {
     automatic-timezoned.enable = true;
-    speechd.enable = true;
     sysprof.enable = true;
     upower.enable = true;
 
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${config.services.greetd.package}/bin/agreety --cmd $SHELL";
+        };
+
+        initial_session = {
+          command = "${pkgs.niri}/bin/niri-session";
+          user = "james";
+        };
+      };
+    };
 
     geoclue2 = {
       enable = true;
@@ -108,11 +130,11 @@
   networking = {
     hostName = "polonium";
     firewall.enable = true;
-    nftables.enable = true;
-    wireless.iwd = {
+    networkmanager = {
       enable = true;
-      settings.General.EnableNetworkConfiguration = true;
+      wifi.backend = "iwd";
     };
+    nftables.enable = true;
   };
 
   virtualisation.docker.enable = true;
@@ -135,8 +157,6 @@
   };
 
   home-manager.users.james = import ./home.nix;
-
-  systemd.user.services.niri-flake-polkit.enable = false;
 
   system.stateVersion = "25.11";
 }

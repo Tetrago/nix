@@ -1,11 +1,27 @@
-{ outputs, ... }:
+{
+  inputs,
+  outputs,
+  ...
+}:
 
 {
   imports = [
     outputs.homeManagerModules.default
+    outputs.homeManagerModules.fragile
     outputs.homeManagerModules.james
     outputs.homeManagerModules.flume
   ];
+
+  polymorph.enable = true;
+  fragile.enable = true;
+
+  flume = {
+    enable = true;
+    wallpaper = {
+      light = ./light.png;
+      dark = ./dark.png;
+    };
+  };
 
   home = {
     username = "james";
@@ -23,11 +39,28 @@
     directories.enable = true;
     fonts.enable = true;
     git.enable = true;
-    neovim.enable = true;
     neovide.enable = true;
     terminal.enable = true;
+    theme.enable = true;
+
+    firefox = {
+      enable = true;
+      theme.enable = true;
+    };
+
+    media = {
+      enable = true;
+      enableNixlandIntegration = true;
+    };
+
+    neovim = {
+      enable = true;
+      transparent = true;
+      enableDarkmanIntegration = true;
+    };
 
     programs = {
+      enable = true;
       direnv.enable = true;
       ssh.enable = true;
     };

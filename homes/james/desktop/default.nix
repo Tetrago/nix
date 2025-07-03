@@ -1,4 +1,5 @@
 {
+  config,
   outputs,
   pkgs,
   ...
@@ -7,6 +8,7 @@
 {
   imports = [
     outputs.homeManagerModules.default
+    outputs.homeManagerModules.fragile
     outputs.homeManagerModules.james
     outputs.homeManagerModules.hyprworld
 
@@ -19,6 +21,28 @@
       dark = "${./dark.png}";
       light = "${./light.png}";
     };
+  };
+
+  fragile.enable = true;
+
+  polymorph = {
+    darkman.enable = true;
+
+    morph =
+      let
+        hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+      in
+      {
+        dark = {
+          follows = "common";
+          extraScripts = "${hyprctl} setcursor phinger-cursors-dark 24";
+        };
+
+        light = {
+          follows = "common";
+          extraScripts = "${hyprctl} setcursor phinger-cursors-light 24";
+        };
+      };
   };
 
   home = {
