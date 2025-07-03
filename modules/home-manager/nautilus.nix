@@ -26,13 +26,13 @@ let
   );
 in
 {
-  options.fragile = {
-    enable = mkEnableOption "fragile Nautilus.";
+  options.tetrago.nautilus = {
+    enable = mkEnableOption "Nautilus configuration.";
   };
 
   config =
     let
-      cfg = config.fragile;
+      cfg = config.tetrago.nautilus;
 
       hasCollision = any (x: x == pkgs.collision) config.home.packages;
       hasSnoop = any (x: x == pkgs.snoop) config.home.packages;

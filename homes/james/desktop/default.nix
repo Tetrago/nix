@@ -8,7 +8,6 @@
 {
   imports = [
     outputs.homeManagerModules.default
-    outputs.homeManagerModules.fragile
     outputs.homeManagerModules.james
     outputs.homeManagerModules.hyprworld
 
@@ -23,7 +22,7 @@
     };
   };
 
-  fragile.enable = true;
+  tetrago.nautilus.enable = true;
 
   polymorph = {
     darkman.enable = true;

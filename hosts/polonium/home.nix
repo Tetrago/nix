@@ -7,13 +7,12 @@
 {
   imports = [
     outputs.homeManagerModules.default
-    outputs.homeManagerModules.fragile
     outputs.homeManagerModules.james
     outputs.homeManagerModules.flume
   ];
 
   polymorph.enable = true;
-  fragile.enable = true;
+  tetrago.fragile.enable = true;
 
   flume = {
     enable = true;
