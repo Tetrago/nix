@@ -191,6 +191,7 @@ in
 
                           fallbackOnBufferDelete = false;
                           integrations.dashboard.enabled = true;
+                          buffers.wo.winfixwidth = true;
                         };
                       };
                     };
