@@ -300,7 +300,8 @@ in
                   return
                 end
               end
-              vim.cmd("copen")
+
+              vim.cmd("botright copen")
             end
           '';
         };
@@ -314,9 +315,11 @@ in
           glance.enable = true;
           lspkind.enable = true;
           neoscroll.enable = true;
+          nvim-bqf.enable = true;
           nvim-surround.enable = true;
           overseer.enable = true;
           sleuth.enable = true;
+          tiny-devicons-auto-colors.enable = true;
           todo-comments.enable = true;
           vimtex.enable = true;
           web-devicons.enable = true;
