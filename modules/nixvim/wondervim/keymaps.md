@@ -29,4 +29,5 @@
 | gXx   | Global diagnostics         |
 | gXe   | Global errors              |
 | S*    | Surround with *            |
+| ;     | Arrow                      |
 

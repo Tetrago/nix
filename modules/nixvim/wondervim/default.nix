@@ -189,6 +189,8 @@ in
                 "<C-g>" = "tabnew";
                 "<C-x>" = "tabclose";
 
+                "gra".lua = "require('actions-preview').code_actions()";
+
                 "gs".plug = "leap-forward";
                 "gS".plug = "leap-backward";
               }
@@ -344,6 +346,31 @@ in
           todo-comments.enable = true;
           vimtex.enable = true;
           web-devicons.enable = true;
+
+          actions-preview = {
+            enable = true;
+            settings = {
+              highlight_command = [
+                (lib.nixvim.mkRaw "require('actions-preview.highlight').delta('${lib.getExe pkgs.delta} --side-by-side')")
+              ];
+
+              telescope = {
+                layout_config = {
+                  height = 0.9;
+                  preview_cutoff = 20;
+                  preview_height.__raw = ''
+                    function(_, _, max_lines)
+                      return max_lines - 15
+                    end
+                  '';
+                  prompt_position = "top";
+                  width = 0.8;
+                };
+                layout_strategy = "vertical";
+                sorting_strategy = "ascending";
+              };
+            };
+          };
 
           arrow = {
             enable = true;
