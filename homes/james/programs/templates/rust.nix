@@ -34,10 +34,10 @@
         {
           default = (pkgs.mkShell.override { stdenv = pkgs.clangStdenv; }) {
             packages = with pkgs; [
-              gdb
+              cargo-nextest
               mold-wrapped
-              rustToolchain
               rustPlatform.bindgenHook
+              rustToolchain
             ];
 
             RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=mold";
