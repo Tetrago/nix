@@ -71,9 +71,8 @@ in
 
       globals = {
         c_syntax_for_h = 1;
-        material_style = "darker";
-        edge_better_performance = 1;
-        edge_enable_italic = true;
+        clever_f_across_no_line = 1;
+        clever_f_not_overwrites_standard_mappings = 1;
       };
 
       opts = {
@@ -212,7 +211,28 @@ in
               }
             else
               { inherit key; } // v
-          ) binds;
+          ) binds
+          ++
+            map
+              (key: {
+                inherit key;
+                mode = [
+                  "n"
+                  "x"
+                  "o"
+                ];
+                lua = ''
+                  require("eyeliner").highlight({ forward = true })
+                  return "<Plug>(clever-f-${key})"
+                '';
+                options.expr = true;
+              })
+              [
+                "f"
+                "F"
+                "t"
+                "T"
+              ];
 
         plugins = {
           darkman = mkIf cfg.enableDarkmanIntegration {
@@ -223,8 +243,9 @@ in
           eyeliner = {
             package = pkgs.vimPlugins.eyeliner-nvim;
             settings = {
-              highlight_on_key = true;
+              default_keymaps = false;
               dim = true;
+              highlight_on_key = true;
             };
           };
 
@@ -326,10 +347,7 @@ in
 
           arrow = {
             enable = true;
-            settings = {
-              leader_key = "m";
-              show_icons = true;
-            };
+            settings.show_icons = true;
           };
 
           auto-session = {
@@ -884,6 +902,7 @@ in
         optional cfg.transparent localPkgs.bg-nvim
         ++ [ localPkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
+          clever-f-vim
           vim-expand-region
           vim-textobj-entire
         ]);

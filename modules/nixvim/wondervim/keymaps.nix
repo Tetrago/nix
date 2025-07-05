@@ -63,6 +63,13 @@ in
               type = with types; nullOr str;
               default = null;
             };
+
+            options = mkOption {
+              type = types.attrs;
+              default = {
+                silent = true;
+              };
+            };
           };
         }
       );
@@ -120,10 +127,10 @@ in
           command,
           plug,
           action,
+          options,
         }:
         {
-          inherit mode key;
-          options.silent = true;
+          inherit mode key options;
           action =
             if lua != null then
               {
