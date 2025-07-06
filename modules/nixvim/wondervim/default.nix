@@ -36,7 +36,7 @@ in
   options.wondervim = {
     enable = mkEnableOption "wondervim neovim configuration.";
     transparent = mkEnableOption "transparency support.";
-    debugging = mkEnableOption "debug support.";
+    enableDebugging = mkEnableOption "debug support.";
     enableDarkmanIntegration = mkEnableOption "darkman theme integration.";
 
     sessionHooks =
@@ -140,6 +140,8 @@ in
         virtual_text = false;
       };
 
+      extraFiles."cheatsheets/cheatsheet-wondervim.txt".source = ./cheatsheet.txt;
+
       wondervim = {
         keymaps =
           let
@@ -156,7 +158,6 @@ in
                 "gR" = "Glance references";
                 "gY" = "Glance type_definitions";
                 "gM" = "Glance implementations";
-
                 "gd".lua = "vim.lsp.buf.definition()";
 
                 "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
@@ -165,7 +166,7 @@ in
                 "gXx".lua = "vim.diagnostic.setqflist()";
                 "gXe".lua = "vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })";
 
-                "?" = "view ${./keymaps.md}";
+                "?" = "Cheatsheet";
 
                 "<M-j>" = "cnext";
                 "<M-k>" = "cprev";
@@ -194,7 +195,7 @@ in
                 "gs".plug = "leap-forward";
                 "gS".plug = "leap-backward";
               }
-              // optionalAttrs cfg.debugging {
+              // optionalAttrs cfg.enableDebugging {
                 "<M-d>".lua = "require('dapui').toggle()";
 
                 "<F5>" = "DapContinue";
@@ -237,6 +238,15 @@ in
               ];
 
         plugins = {
+          cheatsheet = {
+            package = pkgs.vimPlugins.cheatsheet-nvim;
+            settings = {
+              bundled_cheatsheets.enabled = [ "wondervim" ];
+              bundled_plugin_cheatsheets = false;
+              telescope_mappings = [ ];
+            };
+          };
+
           darkman = mkIf cfg.enableDarkmanIntegration {
             package = localPkgs.darkman-nvim;
             settings.change_background = true;
@@ -345,6 +355,7 @@ in
           tiny-devicons-auto-colors.enable = true;
           todo-comments.enable = true;
           vimtex.enable = true;
+          visual-whitespace.enable = true;
           web-devicons.enable = true;
 
           actions-preview = {
@@ -889,7 +900,7 @@ in
             settings.use_default_keymaps = false;
           };
         }
-        (mkIf cfg.debugging {
+        (mkIf cfg.enableDebugging {
           dap-ui.enable = true;
           dap-virtual-text.enable = true;
 

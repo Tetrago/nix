@@ -1,0 +1,50 @@
+## tabs
+New tab | <C-g>
+Close tab | <C-x>
+Next tab | gt
+Previous tab | gT
+
+## lsp
+Glance at definitions | gD
+Glance at references | gR
+Glance at type definitions | gY
+Glance at implementations | gM
+Preview selected glance | <Leader>l
+View definitions | gd
+View references | grr
+View implementations | gri
+Code actions | gra
+Rename symbol | grn
+Open references in Telescope | <C-i>
+
+## movement
+Leap forward | gs
+Leap backward | gS
+Arrow | ;
+
+## text-objects
+Entire buffer | ae
+Increase range | +
+Decrease range | -
+
+## text-actions
+Change case | ~
+Search word under cursor | #
+Split | <C-s>
+Join | <C-j>
+Find in current buffer with Telescope | <C-f>
+
+## quickfix
+Open in quickfix from Telescope | <C-q>
+Next quickfix entry | <M-j>
+Previous quickfix entry | <M-k>
+Quickfix buffer diagnostics | gxx
+Quickfix buffer diagnostic errors | gxe
+Quickfix workspace diagnostics | gXx
+Quickfix workspace diagnostic errors | gXe
+
+## menus
+Show notification log | <C-n>
+Open todo items | <M-t>
+Open lazygit | <M-g>
+

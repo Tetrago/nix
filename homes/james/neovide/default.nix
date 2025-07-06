@@ -125,7 +125,7 @@ in
 
                   wondervim = {
                     enable = true;
-                    debugging = true;
+                    enableDebugging = true;
                     enableDarkmanIntegration = true;
 
                     keymaps = [
