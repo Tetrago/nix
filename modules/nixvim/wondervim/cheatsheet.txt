@@ -44,8 +44,8 @@ Align to regex string                 | ar
 
 ## quickfix
 Open in quickfix from Telescope      | <C-q>
-Next quickfix entry                  | <M-j>
-Previous quickfix entry              | <M-k>
+Next quickfix entry                  | <M-d>
+Previous quickfix entry              | <M-a>
 Quickfix buffer diagnostics          | gxx
 Quickfix buffer diagnostic errors    | gxe
 Quickfix workspace diagnostics       | gXx
@@ -57,9 +57,9 @@ Open todo items       | <M-t>
 Open lazygit          | <M-g>
 
 ## windows
-Resize left  | <C-S-h>
-Resize right | <C-S-l>
-Resize down  | <C-S-j>
-Resize up    | <C-S-k>
+Resize left  | <M-h>
+Resize right | <M-l>
+Resize down  | <M-j>
+Resize up    | <M-k>
 
 

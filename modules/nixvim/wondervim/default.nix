@@ -177,12 +177,9 @@ in
 
                 "?" = "Cheatsheet";
 
-                "<M-j>" = "cnext";
-                "<M-k>" = "cprev";
+                "<M-d>" = "cnext";
+                "<M-a>" = "cprev";
                 "<M-q>" = "ToggleQuickfix";
-
-                "<C-w><C-s>" = "botright split";
-                "<C-w><C-v>" = "botright vsplit";
 
                 "<C-f>" = "Telescope current_buffer_fuzzy_find";
                 "<C-k>" = "Telescope live_grep";
@@ -271,7 +268,7 @@ in
             mapAttrsToList
               (n: v: {
                 mode = [ "n" ];
-                key = "<C-S-${n}>";
+                key = "<M-${n}>";
                 lua = "require('smart-splits').resize_${v}()";
               })
               {
@@ -431,6 +428,7 @@ in
       plugins = mkMerge [
         {
           autoclose.enable = true;
+          colorful-menu.enable = true;
           fugitive.enable = true;
           gitblame.enable = true;
           glance.enable = true;
@@ -514,37 +512,64 @@ in
                   auto_insert = true;
                 };
 
-                menu.draw.components.kind_icon = {
-                  text.__raw = ''
-                    function(ctx)
-                      local icon = ctx.kind_icon
-                      if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                        local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                        if dev_icon then
-                          icon = dev-icon
-                        end
-                      else
-                        icon = require("lspkind").symbolic(ctx.kind, {
-                          mode = "symbol"
-                        })
-                      end
+                menu.draw = {
+                  columns = [
+                    {
+                      __unkeyed-1 = "kind_icon";
+                    }
+                    {
+                      __unkeyed-1 = "label";
+                      gap = 1;
+                    }
+                  ];
+                  components = {
+                    kind_icon = {
+                      text.__raw = ''
+                        function(ctx)
+                          local icon = ctx.kind_icon
+                          if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                            local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                            if dev_icon then
+                              icon = dev-icon
+                            end
+                          else
+                            icon = require("lspkind").symbolic(ctx.kind, {
+                              mode = "symbol"
+                            })
+                          end
 
-                      return icon .. ctx.icon_gap
-                    end
-                  '';
-
-                  highlight.__raw = ''
-                    function(ctx)
-                      local hl = ctx.kind_hl
-                      if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                        local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                        if dev_icon then
-                          hl = dev_hl
+                          return icon .. ctx.icon_gap
                         end
-                      end
-                      return hl
-                    end
-                  '';
+                      '';
+
+                      highlight.__raw = ''
+                        function(ctx)
+                          local hl = ctx.kind_hl
+                          if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                            local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                            if dev_icon then
+                              hl = dev_hl
+                            end
+                          end
+                          return hl
+                        end
+                      '';
+                    };
+
+                    label = {
+                      text.__raw = ''
+                        function(ctx)
+                          return require("colorful-menu").blink_components_text(ctx)
+                        end
+                      '';
+
+                      highlight.__raw = ''
+                        function(ctx)
+                          return require("colorful-menu").blink_components_highlight(ctx)
+                        end
+                      '';
+                    };
+                  };
                 };
               };
 
