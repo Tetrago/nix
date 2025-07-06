@@ -139,6 +139,8 @@ in
                     enableDebugging = true;
                     enableDarkmanIntegration = true;
 
+                    cheatsheets.neovide = ./cheatsheet.txt;
+
                     keymaps = [
                       {
                         key = "<C-=>";
@@ -155,6 +157,14 @@ in
                       {
                         key = "<C-_>";
                         command = "NoNeckPainWidthDown";
+                      }
+                      {
+                        key = "<C-w>m";
+                        command = "WinShift";
+                      }
+                      {
+                        key = "<C-w>x";
+                        command = "WinShift swap";
                       }
                     ];
 
@@ -204,6 +214,25 @@ in
                           integrations.dashboard.enabled = true;
                           buffers.wo.winfixwidth = true;
                         };
+                      };
+
+                      winshift = {
+                        package = pkgs.vimPlugins.winshift-nvim;
+                        settings.window_picker.__raw = ''
+                          function()
+                            return require("winshift.lib").pick_window({
+                              picker_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+                              filter_rules = {
+                                cur_win = true,
+                                floats = true,
+                                filetype = { "no-neck-pain" },
+                                buftype = {},
+                                bufname = {},
+                              },
+                              filter_func = nil,
+                            })
+                          end
+                        '';
                       };
                     };
 

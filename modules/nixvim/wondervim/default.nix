@@ -39,6 +39,11 @@ in
     enableDebugging = mkEnableOption "debug support.";
     enableDarkmanIntegration = mkEnableOption "darkman theme integration.";
 
+    cheatsheets = mkOption {
+      type = with types; attrsOf path;
+      default = { };
+    };
+
     sessionHooks =
       genAttrs
         [
@@ -140,9 +145,13 @@ in
         virtual_text = false;
       };
 
-      extraFiles."cheatsheets/cheatsheet-wondervim.txt".source = ./cheatsheet.txt;
+      extraFiles = mkMerge (
+        mapAttrsToList (n: v: { "cheatsheets/cheatsheet-${n}.txt".source = v; }) cfg.cheatsheets
+      );
 
       wondervim = {
+        cheatsheets.wondervim = ./cheatsheet.txt;
+
         keymaps =
           let
             binds =
@@ -302,9 +311,17 @@ in
 
         plugins = {
           cheatsheet = {
-            package = pkgs.vimPlugins.cheatsheet-nvim;
+            package = pkgs.vimPlugins.cheatsheet-nvim.overrideAttrs (
+              final: prev: {
+                postInstall = ''
+                  ${prev.postInstall or ""}
+                  echo "" > $out/cheatsheet.txt
+                '';
+              }
+            );
+
             settings = {
-              bundled_cheatsheets.enabled = [ "wondervim" ];
+              bundled_cheatsheets.enabled = mapAttrsToList (n: _: n) cfg.cheatsheets;
               bundled_plugin_cheatsheets = false;
               telescope_mappings = [ ];
             };

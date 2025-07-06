@@ -1,0 +1,7 @@
+## neovide
+Increase text size     | <C-=>
+Decrease text size     | <C-->
+Increase center width  | <C-+>
+Decrease center width  | <C-_>
+Enter window move mode | <C-w>m
+Swap window            | <C-w>x
