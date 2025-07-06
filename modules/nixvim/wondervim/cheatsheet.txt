@@ -21,6 +21,7 @@ Open references in Telescope | <C-i>
 Leap forward | gs
 Leap backward | gS
 Arrow | ;
+Last selection | gv
 
 ## text-objects
 Entire buffer | ae

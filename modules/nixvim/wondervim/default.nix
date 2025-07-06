@@ -21,7 +21,7 @@ let
     mapAttrsToList
     optionalAttrs
     ;
-  inherit (lib.lists) optional;
+  inherit (lib.lists) flatten optional;
   inherit (lib.strings) concatStrings stringToCharacters toLower;
 
   localPkgs = import ./packages pkgs;
@@ -235,6 +235,40 @@ in
                 "F"
                 "t"
                 "T"
+              ]
+          ++ flatten (
+            mapAttrsToList
+              (n: v: [
+                {
+                  mode = [ "n" ];
+                  key = "<S-${n}>";
+                  action = "<Plug>GoNSM${v}";
+                  options = { };
+                }
+                {
+                  mode = [ "x" ];
+                  key = "<S-${n}>";
+                  action = "<Plug>GoVSM${v}";
+                  options = { };
+                }
+              ])
+              {
+                j = "Down";
+                k = "Up";
+                h = "Left";
+                l = "Right";
+              }
+          )
+          ++
+            map
+              (x: {
+                mode = [ "x" ];
+                key = x;
+                action = "${x}gv";
+              })
+              [
+                "<"
+                ">"
               ];
 
         plugins = {
@@ -258,6 +292,14 @@ in
               default_keymaps = false;
               dim = true;
               highlight_on_key = true;
+            };
+          };
+
+          gomove = {
+            package = pkgs.vimPlugins.nvim-gomove;
+            settings = {
+              map_defaults = false;
+              reindent = false;
             };
           };
 
@@ -355,7 +397,6 @@ in
           tiny-devicons-auto-colors.enable = true;
           todo-comments.enable = true;
           vimtex.enable = true;
-          visual-whitespace.enable = true;
           web-devicons.enable = true;
 
           actions-preview = {
