@@ -75,10 +75,12 @@ in
             "image"
           ]
         ++ [
-          (getExe pkgs.brightnessctl)
-          "--device=kbd_backlight"
-          "set"
-          "10"
+          [
+            (getExe pkgs.brightnessctl)
+            "--device=kbd_backlight"
+            "set"
+            "1"
+          ]
         ];
 
       xdg = {
@@ -145,7 +147,7 @@ in
               clip-to-geometry true
 
               focus-ring {
-                width 2
+                width 1
               }
             }
 

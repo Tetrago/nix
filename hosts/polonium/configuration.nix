@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  lib,
   outputs,
   pkgs,
   ...
@@ -60,10 +59,7 @@
     };
   };
 
-  security = {
-    pam.services.greetd.enableGnomeKeyring = true;
-    polkit.enable = true;
-  };
+  security.polkit.enable = true;
 
   services = {
     automatic-timezoned.enable = true;

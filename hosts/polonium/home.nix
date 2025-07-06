@@ -1,5 +1,4 @@
 {
-  inputs,
   outputs,
   ...
 }:
@@ -12,7 +11,7 @@
   ];
 
   polymorph.enable = true;
-  tetrago.fragile.enable = true;
+  tetrago.nautilus.enable = true;
 
   flume = {
     enable = true;
@@ -37,7 +36,6 @@
     bash.enable = true;
     directories.enable = true;
     fonts.enable = true;
-    git.enable = true;
     neovide.enable = true;
     terminal.enable = true;
     theme.enable = true;
@@ -45,6 +43,11 @@
     firefox = {
       enable = true;
       theme.enable = true;
+    };
+
+    git = {
+      enable = true;
+      enableLibsecretIntegration = true;
     };
 
     media = {

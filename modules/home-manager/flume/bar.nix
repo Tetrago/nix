@@ -83,12 +83,20 @@ in
           };
 
           cpu = {
+            states = {
+              warning = 60;
+              critical = 90;
+            };
             format = "{icon}";
             format-icons = [
-              "󰡳"
-              "󰡵"
-              "󰊚"
-              "󰡴"
+              "󰪞"
+              "󰪟"
+              "󰪠"
+              "󰪡"
+              "󰪢"
+              "󰪣"
+              "󰪤"
+              "󰪥"
             ];
           };
 
@@ -107,13 +115,20 @@ in
           };
 
           temperature = {
+            states = {
+              warning = 60;
+              critical = 80;
+            };
             format = "{icon}";
             format-icons = [
-              ""
-              ""
-              ""
-              ""
-              ""
+              "󰪞"
+              "󰪟"
+              "󰪠"
+              "󰪡"
+              "󰪢"
+              "󰪣"
+              "󰪤"
+              "󰪥"
             ];
           };
 
@@ -224,6 +239,20 @@ in
             background-image: linear-gradient(to bottom, alpha(@theme_bg_color, 0.2), alpha(@theme_bg_color, 0.4));
           }
 
+          #system, #menu {
+            padding: 1px 8px;
+          }
+
+          #cpu, #memory, #temperature {
+            font-size: 26px;
+            padding: 0 4px;
+          }
+
+          #custom-sleep, #custom-logout, #custom-reboot, #custom-poweroff {
+            font-size: 20px;
+            padding: 0 4px;
+          }
+
           #tray, #battery, #menu {
             margin: 8px 8px 0 0;
             padding: 5px 8px;
@@ -247,6 +276,14 @@ in
           }
 
           #battery.critical:not(.charging) {
+            color: @error_color;
+          }
+
+          #cpu.warning, #temperature.warning {
+            color: @warning_color;
+          }
+
+          #cpu.critical, #temperature.critical {
             color: @error_color;
           }
         '';
