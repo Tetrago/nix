@@ -121,6 +121,17 @@ in
                         open_mapping = "[[<C-\\>]]";
                       };
                     };
+
+                    vimade = {
+                      enable = true;
+                      settings = {
+                        fadelevel = 0.75;
+                        recipe = [
+                          "default"
+                          { animate = true; }
+                        ];
+                      };
+                    };
                   };
 
                   wondervim = {

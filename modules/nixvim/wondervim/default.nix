@@ -249,7 +249,6 @@ in
                   mode = [ "x" ];
                   key = "<S-${n}>";
                   action = "<Plug>GoVSM${v}";
-                  options = { };
                 }
               ])
               {
@@ -260,6 +259,19 @@ in
               }
           )
           ++
+            mapAttrsToList
+              (n: v: {
+                mode = [ "n" ];
+                key = "<C-S-${n}>";
+                lua = "require('smart-splits').resize_${v}()";
+              })
+              {
+                j = "down";
+                k = "up";
+                h = "left";
+                l = "right";
+              }
+          ++
             map
               (x: {
                 mode = [ "x" ];
@@ -269,7 +281,24 @@ in
               [
                 "<"
                 ">"
-              ];
+              ]
+          ++ [
+            {
+              mode = [ "x" ];
+              key = "ac";
+              lua = "require('align').align_to_char({ length = 1 })";
+            }
+            {
+              mode = [ "x" ];
+              key = "as";
+              lua = "require('align').align_to_string({ preview = true })";
+            }
+            {
+              mode = [ "x" ];
+              key = "ar";
+              lua = "require('align').align_to_string({ regex = true, preview = true })";
+            }
+          ];
 
         plugins = {
           cheatsheet = {
@@ -393,6 +422,7 @@ in
           nvim-bqf.enable = true;
           nvim-surround.enable = true;
           overseer.enable = true;
+          smart-splits.enable = true;
           sleuth.enable = true;
           tiny-devicons-auto-colors.enable = true;
           todo-comments.enable = true;
@@ -981,6 +1011,7 @@ in
         optional cfg.transparent localPkgs.bg-nvim
         ++ [ localPkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
+          align-nvim
           clever-f-vim
           vim-expand-region
           vim-textobj-entire
