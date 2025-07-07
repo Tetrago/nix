@@ -24,16 +24,21 @@
             overlays = [ rust-overlay.overlays.default ];
           };
 
-          rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-            extensions = [
-              "rust-src"
-              "rust-analyzer"
-            ];
-          };
+          rustToolchain = pkgs.rust-bin.selectLatestNightlyWith (
+            toolchain:
+            toolchain.default.override {
+              extensions = [
+                "llvm-tools-preview"
+                "rust-src"
+                "rust-analyzer"
+              ];
+            }
+          );
         in
         {
           default = (pkgs.mkShell.override { stdenv = pkgs.clangStdenv; }) {
             packages = with pkgs; [
+              cargo-llvm-cov
               cargo-nextest
               mold-wrapped
               rustPlatform.bindgenHook
