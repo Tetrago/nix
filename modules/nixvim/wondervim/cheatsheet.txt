@@ -28,9 +28,18 @@ Move down      | <S-j>
 Move up        | <S-k>
 
 ## text-objects
-Entire buffer  | ae
-Increase range | +
-Decrease range | -
+Entire buffer               | ae
+Entire buffer trimmed       | ie
+Increase range              | +
+Decrease range              | -
+Paragraph                   | p
+Inside                      | i
+Around                      | a
+Indentation and above       | ai
+Indentation only            | ii
+Indentation and surrounding | aI
+Comment text                | ic
+Comment text and delimiters | ac
 
 ## text-actions
 Change case                           | ~
@@ -41,6 +50,7 @@ Find in current buffer with Telescope | <C-f>
 Align to character                    | ac
 Align to string                       | as
 Align to regex string                 | ar
+Reflow                                | gq
 
 ## quickfix
 Open in quickfix from Telescope      | <C-q>

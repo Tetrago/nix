@@ -1056,7 +1056,9 @@ in
           align-nvim
           clever-f-vim
           vim-expand-region
+          vim-textobj-comment
           vim-textobj-entire
+          vim-indent-object
         ]);
 
       dependencies = {
