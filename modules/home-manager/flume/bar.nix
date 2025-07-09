@@ -184,6 +184,7 @@ in
             orientation = "horizontal";
             modules = [
               "custom/menu"
+              "custom/lock"
               "custom/sleep"
               "custom/logout"
               "custom/reboot"
@@ -198,6 +199,12 @@ in
           "custom/menu" = {
             format = "󰒓";
             tooltip = false;
+          };
+
+          "custom/lock" = {
+            format = "󰌾";
+            tooltip = false;
+            on-click = "loginctl lock-session";
           };
 
           "custom/sleep" = {
@@ -254,7 +261,7 @@ in
             padding: 0 4px;
           }
 
-          #custom-sleep, #custom-logout, #custom-reboot, #custom-poweroff, #custom-menu {
+          #custom-lock, #custom-sleep, #custom-logout, #custom-reboot, #custom-poweroff, #custom-menu {
             font-size: 20px;
             padding: 0 4px;
           }

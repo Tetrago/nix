@@ -27,7 +27,9 @@ in
           udisks2.enable = true;
         };
 
-        security.pam.services.hyprlock.enableGnomeKeyring = true;
+        security.pam.services.gtklock = lib.mkForce {
+          enableGnomeKeyring = true;
+        };
 
         xdg.portal = {
           enable = true;

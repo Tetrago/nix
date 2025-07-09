@@ -20,6 +20,7 @@ in
   imports = [
     ./bar.nix
     ./darkman.nix
+    ./idle.nix
     ./launcher.nix
     ./osd.nix
     ./portal.nix
@@ -81,6 +82,9 @@ in
             "set"
             "1"
           ]
+          [
+            (getExe pkgs.gtklock)
+          ]
         ];
 
       xdg = {
@@ -122,6 +126,12 @@ in
             }
 
             input {
+              keyboard {
+                xkb {
+                  options "ctrl:nocaps"
+                }
+              }
+
               touchpad {
                 tap
                 natural-scroll
