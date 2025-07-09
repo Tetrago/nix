@@ -165,11 +165,17 @@ in
             format = "{icon}";
             format-charging = "󰂄";
             format-icons = [
-              ""
-              ""
-              ""
-              ""
-              ""
+              "󰂎"
+              "󰁺"
+              "󰁻"
+              "󰁼"
+              "󰁽"
+              "󰁾"
+              "󰁿"
+              "󰂀"
+              "󰂁"
+              "󰂂"
+              "󰁹"
             ];
             tooltip-format = "{capacity}% {timeTo}";
           };
@@ -248,9 +254,13 @@ in
             padding: 0 4px;
           }
 
-          #custom-sleep, #custom-logout, #custom-reboot, #custom-poweroff {
+          #custom-sleep, #custom-logout, #custom-reboot, #custom-poweroff, #custom-menu {
             font-size: 20px;
             padding: 0 4px;
+          }
+
+          #custom-menu {
+            padding: 0;
           }
 
           #tray, #battery, #menu {

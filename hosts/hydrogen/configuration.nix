@@ -37,6 +37,7 @@
   };
 
   systemd.network.wait-online.enable = false;
+
   networking = {
     hostName = "hydrogen";
     nftables.enable = false; # libvirt issue with nftables

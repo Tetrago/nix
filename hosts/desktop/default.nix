@@ -42,7 +42,6 @@
     printing.drivers = with pkgs; [ epson-escpr ];
     speechd.enable = true;
     sysprof.enable = true;
-    automatic-timezoned.enable = true;
 
     geoclue2 = {
       enable = true;

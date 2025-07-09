@@ -62,7 +62,6 @@
   security.polkit.enable = true;
 
   services = {
-    automatic-timezoned.enable = true;
     sysprof.enable = true;
     upower.enable = true;
 
