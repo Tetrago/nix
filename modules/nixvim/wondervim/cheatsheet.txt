@@ -72,4 +72,11 @@ Resize right | <M-l>
 Resize down  | <M-j>
 Resize up    | <M-k>
 
-
+## folds
+Toggle fold | za
+Close fold | zc
+Open fold | zo
+Close all folds under cursor | zC
+Open all folds under cursor | zO
+Close all folds | zM
+Open all folds | zR

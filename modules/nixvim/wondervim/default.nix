@@ -104,6 +104,9 @@ in
           "terminal"
           "localoptions"
         ];
+
+        foldlevel = 99;
+        foldlevelstart = 99;
       };
 
       diagnostic.settings = {
@@ -889,6 +892,15 @@ in
                 index = symbols;
                 working_tree = symbols;
               };
+          };
+
+          origami = {
+            enable = true;
+            settings = {
+              autoFold.enabled = false;
+              foldtext.lineCount.template = "󰘖%d"; # FIX: I don't know why this doesn't work
+              foldKeymaps.setup = false;
+            };
           };
 
           render-markdown = {
