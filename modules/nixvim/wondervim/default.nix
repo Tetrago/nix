@@ -186,7 +186,6 @@ in
 
                 "<C-f>" = "Telescope current_buffer_fuzzy_find";
                 "<C-k>" = "Telescope live_grep";
-                "<C-i>" = "Telescope lsp_references";
                 "<C-n>" = "Telescope notify";
                 "<C-q>" = "Telescope quickfix";
 

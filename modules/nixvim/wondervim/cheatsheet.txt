@@ -15,7 +15,7 @@ View references              | grr
 View implementations         | gri
 Code actions                 | gra
 Rename symbol                | grn
-Open references in Telescope | <C-i>
+Open references in Telescope | <Tab>
 
 ## movement
 Leap forward   | gs
