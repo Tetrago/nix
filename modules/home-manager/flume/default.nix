@@ -22,6 +22,7 @@ in
     ./darkman.nix
     ./idle.nix
     ./launcher.nix
+    ./notifications.nix
     ./osd.nix
     ./portal.nix
     ./wallpaper.nix
@@ -81,9 +82,6 @@ in
             "--device=kbd_backlight"
             "set"
             "1"
-          ]
-          [
-            (getExe pkgs.gtklock)
           ]
         ];
 

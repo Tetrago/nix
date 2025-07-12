@@ -16,8 +16,14 @@ let
 
   customThemeType = types.submodule {
     options = {
-      name = mkOption { type = types.str; };
-      package = mkOption { type = types.package; };
+      name = mkOption {
+        type = types.str;
+      };
+
+      package = mkOption {
+        type = with types; nullOr package;
+        default = null;
+      };
     };
   };
 in
@@ -65,7 +71,7 @@ in
                 else
                   cfg.theme.package;
             in
-            [
+            mkIf (theme != null) [
               theme
             ];
         };

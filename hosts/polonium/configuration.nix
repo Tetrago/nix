@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   outputs,
   pkgs,
@@ -19,7 +18,47 @@
     outputs.nixosModules.home-manager
   ];
 
-  systemd.network.wait-online.enable = false;
+  systemd = {
+    network.wait-online.enable = false;
+    tmpfiles.rules =
+      let
+        monitors = pkgs.writeText "monitors.xml" ''
+          <monitors version="2">
+            <configuration>
+              <layoutmode>physical</layoutmode>
+              <logicalmonitor>
+                <x>0</x>
+                <y>0</y>
+                <scale>1.5</scale>
+                <primary>yes</primary>
+                <monitor>
+                  <monitorspec>
+                    <connector>eDP-1</connector>
+                    <vendor>unknown</vendor>
+                    <product>unknown</product>
+                    <serial>unknown</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>2560</width>
+                    <height>1664</height>
+                    <rate>60.0</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+            </configuration>
+          </monitors>
+        '';
+
+        userConfig = pkgs.writeText "AccountsService-james" ''
+          [User]
+          Icon=${./face.png}
+        '';
+      in
+      [
+        "L+ /run/gdm/.config/monitors.xml - - - - ${monitors}"
+        "C /var/lib/AccountsService/users/james - - - - ${userConfig}"
+      ];
+  };
 
   boot = {
     kernelParams = [
@@ -53,35 +92,51 @@
     command-not-found.enable = false;
     nix-index-database.comma.enable = true;
 
+    dconf = {
+      enable = true;
+      profiles.gdm.databases = [
+        {
+          settings = {
+            # FIX: Still there
+            "org/gnome/desktop/interface".toolkit-accessibility = false;
+            "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;
+            "org/gnome/login-screen".logo = "${./logo.png}";
+            # NOTE: May or may not work
+            "org/gnome/mutter".experimental-features = [
+              "scale-monitor-framebuffer"
+            ];
+          };
+        }
+      ];
+    };
+
     nh = {
       enable = true;
       flake = "/etc/nixos";
     };
   };
 
-  security.polkit.enable = true;
+  security = {
+    polkit.enable = true;
+    pam.services.gtklock.enableGnomeKeyring = true;
+  };
 
   services = {
     sysprof.enable = true;
     upower.enable = true;
 
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${config.services.greetd.package}/bin/agreety --cmd $SHELL";
-        };
-
-        initial_session = {
-          command = "${pkgs.niri}/bin/niri-session";
-          user = "james";
-        };
-      };
+    displayManager = {
+      gdm.enable = true;
+      sessionPackages = [ pkgs.niri ];
     };
 
     geoclue2 = {
       enable = true;
       geoProviderUrl = "https://beacondb.net/v1/geolocate";
+    };
+
+    logind = {
+      powerKey = "poweroff";
     };
   };
 
