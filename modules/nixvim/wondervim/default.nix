@@ -425,6 +425,9 @@ in
             end
           '';
         };
+
+        W.command = "w";
+        Wq.command = "wq";
       };
 
       plugins = mkMerge [
