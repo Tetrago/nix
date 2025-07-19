@@ -58,7 +58,7 @@
     ];
   };
 
-  fileSystems."/nix/store" = {
+  fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/a5c2509a-ed81-41e6-8847-e63d2dcd7986";
     fsType = "btrfs";
     options = [
@@ -67,7 +67,7 @@
       "ssd"
       "space_cache=v2"
       "discard=async"
-      "subvol=@pkg"
+      "subvol=@nix"
     ];
   };
 
