@@ -27,13 +27,79 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/b9c84050-0de7-46ca-bee1-328e407c00de";
     fsType = "btrfs";
-    options = [ "subvol=@" ];
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@"
+    ];
+  };
+
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-uuid/b9c84050-0de7-46ca-bee1-328e407c00de";
+    fsType = "btrfs";
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@log"
+    ];
+  };
+
+  fileSystems."/var/cache" = {
+    device = "/dev/disk/by-uuid/b9c84050-0de7-46ca-bee1-328e407c00de";
+    fsType = "btrfs";
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@cache"
+    ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/b9c84050-0de7-46ca-bee1-328e407c00de";
+    fsType = "btrfs";
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@nix"
+    ];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/b9c84050-0de7-46ca-bee1-328e407c00de";
     fsType = "btrfs";
-    options = [ "subvol=@home" ];
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@home"
+    ];
+  };
+
+  fileSystems."/tmp" = {
+    device = "/dev/disk/by-uuid/b9c84050-0de7-46ca-bee1-328e407c00de";
+    fsType = "btrfs";
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@tmp"
+    ];
   };
 
   fileSystems."/boot/efi" = {
@@ -44,13 +110,27 @@
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/9237a30d-b988-4ba1-97cf-38868546174a";
     fsType = "btrfs";
-    options = [ "subvol=@data" ];
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@data"
+    ];
   };
 
   fileSystems."/pool" = {
     device = "/dev/disk/by-uuid/9237a30d-b988-4ba1-97cf-38868546174a";
     fsType = "btrfs";
-    options = [ "subvol=@pool" ];
+    options = [
+      "noatime"
+      "compress=zstd"
+      "ssd"
+      "space_cache=v2"
+      "discard=async"
+      "subvol=@pool"
+    ];
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/f814ba31-302e-4fb2-88c0-9bf34791c195"; } ];
