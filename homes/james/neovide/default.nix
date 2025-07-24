@@ -201,7 +201,7 @@ in
 
                           fallbackOnBufferDelete = false;
                           integrations.dashboard.enabled = true;
-                          buffers.wo.winfixwidth = true;
+                          # TODO: Re-enable: buffers.wo.winfixwidth = true;
                         };
                       };
 

@@ -51,6 +51,8 @@ Align to character                    | ac
 Align to string                       | as
 Align to regex string                 | ar
 Reflow                                | gq
+Increment number                      | <C-a>
+Decrement number                      | <C-x>
 
 ## quickfix
 Open in quickfix from Telescope      | <C-q>
