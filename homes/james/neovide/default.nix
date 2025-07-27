@@ -155,6 +155,24 @@ in
                         key = "<C-w>x";
                         command = "WinShift swap";
                       }
+                      {
+                        key = "<C-w>=";
+                        lua = ''
+                          local was_enabled = _G.NoNeckPain ~= nil and _G.NoNeckPain.state ~= nil and _G.NoNeckPain.state.enabled
+
+                          if was_enabled then
+                            vim.cmd("NoNeckPain")
+                          end
+
+                          vim.cmd("wincmd =")
+
+                          if was_enabled then
+                            vim.defer_fn(function()
+                              vim.cmd("NoNeckPain")
+                            end, 10)
+                          end
+                        '';
+                      }
                     ];
 
                     plugins = {

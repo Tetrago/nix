@@ -435,7 +435,6 @@ in
           autoclose.enable = true;
           colorful-menu.enable = true;
           fugitive.enable = true;
-          gitblame.enable = true;
           glance.enable = true;
           lspkind.enable = true;
           neoscroll.enable = true;
