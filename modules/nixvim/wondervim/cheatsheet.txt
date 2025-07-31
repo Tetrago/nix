@@ -40,6 +40,7 @@ Indentation only            | ii
 Indentation and surrounding | aI
 Comment text                | ic
 Comment text and delimiters | ac
+Select treesitter range     | gz
 
 ## text-actions
 Change case                           | ~
@@ -67,6 +68,7 @@ Quickfix workspace diagnostic errors | gXe
 Show notification log | <C-n>
 Open todo items       | <M-t>
 Open lazygit          | <M-g>
+Toggle dap            | <M-f>
 
 ## windows
 Resize left  | <M-h>

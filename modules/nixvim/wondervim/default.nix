@@ -76,8 +76,6 @@ in
 
       globals = {
         c_syntax_for_h = 1;
-        clever_f_across_no_line = 1;
-        clever_f_not_overwrites_standard_mappings = 1;
       };
 
       opts = {
@@ -202,9 +200,10 @@ in
 
                 "gs".plug = "leap-forward";
                 "gS".plug = "leap-backward";
+                "gz".lua = "require('flash').treesitter()";
               }
               // optionalAttrs cfg.enableDebugging {
-                "<M-d>".lua = "require('dapui').toggle()";
+                "<M-f>".lua = "require('dapui').toggle()";
 
                 "<F5>" = "DapContinue";
                 "<F9>" = "DapToggleBreakpoint";
@@ -223,27 +222,6 @@ in
             else
               { inherit key; } // v
           ) binds
-          ++
-            map
-              (key: {
-                inherit key;
-                mode = [
-                  "n"
-                  "x"
-                  "o"
-                ];
-                lua = ''
-                  require("eyeliner").highlight({ forward = true })
-                  return "<Plug>(clever-f-${key})"
-                '';
-                options.expr = true;
-              })
-              [
-                "f"
-                "F"
-                "t"
-                "T"
-              ]
           ++ flatten (
             mapAttrsToList
               (n: v: [
@@ -334,7 +312,6 @@ in
           eyeliner = {
             package = pkgs.vimPlugins.eyeliner-nvim;
             settings = {
-              default_keymaps = false;
               dim = true;
               highlight_on_key = true;
             };
@@ -434,6 +411,7 @@ in
         {
           autoclose.enable = true;
           colorful-menu.enable = true;
+          flash.enable = true;
           fugitive.enable = true;
           glance.enable = true;
           lspkind.enable = true;
@@ -936,10 +914,6 @@ in
                     corner_bottom = "╰";
                   };
                 };
-
-                terminal = {
-
-                };
               };
             };
           };
@@ -1067,7 +1041,6 @@ in
         ++ [ localPkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
           align-nvim
-          clever-f-vim
           vim-expand-region
           vim-textobj-comment
           vim-textobj-entire
