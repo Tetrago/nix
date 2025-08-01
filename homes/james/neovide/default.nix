@@ -140,38 +140,12 @@ in
                         lua = "vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1";
                       }
                       {
-                        key = "<C-+>";
-                        command = "NoNeckPainWidthUp";
-                      }
-                      {
-                        key = "<C-_>";
-                        command = "NoNeckPainWidthDown";
-                      }
-                      {
                         key = "<C-w>m";
                         command = "WinShift";
                       }
                       {
                         key = "<C-w>x";
                         command = "WinShift swap";
-                      }
-                      {
-                        key = "<C-w>=";
-                        lua = ''
-                          local was_enabled = _G.NoNeckPain ~= nil and _G.NoNeckPain.state ~= nil and _G.NoNeckPain.state.enabled
-
-                          if was_enabled then
-                            vim.cmd("NoNeckPain")
-                          end
-
-                          vim.cmd("wincmd =")
-
-                          if was_enabled then
-                            vim.defer_fn(function()
-                              vim.cmd("NoNeckPain")
-                            end, 10)
-                          end
-                        '';
                       }
                     ];
 
@@ -209,20 +183,6 @@ in
                         '';
                       };
 
-                      no-neck-pain = {
-                        package = pkgs.vimPlugins.no-neck-pain-nvim;
-                        settings = {
-                          autocmds = {
-                            enableOnTabEnter = true;
-                            enableOnVimEnter = true;
-                          };
-
-                          fallbackOnBufferDelete = false;
-                          integrations.dashboard.enabled = true;
-                          # TODO: Re-enable: buffers.wo.winfixwidth = true;
-                        };
-                      };
-
                       winshift = {
                         package = pkgs.vimPlugins.winshift-nvim;
                         settings.window_picker.__raw = ''
@@ -232,7 +192,7 @@ in
                               filter_rules = {
                                 cur_win = true,
                                 floats = true,
-                                filetype = { "no-neck-pain" },
+                                filetype = { },
                                 buftype = {},
                                 bufname = {},
                               },
@@ -242,34 +202,6 @@ in
                         '';
                       };
                     };
-
-                    sessionHooks = {
-                      preSave = ''
-                        function()
-                          require("no-neck-pain").disable()
-                        end
-                      '';
-                      postRestore = ''
-                        function()
-                          require("no-neck-pain").enable()
-                        end
-                      '';
-                    };
-
-                    treats.bufferSkipPredicates = [
-                      ''
-                        function(win_id)
-                          if _G.NoNeckPain == nil or _G.NoNeckPain.state == nil then
-                            return false
-                          end
-
-                          local left = _G.NoNeckPain.state:get_side_id("left")
-                          local right = _G.NoNeckPain.state:get_side_id("right")
-
-                          return win_id == left or win_id == right
-                        end
-                      ''
-                    ];
                   };
                 };
             }
