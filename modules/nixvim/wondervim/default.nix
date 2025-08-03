@@ -411,7 +411,6 @@ in
         {
           autoclose.enable = true;
           colorful-menu.enable = true;
-          flash.enable = true;
           fugitive.enable = true;
           glance.enable = true;
           lspkind.enable = true;
@@ -453,7 +452,10 @@ in
 
           arrow = {
             enable = true;
-            settings.show_icons = true;
+            settings = {
+              leader_key = "m";
+              show_icons = true;
+            };
           };
 
           auto-session = {
@@ -644,6 +646,11 @@ in
                 lsp_format = "fallback";
               };
             };
+          };
+
+          flash = {
+            enable = true;
+            settings.modes.char.enabled = false;
           };
 
           gitsigns = {
