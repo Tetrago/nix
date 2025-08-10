@@ -1052,6 +1052,7 @@ in
           vim-textobj-comment
           vim-textobj-entire
           vim-indent-object
+          vscode-nvim
         ]);
 
       dependencies = {

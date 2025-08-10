@@ -38,6 +38,7 @@ in
           p7zip
           jq
           file
+          television
         ];
       };
 
