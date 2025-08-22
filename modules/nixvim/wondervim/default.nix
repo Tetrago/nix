@@ -404,7 +404,6 @@ in
           flash.enable = true;
           fugitive.enable = true;
           glance.enable = true;
-          lspkind.enable = true;
           neoscroll.enable = true;
           nvim-bqf.enable = true;
           nvim-surround.enable = true;
@@ -591,15 +590,17 @@ in
 
             settings = {
               formatters_by_ft = {
+                "_" = [ "trim_whitespace" ];
                 bash = [ "shfmt" ];
                 cmake = [ "gersemi" ];
                 cpp = [ "clang-format" ];
                 css = [ "prettierd" ];
                 elixir = [ "mix" ];
+                gleam = [ "gleam" ];
+                html = [ "prettierd" ];
                 javascript = [ "prettierd" ];
                 javascriptreact = [ "prettierd" ];
                 json = [ "prettierd" ];
-                html = [ "prettierd" ];
                 nix = [ "nixfmt" ];
                 python = [ "yapf" ];
                 rust = [ "rustfmt" ];
@@ -611,21 +612,21 @@ in
                 typescriptreact = [ "prettierd" ];
                 vhdl = [ "vsg" ];
                 yaml = [ "prettierd" ];
-                "_" = [ "trim_whitespace" ];
               };
 
               formatters = with pkgs; {
-                shfmt.command = getExe shfmt;
                 "clang-format".command = "${clang-tools}/bin/clang-format";
                 gersemi.command = getExe gersemi;
+                gleam.command = getExe gleam;
                 mix.command = "${elixir}/bin/mix";
                 nixfmt.command = getExe nixfmt-rfc-style;
                 prettierd.command = getExe prettierd;
                 rustfmt.command = getExe (rustfmt.override { asNightly = true; });
+                shfmt.command = getExe shfmt;
                 sqlfluff.command = getExe sqlfluff;
-                yapf.command = getExe yapf;
                 verible.command = "${verible}/bin/verible-verilog-format";
                 vsg.command = getExe vsg;
+                yapf.command = getExe yapf;
               };
 
               format_on_save = {
@@ -655,6 +656,7 @@ in
               cmake.enable = true;
               docker_compose_language_service.enable = true;
               dockerls.enable = true;
+              gleam.enable = true;
               gopls.enable = true;
               html.enable = true;
               java_language_server.enable = true;
@@ -682,6 +684,11 @@ in
           lsp-status = {
             enable = true;
             settings.status_symbol = " ";
+          };
+
+          lspkind = {
+            enable = true;
+            cmp.enable = false;
           };
 
           lualine = {
@@ -955,30 +962,31 @@ in
             enable = true;
             settings = {
               ensure_installed = [
-                "nix"
                 "bash"
-                "lua"
-                "python"
-                "json"
-                "javascript"
                 "c"
-                "cpp"
+                "c_sharp"
                 "cmake"
-                "rust"
+                "cpp"
+                "dockerfile"
+                "elixir"
+                "gleam"
+                "haskell"
                 "java"
+                "javascript"
+                "json"
+                "lua"
                 "make"
                 "markdown"
                 "markdown_inline"
                 "nix"
-                "haskell"
-                "c_sharp"
+                "nix"
+                "python"
                 "regex"
-                "toml"
-                "dockerfile"
                 "rust"
+                "rust"
+                "toml"
                 "typescript"
                 "zig"
-                "elixir"
               ];
             };
           };
@@ -1038,6 +1046,7 @@ in
 
       dependencies = {
         fzf.enable = true;
+        gcc.enable = true;
         lazygit.enable = true;
         ripgrep.enable = true;
       };
