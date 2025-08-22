@@ -18,8 +18,6 @@ Rename symbol                | grn
 Open references in Telescope | <Tab>
 
 ## movement
-Leap forward   | gs
-Leap backward  | gS
 Arrow          | ;
 Last selection | gv
 Move left      | <S-h>

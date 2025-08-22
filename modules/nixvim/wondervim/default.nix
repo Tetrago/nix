@@ -197,9 +197,6 @@ in
                 "<C-x>" = "tabclose";
 
                 "gra".lua = "require('actions-preview').code_actions()";
-
-                "gs".plug = "leap-forward";
-                "gS".plug = "leap-backward";
                 "gz".lua = "require('flash').treesitter()";
               }
               // optionalAttrs cfg.enableDebugging {
@@ -309,14 +306,6 @@ in
             settings.change_background = true;
           };
 
-          eyeliner = {
-            package = pkgs.vimPlugins.eyeliner-nvim;
-            settings = {
-              dim = true;
-              highlight_on_key = true;
-            };
-          };
-
           gomove = {
             package = pkgs.vimPlugins.nvim-gomove;
             settings = {
@@ -410,7 +399,9 @@ in
       plugins = mkMerge [
         {
           autoclose.enable = true;
+          crates.enable = true;
           colorful-menu.enable = true;
+          flash.enable = true;
           fugitive.enable = true;
           glance.enable = true;
           lspkind.enable = true;
@@ -648,22 +639,12 @@ in
             };
           };
 
-          flash = {
-            enable = true;
-            settings.modes.char.enabled = false;
-          };
-
           gitsigns = {
             enable = true;
             settings = {
               signs.changedelete.text = "╏";
               signs_staged.changedelete.text = "╏";
             };
-          };
-
-          leap = {
-            enable = true;
-            addDefaultMappings = false;
           };
 
           lsp = {

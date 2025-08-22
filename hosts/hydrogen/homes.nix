@@ -48,31 +48,19 @@
 
         autoConnect = true;
         monitor = {
-          "DP-4" = {
-            size = {
-              width = 2560;
-              height = 1440;
-            };
-            refreshRate = 144;
-            position = {
-              x = -2560;
-              y = 200;
-            };
-            workspace = 2;
-          };
           "HDMI-A-1" = {
             size = {
               width = 2560;
               height = 1440;
             };
+            refreshRate = 144;
             position = {
               x = 0;
               y = 0;
             };
-            refreshRate = 144;
             workspace = 1;
           };
-          "DP-3" = {
+          "HDMI-A-3" = {
             size = {
               width = 2560;
               height = 1440;
@@ -82,8 +70,44 @@
               x = 2560;
               y = 0;
             };
-            workspace = 3;
+            workspace = 2;
           };
+          # "DP-4" = {
+          #   size = {
+          #     width = 2560;
+          #     height = 1440;
+          #   };
+          #   refreshRate = 144;
+          #   position = {
+          #     x = -2560;
+          #     y = 200;
+          #   };
+          #   workspace = 2;
+          # };
+          # "HDMI-A-1" = {
+          #   size = {
+          #     width = 2560;
+          #     height = 1440;
+          #   };
+          #   position = {
+          #     x = 0;
+          #     y = 0;
+          #   };
+          #   refreshRate = 144;
+          #   workspace = 1;
+          # };
+          # "DP-3" = {
+          #   size = {
+          #     width = 2560;
+          #     height = 1440;
+          #   };
+          #   refreshRate = 144;
+          #   position = {
+          #     x = 2560;
+          #     y = 0;
+          #   };
+          #   workspace = 3;
+          # };
         };
       };
 
