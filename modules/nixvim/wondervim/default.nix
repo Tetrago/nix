@@ -989,6 +989,7 @@ in
                 "typescript"
                 "zig"
               ];
+              highlight.enable = true;
             };
           };
 
