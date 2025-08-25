@@ -303,7 +303,13 @@ in
 
           darkman = mkIf cfg.enableDarkmanIntegration {
             package = localPkgs.darkman-nvim;
-            settings.change_background = true;
+            settings = {
+              change_background = true;
+              colorscheme = {
+                dark = "onedark";
+                light = "onelight";
+              };
+            };
           };
 
           gomove = {
@@ -312,11 +318,6 @@ in
               map_defaults = false;
               reindent = false;
             };
-          };
-
-          mellifluous = {
-            package = localPkgs.mellifluous-nvim;
-            luaConfig.post = "vim.cmd [[colorscheme mellifluous]]";
           };
         };
 
@@ -1037,11 +1038,11 @@ in
         ++ [ localPkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
           align-nvim
+          onedarkpro-nvim
           vim-expand-region
+          vim-indent-object
           vim-textobj-comment
           vim-textobj-entire
-          vim-indent-object
-          vscode-nvim
         ]);
 
       dependencies = {
