@@ -613,6 +613,7 @@ in
                 typescript = [ "prettierd" ];
                 typescriptreact = [ "prettierd" ];
                 vhdl = [ "vsg" ];
+                wgsl = [ "wgslfmt" ];
                 yaml = [ "prettierd" ];
               };
 
@@ -629,6 +630,10 @@ in
                 taplo.command = getExe taplo;
                 verible.command = "${verible}/bin/verible-verilog-format";
                 vsg.command = getExe vsg;
+                wgslfmt = {
+                  command = "wgslfmt";
+                  stdin = true;
+                };
                 yapf.command = getExe yapf;
               };
 
@@ -668,6 +673,7 @@ in
               nil_ls.enable = true;
               svls.enable = true;
               taplo.enable = true;
+              wgsl_analyzer.enable = true;
               vhdl_ls.enable = true;
               vtsls.enable = true;
               zls.enable = true;
@@ -989,6 +995,7 @@ in
                 "rust"
                 "toml"
                 "typescript"
+                "wgsl"
                 "zig"
               ];
               highlight.enable = true;
