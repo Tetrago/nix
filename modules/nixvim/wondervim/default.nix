@@ -609,6 +609,7 @@ in
                 sh = [ "shfmt" ];
                 sql = [ "sqlfluff" ];
                 systemverilog = [ "verible" ];
+                toml = [ "taplo" ];
                 typescript = [ "prettierd" ];
                 typescriptreact = [ "prettierd" ];
                 vhdl = [ "vsg" ];
@@ -625,6 +626,7 @@ in
                 rustfmt.command = getExe (rustfmt.override { asNightly = true; });
                 shfmt.command = getExe shfmt;
                 sqlfluff.command = getExe sqlfluff;
+                taplo.command = getExe taplo;
                 verible.command = "${verible}/bin/verible-verilog-format";
                 vsg.command = getExe vsg;
                 yapf.command = getExe yapf;

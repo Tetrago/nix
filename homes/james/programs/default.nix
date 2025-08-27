@@ -67,9 +67,10 @@ in
 
       home = {
         file = mkIf cfg.development.enable {
-          ".gdbinit".source = gdbinit;
           ".clang-format".source = ./clang-format;
+          ".gdbinit".source = gdbinit;
           ".rustfmt".source = ./rustfmt.toml;
+          ".taplo.toml".source = ./taplo.toml;
         };
 
         packages =
