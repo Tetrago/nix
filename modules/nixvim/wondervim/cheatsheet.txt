@@ -38,6 +38,7 @@ Indentation only            | ii
 Indentation and surrounding | aI
 Comment text                | ic
 Comment text and delimiters | ac
+Flash jump                  | R
 Select treesitter range     | gz
 
 ## text-actions

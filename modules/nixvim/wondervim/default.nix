@@ -198,6 +198,7 @@ in
 
                 "gra".lua = "require('actions-preview').code_actions()";
                 "gz".lua = "require('flash').treesitter()";
+                "R".lua = "require('flash').jump()";
               }
               // optionalAttrs cfg.enableDebugging {
                 "<M-f>".lua = "require('dapui').toggle()";
