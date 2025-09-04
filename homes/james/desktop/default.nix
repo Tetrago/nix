@@ -98,11 +98,6 @@
       }/themes";
     };
 
-    discord = {
-      enable = true;
-      enableNixlandIntegration = true;
-    };
-
     firefox = {
       enable = true;
       theme.enable = true;
