@@ -150,6 +150,10 @@ in
         mapAttrsToList (n: v: { "cheatsheets/cheatsheet-${n}.txt".source = v; }) cfg.cheatsheets
       );
 
+      extraConfigLuaPost = mkIf (!cfg.enableDarkmanIntegration) ''
+        colorscheme oxocarbon
+      '';
+
       wondervim = {
         cheatsheets.wondervim = ./cheatsheet.txt;
 
@@ -307,7 +311,7 @@ in
             settings = {
               change_background = true;
               colorscheme = {
-                dark = "onedark";
+                dark = "oxocarbon";
                 light = "onelight";
               };
             };
@@ -1050,6 +1054,7 @@ in
         ++ (with pkgs.vimPlugins; [
           align-nvim
           onedarkpro-nvim
+          oxocarbon-nvim
           vim-expand-region
           vim-indent-object
           vim-textobj-comment
@@ -1065,6 +1070,7 @@ in
 
       extraPackages = with pkgs; [
         fd
+        texliveFull
       ];
     };
 }

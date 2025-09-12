@@ -116,8 +116,8 @@
         extraVolumeKeys = true;
 
         idle = {
-          screen = null;
-          sleep = null;
+          screen = 15;
+          sleep = 60;
         };
 
         wallpaper.transition = {
