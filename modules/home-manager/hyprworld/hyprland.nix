@@ -61,7 +61,7 @@ in
           [
             (mkExec "Return" "ghostty")
             (mkExec "E" "nautilus --new-window")
-            (mkExec "L" "hyprworld-lock")
+            (mkExec "L" "pidof hyprlock || hyprlock")
             (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
             (mkExec "D" "${getExe pkgs.nwg-drawer} -ovl -term ghostty -fm nautilus")
             (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))

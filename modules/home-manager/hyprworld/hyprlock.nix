@@ -29,22 +29,6 @@ in
 
       home.packages = with pkgs; [
         adwaita-fonts
-        (pkgs.writeShellScriptBin "hyprworld-lock" ''
-          if ! pidof hyprlock > /dev/null; then
-            hyprlock &
-            PID=$!
-
-            sleep 1
-
-            if kill -0 "$PID" 2>/dev/null; then
-              dbus-send --session --dest=org.freedesktop.secrets \
-                --type=method_call  \
-                /org/freedesktop/secrets \
-                org.freedesktop.Secret.Service.Lock \
-                array:objpath:/org/freedesktop/secrets/collection/login
-            fi
-          fi
-        '')
       ];
 
       programs.hyprlock = {
