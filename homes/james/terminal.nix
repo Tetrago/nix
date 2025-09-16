@@ -26,7 +26,7 @@ in
         package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
         settings = {
-          theme = "dark:catppuccin-frappe,light:catppuccin-latte";
+          theme = "dark:Chalk,light:farmhouse-light";
 
           font-family = "Monaspace Neon";
           font-family-italic = "Monaspace Radon";

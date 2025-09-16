@@ -311,8 +311,8 @@ in
             settings = {
               change_background = true;
               colorscheme = {
-                dark = "oxocarbon";
-                light = "onelight";
+                dark = "kanagawa-dragon";
+                light = "tokyonight-day";
               };
             };
           };
@@ -324,6 +324,9 @@ in
               reindent = false;
             };
           };
+
+          kanagawa.package = pkgs.vimPlugins.kanagawa-nvim;
+          tokyonight.package = pkgs.vimPlugins.tokyonight-nvim;
         };
 
         sessionHooks = {
@@ -1053,8 +1056,6 @@ in
         ++ [ localPkgs.neotree-file-nesting-config ]
         ++ (with pkgs.vimPlugins; [
           align-nvim
-          onedarkpro-nvim
-          oxocarbon-nvim
           vim-expand-region
           vim-indent-object
           vim-textobj-comment
