@@ -62,7 +62,7 @@ in
             }
             ++ mkListener cfg.idle.screen {
               on-timeout = "hyprctl dispatch dpms off";
-              on-resume = "hyprctl dispatch dpms on";
+              on-resume = "hyprctl dispatch dpms on && systemctl --user restart swww.service ags.service";
             }
             ++ mkListener cfg.idle.sleep {
               on-timeout = "systemctl suspend";
