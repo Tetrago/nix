@@ -64,7 +64,6 @@ in
             (mkExec "L" "pidof hyprlock || hyprlock")
             (mkExec "Space" "rofi -show drun -show-icons -sorting-method fzf -scroll-method 1")
             (mkExec "D" "${getExe pkgs.nwg-drawer} -ovl -term ghostty -fm nautilus")
-            (mkExec "O" (getExe inputs.hyprmag.packages.${stdenv.hostPlatform.system}.default))
             {
               shift = true;
               trigger = "C";
@@ -161,15 +160,6 @@ in
               shift = true;
               trigger = "Space";
               action.fullscreen = "1";
-            }
-            {
-              trigger = "Tab";
-              action = "overview:toggle, all";
-            }
-            {
-              shift = true;
-              trigger = "I";
-              action = "invertactivewindow";
             }
             {
               trigger = "C";
@@ -422,10 +412,9 @@ in
             layout = "master";
           };
 
-          gestures = {
-            workspace_swipe = true;
-            workspace_swipe_create_new = false;
-          };
+          gesture = [
+            "3, horizontal, workspace"
+          ];
 
           decoration = {
             rounding = 5;
@@ -476,8 +465,6 @@ in
           in
           with inputs;
           [
-            hyprspace.packages.${system}.Hyprspace
-            hypr-darkwindow.packages.${system}.Hypr-DarkWindow
             hypr-dynamic-cursors.packages.${system}.hypr-dynamic-cursors
           ];
       };

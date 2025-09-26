@@ -11,8 +11,8 @@ let
   package =
     with pkgs;
     symlinkJoin {
-      name = "rofi-wayland";
-      paths = [ rofi-wayland ];
+      name = "rofi";
+      paths = [ rofi ];
       nativeBuildInputs = [ makeWrapper ];
 
       postBuild = ''

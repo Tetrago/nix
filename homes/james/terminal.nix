@@ -23,10 +23,10 @@ in
         enable = true;
         enableBashIntegration = true;
         clearDefaultKeybinds = true;
-        package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        package = pkgs.ghostty;
 
         settings = {
-          theme = "dark:Chalk,light:farmhouse-light";
+          theme = "dark:Chalk,light:Farmhouse Light";
 
           font-family = "Monaspace Neon";
           font-family-italic = "Monaspace Radon";

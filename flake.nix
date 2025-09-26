@@ -21,24 +21,9 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
 
-    hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    hypr-darkwindow = {
-      url = "github:micha4w/Hypr-DarkWindow";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     hypr-dynamic-cursors = {
       url = "github:VirtCode/hypr-dynamic-cursors";
       inputs.hyprland.follows = "hyprland";
-    };
-
-    hyprmag = {
-      url = "github:SIMULATAN/hyprmag";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     ags = {
@@ -46,7 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ghostty.url = "github:ghostty-org/ghostty";
     nixcord.url = "github:kaylorben/nixcord";
 
     pwndbg = {
@@ -60,7 +44,7 @@
     };
 
     solaar = {
-      url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
+      url = "github:Svenum/Solaar-Flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

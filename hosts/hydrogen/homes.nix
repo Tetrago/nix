@@ -20,7 +20,7 @@
         in
         [
           openttd.openttd-jgrpp
-          pkgs.freecad-wayland
+          pkgs.freecad
           pkgs.orca-slicer
         ];
 

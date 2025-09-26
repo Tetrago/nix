@@ -159,8 +159,11 @@ in
 
         ssh = mkIf cfg.ssh.enable {
           enable = true;
-          addKeysToAgent = "yes";
-          matchBlocks."*".setEnv.TERM = "xterm-256color";
+          enableDefaultConfig = false;
+          matchBlocks."*" = {
+            addKeysToAgent = "yes";
+            setEnv.TERM = "xterm-256color";
+          };
         };
       };
     };
