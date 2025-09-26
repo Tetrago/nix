@@ -54,14 +54,14 @@ in
       };
 
       home.packages = with pkgs; [
-        apostrophe
         decibels
         exhibit
         file-roller
         g4music
-        loupe
         gnome-font-viewer
+        loupe
         papers
+        typora
         (gnome-text-editor.overrideAttrs (
           final: prev: {
             postInstall =
@@ -133,7 +133,7 @@ in
           // mkDefault papers
           // mkDefault gnome-text-editor
           // mkDefault firefox
-          // mkDefault apostrophe
+          // mkDefault typora
           // additional;
       };
 
