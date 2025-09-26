@@ -20,6 +20,8 @@
         in
         [
           openttd.openttd-jgrpp
+          pkgs.freecad-wayland
+          pkgs.orca-slicer
         ];
 
       xdg.configFile."solaar/rules.yaml".text = ''
