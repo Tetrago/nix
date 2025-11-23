@@ -49,6 +49,7 @@ in
     direnv.enable = mkEnableOption "direnv.";
     games.enable = mkEnableOption "games.";
     media.enable = mkEnableOption "media programs.";
+    office.enable = mkEnableOption "LibreOffice.";
     renderdoc.enable = mkEnableOption "RenderDoc X11 launcher.";
     ssh.enable = mkEnableOption "ssh.";
     system.enable = mkEnableOption "system programs.";
@@ -111,6 +112,11 @@ in
               pinta # Minimal image editor
               video-downloader
               xournalpp # PDF editor
+            ])
+            (mkIf cfg.office.enable [
+              libreoffice-fresh
+              hunspell
+              hunspellDicts.en_US
             ])
             (mkIf cfg.renderdoc.enable [
               renderdoc-cl

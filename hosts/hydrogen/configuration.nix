@@ -32,6 +32,7 @@
   };
 
   services = {
+    ollama.enable = true;
     solaar.enable = true;
     upower.enable = true;
   };

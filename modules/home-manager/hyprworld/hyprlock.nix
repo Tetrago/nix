@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -33,6 +34,7 @@ in
 
       programs.hyprlock = {
         enable = true;
+        package = inputs.hyprlock.packages.${pkgs.stdenv.hostPlatform.system}.hyprlock;
         settings = {
           background = [
             {
@@ -83,7 +85,6 @@ in
               check_color = "rgb({{ .colors.base0B }})";
               fail_color = "rgb({{ .colors.base08 }})";
               fail_text = "$FAIL <b>($ATTEMPTS)</b>";
-              fail_transition = 300;
               capslock_color = -1;
               numlock_color = -1;
               bothlock_color = -1;

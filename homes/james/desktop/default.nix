@@ -48,7 +48,6 @@
     username = "james";
 
     packages = with pkgs; [
-      bottles
       qemu
       turtle
     ];
@@ -131,6 +130,7 @@
       development.enable = true;
       games.enable = true;
       media.enable = true;
+      office.enable = true;
       renderdoc.enable = true;
       ssh.enable = true;
       system.enable = true;

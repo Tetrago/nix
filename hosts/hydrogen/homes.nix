@@ -2,27 +2,47 @@
   james =
     {
       config,
+      lib,
       outputs,
       pkgs,
       ...
     }:
+    let
+      freecad = (
+        pkgs.freecad.overrideAttrs (
+          final: prev: {
+            version = "2024-10-01";
+
+            src = pkgs.fetchFromGitHub {
+              owner = "FreeCAD";
+              repo = "FreeCAD";
+              tag = "weekly-2025.10.01";
+              hash = "sha256-6vo7P/bJSB7B7lNyLxqbQG97WnvY7AUu5e3yOo+/lbs=";
+              fetchSubmodules = true;
+            };
+
+            patches = lib.take 2 prev.patches;
+            postPatch = "";
+          }
+        )
+      );
+
+      openttd =
+        (import (builtins.fetchTarball {
+          url = "https://github.com/NixOS/nixpkgs/archive/18e3cb306213bf2d58e28515624d2f5cf3740ea8.tar.gz";
+          sha256 = "sha256:18z9f1r05dfr2i4lvm58dnhfqqm27zhrbh0imjcsj92xkvc9hrjh";
+        }) { inherit (pkgs) system; }).openttd-jgrpp;
+    in
     {
       imports = [ (import ../../homes/james/desktop) ];
 
-      home.packages =
-        let
-          openttd = (
-            import (builtins.fetchTarball {
-              url = "https://github.com/NixOS/nixpkgs/archive/18e3cb306213bf2d58e28515624d2f5cf3740ea8.tar.gz";
-              sha256 = "sha256:18z9f1r05dfr2i4lvm58dnhfqqm27zhrbh0imjcsj92xkvc9hrjh";
-            }) { inherit (pkgs) system; }
-          );
-        in
-        [
-          openttd.openttd-jgrpp
-          pkgs.freecad
-          pkgs.orca-slicer
-        ];
+      home.packages = [
+        freecad
+        openttd
+        pkgs.orca-slicer
+        pkgs.onshape
+        pkgs.authenticator
+      ];
 
       xdg.configFile."solaar/rules.yaml".text = ''
         %YAML 1.3
