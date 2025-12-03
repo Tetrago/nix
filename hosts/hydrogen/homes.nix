@@ -8,25 +8,6 @@
       ...
     }:
     let
-      freecad = (
-        pkgs.freecad.overrideAttrs (
-          final: prev: {
-            version = "2024-10-01";
-
-            src = pkgs.fetchFromGitHub {
-              owner = "FreeCAD";
-              repo = "FreeCAD";
-              tag = "weekly-2025.10.01";
-              hash = "sha256-6vo7P/bJSB7B7lNyLxqbQG97WnvY7AUu5e3yOo+/lbs=";
-              fetchSubmodules = true;
-            };
-
-            patches = lib.take 2 prev.patches;
-            postPatch = "";
-          }
-        )
-      );
-
       openttd =
         (import (builtins.fetchTarball {
           url = "https://github.com/NixOS/nixpkgs/archive/18e3cb306213bf2d58e28515624d2f5cf3740ea8.tar.gz";
@@ -37,7 +18,6 @@
       imports = [ (import ../../homes/james/desktop) ];
 
       home.packages = [
-        freecad
         openttd
         pkgs.orca-slicer
         pkgs.onshape
