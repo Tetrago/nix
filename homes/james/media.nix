@@ -57,19 +57,17 @@ in
         decibels
         exhibit
         file-roller
-        g4music
+        gapless
         gnome-font-viewer
         loupe
         papers
         typora
         (gnome-text-editor.overrideAttrs (
           final: prev: {
-            postInstall =
-              prev.postInstall or ""
-              + ''
-                substituteInPlace $out/share/applications/org.gnome.TextEditor.desktop \
-                  --replace-fail "gnome-text-editor %U" "gnome-text-editor --new-window %U"
-              '';
+            postInstall = prev.postInstall or "" + ''
+              substituteInPlace $out/share/applications/org.gnome.TextEditor.desktop \
+                --replace-fail "gnome-text-editor %U" "gnome-text-editor --new-window %U"
+            '';
           }
         ))
       ];

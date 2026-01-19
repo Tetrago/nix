@@ -151,7 +151,7 @@ in
       );
 
       extraConfigLuaPost = mkIf (!cfg.enableDarkmanIntegration) ''
-        colorscheme oxocarbon
+        vim.cmd [[colorscheme kanagawa-dragon]]
       '';
 
       wondervim = {
@@ -159,60 +159,59 @@ in
 
         keymaps =
           let
-            binds =
-              {
-                "<M-g>".lua = "Snacks.lazygit.open()";
-                "<M-o>" = "OverseerToggle";
-                "<M-t>" = "TodoTelescope";
+            binds = {
+              "<M-g>".lua = "Snacks.lazygit.open()";
+              "<M-o>" = "OverseerToggle";
+              "<M-t>" = "TodoTelescope";
 
-                "<C-s>" = "TSJSplit";
-                "<C-j>" = "TSJJoin";
+              "<C-s>" = "TSJSplit";
+              "<C-j>" = "TSJJoin";
 
-                "gD" = "Glance definitions";
-                "gR" = "Glance references";
-                "gY" = "Glance type_definitions";
-                "gM" = "Glance implementations";
-                "gd".lua = "vim.lsp.buf.definition()";
+              "gD" = "Glance definitions";
+              "gR" = "Glance references";
+              "gY" = "Glance type_definitions";
+              "gM" = "Glance implementations";
+              "gd".lua = "vim.lsp.buf.definition()";
 
-                "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
-                "gxe".lua =
-                  "vim.diagnostic.setqflist({ scope = 'buffer', severity = vim.diagnostic.severity.ERROR })";
-                "gXx".lua = "vim.diagnostic.setqflist()";
-                "gXe".lua = "vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })";
+              "gxx".lua = "vim.diagnostic.setqflist({ scope = 'buffer' })";
+              "gxe".lua =
+                "vim.diagnostic.setqflist({ scope = 'buffer', severity = vim.diagnostic.severity.ERROR })";
+              "gXx".lua = "vim.diagnostic.setqflist()";
+              "gXe".lua = "vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })";
 
-                "?" = "Cheatsheet";
+              "?" = "Cheatsheet";
 
-                "<M-d>" = "cnext";
-                "<M-a>" = "cprev";
-                "<M-q>" = "ToggleQuickfix";
+              "<M-d>" = "cnext";
+              "<M-a>" = "cprev";
+              "<M-q>" = "ToggleQuickfix";
 
-                "<C-f>" = "Telescope current_buffer_fuzzy_find";
-                "<C-k>" = "Telescope live_grep";
-                "<C-n>" = "Telescope notify";
-                "<C-q>" = "Telescope quickfix";
+              "<C-f>" = "Telescope current_buffer_fuzzy_find";
+              "<C-k>" = "Telescope live_grep";
+              "<C-n>" = "Telescope notify";
+              "<C-q>" = "Telescope quickfix";
 
-                "<C-e>" = "Neotree position=float";
+              "<C-e>" = "Neotree position=float";
 
-                "<C-S-p>" = "SessionSearch";
+              "<C-S-p>" = "SessionSearch";
 
-                "-" = "Oil";
+              "-" = "Oil";
 
-                "<C-g>" = "tabnew";
-                "<C-x>" = "tabclose";
+              "<C-g>" = "tabnew";
+              "<C-x>" = "tabclose";
 
-                "gra".lua = "require('actions-preview').code_actions()";
-                "gz".lua = "require('flash').treesitter()";
-                "R".lua = "require('flash').jump()";
-              }
-              // optionalAttrs cfg.enableDebugging {
-                "<M-f>".lua = "require('dapui').toggle()";
+              "gra".lua = "require('actions-preview').code_actions()";
+              "gz".lua = "require('flash').treesitter()";
+              "R".lua = "require('flash').jump()";
+            }
+            // optionalAttrs cfg.enableDebugging {
+              "<M-f>".lua = "require('dapui').toggle()";
 
-                "<F5>" = "DapContinue";
-                "<F9>" = "DapToggleBreakpoint";
-                "<F10>" = "DapStepOver";
-                "<F11>" = "DapStepInto";
-                "<F12>" = "DapStepOut";
-              };
+              "<F5>" = "DapContinue";
+              "<F9>" = "DapToggleBreakpoint";
+              "<F10>" = "DapStepOver";
+              "<F11>" = "DapStepInto";
+              "<F12>" = "DapStepOut";
+            };
           in
           mapAttrsToList (
             key: v:
@@ -459,24 +458,23 @@ in
 
           auto-session = {
             enable = true;
-            settings =
-              {
-                cwd_change_handling = true;
-              }
-              // mapAttrs' (n: v: {
-                name =
-                  concatStrings (
-                    map (
-                      c:
-                      let
-                        c' = toLower c;
-                      in
-                      if c' != c then "_${c'}" else c
-                    ) (stringToCharacters n)
-                  )
-                  + "_cmds";
-                value = map (x: { __raw = x; }) v;
-              }) (filterAttrs (_: v: v != null) cfg.sessionHooks);
+            settings = {
+              cwd_change_handling = true;
+            }
+            // mapAttrs' (n: v: {
+              name =
+                concatStrings (
+                  map (
+                    c:
+                    let
+                      c' = toLower c;
+                    in
+                    if c' != c then "_${c'}" else c
+                  ) (stringToCharacters n)
+                )
+                + "_cmds";
+              value = map (x: { __raw = x; }) v;
+            }) (filterAttrs (_: v: v != null) cfg.sessionHooks);
           };
 
           blink-cmp = {
@@ -630,7 +628,7 @@ in
                 gersemi.command = getExe gersemi;
                 gleam.command = getExe gleam;
                 mix.command = "${elixir}/bin/mix";
-                nixfmt.command = getExe nixfmt-rfc-style;
+                nixfmt.command = getExe nixfmt;
                 prettierd.command = getExe prettierd;
                 rustfmt.command = getExe (rustfmt.override { asNightly = true; });
                 shfmt.command = getExe shfmt;
@@ -819,14 +817,15 @@ in
 
           neo-tree = {
             enable = true;
+            settings = {
+              hide_root_node = true;
+              retain_hidden_root_indent = true;
+              nesting_rules.__raw = "require('neotree-file-nesting-config').nesting_rules";
 
-            hideRootNode = true;
-            retainHiddenRootIndent = true;
-            nestingRules.__raw = "require('neotree-file-nesting-config').nesting_rules";
-
-            eventHandlers = {
-              file_moved = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
-              file_renamed = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
+              event_handlers = {
+                file_moved = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
+                file_renamed = "function(data) Snacks.rename.on_rename_file(data.source, data.destination) end";
+              };
             };
           };
 
@@ -1022,11 +1021,11 @@ in
           dap = {
             enable = true;
 
-            adapters.executables =
-              {
-                lldb.command = "${pkgs.lldb}/bin/lldb-dap";
-              }
-              // genAttrs
+            adapters.executables = {
+              lldb.command = "${pkgs.lldb}/bin/lldb-dap";
+            }
+            //
+              genAttrs
                 [
                   "c"
                   "cpp"

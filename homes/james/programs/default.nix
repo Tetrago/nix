@@ -147,7 +147,6 @@ in
               kooha
               meld
               mousai # Song identifier
-              mousam # Weather
               snoop # File search
               switcheroo # Image converter
               warp

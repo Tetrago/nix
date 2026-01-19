@@ -114,12 +114,11 @@ in
           "vfio_iommu_type1"
         ];
 
-        kernelParams =
-          [
-            "${toString cfg.cpu}_iommu=on"
-            "iommu=pt"
-          ]
-          ++ optional cfg.kvmfr.enable "kvmfr.static_size_mb=${concatStringsSep "," (map toString cfg.kvmfr.sizes)}";
+        kernelParams = [
+          "${toString cfg.cpu}_iommu=on"
+          "iommu=pt"
+        ]
+        ++ optional cfg.kvmfr.enable "kvmfr.static_size_mb=${concatStringsSep "," (map toString cfg.kvmfr.sizes)}";
       };
 
       services.udev.extraRules = mkIf cfg.kvmfr.enable ''SUBSYSTEM=="kvmfr", GROUP="kvm", MODE="0660"'';
@@ -132,37 +131,26 @@ in
           runAsRoot = true;
           swtpm.enable = true;
 
-          ovmf = {
-            enable = true;
-            packages = [
-              (pkgs.OVMF.override {
-                secureBoot = true;
-                tpmSupport = true;
-              }).fd
-            ];
-          };
-
           verbatimConfig = mkIf cfg.devices.enable (
             let
               inherit (lib.lists) imap0;
 
-              deviceList =
-                [
-                  "null"
-                  "full"
-                  "zero"
-                  "random"
-                  "urandom"
-                  "ptmx"
-                  "kvm"
-                  "kqemu"
-                  "rtc"
-                  "hpet"
-                  "vfio"
-                ]
-                ++ optionals (cfg.kvmfr.enable && cfg.devices.kvmfr) (
-                  imap0 (i: _: "kvmfr${toString i}") cfg.kvmfr.sizes
-                );
+              deviceList = [
+                "null"
+                "full"
+                "zero"
+                "random"
+                "urandom"
+                "ptmx"
+                "kvm"
+                "kqemu"
+                "rtc"
+                "hpet"
+                "vfio"
+              ]
+              ++ optionals (cfg.kvmfr.enable && cfg.devices.kvmfr) (
+                imap0 (i: _: "kvmfr${toString i}") cfg.kvmfr.sizes
+              );
             in
             ''
               cgroup_device_acl = [${concatStringsSep "," (map (v: ''"/dev/${v}"'') deviceList)}]

@@ -80,7 +80,7 @@ let
                 with pkgs;
                 [
                   nil
-                  nixfmt-rfc-style
+                  nixfmt
                 ]
               )
             }

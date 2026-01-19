@@ -39,7 +39,7 @@ let
             with-editor
             pkgs.clang-tools
             pkgs.nil
-            pkgs.nixfmt-rfc-style
+            pkgs.nixfmt
             pkgs.ripgrep
             pkgs.rustfmt
             pkgs.rust-analyzer
