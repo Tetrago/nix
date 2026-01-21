@@ -11,7 +11,7 @@
       inherit (lib) mkForce;
     in
     {
-      imports = [ (import ../../homes/james/desktop) ];
+      imports = [ ../../homes/james/desktop ];
 
       home.packages = with pkgs; [
         alpaca

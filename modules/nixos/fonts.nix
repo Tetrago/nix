@@ -20,7 +20,7 @@ in
     mkIf cfg.enable {
       fonts.packages = with pkgs; [
         noto-fonts
-        vistafonts
+        vista-fonts
       ];
     };
 }

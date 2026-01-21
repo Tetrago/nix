@@ -134,13 +134,6 @@ in
               collision # Hash calculator
               curtail # Image compressor
               ghex
-              gnome-calculator
-              gnome-calendar
-              gnome-characters
-              gnome-clocks
-              gnome-connections
-              gnome-frog # OCR
-              gnome-graphs
               gnome-sound-recorder
               impression # Removable media writer
               key-rack # Secrets tracker

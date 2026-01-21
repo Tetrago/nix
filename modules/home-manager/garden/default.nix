@@ -158,6 +158,8 @@ in
       };
     in
     mkIf cfg.enable {
+      home.packages = with pkgs; [ rose-pine-cursor ];
+
       garden.extensions =
         with pkgs.gnomeExtensions;
         [
@@ -201,6 +203,7 @@ in
             clock-format = "12h";
             clock-show-date = false;
             enable-hot-corners = false;
+            cursor-theme = "BreezeX-RosePine-Linux";
           };
 
           "org/gnome/desktop/screen-time-limits" = {

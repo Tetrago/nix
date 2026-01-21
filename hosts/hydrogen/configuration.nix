@@ -1,39 +1,18 @@
 {
   inputs,
-  outputs,
   pkgs,
   ...
 }:
 
 {
   imports = [
-    inputs.home-manager.nixosModules.default
-    inputs.nix-index-database.nixosModules.nix-index
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.solaar.nixosModules.default
 
-    outputs.nixosModules.default
-    outputs.nixosModules.home-manager
-
     ./hardware-configuration.nix
+    ../desktop
   ];
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
-  programs = {
-    command-not-found.enable = false;
-    nix-index-database.comma.enable = true;
-
-    nh = {
-      enable = true;
-      flake = "/etc/nixos";
-    };
-  };
 
   networking = {
     networkmanager.enable = true;
@@ -63,14 +42,8 @@
   };
 
   services = {
-    desktopManager.gnome.enable = true;
-    displayManager.gdm.enable = true;
-    fwupd.enable = true;
-    gnome.core-developer-tools.enable = false;
     ollama.enable = true;
     solaar.enable = true;
-    sysprof.enable = true;
-    upower.enable = true;
   };
 
   systemd.network.wait-online.enable = false;
@@ -121,15 +94,10 @@
     };
 
   tetrago = {
-    printing.enable = true;
-
-    audio = {
-      enable = true;
-      samplingRate = 96000;
-    };
+    audio.samplingRate = 96000;
+    plymouth.theme = "red_loader";
 
     boot = {
-      enable = true;
       loader = "grub";
       skipBootMenu = false;
     };
@@ -138,11 +106,6 @@
       enable = true;
       intel.enable = true;
       nvidia.blacklist = true;
-    };
-
-    plymouth = {
-      enable = true;
-      theme = "red_loader";
     };
 
     users.james = {
@@ -182,40 +145,6 @@
         ];
       };
     };
-  };
-
-  environment = {
-    etc.hosts.mode = "0644";
-
-    gnome.excludePackages = with pkgs; [
-      baobab
-      cheese
-      epiphany
-      geary
-      gnome-contacts
-      gnome-maps
-      gnome-music
-      gnome-photos
-      gnome-tour
-      gnome-user-docs
-      seahorse
-      simple-scan
-      yelp
-    ];
-
-    systemPackages = with pkgs.gnomeExtensions; [
-      auto-accent-colour
-      bluetooth-battery-meter
-      blur-my-shell
-      caffeine
-      clipboard-indicator
-      fuzzy-app-search
-      just-perfection
-      launch-new-instance
-      night-theme-switcher
-      paperwm
-      search-light
-    ];
   };
 
   home-manager.users = import ./homes.nix;

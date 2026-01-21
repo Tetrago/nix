@@ -1,5 +1,4 @@
 {
-  config,
   outputs,
   pkgs,
   ...
@@ -9,39 +8,15 @@
   imports = [
     outputs.homeManagerModules.default
     outputs.homeManagerModules.james
-    outputs.homeManagerModules.hyprworld
-
-    ./rules.nix
+    outputs.homeManagerModules.garden
   ];
 
-  hyprworld = {
+  garden = {
     enable = true;
-    wallpaper = {
+    background = {
       dark = "${./dark.png}";
       light = "${./light.png}";
     };
-  };
-
-  tetrago.nautilus.enable = true;
-
-  polymorph = {
-    darkman.enable = true;
-
-    morph =
-      let
-        hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-      in
-      {
-        dark = {
-          follows = "common";
-          extraScripts = "${hyprctl} setcursor phinger-cursors-dark 24";
-        };
-
-        light = {
-          follows = "common";
-          extraScripts = "${hyprctl} setcursor phinger-cursors-light 24";
-        };
-      };
   };
 
   home = {
@@ -79,11 +54,8 @@
   james = {
     bash.enable = true;
     directories.enable = true;
-    fonts.enable = true;
     neovide.enable = true;
-    speech.enable = true;
     terminal.enable = true;
-    theme.enable = true;
 
     binja = {
       enable = true;
@@ -109,13 +81,11 @@
 
     media = {
       enable = true;
-      enableNixlandIntegration = true;
     };
 
     neovim = {
       enable = true;
       transparent = true;
-      enableDarkmanIntegration = true;
     };
 
     podman = {
