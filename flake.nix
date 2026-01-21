@@ -106,6 +106,7 @@
       homeManagerModules = eachDir ./homes (home: import ./homes/${home}) // {
         default = import ./modules/home-manager;
         flume = import ./modules/home-manager/flume;
+        garden = import ./modules/home-manager/garden;
         hyprworld = import ./modules/home-manager/hyprworld;
         nixland = import ./modules/home-manager/nixland;
         nixvim = import ./homes/james/nixvim.nix;
@@ -114,6 +115,7 @@
       nixosModules = {
         default = import ./modules/nixos;
         flume = import ./modules/nixos/flume;
+        garden = import ./modules/nixos/garden;
         hyprworld = import ./modules/nixos/hyprworld;
         home-manager = import ./modules/nixos/home-manager;
       };

@@ -7,15 +7,15 @@
   imports = [
     outputs.homeManagerModules.default
     outputs.homeManagerModules.james
-    outputs.homeManagerModules.flume
+    outputs.homeManagerModules.garden
   ];
 
   polymorph.enable = true;
   tetrago.nautilus.enable = true;
 
-  flume = {
+  garden = {
     enable = true;
-    wallpaper = {
+    background = {
       light = ./light.png;
       dark = ./dark.png;
     };
@@ -35,10 +35,8 @@
   james = {
     bash.enable = true;
     directories.enable = true;
-    fonts.enable = true;
     neovide.enable = true;
     terminal.enable = true;
-    theme.enable = true;
 
     firefox = {
       enable = true;
@@ -52,13 +50,11 @@
 
     media = {
       enable = true;
-      enableNixlandIntegration = true;
     };
 
     neovim = {
       enable = true;
       transparent = true;
-      enableDarkmanIntegration = true;
     };
 
     programs = {

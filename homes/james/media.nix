@@ -55,19 +55,20 @@ in
 
       home.packages = with pkgs; [
         decibels
-        exhibit
         file-roller
         gapless
         gnome-font-viewer
         loupe
         papers
-        typora
+        apostrophe
         (gnome-text-editor.overrideAttrs (
           final: prev: {
-            postInstall = prev.postInstall or "" + ''
-              substituteInPlace $out/share/applications/org.gnome.TextEditor.desktop \
-                --replace-fail "gnome-text-editor %U" "gnome-text-editor --new-window %U"
-            '';
+            postInstall =
+              prev.postInstall or ""
+              + ''
+                substituteInPlace $out/share/applications/org.gnome.TextEditor.desktop \
+                  --replace-fail "gnome-text-editor %U" "gnome-text-editor --new-window %U"
+              '';
           }
         ))
       ];
@@ -122,8 +123,7 @@ in
               in
               mapAttrs (_: _: aud) (filterAttrs (n: _: hasPrefix "audio/" n) video);
           in
-          mkDefault exhibit
-          // mkDefault file-roller
+          mkDefault file-roller
           // video
           // audio
           // mkDefault loupe
@@ -131,7 +131,7 @@ in
           // mkDefault papers
           // mkDefault gnome-text-editor
           // mkDefault firefox
-          // mkDefault typora
+          // mkDefault apostrophe
           // additional;
       };
 
