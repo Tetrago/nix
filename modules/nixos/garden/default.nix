@@ -7,13 +7,32 @@
 
 let
   inherit (builtins) any;
-  inherit (lib) mkIf;
+  inherit (lib) mkIf mkMerge;
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) flatten;
 in
 {
-  config =
-    mkIf
+  config = mkMerge [
+    {
+      nixpkgs.overlays = [
+        (self: super: {
+          nautilus = super.nautilus.overrideAttrs (
+            final: prev: {
+              nativeBuildInputs = prev.nativeBuildInputs or [ ] ++ [
+                pkgs.makeWrapper
+              ];
+
+              preFixup = prev.preFixup or "" + ''
+                gappsWrapperArgs+=(
+                  --prefix XDG_DATA_DIRS : "${pkgs.ffmpegthumbnailer}/share"
+                )
+              '';
+            }
+          );
+        })
+      ];
+    }
+    (mkIf
       (any (x: x.enable) (
         mapAttrsToList (_: x: x.garden or { enable = false; }) config.home-manager.users
       ))
@@ -47,5 +66,7 @@ in
           sysprof.enable = true;
           upower.enable = true;
         };
-      };
+      }
+    )
+  ];
 }

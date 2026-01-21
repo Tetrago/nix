@@ -131,7 +131,6 @@ in
             (mkIf cfg.utility.enable [
               binary # Base converter
               buffer # Volatile scratchpad
-              collision # Hash calculator
               curtail # Image compressor
               ghex
               gnome-sound-recorder
@@ -140,7 +139,6 @@ in
               kooha
               meld
               mousai # Song identifier
-              snoop # File search
               switcheroo # Image converter
               warp
             ])
