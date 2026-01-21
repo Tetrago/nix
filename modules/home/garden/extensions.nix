@@ -7,7 +7,55 @@
 
 let
   inherit (lib) mkIf mkOption types;
-  inherit (lib.attrsets) mapAttrs';
+  inherit (lib.attrsets) mapAttrs' mergeAttrsList;
+
+  adwaita-colors = pkgs.stdenvNoCC.mkDerivation rec {
+    pname = "Adwaita-colors";
+    version = "2.5";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "dpejoh";
+      repo = pname;
+      rev = "v${version}";
+      hash = "sha256-AkEKbEWWOqKpm1Pyp8zbGoBuvwz2192kyAmGN8HPbSA=";
+    };
+
+    dontBuild = true;
+
+    installPhase = ''
+      mkdir -p $out
+
+      # Handles buggy symlinks in the repository
+      ${pkgs.rsync}/bin/rsync -a --no-links --no-perms ./Adwaita-* $out/
+
+      echo "[" > $out/default.nix
+
+      for c in Adwaita-*; do
+        echo "\"$c\"" >> $out/default.nix
+      done
+
+      echo "]" >> $out/default.nix
+    '';
+  };
+
+  dataDirs = mergeAttrsList (
+    map (x: {
+      "icons/${x}".source = "${adwaita-colors}/${x}";
+    }) (import adwaita-colors)
+  );
+
+  auto-adwaita-colors = pkgs.gnomeExtensions.auto-adwaita-colors.overrideAttrs (
+    final: prev: {
+      version = "2025-11-19";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "celiopy";
+        repo = "auto-adwaita-colors";
+        rev = "8b5bd3cef22198611e649dca55726424148828ea";
+        hash = "sha256-yTFJnYQhywRQ8BrO1i5ImW1SEslPs+HJgBVufMe991A=";
+      };
+    }
+  );
 in
 {
   options.garden = {
@@ -31,6 +79,7 @@ in
         with pkgs.gnomeExtensions;
         [
           auto-accent-colour
+          auto-adwaita-colors
           auto-power-profile
           bluetooth-battery-meter
           blur-my-shell
@@ -52,6 +101,10 @@ in
             inherit value;
           })
           ({
+            "blur-my-shell/panel".blur = false;
+            "nightthemeswitcher/time".manual-schedule = false;
+            auto-adwaita-colors.notify-about-releases = false;
+            workspace-indicator.embed-previews = false;
 
             just-perfection = {
               quick-settings-dark-mode = false;
@@ -67,10 +120,6 @@ in
               enable-mpris = true;
               show-notifications = false;
             };
-
-            "blur-my-shell/panel".blur = false;
-            "nightthemeswitcher/time".manual-schedule = false;
-            workspace-indicator.embed-previews = false;
 
             paperwm = {
               minimap-scale = 0.0;
@@ -100,5 +149,10 @@ in
               shortcut-search = [ "<Super>space" ];
             };
           });
+
+      xdg = {
+        enable = true;
+        dataFile = dataDirs;
+      };
     };
 }
