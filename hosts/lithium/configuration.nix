@@ -15,7 +15,6 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
   tetrago = {
-    bluetooth.enable = true;
     virtualization.enable = true;
 
     boot = {
@@ -55,7 +54,6 @@
     fprintd.enable = true;
     hardware.bolt.enable = true;
     thermald.enable = true;
-    upower.enable = true;
   };
 
   security = {

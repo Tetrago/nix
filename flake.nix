@@ -4,7 +4,7 @@
     home-manager.url = "github:nix-community/home-manager";
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -48,11 +48,6 @@
 
     solaar = {
       url = "github:Svenum/Solaar-Flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    commander = {
-      url = "github:tetrago/commander";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

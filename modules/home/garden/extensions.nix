@@ -31,6 +31,7 @@ in
         with pkgs.gnomeExtensions;
         [
           auto-accent-colour
+          auto-power-profile
           bluetooth-battery-meter
           blur-my-shell
           caffeine
