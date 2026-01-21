@@ -6,22 +6,7 @@
 }:
 
 let
-  inherit (builtins) attrValues head;
   inherit (lib) mkIf mkEnableOption;
-  inherit (lib.attrsets) filterAttrs mapAttrs;
-  inherit (lib.strings) hasPrefix;
-
-  mkDefault =
-    p:
-    import (
-      pkgs.runCommand "${p.name}-desktop.nix" { } ''
-        path="$(find "${p}/share/applications" -name '*.desktop' | sort -r | head -n 1)"
-        mime="$(cat "$path" | grep -oP '(?<=^MimeType=).*' | sed 's/;$//' | tr ';' '\n')"
-        values="$(echo "$mime" | sed "s/.*/\"&\" = \"$(basename "$path")\";/")"
-
-        echo "{$values}" > $out
-      ''
-    );
 in
 {
   options.james.media = {
@@ -40,37 +25,10 @@ in
           music-dir = "file://${config.xdg.userDirs.music}";
           peak-characters = "•";
         };
-
-        "org/gnome/TextEditor" = {
-          highlight-current-line = true;
-          restore-session = false;
-          keybindings = "vim";
-        };
-
-        "org/gnome/papers/default" = {
-          show-sidebar = false;
-          window-maximized = false;
-        };
       };
 
       home.packages = with pkgs; [
-        decibels
-        file-roller
         gapless
-        gnome-font-viewer
-        loupe
-        papers
-        apostrophe
-        (gnome-text-editor.overrideAttrs (
-          final: prev: {
-            postInstall =
-              prev.postInstall or ""
-              + ''
-                substituteInPlace $out/share/applications/org.gnome.TextEditor.desktop \
-                  --replace-fail "gnome-text-editor %U" "gnome-text-editor --new-window %U"
-              '';
-          }
-        ))
       ];
 
       programs = {
@@ -92,47 +50,6 @@ in
             ];
           };
         };
-
-        mpv = {
-          enable = true;
-
-          config = {
-            osd-bar = "no";
-            border = "no";
-          };
-
-          scripts = with pkgs.mpvScripts; [
-            mpris
-            uosc
-            thumbfast
-          ];
-        };
-      };
-
-      xdg.mimeApps = {
-        enable = true;
-        defaultApplications =
-          with pkgs;
-          let
-            audio = mkDefault decibels;
-            video = mkDefault config.programs.mpv.package;
-
-            additional =
-              let
-                aud = head (attrValues audio);
-              in
-              mapAttrs (_: _: aud) (filterAttrs (n: _: hasPrefix "audio/" n) video);
-          in
-          mkDefault file-roller
-          // video
-          // audio
-          // mkDefault loupe
-          // mkDefault gnome-font-viewer
-          // mkDefault papers
-          // mkDefault gnome-text-editor
-          // mkDefault firefox
-          // mkDefault apostrophe
-          // additional;
       };
 
       nixland.windowRules = mkIf cfg.enableNixlandIntegration [
