@@ -9,14 +9,13 @@ let
   inherit (lib) mkIf mkEnableOption;
 in
 {
-  options.james.media = {
-    enable = mkEnableOption "media applications and mime configurations.";
-    enableNixlandIntegration = mkEnableOption "nixland window rules.";
+  options.james.music = {
+    enable = mkEnableOption "music applications and mime configurations.";
   };
 
   config =
     let
-      cfg = config.james.media;
+      cfg = config.james.music;
     in
     mkIf cfg.enable {
       dconf.settings = {
@@ -51,22 +50,5 @@ in
           };
         };
       };
-
-      nixland.windowRules = mkIf cfg.enableNixlandIntegration [
-        {
-          class = "com.github.neithern.g4music";
-          rules = [
-            "float"
-            "size 350 500"
-          ];
-        }
-        {
-          class = "org.gnome.Decibels";
-          rules = [
-            "float"
-            "size 600 400"
-          ];
-        }
-      ];
     };
 }

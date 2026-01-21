@@ -6,9 +6,9 @@
 
 {
   imports = [
-    outputs.homeManagerModules.default
-    outputs.homeManagerModules.james
-    outputs.homeManagerModules.garden
+    outputs.homeModules.default
+    outputs.homeModules.james
+    outputs.homeModules.garden
   ];
 
   garden = {
@@ -54,6 +54,7 @@
   james = {
     bash.enable = true;
     directories.enable = true;
+    music.enable = true;
     neovide.enable = true;
     terminal.enable = true;
 
@@ -77,10 +78,6 @@
     git = {
       enable = true;
       enableLibsecretIntegration = true;
-    };
-
-    media = {
-      enable = true;
     };
 
     neovim = {

@@ -26,19 +26,24 @@ in
       cfg = config.james.git;
     in
     mkIf cfg.enable {
-      programs.git = {
-        enable = true;
-        package = mkIf cfg.enableLibsecretIntegration (pkgs.git.override { withLibsecret = true; });
+      programs = {
+        difftastic = {
+          enable = true;
+          git.enable = true;
+        };
 
-        difftastic.enable = true;
-        lfs.enable = true;
+        git = {
+          enable = true;
+          package = mkIf cfg.enableLibsecretIntegration (pkgs.git.override { withLibsecret = true; });
+          lfs.enable = true;
 
-        userName = "James";
-        extraConfig = {
-          core.excludesFile = "${gitignore}";
-          credential.helper = mkIf cfg.enableLibsecretIntegration "libsecret";
-          init.defaultBranch = "develop";
-          diff.tool = "meld";
+          settings = {
+            core.excludesFile = "${gitignore}";
+            credential.helper = mkIf cfg.enableLibsecretIntegration "libsecret";
+            diff.tool = "meld";
+            init.defaultBranch = "develop";
+            user.name = "James";
+          };
         };
       };
     };

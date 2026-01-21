@@ -3,8 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
 
-    polymorph.url = "github:tetrago/polymorph";
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -103,20 +101,15 @@
         }
       );
 
-      homeManagerModules = eachDir ./homes (home: import ./homes/${home}) // {
-        default = import ./modules/home-manager;
-        flume = import ./modules/home-manager/flume;
-        garden = import ./modules/home-manager/garden;
-        hyprworld = import ./modules/home-manager/hyprworld;
-        nixland = import ./modules/home-manager/nixland;
+      homeModules = eachDir ./homes (home: import ./homes/${home}) // {
+        default = import ./modules/home;
+        garden = import ./modules/home/garden;
         nixvim = import ./homes/james/nixvim.nix;
       };
 
       nixosModules = {
         default = import ./modules/nixos;
-        flume = import ./modules/nixos/flume;
         garden = import ./modules/nixos/garden;
-        hyprworld = import ./modules/nixos/hyprworld;
         home-manager = import ./modules/nixos/home-manager;
       };
 
@@ -149,10 +142,6 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          pkgs' = import nixpkgs {
-            inherit system;
-            overlays = [ outputs.overlays.default ];
-          };
         in
         pkgs.callPackage ./packages { inherit (pkgs) callPackage; }
         // {

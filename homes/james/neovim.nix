@@ -11,7 +11,7 @@ let
   inherit (lib) mkIf mkEnableOption;
 in
 {
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ];
+  imports = [ inputs.nixvim.homeModules.nixvim ];
 
   options.james.neovim = {
     enable = mkEnableOption "neovim configuration.";

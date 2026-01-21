@@ -5,13 +5,12 @@
 
 {
   imports = [
-    outputs.homeManagerModules.default
-    outputs.homeManagerModules.james
-    outputs.homeManagerModules.garden
+    outputs.homeModules.default
+    outputs.homeModules.james
+    outputs.homeModules.garden
   ];
 
-  polymorph.enable = true;
-  tetrago.nautilus.enable = true;
+  # FIX: tetrago.nautilus.enable = true;
 
   garden = {
     enable = true;
