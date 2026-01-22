@@ -27,15 +27,19 @@ in
           };
         });
       default = {
-        firefox = {
+        Browser = {
           binding = "<Super>N";
           command = "firefox";
         };
-        terminal = {
+        "Private Browser" = {
+          binding = "<Super><Shift>N";
+          command = "firefox --private-window";
+        };
+        Terminal = {
           binding = "<Super>Return";
           command = "ghostty";
         };
-        explorer = {
+        Explorer = {
           binding = "<Super>E";
           command = "nautilus";
         };
