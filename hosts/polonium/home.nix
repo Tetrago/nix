@@ -10,8 +10,6 @@
     outputs.homeModules.garden
   ];
 
-  # FIX: tetrago.nautilus.enable = true;
-
   garden = {
     enable = true;
     background = {
@@ -34,6 +32,7 @@
   james = {
     bash.enable = true;
     directories.enable = true;
+    music.enable = true;
     neovide.enable = true;
     terminal.enable = true;
 
@@ -47,12 +46,9 @@
       enableLibsecretIntegration = true;
     };
 
-    media = {
-      enable = true;
-    };
-
     neovim = {
       enable = true;
+      enableThemeIntegration = true;
       transparent = true;
     };
 

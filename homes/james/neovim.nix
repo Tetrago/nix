@@ -16,7 +16,7 @@ in
   options.james.neovim = {
     enable = mkEnableOption "neovim configuration.";
     transparent = mkEnableOption "transparent neovim.";
-    enableDarkmanIntegration = mkEnableOption "darkman integration for neovim.";
+    enableThemeIntegration = mkEnableOption "darkman integration for neovim.";
   };
 
   config =
@@ -35,7 +35,7 @@ in
 
               wondervim = {
                 enable = true;
-                inherit (cfg) transparent enableDarkmanIntegration;
+                inherit (cfg) transparent enableThemeIntegration;
               };
             };
         })

@@ -126,7 +126,7 @@ in
                   wondervim = {
                     enable = true;
                     enableDebugging = true;
-                    enableDarkmanIntegration = true;
+                    enableThemeIntegration = true;
 
                     cheatsheets.neovide = ./cheatsheet.txt;
 

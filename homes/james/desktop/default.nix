@@ -81,6 +81,7 @@
 
     neovim = {
       enable = true;
+      enableThemeIntegration = true;
       transparent = true;
     };
 

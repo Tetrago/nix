@@ -94,11 +94,7 @@
     pam.services.gtklock.enableGnomeKeyring = true;
   };
 
-  services = {
-    logind = {
-      powerKey = "poweroff";
-    };
-  };
+  services.logind.settings.Login.HandlePowerKey = "poweroff";
 
   tetrago = {
     printing.enable = true;

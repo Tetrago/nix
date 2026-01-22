@@ -37,7 +37,7 @@ in
     enable = mkEnableOption "wondervim neovim configuration.";
     transparent = mkEnableOption "transparency support.";
     enableDebugging = mkEnableOption "debug support.";
-    enableDarkmanIntegration = mkEnableOption "darkman theme integration.";
+    enableThemeIntegration = mkEnableOption "automatic theme switching integration.";
 
     cheatsheets = mkOption {
       type = with types; attrsOf path;
@@ -150,7 +150,7 @@ in
         mapAttrsToList (n: v: { "cheatsheets/cheatsheet-${n}.txt".source = v; }) cfg.cheatsheets
       );
 
-      extraConfigLuaPost = mkIf (!cfg.enableDarkmanIntegration) ''
+      extraConfigLuaPost = mkIf (!cfg.enableThemeIntegration) ''
         vim.cmd [[colorscheme kanagawa-dragon]]
       '';
 
@@ -305,15 +305,16 @@ in
             };
           };
 
-          darkman = mkIf cfg.enableDarkmanIntegration {
-            package = localPkgs.darkman-nvim;
-            settings = {
-              change_background = true;
-              colorscheme = {
-                dark = "kanagawa-dragon";
-                light = "tokyonight-day";
+          auto-dark-mode = {
+            package = mkIf cfg.enableThemeIntegration localPkgs.auto-dark-mode-nvim;
+            settings =
+              let
+                set = name: { __raw = "function() vim.cmd [[colorscheme ${name}]] end"; };
+              in
+              {
+                set_dark_mode = set "kanagawa-dragon";
+                set_light_mode = set "kanagawa";
               };
-            };
           };
 
           gomove = {
