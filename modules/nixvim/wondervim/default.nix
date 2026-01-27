@@ -159,7 +159,6 @@ in
           let
             binds = {
               "<M-g>".lua = "Snacks.lazygit.open()";
-              "<M-o>" = "OverseerToggle";
               "<M-t>" = "TodoTelescope";
 
               "<C-s>" = "TSJSplit";
@@ -314,35 +313,6 @@ in
           };
         };
 
-        sessionHooks = {
-          postRestore = ''
-            function()
-              require("overseer").load_task_bundle(
-                vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                { ignore_missing = true }
-              )
-            end
-          '';
-
-          preRestore = ''
-            function()
-              for _, task in ipairs(require("overseer").list_tasks({})) do
-                task:dispose(true)
-              end
-            end
-          '';
-
-          preSave = ''
-            function()
-              require("overseer").save_task_bundle(
-                vim.fn.getcwd(0):gsub("[^A-Za-z0-9]", "_"),
-                nil,
-                { on_conflict = "overwrite" }
-              )
-            end
-          '';
-        };
-
         treats.bufferSkipPredicates = [
           ''
             function(win_id)
@@ -401,7 +371,6 @@ in
           neoscroll.enable = true;
           nvim-bqf.enable = true;
           nvim-surround.enable = true;
-          overseer.enable = true;
           smart-splits.enable = true;
           sleuth.enable = true;
           tiny-devicons-auto-colors.enable = true;
@@ -730,7 +699,6 @@ in
                 "neo-tree"
                 "nvim-dap-ui"
                 "oil"
-                "overseer"
                 "quickfix"
                 "toggleterm"
               ];
@@ -758,7 +726,6 @@ in
                     __unkeyed-1 = "diagnostics";
                     sources = [ "nvim_workspace_diagnostic" ];
                   }
-                  "overseer"
                   "%="
                 ];
 
