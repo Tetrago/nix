@@ -55,19 +55,19 @@ in
       };
 
       deSettings = {
-        "desktop/background" = with cfg.background; {
-          picture-url = mkIf (light != null) "file://${light}";
-          picture-url-dark = mkIf (dark != null) "file://${dark}";
-        };
-
         "desktop/datetime/automatic-timezone".enable = true;
         "desktop/input-sources".xkb-options = [ "ctrl:nocaps" ];
         "desktop/session".idle-delay = 600;
+        "org/gtk/settings/file-chooser".clock-format = "12h";
         "settings-daemon/plugins/media-keys".help = [ ];
         "shell/keybindings".focus-active-notification = [ ];
         "shell/weather".automatic-location = true;
         "system/location".enabled = true;
-        "org/gtk/settings/file-chooser".clock-format = "12h";
+
+        "desktop/background" = with cfg.background; {
+          picture-url = mkIf (light != null) "file://${light}";
+          picture-url-dark = mkIf (dark != null) "file://${dark}";
+        };
 
         "desktop/wm/keybindings" = {
           switch-input-soruce = [ ];
@@ -96,7 +96,10 @@ in
           sleep-inactive-ac-timeout = 1800;
         };
 
-        shell.enabled-extensions = map (x: x.extensionUuid) cfg.extensions;
+        shell = {
+          enabled-extensions = map (x: x.extensionUuid) cfg.extensions;
+          favorite-apps = [ ];
+        };
 
         mutter = {
           experimental-features = [
