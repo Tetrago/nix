@@ -2,11 +2,9 @@
   lib,
   runCommand,
   chromium,
+  imagemagick,
 }:
 
-let
-  inherit (lib.strings) concatLines;
-in
 runCommand "onshape" { } ''
   mkdir -p $out/bin
   cat <<EOF > $out/bin/onshape
@@ -19,22 +17,19 @@ runCommand "onshape" { } ''
   EOF
   chmod +x $out/bin/onshape
 
-  ${concatLines (
-    map
-      (
-        n:
-        let
-          x = toString n;
-          path = "$out/share/icons/hicolor/${x}x${x}/apps";
-        in
-        "mkdir -p ${path} && cp ${./${x}.png} ${path}/onshape.png"
-      )
-      [
-        16
-        32
-        48
-      ]
-  )}
+    for size in 16 24 32 48 64 128 256; do
+      pair=''${size}x''${size}
+
+      mkdir -p $out/share/icons/hicolor/$pair/apps
+      ${imagemagick}/bin/magick \
+        -density 512 \
+        -background none \
+        ${./icon.svg} \
+        -resize $pair \
+        -gravity center \
+        -extent $pair \
+        $out/share/icons/hicolor/$pair/apps/onshape.png
+    done
 
   mkdir -p $out/share/applications
   cat <<EOF > $out/share/applications/onshape.desktop
