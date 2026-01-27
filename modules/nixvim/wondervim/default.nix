@@ -107,6 +107,8 @@ in
         foldlevelstart = 99;
       };
 
+      colorschemes.vscode.enable = true;
+
       diagnostic.settings = {
         severity_sort = true;
 
@@ -149,10 +151,6 @@ in
       extraFiles = mkMerge (
         mapAttrsToList (n: v: { "cheatsheets/cheatsheet-${n}.txt".source = v; }) cfg.cheatsheets
       );
-
-      extraConfigLuaPost = mkIf (!cfg.enableThemeIntegration) ''
-        vim.cmd [[colorscheme kanagawa-dragon]]
-      '';
 
       wondervim = {
         cheatsheets.wondervim = ./cheatsheet.txt;
@@ -288,6 +286,8 @@ in
           ];
 
         plugins = {
+          auto-dark-mode.package = mkIf cfg.enableThemeIntegration localPkgs.auto-dark-mode-nvim;
+
           cheatsheet = {
             package = pkgs.vimPlugins.cheatsheet-nvim.overrideAttrs (
               final: prev: {
@@ -305,18 +305,6 @@ in
             };
           };
 
-          auto-dark-mode = {
-            package = mkIf cfg.enableThemeIntegration localPkgs.auto-dark-mode-nvim;
-            settings =
-              let
-                set = name: { __raw = "function() vim.cmd [[colorscheme ${name}]] end"; };
-              in
-              {
-                set_dark_mode = set "kanagawa-dragon";
-                set_light_mode = set "kanagawa";
-              };
-          };
-
           gomove = {
             package = pkgs.vimPlugins.nvim-gomove;
             settings = {
@@ -324,9 +312,6 @@ in
               reindent = false;
             };
           };
-
-          kanagawa.package = pkgs.vimPlugins.kanagawa-nvim;
-          tokyonight.package = pkgs.vimPlugins.tokyonight-nvim;
         };
 
         sessionHooks = {
@@ -601,6 +586,7 @@ in
                 "_" = [ "trim_whitespace" ];
                 bash = [ "shfmt" ];
                 cmake = [ "gersemi" ];
+                c = [ "clang-format" ];
                 cpp = [ "clang-format" ];
                 css = [ "prettierd" ];
                 elixir = [ "mix" ];
@@ -727,6 +713,10 @@ in
                     local theme = require("lualine.themes.auto")
 
                     for _, mode in pairs(theme) do
+                      if mode.c == nil then
+                        mode.c = {}
+                      end
+
                       mode.c.bg = nil
                     end
 
