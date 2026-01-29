@@ -70,8 +70,8 @@ in
         };
 
         "desktop/wm/keybindings" = {
-          switch-input-soruce = [ ];
-          switch-input-soruce-backward = [ ];
+          switch-input-source = [ ];
+          switch-input-source-backward = [ ];
         };
 
         "desktop/interface" = {
