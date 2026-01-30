@@ -189,7 +189,7 @@ in
 
               "<C-e>" = "Neotree position=float";
 
-              "<C-S-p>" = "SessionSearch";
+              "<C-S-p>" = "AutoSession search";
 
               "-" = "Oil";
 

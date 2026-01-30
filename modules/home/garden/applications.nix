@@ -29,6 +29,7 @@ in
       home = {
         packages = with pkgs; [
           apostrophe
+          cine
           collision
           snoop
           turtle
@@ -55,7 +56,7 @@ in
           with pkgs;
           mkDefault file-roller
           // mkDefault decibels
-          // mkDefault showtime
+          // mkDefault cine
           // mkDefault loupe
           // mkDefault gnome-font-viewer
           // mkDefault papers

@@ -50,6 +50,7 @@ in
             gnome-tour
             gnome-user-docs
             seahorse
+            showtime
             simple-scan
             yelp
           ];

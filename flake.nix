@@ -15,7 +15,6 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim.url = "github:nix-community/nixvim";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     hyprland.url = "github:hyprwm/Hyprland";
 
@@ -140,7 +139,6 @@
         in
         pkgs.callPackage ./packages { inherit (pkgs) callPackage; }
         // {
-          emacs = import ./packages/emacs { inherit inputs pkgs; };
           nvim = import ./packages/nvim { inherit inputs outputs pkgs; };
         }
       );
