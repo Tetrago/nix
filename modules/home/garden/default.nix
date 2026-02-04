@@ -65,8 +65,8 @@ in
         "system/location".enabled = true;
 
         "desktop/background" = with cfg.background; {
-          picture-url = mkIf (light != null) "file://${light}";
-          picture-url-dark = mkIf (dark != null) "file://${dark}";
+          picture-uri = mkIf (light != null) "file://${light}";
+          picture-uri-dark = mkIf (dark != null) "file://${dark}";
         };
 
         "desktop/wm/keybindings" = {
