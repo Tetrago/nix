@@ -68,6 +68,11 @@ in
       type = with types; listOf package;
       default = [ ];
     };
+
+    extraExtensionConfig = mkOption {
+      type = types.attrs;
+      default = { };
+    };
   };
 
   config =
@@ -100,55 +105,58 @@ in
             name = "org/gnome/shell/extensions/${n}";
             inherit value;
           })
-          ({
-            "blur-my-shell/panel".blur = false;
-            "nightthemeswitcher/time".manual-schedule = false;
-            auto-adwaita-colors.notify-about-releases = false;
-            workspace-indicator.embed-previews = false;
+          (
+            cfg.extraExtensionConfig
+            // {
+              "blur-my-shell/panel".blur = false;
+              "nightthemeswitcher/time".manual-schedule = false;
+              auto-adwaita-colors.notify-about-releases = false;
+              workspace-indicator.embed-previews = false;
 
-            just-perfection = {
-              quick-settings-dark-mode = false;
-              quick-settings-night-light = false;
-              startup-status = 0;
-              support-notifier-showed-version = 34;
-              support-notifier-type = 0;
-              world-clock = false;
-            };
+              just-perfection = {
+                quick-settings-dark-mode = false;
+                quick-settings-night-light = false;
+                startup-status = 0;
+                support-notifier-showed-version = 34;
+                support-notifier-type = 0;
+                world-clock = false;
+              };
 
-            caffeine = {
-              enable-fullscreen = true;
-              enable-mpris = true;
-              show-notifications = false;
-            };
+              caffeine = {
+                enable-fullscreen = true;
+                enable-mpris = true;
+                show-notifications = false;
+              };
 
-            paperwm = {
-              minimap-scale = 0.0;
-              open-window-position-option-left = false;
-              selection-border-radius-bottom = 12;
-              show-focus-mode-icon = false;
-              show-workspace-indicator = false;
-              winprops = [
-                ''{"wm_class":"*", "preferredWidth":"50%"}''
-              ];
-            };
+              paperwm = {
+                minimap-scale = 0.0;
+                open-window-position-option-left = false;
+                selection-border-radius-bottom = 12;
+                show-focus-mode-icon = false;
+                show-workspace-indicator = false;
+                winprops = [
+                  ''{"wm_class":"*", "preferredWidth":"50%"}''
+                ];
+              };
 
-            "paperwm/keybindings" = {
-              close-window = [ "<Super>w" ];
-              live-alt-tab = [ "<Super>Tab" ];
-              new-window = [ "" ];
-              toggle-maximize-width = [ "<Super>p" ];
-              toggle-scratch = [ "<Shift><Super>z" ];
-              toggle-scratch-layer = [ "<Super>z" ];
-            };
+              "paperwm/keybindings" = {
+                close-window = [ "<Super>w" ];
+                live-alt-tab = [ "<Super>Tab" ];
+                new-window = [ "" ];
+                toggle-maximize-width = [ "<Super>p" ];
+                toggle-scratch = [ "<Shift><Super>z" ];
+                toggle-scratch-layer = [ "<Super>z" ];
+              };
 
-            search-light = {
-              border-radius = 7.0;
-              popup-at-cursor-monitor = true;
-              scale-height = 0.3;
-              scale-width = 0.5;
-              shortcut-search = [ "<Super>space" ];
-            };
-          });
+              search-light = {
+                border-radius = 7.0;
+                popup-at-cursor-monitor = true;
+                scale-height = 0.3;
+                scale-width = 0.5;
+                shortcut-search = [ "<Super>space" ];
+              };
+            }
+          );
 
       xdg = {
         enable = true;

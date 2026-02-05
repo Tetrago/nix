@@ -39,7 +39,7 @@
 
     extraModprobeConfig = ''
       options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1 fnmode=1
-      options apple_dcp show_notch=1
+      options appledrm show_notch=1
     '';
 
     loader = {

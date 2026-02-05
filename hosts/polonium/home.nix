@@ -1,5 +1,6 @@
 {
   outputs,
+  pkgs,
   ...
 }:
 
@@ -16,6 +17,9 @@
       light = ./light.png;
       dark = ./dark.png;
     };
+
+    extraExtensions = with pkgs.gnomeExtensions; [ user-stylesheet-font ];
+    extraExtensionConfig.just-perfection.clock-menu-position = 1;
   };
 
   home = {
@@ -58,4 +62,6 @@
       ssh.enable = true;
     };
   };
+
+  xdg.configFile."gnome-shell/gnome-shell.css".text = "#panelBox {height: 42px !important}";
 }
