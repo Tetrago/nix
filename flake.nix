@@ -130,7 +130,6 @@
       );
 
       overlays = import ./overlays;
-      lib = import ./lib;
 
       packages = eachSystem (
         system:
