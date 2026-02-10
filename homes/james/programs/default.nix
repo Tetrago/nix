@@ -61,11 +61,6 @@ in
       cfg = config.james.programs;
     in
     mkIf cfg.enable {
-      dconf = mkIf cfg.system.enable {
-        enable = true;
-        settings."io/missioncenter/MissionCenter".performance-page-cpu-graph = 2;
-      };
-
       home = {
         file = mkIf cfg.development.enable {
           ".clang-format".source = ./clang-format;
@@ -126,7 +121,7 @@ in
               bustle # DBus log
               gnome-firmware
               inspector # System info
-              mission-center # Resource viewer
+              resources
             ])
             (mkIf cfg.utility.enable [
               binary # Base converter
