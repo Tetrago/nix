@@ -54,6 +54,7 @@ in
     ssh.enable = mkEnableOption "ssh.";
     system.enable = mkEnableOption "system programs.";
     utility.enable = mkEnableOption "utility programs.";
+    java.enable = mkEnableOption "java development programs and SDKs.";
   };
 
   config =
@@ -62,12 +63,17 @@ in
     in
     mkIf cfg.enable {
       home = {
-        file = mkIf cfg.development.enable {
-          ".clang-format".source = ./clang-format;
-          ".gdbinit".source = gdbinit;
-          ".rustfmt".source = ./rustfmt.toml;
-          ".taplo.toml".source = ./taplo.toml;
-        };
+        file = mkMerge [
+          (mkIf cfg.development.enable {
+            ".clang-format".source = ./clang-format;
+            ".gdbinit".source = gdbinit;
+            ".rustfmt".source = ./rustfmt.toml;
+            ".taplo.toml".source = ./taplo.toml;
+          })
+          (mkIf cfg.java.enable {
+            ".jdk/21".source = "${pkgs.jdk21_headless}/lib/openjdk";
+          })
+        ];
 
         packages =
           with pkgs;
@@ -136,6 +142,17 @@ in
               mousai # Song identifier
               switcheroo # Image converter
               warp
+            ])
+            (mkIf cfg.java.enable [
+              (symlinkJoin {
+                name = "idea-wayland";
+                paths = [ jetbrains.idea ];
+                nativeBuildInputs = [ makeWrapper ];
+                postBuild = ''
+                  wrapProgram $out/bin/idea \
+                    --set JAVA_TOOL_OPTIONS '-Dawt.toolkit.name=WLToolkit'
+                '';
+              })
             ])
           ];
       };

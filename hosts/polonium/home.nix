@@ -61,6 +61,7 @@
       direnv.enable = true;
       ssh.enable = true;
       system.enable = true;
+      java.enable = true;
     };
   };
 
