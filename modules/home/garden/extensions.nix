@@ -135,7 +135,8 @@ in
                 show-focus-mode-icon = false;
                 show-workspace-indicator = false;
                 winprops = [
-                  ''{"wm_class":"*", "preferredWidth":"50%"}''
+                  ''{"wm_class":"*","preferredWidth":"50%"}''
+                  ''{"wm_class":"com.github.neithern.g4music","scratch_layer":true}''
                 ];
               };
 
