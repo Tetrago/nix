@@ -554,13 +554,14 @@ in
               formatters_by_ft = {
                 "_" = [ "trim_whitespace" ];
                 bash = [ "shfmt" ];
-                cmake = [ "gersemi" ];
                 c = [ "clang-format" ];
+                cmake = [ "gersemi" ];
                 cpp = [ "clang-format" ];
                 css = [ "prettierd" ];
                 elixir = [ "mix" ];
                 gleam = [ "gleam" ];
                 html = [ "prettierd" ];
+                java = [ "google-java-format" ];
                 javascript = [ "prettierd" ];
                 javascriptreact = [ "prettierd" ];
                 json = [ "prettierd" ];
@@ -583,6 +584,7 @@ in
                 "clang-format".command = "${clang-tools}/bin/clang-format";
                 gersemi.command = getExe gersemi;
                 gleam.command = getExe gleam;
+                google-java-format.command = getExe google-java-format;
                 mix.command = "${elixir}/bin/mix";
                 nixfmt.command = getExe nixfmt;
                 prettierd.command = getExe prettierd;
@@ -629,7 +631,7 @@ in
               gleam.enable = true;
               gopls.enable = true;
               html.enable = true;
-              java_language_server.enable = true;
+              jdtls.enable = true;
               jsonls.enable = true;
               lua_ls.enable = true;
               nil_ls.enable = true;

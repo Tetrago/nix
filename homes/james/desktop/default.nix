@@ -102,6 +102,7 @@
       ssh.enable = true;
       system.enable = true;
       utility.enable = true;
+      java.enable = true;
     };
   };
 }

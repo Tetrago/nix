@@ -45,6 +45,7 @@ in
             plugins = [
               "duplicates"
               "fetchart"
+              "musicbrainz"
               "thumbnails"
             ];
           };

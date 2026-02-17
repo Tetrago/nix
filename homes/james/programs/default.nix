@@ -11,6 +11,7 @@ let
     mkIf
     mkMerge
     ;
+  inherit (lib.strings) concatStringsSep;
 
   flakey = pkgs.runCommand "flakey" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
     mkdir -p $out/bin/
@@ -72,6 +73,11 @@ in
           })
           (mkIf cfg.java.enable {
             ".jdk/21".source = "${pkgs.jdk21_headless}/lib/openjdk";
+            ".ideavimrc".text = ''
+              set visualbell
+              set noerrorbells
+              set relativenumber
+            '';
           })
         ];
 
@@ -148,10 +154,22 @@ in
                 name = "idea-wayland";
                 paths = [ jetbrains.idea ];
                 nativeBuildInputs = [ makeWrapper ];
-                postBuild = ''
-                  wrapProgram $out/bin/idea \
-                    --set JAVA_TOOL_OPTIONS '-Dawt.toolkit.name=WLToolkit'
-                '';
+                postBuild =
+                  let
+                    options = [
+                      "-Dawt.tollkit.name=WLToolkit"
+                      "--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"
+                      "--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED"
+                      "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED"
+                      "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
+                      "--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED"
+                      "--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
+                    ];
+                  in
+                  ''
+                    wrapProgram $out/bin/idea \
+                      --set JAVA_TOOL_OPTIONS '${concatStringsSep " " options}'
+                  '';
               })
             ])
           ];
