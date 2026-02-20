@@ -2,16 +2,17 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
 let
   inherit (lib)
+    attrValues
     mkEnableOption
     mkIf
     mkMerge
     ;
-  inherit (lib.strings) concatStringsSep;
 
   flakey = pkgs.runCommand "flakey" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
     mkdir -p $out/bin/
@@ -150,27 +151,28 @@ in
               warp
             ])
             (mkIf cfg.java.enable [
-              (symlinkJoin {
-                name = "idea-wayland";
-                paths = [ jetbrains.idea ];
-                nativeBuildInputs = [ makeWrapper ];
-                postBuild =
-                  let
-                    options = [
-                      "-Dawt.tollkit.name=WLToolkit"
-                      "--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"
-                      "--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED"
-                      "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED"
-                      "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
-                      "--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED"
-                      "--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
-                    ];
-                  in
-                  ''
-                    wrapProgram $out/bin/idea \
-                      --set JAVA_TOOL_OPTIONS '${concatStringsSep " " options}'
-                  '';
-              })
+              (
+                let
+                  plugins = inputs.nix-jetbrains-plugins.lib.pluginsForIde pkgs idea [
+                    "google-java-format"
+                    "IdeaVIM"
+                    "systems.fehn.intellijdirenv"
+                  ];
+
+                  idea = jetbrains.idea.override {
+                    forceWayland = true;
+                    vmopts = ''
+                      --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+                      --add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
+                      --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+                      --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+                      --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+                      --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+                    '';
+                  };
+                in
+                jetbrains.plugins.addPlugins idea (attrValues plugins)
+              )
             ])
           ];
       };
