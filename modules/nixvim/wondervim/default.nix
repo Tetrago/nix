@@ -936,35 +936,35 @@ in
 
           treesitter = {
             enable = true;
+            grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+              bash
+              c
+              c_sharp
+              cmake
+              cpp
+              dockerfile
+              elixir
+              gleam
+              haskell
+              java
+              javascript
+              json
+              lua
+              make
+              markdown
+              markdown_inline
+              nix
+              nix
+              python
+              regex
+              rust
+              rust
+              toml
+              typescript
+              wgsl
+              zig
+            ];
             settings = {
-              ensure_installed = [
-                "bash"
-                "c"
-                "c_sharp"
-                "cmake"
-                "cpp"
-                "dockerfile"
-                "elixir"
-                "gleam"
-                "haskell"
-                "java"
-                "javascript"
-                "json"
-                "lua"
-                "make"
-                "markdown"
-                "markdown_inline"
-                "nix"
-                "nix"
-                "python"
-                "regex"
-                "rust"
-                "rust"
-                "toml"
-                "typescript"
-                "wgsl"
-                "zig"
-              ];
               highlight.enable = true;
             };
           };
