@@ -1,36 +1,36 @@
 {
-  lib,
-  mkShell,
-  stdenv,
-  stdenvNoCC,
-  makeWrapper,
-  burpsuite,
+  avalonia-ilspy,
   binutils,
   binwalk,
-  strace,
-  ltrace,
-  openvpn,
-  metasploit,
-  pwndbg,
+  bloodhound-py,
+  burpsuite,
+  evil-winrm,
+  exploitdb,
+  ffuf,
   ghidra-bin,
-  rp,
-  radare2,
-  python3,
   hashcat,
   john,
-  stegseek,
-  ffuf,
-  nmap,
+  lib,
+  libseccomp,
+  ltrace,
+  makeWrapper,
+  metasploit,
+  mkShell,
   netexec,
-  exploitdb,
+  nmap,
+  openvpn,
+  pwndbg,
+  python3,
+  radare2,
+  rp,
   seclists,
   sliver,
-  avalonia-ilspy,
+  stdenv,
+  stdenvNoCC,
+  stegseek,
+  strace,
   wireshark,
   writeShellScriptBin,
-  ropium,
-  bloodhound-py,
-  evil-winrm,
 }:
 
 let
@@ -79,7 +79,10 @@ in
 mkShell {
   name = "cyber";
 
-  NIX_LD_LIBRARY_PATH = makeLibraryPath [ stdenv.cc.cc ];
+  NIX_LD_LIBRARY_PATH = makeLibraryPath [
+    stdenv.cc.cc
+    libseccomp
+  ];
   NIX_LD = fileContents "${stdenv.cc}/nix-support/dynamic-linker";
   SECLISTS = "${seclists}/share/wordlists/seclists";
 
@@ -104,7 +107,6 @@ mkShell {
     ghidra-bin
     burpsuite
     openvpn
-    ropium
     metasploit
     hashcat
     john
@@ -118,5 +120,6 @@ mkShell {
     wireshark
     bloodhound-py
     evil-winrm
-  ] ++ scripts;
+  ]
+  ++ scripts;
 }
