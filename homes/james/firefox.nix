@@ -48,6 +48,7 @@ in
               "addon@darkreader.org" = plug "darkreader";
               "Google_AI_Overviews_Blocker@zachbarnes.dev" = plug "hide-google-ai-overviews";
               "izer@camelcamelcamel.com" = plug "the-camelizer-price-history-ch";
+              "media-bias-fact-check@drmikecrowe-mbfcext" = plug "media-bias-fact-check";
             };
 
           Preferences = {
