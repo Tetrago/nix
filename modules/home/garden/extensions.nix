@@ -138,6 +138,7 @@ in
                   ''{"wm_class":"*","preferredWidth":"50%"}''
                   ''{"wm_class":"com.github.neithern.g4music","scratch_layer":true}''
                   ''{"wm_class":"org.gnome.gitlab.cheywood.Buffer","scratch_layer":true}''
+                  ''{"wm_class":"it.mijorus.collector","scratch_layer":true}''
                 ];
               };
 

@@ -140,6 +140,7 @@ in
               binary # Base converter
               buffer # Volatile scratchpad
               curtail # Image compressor
+              collector # File dropbox clipboard thing
               ghex
               gnome-sound-recorder
               impression # Removable media writer
