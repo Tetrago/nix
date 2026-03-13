@@ -49,6 +49,10 @@ in
               "Google_AI_Overviews_Blocker@zachbarnes.dev" = plug "hide-google-ai-overviews";
               "izer@camelcamelcamel.com" = plug "the-camelizer-price-history-ch";
               "media-bias-fact-check@drmikecrowe-mbfcext" = plug "media-bias-fact-check";
+              "magnolia" = {
+                install_url = "file://${./bypass_paywalls_clean.xpi}";
+                installation_mode = "force_installed";
+              };
             };
 
           Preferences = {

@@ -1,11 +1,11 @@
-{ inputs, outputs, ... }:
+{ ... }:
 
 {
   imports = [
     ./bash.nix
     ./binja
     ./directories.nix
-    ./firefox.nix
+    ./firefox
     ./git.nix
     ./music.nix
     ./neovide

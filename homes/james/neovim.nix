@@ -37,6 +37,18 @@ in
                 enable = true;
                 inherit (cfg) transparent enableThemeIntegration;
               };
+
+              plugins.avante = {
+                enable = true;
+                settings = {
+                  provider = "ollama";
+                  providers.ollama = {
+                    endpoint = "http://192.168.122.50:11434";
+                    model = "qwq:32b";
+                    is_env_set.__raw = ''require("avante.providers.ollama").check_endpoint_alive'';
+                  };
+                };
+              };
             };
         })
       ];
