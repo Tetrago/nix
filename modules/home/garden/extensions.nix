@@ -96,6 +96,7 @@ in
           night-theme-switcher
           paperwm
           search-light
+          status-icons
         ]
         ++ cfg.extraExtensions;
 
