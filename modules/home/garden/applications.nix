@@ -33,7 +33,7 @@ let
         map (mime: {
           name = replaceStrings [ ";" ] [ "" ] mime;
           value = desktopName;
-        }) (splitString ";" (head mimeTypes))
+        }) (filter (mime: mime != "") (splitString ";" (head mimeTypes)))
       )
     else
       { };
@@ -49,6 +49,7 @@ in
           apostrophe
           cine
           collision
+          file-roller
           snoop
           turtle
         ];
