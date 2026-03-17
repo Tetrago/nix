@@ -1,5 +1,0 @@
-## neovide
-Increase text size     | <C-=>
-Decrease text size     | <C-->
-Enter window move mode | <C-w>m
-Swap window            | <C-w>x

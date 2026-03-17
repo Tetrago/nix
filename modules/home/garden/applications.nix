@@ -6,19 +6,37 @@
 }:
 
 let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf mkMerge;
 
-  mkDefault =
-    p:
-    import (
-      pkgs.runCommand "${p.name}-desktop.nix" { } ''
-        path="$(find "${p}/share/applications" -name '*.desktop' | sort -r | head -n 1)"
-        mime="$(cat "$path" | grep -oP '(?<=^MimeType=).*' | sed 's/;$//' | tr ';' '\n')"
-        values="$(echo "$mime" | sed "s/.*/\"&\" = \"$(basename "$path")\";/")"
+  getDefaultApps =
+    pkg:
+    let
+      inherit (lib) hasSuffix replaceStrings splitString;
+      inherit (lib.filesystem) listFilesRecursive;
+      inherit (builtins)
+        readFile
+        head
+        filter
+        match
+        listToAttrs
+        ;
 
-        echo "{$values}" > $out
-      ''
-    );
+      desktopFile = head (
+        filter (f: hasSuffix ".desktop" f) (listFilesRecursive "${pkg}/share/applications")
+      );
+
+      mimeTypes = match ".*MimeType=([^\n]+).*" (readFile desktopFile);
+      desktopName = baseNameOf desktopFile;
+    in
+    if mimeTypes != null then
+      listToAttrs (
+        map (mime: {
+          name = replaceStrings [ ";" ] [ "" ] mime;
+          value = desktopName;
+        }) (splitString ";" (head mimeTypes))
+      )
+    else
+      { };
 in
 {
   config =
@@ -54,17 +72,23 @@ in
         enable = true;
         defaultApplications =
           with pkgs;
-          mkDefault file-roller
-          // mkDefault decibels
-          // mkDefault cine
-          // mkDefault loupe
-          // mkDefault gnome-font-viewer
-          // mkDefault papers
-          // mkDefault firefox
-          // mkDefault apostrophe
-          // {
-            "inode/directory" = "org.gnome.Nautilus.desktop";
-          };
+          mkMerge (
+            map getDefaultApps [
+              file-roller
+              decibels
+              cine
+              loupe
+              gnome-font-viewer
+              papers
+              firefox
+              apostrophe
+            ]
+            ++ [
+              {
+                "inode/directory" = "org.gnome.Nautilus.desktop";
+              }
+            ]
+          );
       };
 
       xdg = {
@@ -74,13 +98,14 @@ in
             "${pkgs.collision}/share/nautilus-python/extensions/collision-extension.py";
           "nautilus-python/extensions/snoop.py".source =
             "${pkgs.snoop}/share/nautilus-python/extensions/snoop.py";
-          "nautilus-python/extensions/turtle_nautilus.py".source =
-            "${pkgs.turtle}/share/nautilus-python/extensions/turtle_nautilus.py";
-          "dbus-1/services/de.philippun1.turtle.service".text = ''
-            [D-BUS Service]
-            Name=de.philippun1.turtle
-            Exec=${pkgs.turtle}/bin/turtle_service
-          '';
+          # TODO: Fix.
+          # "nautilus-python/extensions/turtle_nautilus.py".source =
+          #   "${pkgs.turtle}/share/nautilus-python/extensions/turtle_nautilus.py";
+          # "dbus-1/services/de.philippun1.turtle.service".text = ''
+          #   [D-BUS Service]
+          #   Name=de.philippun1.turtle
+          #   Exec=${pkgs.turtle}/bin/turtle_service
+          # '';
         };
       };
     };

@@ -54,7 +54,6 @@
     bash.enable = true;
     directories.enable = true;
     music.enable = true;
-    neovide.enable = true;
     terminal.enable = true;
 
     binja = {
