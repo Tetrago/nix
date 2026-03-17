@@ -1,0 +1,27 @@
+From 7095420dad165ad458f43624dc9ecf97f332e43f Mon Sep 17 00:00:00 2001
+From: James <james@geiss.dev>
+Date: Fri, 13 Mar 2026 18:46:18 -0400
+Subject: [PATCH] patch
+
+---
+ src/libslic3r/CMakeLists.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/libslic3r/CMakeLists.txt b/src/libslic3r/CMakeLists.txt
+index 4ab33587..2aa9b972 100644
+--- a/src/libslic3r/CMakeLists.txt
++++ b/src/libslic3r/CMakeLists.txt
+@@ -577,7 +577,9 @@ target_link_libraries(libslic3r
+         libigl
+         libnest2d
+         miniz
+-        opencv_world
++        opencv_core
++        opencv_imgproc
++        opencv_imgcodecs
+     PRIVATE
+         ${CMAKE_DL_LIBS}
+         ${EXPAT_LIBRARIES}
+-- 
+2.52.0
+
