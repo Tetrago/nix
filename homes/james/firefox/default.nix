@@ -56,14 +56,17 @@ in
             };
 
           Preferences = {
-            "extensions.pocket.enabled" = false;
-            "extensions.screenshots.disabled" = true;
-            "browser.topsites.contile.enabled" = false;
             "browser.formfill.enable" = false;
+            "browser.ml.chat.enabled" = false;
+            "browser.ml.chat.menu" = false;
+            "browser.ml.chat.sidebar" = false;
             "browser.search.suggest.enabled" = false;
             "browser.search.suggest.enabled.private" = false;
-            "browser.urlbar.suggest.searches" = false;
+            "browser.topsites.contile.enabled" = false;
             "browser.urlbar.showSearchSuggestionsFirst" = false;
+            "browser.urlbar.suggest.searches" = false;
+            "extensions.pocket.enabled" = false;
+            "extensions.screenshots.disabled" = true;
             "media.getusermedia.audio.aprocessing.aec.enabled" = false;
             "media.getusermedia.audio.aprocessing.agc.enabled" = false;
             "media.getusermedia.audio.aprocessing.hpf.enabled" = false;
