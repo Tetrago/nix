@@ -64,5 +64,8 @@
     };
   };
 
-  xdg.configFile."gnome-shell/gnome-shell.css".text = "#panelBox {height: 42px !important}";
+  xdg.configFile = {
+    "gnome-shell/gnome-shell.css".text = "#panelBox {height: 42px !important}";
+    "monitors.xml".source = ./monitors.xxml;
+  };
 }
