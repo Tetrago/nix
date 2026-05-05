@@ -23,7 +23,7 @@ in
         enable = true;
         enableBashIntegration = true;
         clearDefaultKeybinds = true;
-        package = pkgs.ghostty;
+        package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
         settings = {
           theme = "dark:Chalk,light:Farmhouse Light";
@@ -47,7 +47,6 @@ in
           resize-overlay = "never";
           cursor-style = "bar";
           linux-cgroup = "always";
-          shell-integration = "bash";
 
           window-padding-x = 4;
           window-padding-y = 4;
