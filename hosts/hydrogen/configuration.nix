@@ -39,12 +39,6 @@
   programs = {
     nix-ld.enable = true;
     virt-manager.enable = true;
-
-    wireshark = {
-      enable = true;
-      package = pkgs.wireshark;
-      dumpcap.enable = true;
-    };
   };
 
   services = {
@@ -123,7 +117,6 @@
         "kvm"
         "networkmanager"
         "lpadmin"
-        "wireshark"
       ];
     };
 

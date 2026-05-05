@@ -41,7 +41,6 @@
     audio.enable = true;
     boot.enable = true;
     fonts.enable = true;
-    hyprland.enable = true;
     plymouth.enable = true;
     printing.enable = true;
 

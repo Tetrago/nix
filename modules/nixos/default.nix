@@ -10,7 +10,6 @@
     ./boot.nix
     ./fonts.nix
     ./graphics.nix
-    ./hyprland.nix
     ./plymouth.nix
     ./printing.nix
     ./sddm.nix

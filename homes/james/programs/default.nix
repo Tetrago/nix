@@ -157,7 +157,7 @@ in
                   plugins = inputs.nix-jetbrains-plugins.lib.pluginsForIde pkgs idea [
                     "google-java-format"
                     "IdeaVIM"
-                    "systems.fehn.intellijdirenv"
+                    "al.aoli.intellijdirenv"
                   ];
 
                   idea = jetbrains.idea.override {
