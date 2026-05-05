@@ -42,17 +42,22 @@ in
           background-blur = true;
 
           gtk-tabs-location = "bottom";
+          gtk-titlebar = false;
           copy-on-select = false;
           resize-overlay = "never";
           cursor-style = "bar";
           linux-cgroup = "always";
+          shell-integration = "bash";
 
           window-padding-x = 4;
           window-padding-y = 4;
           window-padding-balance = true;
           window-new-tab-position = "end";
           window-theme = "system";
-          window-decoration = "none";
+
+          window-inherit-working-directory = false;
+          tab-inherit-working-directory = true;
+          split-inherit-working-directory = true;
 
           keybind = [
             "ctrl+shift+enter=new_tab"
