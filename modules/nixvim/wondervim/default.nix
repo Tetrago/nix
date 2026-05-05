@@ -107,7 +107,7 @@ in
         foldlevelstart = 99;
       };
 
-      colorschemes.vscode.enable = true;
+      colorscheme = "token";
 
       diagnostic.settings = {
         severity_sort = true;
@@ -1033,7 +1033,10 @@ in
 
       extraPlugins =
         optional cfg.transparent localPkgs.bg-nvim
-        ++ [ localPkgs.neotree-file-nesting-config ]
+        ++ (with localPkgs; [
+          neotree-file-nesting-config
+          token
+        ])
         ++ (with pkgs.vimPlugins; [
           align-nvim
           vim-expand-region
