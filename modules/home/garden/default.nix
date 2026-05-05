@@ -58,7 +58,6 @@ in
         "desktop/datetime/automatic-timezone".enable = true;
         "desktop/input-sources".xkb-options = [ "ctrl:nocaps" ];
         "desktop/session".idle-delay = 600;
-        "org/gtk/settings/file-chooser".clock-format = "12h";
         "settings-daemon/plugins/media-keys".help = [ ];
         "shell/keybindings".focus-active-notification = [ ];
         "shell/weather".automatic-location = true;
@@ -79,6 +78,7 @@ in
           clock-show-date = false;
           enable-hot-corners = false;
           cursor-theme = "BreezeX-RosePine-Linux";
+          gtk-enable-primary-paste = false;
         };
 
         "desktop/screen-time-limits" = {
@@ -117,7 +117,10 @@ in
 
       dconf = {
         enable = true;
-        settings = mapAttrs' (n: value: {
+        settings = {
+          "org/gtk/settings/file-chooser".clock-format = "12h";
+        }
+        // mapAttrs' (n: value: {
           name = "org/gnome/${n}";
           inherit value;
         }) (applicationSettings // deSettings);
