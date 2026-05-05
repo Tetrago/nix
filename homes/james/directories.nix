@@ -24,6 +24,7 @@ in
         enable = true;
         userDirs = {
           enable = true;
+          setSessionVariables = true;
           createDirectories = false;
           desktop = null;
           publicShare = null;

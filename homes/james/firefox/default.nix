@@ -21,6 +21,7 @@ in
     mkIf cfg.enable {
       programs.firefox = {
         enable = true;
+        configPath = ".mozilla/firefox"; # NOTE: Maintains legacy config path; should be moved to XDG config home when convenient.
         package = pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { };
 
         policies = {

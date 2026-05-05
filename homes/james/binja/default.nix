@@ -53,36 +53,26 @@ in
               '';
 
               targetPkgs =
-                pkgs:
-                let
-                  kdeDeps = with pkgs.kdePackages; [
-                    qtbase
-                    qtdeclarative
-                  ];
-                  xorgDeps = with pkgs.xorg; [
-                    libX11
-                    libxcb
-                    xcbutilimage
-                    xcbutilkeysyms
-                    xcbutilrenderutil
-                    xcbutilwm
-                  ];
-                in
-                with pkgs;
-                [
+                pkgs: with pkgs; [
+                  (python3.withPackages (p: with p; [ torch ]))
                   dbus
                   fontconfig
                   freetype
+                  kdePackages.qtbase
+                  kdePackages.qtdeclarative
                   libGL
+                  libx11
+                  libxcb
+                  libxcb-image
+                  libxcb-keysyms
+                  libxcb-render-util
+                  libxcb-wm
                   libxkbcommon
                   libxml2
-                  (python3.withPackages (p: with p; [ torch ]))
                   stdenv.cc.cc
                   wayland
                   zlib
-                ]
-                ++ kdeDeps
-                ++ xorgDeps;
+                ];
 
               extraInstallCommands = ''
                 mkdir -p $out/share/icons
