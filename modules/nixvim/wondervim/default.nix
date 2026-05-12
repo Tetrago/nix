@@ -189,7 +189,7 @@ in
 
               "<C-e>" = "Neotree position=float";
 
-              "<C-S-p>" = "AutoSession search";
+              #"<C-S-p>" = "AutoSession search";
 
               "-" = "Oil";
 
@@ -376,7 +376,18 @@ in
           tiny-devicons-auto-colors.enable = true;
           todo-comments.enable = true;
           vimtex.enable = true;
-          web-devicons.enable = true;
+
+          web-devicons = {
+            enable = true;
+            settings.override_by_extension = {
+              ipp = {
+                icon = "";
+                color = "#519ABA";
+                cterm_color = "74";
+                name = "Ipp";
+              };
+            };
+          };
 
           actions-preview = {
             enable = true;
@@ -913,6 +924,7 @@ in
 
             keymaps = {
               "<C-p>".action = "find_files";
+              "<C-S-p>".action = "find_files hidden=true";
             };
           };
 
@@ -923,6 +935,7 @@ in
             };
           };
 
+          # NOTE: Possibly unnecessary
           transparent = mkIf cfg.transparent {
             enable = true;
             settings.groups = [

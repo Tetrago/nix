@@ -42,6 +42,11 @@ let
       ${lib.getExe pkgs.xplr} "/nix/store/$dir"
     fi
   '';
+
+  cxx-explorer = pkgs.writeShellScriptBin "cxx-explorer" ''
+    cd "${pkgs.stdenv.cc.cc}/include/c++/${pkgs.stdenv.cc.cc.version}"
+    exec nvim -RM .
+  '';
 in
 {
   options.james.programs = {
@@ -96,6 +101,7 @@ in
             ])
             (mkIf cfg.development.enable [
               cartero # HTTP toolkit
+              cxx-explorer
               gql # SQL for Git
               pastel # Color mixing tool
               rusty-man
