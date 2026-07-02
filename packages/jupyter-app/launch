@@ -1,0 +1,80 @@
+#!/bin/sh
+
+set -eu
+
+export JUPYTER_CONFIG_DIR=$HOME/.config/jupyter-app
+export JUPYTER_DATA_DIR=$HOME/.local/share/jupyter-app
+export JUPYTER_RUNTIME_DIR=$HOME/.local/share/jupyter-app/runtime
+
+abort() {
+    printf "\033[0;31m%s\033[0m\n" "$1" >&2
+    exit 1
+}
+
+exec 9>"$JUPYTER_RUNTIME_DIR/lock"
+flock -n 9 || abort "Already running"
+
+mkdir -p "$JUPYTER_CONFIG_DIR" "$JUPYTER_DATA_DIR" "$JUPYTER_RUNTIME_DIR"
+
+HOST="127.243.32.11"
+
+cat <<EOF >"$JUPYTER_CONFIG_DIR/jupyter_server_config.py"
+c.ServerApp.allow_remote_access = False
+c.ServerApp.terminals_enabled = False
+c.ServerApp.open_browser = False
+c.ServerApp.ip = "$HOST"
+c.ServerApp.port = 0
+c.IdentityProvider.token = ""
+
+c.LanguageServerManager.autodetect = False
+c.LanguageServerManager.language_servers = {
+    "pylsp": {
+        "version": 2,
+        "argv": ["pylsp"],
+        "languages": ["python"],
+        "mime_types": ["text/python", "text/x-python"],
+        "display_name": "Python (pylsp)",
+        "initializationOptions": {
+            "pylsp": {
+                "plugins": {
+                    "pycodestyle": {"enabled": False},
+                    "ruff": {"enabled": True}
+                }
+            }
+        }
+    }
+}
+EOF
+
+jupyter server &
+pid=$!
+
+quit() {
+    if kill -0 "$pid" 2>/dev/null; then
+        kill -TERM "$pid" 2>/dev/null
+
+        for _ in 1 2 3 4 5; do
+            kill -0 "$pid" 2>/dev/null || break
+            sleep 1
+        done
+
+        kill -0 "$pid" 2>/dev/null && kill -KILL "$pid" 2>/dev/null
+    fi
+
+    wait "$pid" 2>/dev/null
+}
+
+trap quit EXIT INT TERM
+
+i=0
+until ss -H -ln 2>/dev/null | grep -q "$HOST:"; do
+    i=$((i + 1))
+    if [ "$i" -ge 30 ]; then
+        abort "jupyter server did not respond"
+    fi
+
+    kill -0 "$pid" 2>/dev/null || abort "jupyter server exited unexpectedly"
+    sleep 0.2 2>/dev/null || sleep 1
+done
+
+chromium --app="http://$(ss -H -ln 2>/dev/null | grep -o "$HOST:[[:digit:]]\+")/lab" --user-data-dir="$HOME/.local/share/jupyter-app/chromium" >/dev/null 2>&1 || true

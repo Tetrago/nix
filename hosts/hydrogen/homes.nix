@@ -34,6 +34,7 @@
 
       home.packages = with pkgs; [
         onshape
+        jupyter-app
         orca-slicer
         # (
         #   (orca-slicer.override {

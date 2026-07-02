@@ -107,7 +107,24 @@ in
         foldlevelstart = 99;
       };
 
-      colorscheme = "token";
+      extraConfigLuaPre = ''
+        function get_auto_lualine_theme()
+          package.loaded["lualine.themes.auto"] = nil
+          local theme = require("lualine.themes.auto")
+
+          for _, mode in pairs(theme) do
+            if mode.c == nil then
+              mode.c = {}
+            end
+
+            mode.c.bg = nil
+          end
+
+          return theme
+        end
+      '';
+
+      colorschemes.onedark.enable = true;
 
       diagnostic.settings = {
         severity_sort = true;
@@ -285,7 +302,25 @@ in
           ];
 
         plugins = {
-          auto-dark-mode.package = mkIf cfg.enableThemeIntegration localPkgs.auto-dark-mode-nvim;
+          auto-dark-mode = mkIf cfg.enableThemeIntegration {
+            package = localPkgs.auto-dark-mode-nvim;
+            settings = {
+              set_dark_mode.__raw = ''
+                function()
+                  require('lualine').setup {options = {theme = get_auto_lualine_theme()}}
+                  require('onedark').setup { style = "warmer" }
+                  require('onedark').load()
+                end
+              '';
+              set_light_mode.__raw = ''
+                function()
+                  require('lualine').setup {options = {theme = get_auto_lualine_theme()}}
+                  require('onedark').setup { style = "light" }
+                  require('onedark').load()
+                end
+              '';
+            };
+          };
 
           cheatsheet = {
             package = pkgs.vimPlugins.cheatsheet-nvim.overrideAttrs (
@@ -566,7 +601,7 @@ in
                 "_" = [ "trim_whitespace" ];
                 bash = [ "shfmt" ];
                 c = [ "clang-format" ];
-                cmake = [ "gersemi" ];
+                cmake = [ "cmake_format" ];
                 cpp = [ "clang-format" ];
                 css = [ "prettierd" ];
                 elixir = [ "mix" ];
@@ -593,7 +628,7 @@ in
 
               formatters = with pkgs; {
                 "clang-format".command = "${clang-tools}/bin/clang-format";
-                gersemi.command = getExe gersemi;
+                cmake_format.command = getExe cmake-format;
                 gleam.command = getExe gleam;
                 google-java-format.command = getExe google-java-format;
                 mix.command = "${elixir}/bin/mix";
@@ -690,21 +725,7 @@ in
                   right = "";
                 };
 
-                theme.__raw = ''
-                  (function()
-                    local theme = require("lualine.themes.auto")
-
-                    for _, mode in pairs(theme) do
-                      if mode.c == nil then
-                        mode.c = {}
-                      end
-
-                      mode.c.bg = nil
-                    end
-
-                    return theme
-                  end)()
-                '';
+                theme.__raw = "get_auto_lualine_theme()";
               };
 
               extensions = [

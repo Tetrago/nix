@@ -50,6 +50,7 @@ in
           cine
           collision
           file-roller
+          fragments
           snoop
           turtle
         ];
@@ -83,6 +84,7 @@ in
               papers
               firefox
               apostrophe
+              fragments
             ]
             ++ [
               {
