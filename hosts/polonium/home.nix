@@ -66,6 +66,6 @@
 
   xdg.configFile = {
     "gnome-shell/gnome-shell.css".text = "#panelBox {height: 42px !important}";
-    "monitors.xml".source = ./monitors.xxml;
+    "monitors.xml".source = ./monitors.xml;
   };
 }
