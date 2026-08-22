@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -45,16 +46,21 @@ in
     in
     mkIf cfg.enable {
       home = {
-        packages = with pkgs; [
-          apostrophe
-          cine
-          collision
-          decibels
-          file-roller
-          fragments
-          snoop
-          turtle
-        ];
+        packages =
+          with pkgs;
+          [
+            apostrophe
+            cine
+            collision
+            decibels
+            file-roller
+            fragments
+            snoop
+            turtle
+          ]
+          ++ [
+            inputs.pipewire-control-center.legacyPackages.${pkgs.stdenv.hostPlatform.system}.pipewire-control-center
+          ];
 
         sessionVariables =
           let

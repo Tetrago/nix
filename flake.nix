@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
 
+    pipewire-control-center.url = "github:NixOS/nixpkgs/nixos-unstable";
     signal.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     lanzaboote = {
