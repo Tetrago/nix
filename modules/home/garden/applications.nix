@@ -49,6 +49,7 @@ in
           apostrophe
           cine
           collision
+          decibels
           file-roller
           fragments
           snoop
@@ -77,8 +78,8 @@ in
           mkMerge (
             map getDefaultApps [
               file-roller
-              decibels
               cine
+              decibels
               loupe
               gnome-font-viewer
               papers

@@ -24,7 +24,7 @@ in
 
               preFixup = prev.preFixup or "" + ''
                 gappsWrapperArgs+=(
-                  --prefix XDG_DATA_DIRS : "${pkgs.ffmpegthumbnailer}/share"
+                  --prefix XDG_DATA_DIRS : "${pkgs.ffmpegthumbnailer}/share:${pkgs.libavif}/share"
                 )
               '';
             }

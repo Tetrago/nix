@@ -2,6 +2,7 @@
   james =
     {
       config,
+      inputs,
       lib,
       outputs,
       pkgs,
@@ -33,6 +34,7 @@
       };
 
       home.packages = with pkgs; [
+        inputs.signal.legacyPackages.${stdenv.hostPlatform.system}.signal-desktop
         onshape
         jupyter-app
         orca-slicer

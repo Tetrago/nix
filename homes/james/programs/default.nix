@@ -119,7 +119,7 @@ in
               blender
               davinci-resolve
               drawio
-              gimp
+              gimp-with-plugins
               handbrake
               inkscape
               pdfarranger
@@ -145,15 +145,17 @@ in
             (mkIf cfg.utility.enable [
               binary # Base converter
               buffer # Volatile scratchpad
-              curtail # Image compressor
               collector # File dropbox clipboard thing
+              curtail # Image compressor
               ghex
               gnome-sound-recorder
               impression # Removable media writer
               key-rack # Secrets tracker
               kooha
               meld
+              metadata-cleaner
               mousai # Song identifier
+              raider # File shredder
               switcheroo # Image converter
               warp
             ])

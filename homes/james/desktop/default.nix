@@ -1,9 +1,20 @@
 {
+  lib,
   outputs,
   pkgs,
   ...
 }:
 
+let
+  inherit (builtins) fromJSON readDir readFile;
+  inherit (lib)
+    filterAttrs
+    hasSuffix
+    mapAttrs'
+    nameValuePair
+    removeSuffix
+    ;
+in
 {
   imports = [
     outputs.homeModules.default
@@ -13,6 +24,7 @@
 
   garden = {
     enable = true;
+    extraExtensions = with pkgs.gnomeExtensions; [ easyeffects-preset-selector ];
     background = {
       dark = "${./dark.png}";
       light = "${./light.png}";
@@ -35,7 +47,19 @@
   };
 
   programs.obs-studio.enable = true;
-  services.easyeffects.enable = true;
+
+  services.easyeffects = {
+    enable = true;
+    preset = "Default";
+    extraPresets =
+      let
+        presetsDir = ./presets;
+        jsonFiles = filterAttrs (name: ty: ty == "regular" && hasSuffix ".json" name) (readDir presetsDir);
+      in
+      mapAttrs' (
+        name: ty: nameValuePair (removeSuffix ".json" name) (fromJSON (readFile "${presetsDir}/${name}"))
+      ) jsonFiles;
+  };
 
   xdg = {
     enable = true;

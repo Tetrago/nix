@@ -14,14 +14,15 @@
 let
   pythonEnv = python3.withPackages (
     ps: with ps; [
+      ipympl
       ipython
       jupyter
       jupyter-lsp
       matplotlib
       numpy
       pandas
-      python-lsp-server
       python-lsp-ruff
+      python-lsp-server
       scipy
     ]
   );

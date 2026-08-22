@@ -400,9 +400,11 @@ in
           autoclose.enable = true;
           crates.enable = true;
           colorful-menu.enable = true;
+          diagram.enable = true;
           flash.enable = true;
           fugitive.enable = true;
           glance.enable = true;
+          image.enable = true;
           neoscroll.enable = true;
           nvim-bqf.enable = true;
           nvim-surround.enable = true;
@@ -612,6 +614,7 @@ in
                 javascriptreact = [ "prettierd" ];
                 json = [ "prettierd" ];
                 nix = [ "nixfmt" ];
+                proto = [ "buf" ];
                 python = [ "yapf" ];
                 rust = [ "rustfmt" ];
                 scss = [ "prettierd" ];
@@ -627,6 +630,7 @@ in
               };
 
               formatters = with pkgs; {
+                buf.command = getExe buf;
                 "clang-format".command = "${clang-tools}/bin/clang-format";
                 cmake_format.command = getExe cmake-format;
                 gleam.command = getExe gleam;
@@ -681,11 +685,13 @@ in
               jsonls.enable = true;
               lua_ls.enable = true;
               nil_ls.enable = true;
+              protols.enable = true;
+              pylsp.enable = true;
               svls.enable = true;
               taplo.enable = true;
-              wgsl_analyzer.enable = true;
               vhdl_ls.enable = true;
               vtsls.enable = true;
+              wgsl_analyzer.enable = true;
               zls.enable = true;
 
               rust_analyzer = {
@@ -1010,6 +1016,7 @@ in
               markdown_inline
               nix
               nix
+              proto
               python
               regex
               rust
@@ -1082,12 +1089,14 @@ in
       dependencies = {
         fzf.enable = true;
         gcc.enable = true;
+        imagemagick.enable = true;
         lazygit.enable = true;
         ripgrep.enable = true;
       };
 
       extraPackages = with pkgs; [
         fd
+        mermaid-cli
         texliveFull
       ];
     };
