@@ -1,34 +1,20 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
-outdir="/tmp/${0##*/}-$$"
+echo "NOTICE: It may be necessary to boot into MacOS and run $(curl https://alx.sh | sh) to update the necessary files"
 
-abort() {
-	rm -r "$outdir"
-	exit 1
-}
+set -eu
 
+outdir="/tmp/${0##*/}-$$/firmware.cpio"
 [ -d "$outdir" ] && exit 1
-mkdir "$outdir"
 
-cp /boot/asahi/all_firmware.tar.gz "$outdir/"
-[ $? -ne 0 ] && abort || echo "Copied firmware."
+mkdir -p "$outdir"
+trap "rm -r $outdir" EXIT
 
-cp /boot/asahi/kernelcache.release.* "$outdir/"
-echo "Copied kernelcache."
+cp /boot/vendorfw/firmware.cpio "$outdir/"
+echo "Copied: firmware.cpio"
 
-kernelcache="$(ls -1 "$outdir" | grep kernelcache)"
-name="${kernelcache#$outdir/kernelcache.release.}"
-[ -z "$name" ] && abort || echo "Identified \"$name\" kernelcache."
-
-out="$outdir/$name-firmware.tar.gz"
-
-tar -czf "$out" -C "$outdir" "all_firmware.tar.gz" "$kernelcache"
-[ $? -ne 0 ] && abort || echo "Archived firmware to \"$out\"."
-
-hash=$(nix --experimental-features 'nix-command' hash file "$out")
+hash=$(nix --experimental-features 'nix-command' hash path "$outdir")
 echo "Identified hash: $hash"
 
-path="$(nix-store --add-fixed sha256 "$out")"
-[ $? -ne 0 ] && abort || echo "Added store entry \"$path\"."
-
-rm -r "$outdir"
+path="$(nix-store --add-fixed --recursive sha256 "$outdir")"
+echo "Added store entry: $path"

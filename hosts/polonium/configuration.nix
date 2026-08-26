@@ -145,18 +145,13 @@
 
   hardware = {
     asahi = {
-      peripheralFirmwareDirectory =
-        let
-          firmware = pkgs.requireFile {
-            name = "kernelcache.release.mac14g-firmware.tar.gz";
-            hash = "sha256-hhEqatUcKXqv1xJpbPNJP0XGr1gZRmxTbUHoyEVTvdA=";
-            message = "This firmware is redistributable only by Apple. Run the store-apple-firmware.sh script.";
-          };
-        in
-        pkgs.runCommand "firmware" { inherit firmware; } ''
-          mkdir -p $out
-          tar -xzf $firmware -C $out
-        '';
+      enable = true;
+      peripheralFirmwareDirectory = pkgs.requireFile {
+        name = "firmware.cpio";
+        hash = "sha256-S76gJS2jhxI9yAbK2HOHR9zZgSDpgjVvEjb/A/0R9uY=";
+        hashMode = "recursive";
+        message = "This firmware is redistributable only by Apple. Run the store-apple-firmware.sh script.";
+      };
     };
 
     bluetooth = {
