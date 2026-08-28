@@ -150,6 +150,7 @@ in
               ghex
               gnome-sound-recorder
               impression # Removable media writer
+              localsend
               key-rack # Secrets tracker
               kooha
               meld
