@@ -88,8 +88,8 @@ in
         source = pkgs.fetchFromGitHub {
           owner = "rafaelmardojai";
           repo = "firefox-gnome-theme";
-          rev = "v137";
-          hash = "sha256-oiHLDHXq7ymsMVYSg92dD1OLnKLQoU/Gf2F1GoONLCE=";
+          rev = "v150";
+          hash = "sha256-UdfMivNMwCCqQsYDg5pSz8X2IOaOrIZLIIy+Bg3CO2o=";
         };
       };
     };

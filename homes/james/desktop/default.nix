@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   outputs,
   pkgs,
@@ -25,8 +24,8 @@ in
 
   garden = {
     enable = true;
-    extraExtensions = [
-      inputs.easyeffects-preset-selector.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gnomeExtensions.easyeffects-preset-selector
+    extraExtensions = with pkgs.gnomeExtensions; [
+      easyeffects-preset-selector
     ];
     background = {
       dark = "${./dark.png}";

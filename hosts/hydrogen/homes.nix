@@ -34,7 +34,7 @@
       };
 
       home.packages = with pkgs; [
-        inputs.signal.legacyPackages.${stdenv.hostPlatform.system}.signal-desktop
+        signal-desktop
         onshape
         jupyter-app
         orca-slicer

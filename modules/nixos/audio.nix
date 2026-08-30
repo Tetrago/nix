@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 
 let
   inherit (lib)
@@ -15,6 +19,11 @@ in
     samplingRate = mkOption {
       type = types.nullOr types.ints.positive;
       default = null;
+    };
+
+    disableBluetoothHeadsetMode = mkOption {
+      type = types.bool;
+      default = true;
     };
   };
 
@@ -35,6 +44,21 @@ in
         extraConfig.pipewire = {
           "10-sample-rate" = mkIf (cfg.samplingRate != null) {
             "context.properties"."default.clock.rate" = cfg.samplingRate;
+          };
+        };
+
+        wireplumber.extraConfig = {
+          "11-bluetooth-policy" = mkIf cfg.disableBluetoothHeadsetMode {
+            "wireplumber.settings" = {
+              "bluetooth.autoswitch-to-headset-profile" = false;
+            };
+
+            "monitor.bluez.properties" = {
+              "bluez5.roles" = [
+                "a2dp_sink"
+                "a2dp_source"
+              ];
+            };
           };
         };
       };

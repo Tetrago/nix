@@ -43,6 +43,7 @@ in
             diff.tool = "meld";
             init.defaultBranch = "develop";
             user.name = "James";
+            user.email = "james@geiss.dev";
           };
         };
       };

@@ -3,10 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
 
-    easyeffects-preset-selector.url = "github:NixOS/nixpkgs/nixos-unstable";
-    pipewire-control-center.url = "github:NixOS/nixpkgs/nixos-unstable";
-    signal.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,11 +28,6 @@
 
     distro-grub-themes = {
       url = "github:AdisonCavani/distro-grub-themes";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    solaar = {
-      url = "github:Svenum/Solaar-Flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

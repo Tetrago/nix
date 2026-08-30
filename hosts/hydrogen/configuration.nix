@@ -8,7 +8,6 @@
   imports = [
     inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-ssd
-    inputs.solaar.nixosModules.default
 
     ./hardware-configuration.nix
     ../desktop
@@ -38,12 +37,8 @@
 
   programs = {
     nix-ld.enable = true;
-    virt-manager.enable = true;
-  };
-
-  services = {
-    ollama.enable = true;
     solaar.enable = true;
+    virt-manager.enable = true;
   };
 
   systemd.network.wait-online.enable = false;

@@ -46,21 +46,17 @@ in
     in
     mkIf cfg.enable {
       home = {
-        packages =
-          with pkgs;
-          [
-            apostrophe
-            cine
-            collision
-            decibels
-            file-roller
-            fragments
-            snoop
-            turtle
-          ]
-          ++ [
-            inputs.pipewire-control-center.legacyPackages.${pkgs.stdenv.hostPlatform.system}.pipewire-control-center
-          ];
+        packages = with pkgs; [
+          apostrophe
+          cine
+          collision
+          decibels
+          file-roller
+          fragments
+          pipewire-control-center
+          snoop
+          turtle
+        ];
 
         sessionVariables =
           let

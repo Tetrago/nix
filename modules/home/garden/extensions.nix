@@ -6,8 +6,13 @@
 }:
 
 let
-  inherit (lib) mkIf mkOption types;
-  inherit (lib.attrsets) mapAttrs' mergeAttrsList;
+  inherit (builtins) listToAttrs;
+  inherit (lib)
+    mkIf
+    mkOption
+    types
+    ;
+  inherit (lib.attrsets) mapAttrs';
 
   adwaita-colors = pkgs.stdenvNoCC.mkDerivation rec {
     pname = "Adwaita-colors";
@@ -38,21 +43,45 @@ let
     '';
   };
 
-  dataDirs = mergeAttrsList (
-    map (x: {
-      "icons/${x}".source = "${adwaita-colors}/${x}";
-    }) (import adwaita-colors)
-  );
-
   auto-adwaita-colors = pkgs.gnomeExtensions.auto-adwaita-colors.overrideAttrs (
     final: prev: {
-      version = "2025-11-19";
+      version = "2026-04-30";
 
       src = pkgs.fetchFromGitHub {
-        owner = "celiopy";
+        owner = "Dhanush-Projectile";
         repo = "auto-adwaita-colors";
-        rev = "8b5bd3cef22198611e649dca55726424148828ea";
-        hash = "sha256-yTFJnYQhywRQ8BrO1i5ImW1SEslPs+HJgBVufMe991A=";
+        rev = "51238b785708d8f8acd04b0295264a98447cdaae";
+        hash = "sha256-HJvwau9JgHml2QIGhZuCFQUnNU7g7Fz5cLiW9xQPmVk=";
+      };
+
+      postPatch =
+        let
+          utils = pkgs.writeText "utils.js" ''
+            export async function fetchLatestVersion() {}
+            export async function downloadZip(url, outputPath) {}
+
+            export function getVariant() {
+                return { found: true, state: 'user' };
+            }
+
+          '';
+        in
+        (prev.postPatch or "")
+        + ''
+          cp "${utils}" utils.js
+        '';
+    }
+  );
+
+  search-light = pkgs.gnomeExtensions.search-light.overrideAttrs (
+    final: prev: rec {
+      version = "g50";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "icedman";
+        repo = "search-light";
+        rev = version;
+        hash = "sha256-G2yV7kuZ5/TTovhsgfJneRQvrHl4Hwkkbehe8YJah/A=";
       };
     }
   );
@@ -164,7 +193,14 @@ in
 
       xdg = {
         enable = true;
-        dataFile = dataDirs;
+        dataFile = listToAttrs (
+          map (x: {
+            name = "icons/${x}";
+            value = {
+              source = "${adwaita-colors}/${x}";
+            };
+          }) (import adwaita-colors)
+        );
       };
     };
 }

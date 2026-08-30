@@ -26,8 +26,8 @@ let
 
     cat "${
       pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/616ed5100d3588bb70e3b86737ac0609ce0635cc/.gdbinit";
-        hash = "sha256-cLpH7t/oK8iFOfDnfnWw3oLGegYnNEb5vI8M7FGI7ic=";
+        url = "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/7b9b1260a8b3e9dd57b6cbf302bdfba71cec4014/.gdbinit";
+        hash = "sha256-U83w4tm6FJRtLbeBb+GH/JP9DY+uhWyPUQv19cY5XpI=";
       }
     }" >> $out
   '';
@@ -38,7 +38,7 @@ let
   '';
 
   store = pkgs.writeShellScriptBin "store" ''
-    if dir=$(ls -d /nix/store/*/ | sed 's|^/nix/store/||' | ${lib.getExe pkgs.fzf} --height 40% --layout=reverse); then
+    if dir=$(ls -t -d /nix/store/*/ | sed 's|^/nix/store/||' | ${lib.getExe pkgs.fzf} --height 40% --layout=reverse); then
       ${lib.getExe pkgs.xplr} "/nix/store/$dir"
     fi
   '';
@@ -128,7 +128,7 @@ in
               xournalpp # PDF editor
             ])
             (mkIf cfg.office.enable [
-              libreoffice-fresh
+              libreoffice-stable
               hunspell
               hunspellDicts.en_US
             ])
@@ -149,10 +149,11 @@ in
               curtail # Image compressor
               ghex
               gnome-sound-recorder
+              gradia # Screenshot editor
               impression # Removable media writer
-              localsend
               key-rack # Secrets tracker
               kooha
+              localsend
               meld
               metadata-cleaner
               mousai # Song identifier
@@ -198,9 +199,9 @@ in
         ssh = mkIf cfg.ssh.enable {
           enable = true;
           enableDefaultConfig = false;
-          matchBlocks."*" = {
-            addKeysToAgent = "yes";
-            setEnv.TERM = "xterm-256color";
+          settings."*" = {
+            AddKeysToAgent = "yes";
+            SetEnv.TERM = "xterm-256color";
           };
         };
       };
