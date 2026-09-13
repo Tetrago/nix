@@ -1021,6 +1021,7 @@ in
               regex
               rust
               rust
+              sql
               toml
               typescript
               wgsl

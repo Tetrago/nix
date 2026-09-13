@@ -34,10 +34,10 @@
       };
 
       home.packages = with pkgs; [
-        signal-desktop
-        onshape
         jupyter-app
+        onshape
         orca-slicer
+        signal-desktop
         # (
         #   (orca-slicer.override {
         #     wxGTK31 = (pkgs.wxGTK31.override { withEGL = false; }).overrideAttrs (
