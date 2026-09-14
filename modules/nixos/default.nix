@@ -8,6 +8,7 @@
   imports = [
     ./audio.nix
     ./boot.nix
+    ./certs.nix
     ./fonts.nix
     ./graphics.nix
     ./plymouth.nix
