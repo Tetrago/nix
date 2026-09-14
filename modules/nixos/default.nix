@@ -45,4 +45,6 @@
     man-pages
     man-pages-posix
   ];
+
+  networking.firewall.checkReversePath = false;
 }
