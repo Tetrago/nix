@@ -53,6 +53,11 @@
     enableOnBoot = false;
   };
 
+  services = {
+    gnome.gnome-remote-desktop.enable = true;
+    openssh.enable = true;
+  };
+
   systemd.services.nvme-rebind =
     let
       script = pkgs.writeShellScript "nvme-rebind" ''

@@ -1,13 +1,17 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (lib) mkIf mkMerge;
+  inherit (lib)
+    mkIf
+    foldl'
+    filterAttrs
+    hasPrefix
+    ;
 
   getDefaultApps =
     pkg:
@@ -76,25 +80,32 @@ in
       xdg.mimeApps = {
         enable = true;
         defaultApplications =
-          with pkgs;
-          mkMerge (
-            map getDefaultApps [
-              file-roller
-              cine
-              decibels
-              loupe
-              gnome-font-viewer
-              papers
-              firefox
-              apostrophe
-              fragments
+          foldl'
+            (
+              apps: pkg:
+              apps
+              // (
+                if pkg == pkgs.cine then
+                  filterAttrs (mimeType: _: !hasPrefix "audio/" mimeType) (getDefaultApps pkg)
+                else
+                  getDefaultApps pkg
+              )
+            )
+            { }
+            [
+              pkgs.file-roller
+              pkgs.cine
+              pkgs.decibels
+              pkgs.loupe
+              pkgs.gnome-font-viewer
+              pkgs.papers
+              pkgs.firefox
+              pkgs.apostrophe
+              pkgs.fragments
             ]
-            ++ [
-              {
-                "inode/directory" = "org.gnome.Nautilus.desktop";
-              }
-            ]
-          );
+          // {
+            "inode/directory" = "org.gnome.Nautilus.desktop";
+          };
       };
 
       xdg = {
