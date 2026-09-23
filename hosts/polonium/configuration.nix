@@ -105,13 +105,13 @@
         name = "asahi";
         package = pkgs.stdenvNoCC.mkDerivation rec {
           pname = "asahi-plymouth";
-          version = "0.1";
+          version = "0.2";
 
           src = pkgs.fetchFromGitHub {
             owner = "AsahiLinux";
             repo = pname;
             rev = version;
-            hash = "sha256-JgsTiS9Qv+Ct7jRmJMCxbqVNkPahZpX4hFc9RE9aONY=";
+            hash = "sha256-ljb0eTN9vqC8OCh+HsbwO33HvcnORhMP1o+8xV3y/UM=";
           };
 
           dontBuild = true;
